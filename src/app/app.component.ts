@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';  
 import { Subscription } from 'rxjs';
+import { ServtryService } from './server/servtry.service';
 
 
 @Component({
@@ -13,12 +14,12 @@ export class AppComponent implements OnInit {
   title = 'abpadilla';
   subs!: Subscription;
 
-  constructor(public http: HttpClient){} 
+  constructor(public http: HttpClient, public servtryService: ServtryService){} 
 
   ngOnInit(): void {
-    this.subs = this.http.get('/jwt').subscribe((data) => {
+    this.subs = this.servtryService.getting().subscribe((data) => {
       console.log(data);      
-      
+
       this.subs.unsubscribe();
     });
   }
