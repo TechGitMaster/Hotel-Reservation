@@ -7,6 +7,8 @@ const app = express();
 
 app.use(body.urlencoded({extended: true}));
 app.use(body.json());
+app.use('/', require('./nodejs/trys'));
+
 
 // Serve only the static files form the dist directory
 app.use(express.static('./dist/abpadilla'));

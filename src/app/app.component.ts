@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   } 
 
   ngOnInit(): void {
-    this.subs = this.https.get('./jwt').subscribe((data: any) => {
+    this.subs = this.https.get('/jwt').subscribe((data: any) => {
       console.log(data+" asdasdsad");
     });
 
