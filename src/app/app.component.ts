@@ -11,16 +11,12 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   title = 'abpadilla';
-
-  https!: any;
   subs!: Subscription;
 
-  constructor(private http: HttpClient){
-    this.https = http;
-  } 
+  constructor(public http: HttpClient){} 
 
   ngOnInit(): void {
-    this.subs = this.https.get('/jwt').subscribe((data: any) => {
+    this.subs = this.http.get('/jwt').subscribe((data: any) => {
       console.log(data+" asdasdsad");
     });
 
