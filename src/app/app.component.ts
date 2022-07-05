@@ -20,8 +20,9 @@ export class AppComponent implements OnInit {
       console.log("LOLOLOL");
       console.log(data);
       console.log("AHAHAH");
-    });
 
-    this.subs.unsubscribe();
+      
+      this.subs.unsubscribe();
+    });
   }
 }
