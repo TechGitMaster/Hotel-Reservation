@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   constructor(public http: HttpClient){} 
 
   ngOnInit(): void {
-    this.subs = this.http.get('/jwt').subscribe((data: any) => {
+    this.subs = this.http.get('/jwt').subscribe((data) => {
       console.log(data+" asdasdsad");
     });
 
