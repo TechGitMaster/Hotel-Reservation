@@ -6,7 +6,7 @@ const app = express();
 
 app.use(body.urlencoded({extended: true}));
 app.use(body.json());
-app.use('/', require('./nodejs/trys'));
+app.use('/', require('./server_controller'));
 
 
 // Serve only the static files form the dist directory

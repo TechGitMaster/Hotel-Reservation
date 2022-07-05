@@ -17,10 +17,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.subs = this.http.get('/jwt').subscribe((data) => {
-      console.log("LOLOLOL");
-      console.log(data);
-      console.log("AHAHAH");
-
+      console.log(data);      
       
       this.subs.unsubscribe();
     });

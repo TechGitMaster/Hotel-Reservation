@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-
-router.get('/jwt', (req, res) => {
-    res.json({datas: "ahahahaha"});
-});
+router.use('/', require('./nodejs/trys'));
 
 module.exports = router;
