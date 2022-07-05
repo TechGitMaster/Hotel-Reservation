@@ -17,10 +17,9 @@ export class AppComponent implements OnInit {
   constructor(public http: HttpClient, public servtryService: ServtryService){} 
 
   ngOnInit(): void {
-    this.subs = this.servtryService.getting().subscribe((data) => {
-      console.log(data);      
-
-      this.subs.unsubscribe();
-    });
+      this.subs = this.servtryService.getting().subscribe((data) => {
+        console.log(data);      
+        this.subs.unsubscribe();
+      }, (error: any) => { if(error.status == 408) console.log('HAHAHA'); this.subs.unsubscribe();});
   }
 }
