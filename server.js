@@ -4,7 +4,7 @@ const body = require('body-parser');
 
 const app = express();
 
-
+app.use(compression());
 app.use(body.urlencoded({extended: true}));
 app.use(body.json());
 app.use('/', require('./nodejs/trys'));
