@@ -1,0 +1,83 @@
+<div class="container-fluid" style="padding:0px;background:#FCFBFB;">
+    <div class="container-fluid header">
+        <div class="container-fluid titlediv">
+            <p class="titletxt">Manhattan Garden City</p>
+            <div style="display:flex;justify-content: center;">
+                <p class="titleinfo">
+                    Book your stay and enjoy the view at the most affordable rates
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid" style="padding:60px 0px 30px 0px;">
+        <div>
+            <div class="container" style="max-width: 1350px;">
+                <p class="roomstxt">OUR ROOMS</p>
+                <p class="roomsinfo">Located in General Roxas Ave, Cubao, Quezon City, Metro Manila.  
+                    Abegeil Paddilla in Manhattan Garden City offers the available rooms defined by the quality and comfort. </p>
+            </div>
+
+            <!--____________________________Rooms____________________________-->
+            <div style="margin-top:90px;" *ngFor="let json_Data of final_converted_data;index as j_index">
+                
+                <!--____________________________Room RIGHT____________________________-->
+                <div class="container" style="max-width: 1350px;" *ngIf="json_Data.Left_Or_Right === 'right'">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-7 col-12 inforooms">
+                            <img src="/assets/image/roomsample.png" class="img-fluid" style="width:100%;max-height:470px;" />
+                        </div>
+                        
+                        <div class="col-lg-5 col-md-5 col-12  inforooms">
+                            <div style="padding:0px 20px 0px 30px;">
+                                <p class="titleroom margintxt">{{json_Data.title}}</p>
+                                <p class="titleroomtxt margintxt">{{json_Data.txt}}</p>
+                                <div style="margin:30px 0px 30px 0px;">
+                                    <p class="inforooms margintxt">{{json_Data.tower}}</p>
+                                    <p class="inforooms margintxt">Floor / Cluster & Unit: {{json_Data.info1}}</p>
+                                    <p class="inforooms margintxt">Room: {{json_Data.info2}}</p>
+                                    <p class="inforooms margintxt">Room Size: {{json_Data.info3}}</p>
+                                </div>
+                                <div><button class="btnsreserveAppointment btn btn-primary" style="width:70%;" (click)="reserve(json_Data.id)" >Reserve Now</button></div>
+                                <div><button class="btnsreserveAppointment btn btn-primary" style="width:70%;">Set Appointment</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--____________________________Room LEFT____________________________-->
+                <div *ngIf="json_Data.Left_Or_Right === 'left'" style="margin-top:25px;padding:50px 0px 50px 0px;background:#F5F5F5;">
+                    <div class="container" style="max-width: 1350px;">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-12  inforooms">
+                                    <div style="padding:0px 20px 0px 30px;">
+                                        <p class="titleroom margintxt">{{json_Data.title}}</p>
+                                        <p class="titleroomtxt margintxt">{{json_Data.txt}}</p>
+                                        <div style="margin:30px 0px 30px 0px;">
+                                            <p class="inforooms margintxt">{{json_Data.tower}}</p>
+                                            <p class="inforooms margintxt">Floor / Cluster & Unit: {{json_Data.info1}}</p>
+                                            <p class="inforooms margintxt">Room: {{json_Data.info2}}</p>
+                                            <p class="inforooms margintxt">Room Size: {{json_Data.info3}}</p>
+                                        </div>
+                                        <div><button class="btnsreserveAppointment btn btn-primary" style="width:70%;" (click)="reserve(json_Data.id)" >Reserve Now</button></div>
+                                        <div><button class="btnsreserveAppointment btn btn-primary" style="width:70%;">Set Appointment</button></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-7 col-md-7 col-12 inforooms">
+                                    <img src="/assets/image/roomsample.png" class="img-fluid" style="width:100%;max-height:470px;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>

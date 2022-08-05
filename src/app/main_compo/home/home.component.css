@@ -1,0 +1,365 @@
+
+/* ________________________Font from ttf extension_________________________ */
+
+@font-face {
+    font-family: inter_regular;
+    src: url(/assets/Inter-Regular.ttf);
+}
+
+@font-face {
+    font-family: inter_medium;
+    src: url(/assets/Inter-Medium.ttf);
+}
+
+@font-face {
+    font-family: inter_semibold;
+    src: url(/assets/Inter-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: inter_bold;
+    src: url(/assets/Inter-Bold.ttf);
+}
+
+
+@font-face {
+    font-family: inria_serif_bold;
+    src: url(/assets/InriaSerif-Bold.ttf);
+}
+
+
+@font-face {
+    font-family: poppins_regular;
+    src: url(/assets/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: poppins_bold;
+    src: url(/assets/Poppins-Bold.ttf);
+}
+
+@font-face {
+    font-family: poppins_semibold;
+    src: url(/assets/Poppins-SemiBold.ttf);
+}
+
+/*__________________________________________________________________________*/
+
+
+.header{
+    background:url("/assets/image/backgroundhome.png") no-repeat bottom center fixed;
+    background-size:cover;
+    overflow: hidden;
+}
+
+.containerheader{
+    margin-bottom: 254px;
+    position:relative;
+    top:150px;
+}
+
+
+.welcomeT{
+    font-size:40px;
+    font-family: inter_regular;
+    color:#FCFBFB;
+    padding:0px;
+    margin:0%;
+}
+
+.manhattanG{
+    font-size:55px;
+    font-family: inria_serif_bold;
+    color:#FCFBFB;
+    padding:0px;
+    margin:0%;
+    position: relative;
+    top:-2px;
+}
+
+.citymanhattan{
+    font-size:44px;
+    font-family: inria_serif_bold;
+    color:#FCFBFB;
+    padding:0px;
+    margin:0%;
+    position: relative;
+    top:-20px;
+}
+
+.infowelcomeTo{
+    font-size:22px;
+    font-family: inter_regular;
+    color:#FCFBFB;
+    padding:0px;
+    margin:0%;
+    position: relative;
+    top:-15px;
+}
+
+.arDiv{
+    width:95%;
+    background: rgba(20, 23, 32, 0.76);
+    border-radius: 20px;
+}
+
+.arAnow{
+    color:#FCFBFB;
+    font-family: inria_serif_bold;
+    text-align: center;
+    font-size:39px;
+    padding:0px;
+    padding-top:20px;
+    margin:0%;
+}
+
+.infoarAnow{
+    margin:0%;
+    padding-left:50px;
+    padding-right: 50px;
+    padding-top:5px;
+    color:#FCFBFB;
+    font-family: inter_regular;
+    text-align: center;
+    font-size:17px;
+}
+
+.imgsAR{
+    padding-left:50px;
+    padding-right:50px;
+    margin-top:15px;
+    position: relative;
+}
+
+.img1AR{
+    width:100%;
+    max-height:270px;
+    margin-bottom:10px;
+}
+
+.arbuttondiv{
+    padding-left:50px;
+    padding-right:50px;
+    margin-top: 20px;
+    padding-bottom: 30px;
+}
+
+.bttnSeDetails{
+    width:100%;
+    border-radius:20px;
+    border:none;
+    text-align: center;
+    font-family: inter_regular;
+    background: #A4DBE8;
+    color:black;
+    cursor: pointer;
+}
+
+.bttnDownload{
+    width:100%;
+    border-radius:20px;
+    border:none;
+    text-align: center;
+    font-family: inter_regular;
+    background: #FFD700;
+    color:black;
+    cursor: pointer;
+}
+
+.middleDivInfo{
+    padding-top:40px;
+    padding-bottom:40px;
+    background:#FCFBFB;
+}
+
+.facilities{
+    text-align: center;
+    font-size: 30px;
+    font-family: inter_semibold;
+    margin:0%;
+    color:#0063A8;
+}
+
+.imgdivfacilities{
+    max-width: 100px;
+    max-height:120px;
+}
+
+.imgsfacilities{
+    width:90%;
+    max-height:90%;
+}
+
+.textnameFacilities{
+    margin: 0%;
+    padding:0px;
+    font-family: inter_regular;
+    text-align: center;
+    font-size:19px;
+    margin-top:3px;
+}
+
+.btnseeMore{
+    width:25%;
+    border-radius:20px;
+    border:none;
+    text-align: center;
+    font-family: inter_regular;
+    font-size:18px;
+    background: #FFD700;
+    color:black;
+    cursor: pointer;
+}
+
+.divtrustwortyandWhy{
+    padding-left:60px;
+    padding-right:60px;
+}
+
+.infotrust{
+    font-family: inter_regular;
+    font-size:17px;
+}
+
+.headerTrustworty1{
+    font-family: inter_bold;
+    font-size:24px;
+    color:#0063A8;
+}
+
+.headerTrustworty2{
+    font-family: inter_medium;
+    font-size:24px;
+    color:#0A2B6A;
+}
+
+.whyshouldtxt{
+    font-family: inter_bold;
+    font-size:30px;
+    color:#0063A8;
+}
+
+.buyroomtxt{
+    font-family: inter_regular;
+    font-size:30px;
+}
+
+.imglivebetter{
+    max-width:90%;
+    max-height:73%;
+    margin-top:40px;
+    position: relative;
+}
+
+.divlivebetterlife{
+    position: absolute;
+    bottom:30px;
+}
+
+.divfinalbetterll{
+    padding:15px;
+    background:#FCFBFB;
+    display: flex;
+    align-items: center;
+    font-family: inter_regular;
+    font-size:20px;
+}
+
+.divmainlocation{
+    background:url('/assets/image/hotelmiddle.png') no-repeat center center fixed;
+    background-size:cover;
+}
+
+.containermiddlelocation{
+    padding-top:100px;
+    padding-bottom: 50px;
+}
+
+.locationdiv{
+    max-height:520px;
+    z-index: 1;
+    position: relative;
+}
+
+.divinfolocation{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom:5%;
+}
+
+.divmainlcationinfo{
+    width:318px;
+    border-radius:20px;
+    background:rgba(255, 255, 255, 0.84);
+    padding-top:30px;
+    overflow: hidden;
+}
+
+.manhantanloctxt{
+    font-family: poppins_bold;
+    font-size: 16px;
+    color:#333535;
+}
+
+.philloctxt{
+    font-family: poppins_semibold;
+    font-size:14px;
+    color:#656565;
+}
+
+.locatehotelbttn{
+    width:100%;
+    background:#FFD700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inter_regular;
+    font-size:15px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.availableAbegeil{
+    font-family: inter_bold;
+    color:#FCFBFB;
+    font-size:27px;
+    margin:0%;
+    margin-bottom:30px;
+}
+
+.roomavailalable{
+    width:100%;
+    border-radius:20px;
+    background:#FCFBFB;
+    overflow: hidden;
+}
+
+.infodivroom{
+    padding:20px;
+}
+
+.roomtxtinfo{
+    font-family: inter_medium;
+    font-size:16px;
+}
+
+.bttndetails{
+    font-family: poppins_semibold;
+    font-size:14px;
+    background:#F4694C;
+    border:none;
+    border-radius:0px;
+}
+
+.btnseemorbttn{
+    width:50%;
+    border-radius:20px;
+    font-size:18px;
+    font-family: inter_regular;
+    background:#FFD700;
+    border:none;
+    color:black;
+}
+

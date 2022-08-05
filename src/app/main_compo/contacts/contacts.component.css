@@ -1,0 +1,109 @@
+/* ________________________Font from ttf extension_________________________ */
+
+@font-face {
+    font-family: inter_regular;
+    src: url(/assets/Inter-Regular.ttf);
+}
+
+@font-face {
+    font-family: inter_medium;
+    src: url(/assets/Inter-Medium.ttf);
+}
+
+@font-face {
+    font-family: inter_semibold;
+    src: url(/assets/Inter-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: inter_bold;
+    src: url(/assets/Inter-Bold.ttf);
+}
+
+/*__________________________________________________________________________*/
+
+.containerInfoContact{
+    max-width:1150px;
+    padding-left:15px;
+    padding-top:210px;
+    padding-bottom:60px;
+}
+
+.abegeil{
+    font-family: inter_bold;
+    font-size:36px;
+    color:#0063A8;
+}
+
+.Padilla{
+    font-family: inter_regular;
+    font-size:36px;
+    color:#0A2B6A;
+}
+
+.infocontact{
+    width:70%;
+    font-family: inter_regular;
+    font-size:17px;
+}
+
+.callnumemail{
+    font-family: inter_regular;
+    font-size:17px;
+}
+
+.got{
+    font-family: inter_bold;
+    font-size:25px;
+    color:#0063A8;
+}
+
+.questions{
+    font-family: inter_regular;
+    font-size:25px;
+    color:#0A2B6A;
+}
+
+.infoinstant{
+    font-family: inter_regular;
+    font-size:17px;
+}
+
+.labels{
+    font-family: inter_regular;
+    font-size:17px;
+    margin-bottom:10px;
+}
+
+.forminput{
+    border-radius: 15px;
+    border:none;
+    background:#ADD8E6;
+    padding:10px;
+}
+
+.forminputtextarea{
+    height:200px;
+    border-radius: 15px;
+    border:none;
+    background:#ADD8E6;
+    padding:10px;
+}
+
+.divBttnsendMessage{
+    display:flex;
+    justify-content: center;
+}
+
+.btnsendMessage{
+    border-radius:25px;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:10%;
+    padding-right:10%;
+    font-family: inter_regular;
+    font-size:16px;
+    background:#FFD700;
+    border:none;
+    color:black;
+}

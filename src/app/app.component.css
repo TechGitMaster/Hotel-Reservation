@@ -1,0 +1,578 @@
+
+/* ________________________Font from ttf extension_________________________ */
+
+@font-face {
+    font-family: inter_regular;
+    src: url(/assets/Inter-Regular.ttf);
+}
+
+@font-face {
+    font-family: inter_medium;
+    src: url(/assets/Inter-Medium.ttf);
+}
+
+@font-face {
+    font-family: inter_semibold;
+    src: url(/assets/Inter-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: inter_bold;
+    src: url(/assets/Inter-Bold.ttf);
+}
+
+
+@font-face {
+    font-family: inria_serif_bold;
+    src: url(/assets/InriaSerif-Bold.ttf);
+}
+
+
+/*__________________________________________________________________________*/
+
+.navigationforAll{
+    background:rgba(0, 0, 0, 0.582);
+    z-index:1;
+    padding:0px;
+    position: absolute;
+}
+
+.naviclicked{
+    height:100vh;
+    padding:0px;
+    z-index:3;
+    padding-top:50px;
+    padding-top:50px;
+    background:#493B3B;
+    position:fixed;
+}
+
+.conX{
+    color:white;
+    font-family: inter_bold;
+    font-size:30px;
+    margin-bottom:40px;
+    cursor: pointer;
+}
+
+.divborder1{
+    border-top:1px solid #747272;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+
+.divmenuicon{
+    max-width:40px;
+    max-height:40px;
+    cursor: pointer;
+}
+
+.divlogo{
+    max-width:90px;
+    max-height:130px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.logomenu{
+    max-width:400px;
+    max-height:400px;
+    display:block;
+}
+
+.divLogoCorner{
+    display:none;
+}
+
+
+.navclickable{
+    font-family: inria_serif_bold;
+    padding-left:20px;
+    padding-right:20px;
+    color:rgb(255, 255, 255);
+    font-size:30px;
+    letter-spacing: 2px;
+}
+
+
+.btn_signin{
+    border-radius:20px;
+    font-family: inter_medium;
+    font-size:17px;
+    background:#FFD700;
+    color:#281E60;
+    padding-right:20px;
+    padding-left:20px;
+    border:none;
+    position:relative;
+    left:-20px;
+}
+
+.username{
+    font-size:17px;
+    font-family: inter_bold;
+    color:#FCFBFB;
+    margin-left:15px;
+    cursor: pointer;
+}
+
+.iconNoti{
+    max-width:30px;
+    height:30px;
+    cursor: pointer;
+}
+
+.contactusfooter{
+    font-family: poppins_regular;
+    font-size: 23px;
+}
+
+.p1{
+    font-family: poppins_bold;
+    font-size: 17px;
+}
+
+.s1{
+    font-family: poppins_regular;
+    font-size: 15px;
+}
+
+.followUs{
+    text-align: center;
+    font-family: inter_medium;
+    font-size:18px;
+}
+
+.appointtxttitle{
+    font-size: 27px;
+    font-family: inter_bold;
+    color:#0063A8;
+    margin:0%;
+}
+
+.appointtxtinfo{
+    font-family: inter_regular;
+    font-size:17px;
+    max-width:45%;
+    margin-top:10px;
+}
+
+.labels{
+    font-family: inter_regular;
+    font-size:17px;
+    margin-bottom:10px;
+}
+
+.forminput{
+    border-radius: 12px;
+    border:none;
+    background:#ADD8E6;
+    padding:10px;
+}
+
+.divformrow{
+    margin-top:15px;
+}
+
+.forminputtextarea{
+    height:270px;
+    border-radius: 15px;
+    border:none;
+    background:#ADD8E6;
+    padding:10px;
+}
+
+.dates{
+    height:250px;
+    border-radius: 15px;
+    border:1px solid black;
+}
+
+.selecttdtxt{
+    font-family: inter_semibold;
+    font-size:24px;
+    color:#493B3B;
+}
+
+.divknowing{
+    max-width:110px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.divknowingnot{
+    max-width:140px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background:rgb(213, 213, 213);
+    margin-left:20px;
+    padding:5px;
+}
+
+.boxknowing{
+    width:20px;
+    min-height:20px;
+    border:2px solid black;
+}
+
+.txtknowing{
+    font-family: inter_regular;
+    font-size:16px;
+    margin-left:10px;
+}
+
+.xknowing{
+    height:100%;
+    text-align: center;
+    margin:0%;
+    padding:0px;
+}
+
+.btnsubmitbttn{
+    width:80%;
+    border-radius:20px;
+    font-size:18px;
+    font-family: inter_regular;
+    background:#FFD700;
+    border:none;
+    color:black;
+    margin-top:30px;
+}
+
+
+
+:root {
+    --dark-body: #4d4c5a;
+    --dark-main: #141529;
+    --dark-second: #79788c;
+    --dark-hover: #323048;
+    --dark-text: #f8fbff;
+
+    --light-body: #f3f8fe;
+    --light-main: #fdfdfd;
+    --light-second: #c3c2c8;
+    --light-hover: #edf0f5;
+    --light-text: #151426;
+
+    --blue: #0000ff;
+    --white: #fff;
+
+    --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    --font-family: cursive;
+}
+
+
+.calendar {
+    max-height: 500px;
+    max-width: 100%;
+    background-color: var(--bg-main);
+    border-radius: 30px;
+    padding:30px 0px 30px 0px;
+    background:rgb(255, 255, 255);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.152);
+    position: relative;
+    /* transform: scale(1.25); */
+}
+
+.light .calendar {
+    box-shadow: var(--shadow);
+}
+
+.calendar-body {
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+
+.calendar-week-day {
+    height: 50px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: 600;
+}
+
+.calendar-week-day div {
+    display: grid;
+    place-items: center;
+    color: var(--bg-second);
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    color: var(--color-txt);
+    
+}   
+
+.cols {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.calendar-days div span {
+    position: absolute;
+}
+
+
+.month-picker {
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inter_semibold;
+    font-size:24px;
+    padding-left:30px;
+}
+
+
+.year-picker {
+    min-width:20px;
+    display: flex;
+    align-items: center;
+    float:right;
+    font-family: inter_semibold;
+    font-size:24px;
+    margin-right:30px;
+}
+
+.year-change {
+    width:15px;
+}
+
+.prenext{
+    cursor: pointer;
+}
+
+.curr-date{
+    background:#FFD700;
+}
+
+
+.toggle {
+    display: flex;
+}
+
+.toggle span {
+    margin-right: 10px;
+    color: var(--color-txt);
+}
+
+.month-list {
+    position:relative;
+    background-color: var(--bg-main);
+    margin-top:10px;
+}
+
+.colfdivmontjh{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.colmonth{
+    width:90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:25px;
+    cursor: pointer;
+}
+
+.colmonth2{
+    width:90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:25px;
+    background: rgb(213, 213, 213);
+    cursor: context-menu;
+}
+
+.colmonth:hover{
+    background:#ADD8E6;
+    border-radius:5px;
+}
+
+.containerloginSignup{
+    height:100vh;
+    background:rgba(0, 0, 0, 0.5);
+    position: fixed;
+    z-index:3;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logindiv{
+    width:450px;
+    min-height:500px;
+    background:#FCFBFB;
+    border-radius:10px;
+    padding-bottom:30px;
+}
+
+.paX{
+    margin:0px;
+    font-family: inter_bold;
+    font-size:25px;
+    padding-left:20px;
+    padding-top:15px;
+    cursor: pointer;
+}
+
+.paLoginSignup{
+    margin-top:-5px;
+    font-family: inter_bold;
+    font-size:30px;
+    text-align: center;
+    color:#0063A8;
+}
+
+.divFill{
+    padding-left: 46px;
+    padding-right: 46px;
+    margin-top:40px;
+}
+
+.divFillSign{
+    padding-left: 46px;
+    padding-right: 46px;
+    margin-top:30px;
+}
+
+.divGoogle{
+    height:50px;
+    border:2px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.paGoogle{
+    margin: 0px;
+    font-family: inter_bold;
+    font-size: 17px;
+    color:#493B3B;
+}
+
+.paOr{
+    font-family: inter_bold;
+    font-size: 16px;
+    color:#6D6871;
+    text-align: center;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+.forminputLog{
+    border-radius: 10px;
+    border:none;
+    border:2px solid black;
+    padding: 10px 15px 10px 15px;
+    font-size:17px;
+}
+
+.forminputReg{
+    border-radius: 10px;
+    border:none;
+    border:2px solid black;
+    padding: 10px 15px 10px 15px;
+    font-size:17px;
+}
+
+
+.loginbttn{
+    width:100%;
+    border-radius:20px;
+    font-size:18px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:15px;
+}
+
+.signUpbttn{
+    width:100%;
+    border-radius:20px;
+    font-size:18px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+}
+
+.paForgot{
+    font-family: inter_medium;
+    font-size:16px;
+    color:#0063A8;
+    text-align: center;
+    margin:0px;
+    cursor: pointer;
+}
+
+.padontHave{
+    font-family: inter_medium;
+    font-size: 16px;
+    color: #B59595;
+}
+
+.paCreate{
+    font-family: inter_medium;
+    font-size: 16px;
+    color: #0063A8;
+    cursor: pointer;
+}
+
+.signUpdiv{
+    width:600px;
+    background:#FCFBFB;
+    border-radius:10px;
+    padding-bottom:60px;
+}
+
+.padCol6{
+    padding:0px 5px 0px 5px;
+    margin-bottom:15px;
+}
+
+.margCol12{
+    padding:0px 5px 0px 5px;
+    margin-bottom: 15px;
+}
+
+.paGender{
+    margin:0px 0px 15px 0px;
+    padding:0px 5px 0px 5px;
+    font-family: inter_medium;
+    font-size:20px;
+}
+
+.formselect{
+    padding:10px 5px 10px 5px;
+    border:2px solid black;
+    border-radius:10px;
+}
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+@media (max-width:992px){
+    .divLogoCorner{
+        display: block;
+    }
+
+    .logomenu{
+        display:none;
+    }
+}

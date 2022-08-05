@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
     "body-parser": "^1.20.0",
+    "bootstrap": "^5.1.3",
     "compression": "^1.7.4",
     "express": "^4.18.1",
     "http": "^0.0.1-security",
@@ -51,6 +52,10 @@
   "engines": {
     "node": "16.14.0",
     "npm": "8.3.1"
+  },
+
+  "//this is when error occured": "autoprefixer: Replace color-adjust to print-color-adjust. The color-adjust shorthand is currently deprecated.",
+  "overrides": {
+    "autoprefixer": "10.4.5"
   }
-  
 }

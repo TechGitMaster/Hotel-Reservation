@@ -1,0 +1,118 @@
+
+/* ________________________Font from ttf extension_________________________ */
+
+@font-face {
+    font-family: inter_regular;
+    src: url(/assets/Inter-Regular.ttf);
+}
+
+@font-face {
+    font-family: inter_medium;
+    src: url(/assets/Inter-Medium.ttf);
+}
+
+@font-face {
+    font-family: inter_semibold;
+    src: url(/assets/Inter-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: inter_bold;
+    src: url(/assets/Inter-Bold.ttf);
+}
+
+
+@font-face {
+    font-family: inria_serif_bold;
+    src: url(/assets/InriaSerif-Bold.ttf);
+}
+
+
+/*__________________________________________________________________________*/
+
+
+.header{
+    background:url('/assets/image/463342.png') no-repeat center bottom fixed;
+    background-size:cover;
+    min-height:550px;
+    padding:0px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.titlediv{
+    background:rgba(26, 29, 29, 0.36);
+    min-height:150px;
+    padding:20px;
+}
+
+.titletxt{
+    font-family: inria_serif_bold;
+    font-size:40px;
+    text-align: center;
+    color:#F6F6F6;
+    margin:0px;
+}
+
+.titleinfo{
+    width:40%;
+    font-family: inter_medium;
+    font-size:20px;
+    color:#DAD6D6;
+    text-align: center;
+    margin:0px;
+}
+
+.roomstxt{
+    font-family: inria_serif_bold;
+    font-size: 55px;
+    color:#493B3B;
+    margin:0%;
+}
+
+.roomsinfo{
+    width:50%;
+    font-family: inter_regular;
+    font-size: 18px;
+    color:#493B3B;
+    margin:0%;
+}
+
+.inforooms{
+    display: flex;
+    align-items: center;
+}
+
+
+.margintxt{
+    margin:0%;
+}
+
+.titleroom{
+    font-family: inter_regular;
+    font-size: 33px;
+    color: black;
+}
+
+.titleroomtxt{
+    font-family: inter_regular;
+    font-size: 16px;
+    color: #2E3137;
+}
+
+.inforooms{
+    font-family: inter_regular;
+    font-size: 16px;
+    color: #2E3137;
+    margin-top:3px;
+}
+
+.btnsreserveAppointment{
+    border:1px solid #2E3137;
+    background:none;
+    font-family: inter_regular;
+    font-size: 18px;
+    color: #2E3137;
+    padding:10px 30px 10px 30px;
+    margin-top:15px;
+}
