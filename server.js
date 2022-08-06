@@ -3,7 +3,7 @@ const express = require('express');
 const body = require('body-parser');
 const connected_db = require('./nodejs/databases/database_connect');
 const mongoose = require('mongoose');
-const helmet = require('helmet');
+
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(body.json());
 app.use('/', require('./server_controller'));
 
 //Protection____________________________________________
-app.use(helmet());
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Origin-Allow-Origin', '*');
