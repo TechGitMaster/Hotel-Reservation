@@ -4,7 +4,6 @@ const body = require('body-parser');
 const connected_db = require('./nodejs/databases/database_connect');
 const mongoose = require('mongoose');
 
-
 const app = express();
 
 app.use(body.urlencoded({extended: true}));

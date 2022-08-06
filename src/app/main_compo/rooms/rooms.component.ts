@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { dataRooms } from './objects';
+import { dataRooms } from '../../objects';
 
 @Component({
   selector: 'app-rooms',

@@ -1,10 +1,13 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';  
+import { Observable, of } from 'rxjs';  
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 import { MainServiceService } from './main_compo/main-service.service';
+import { register, login } from './objects';
+
 
 @Component({
   selector: 'app-root',
@@ -45,7 +48,8 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   day_year_month_selected!: Array<string>;
 
-  constructor(public http: HttpClient, public router: Router, private formBuilder: FormBuilder, private service: MainServiceService){} 
+  constructor(public http: HttpClient, private router: Router, private cookieservice: CookieService,
+    private formBuilder: FormBuilder, private service: MainServiceService){} 
 
   ngOnInit(): void {
     this.condition_menu = false;
@@ -173,16 +177,81 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   //Login button_______________________________________________________
   loginbttn(): void{
-    this.subs = this.service.sample().subscribe((data: any) => {
-     console.log('asdsad'+data); 
-    });
+    const obj_data = {
+      username: this.formGroup_login.value.username,
+      password: this.formGroup_login.value.password,
+    } as login;
+
+    if(obj_data.username.length > 0 && obj_data.password.length > 0){
+      this.subs = this.service.login(obj_data).subscribe((result) => {
+        console.log(result);
+        this.cookieservice.set('token', result.tokens);
+      });
+    }else{
+      if(obj_data.username.length == 0){
+        console.log("error username");
+      }else{
+        console.log("error password");
+      }
+    }
   }
 
   //SingUp button______________________________________________________
   FuncsignUp(): void{
-    var gender = <HTMLSelectElement> document.querySelector('.formselect');
-    console.log(gender.value);
-    console.log(this.formGroup_signup.value);
+    const gender = <HTMLSelectElement> document.querySelector('.formselect');
+    const obj_data = {
+      firstname: this.formGroup_signup.value.firstname,
+      lastname: this.formGroup_signup.value.lastname,
+      username: this.formGroup_signup.value.username,
+      contact_number: this.formGroup_signup.value.contactnumber,
+      email: this.formGroup_signup.value.email,
+      password: this.formGroup_signup.value.password,
+      gender: gender.value
+    } as register;
+    
+    //Checking all input field if empty or not_____________________________________________________
+    if(this.checkingField(obj_data)){
+        //Checking if username is already exist to database______________________________________________________
+        this.subs = this.service.checkingEmail(obj_data.username).subscribe((result) => {
+          this.subs.unsubscribe();
+          if(result.response === 'no-data'){
+    
+            //Checking if contact_number is validate________________________________________________________
+            if((/^\d+$/).test(obj_data.contact_number)){
+    
+                //Checking if email is validate________________________________________________________
+                if((/[@]/).test(obj_data.email) && (/[.]/).test(obj_data.email)){
+    
+                  //Checking the password strength________________________________________________________
+                  if(this.passStrength(obj_data.password)){
+    
+                    //Checking the Gender if validate________________________________________________________
+                    if(obj_data.gender === 'Male' || obj_data.gender === 'Female' || obj_data.gender === 'Prefer not to say'){
+    
+                      //Finally creating account of user_____________________________________________________
+                      this.subs = this.service.register(obj_data).subscribe((result) => {
+    
+                        this.subs.unsubscribe();
+                        console.log(result);
+    
+                      }, (err) => console.log(err));
+    
+                    }else{
+                      console.log('error Gender');
+                    }
+                  }
+                }else{
+                  console.log('error email');
+                }
+            }else{
+              console.log('error contact number');
+            }
+          }else{
+            console.log('error username');
+          }
+        });
+    }
+
   }
 
   //Set Appointment button______________________________________________
@@ -355,5 +424,82 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.generateCalendar(this.curr_month.value, this.curr_year.value)
     }
   }
+ 
+
+  //Checking all input field if empty______________________________________________________________________________
+  checkingField(data: register): boolean{
+    let condition = true;
+    if(data.firstname !== '' && data.firstname !== ' '){
+
+      if(data.lastname !== '' && data.lastname !== ' '){
+
+        if(data.username !== '' && data.lastname !== ' '){
+          if(data.contact_number !== '' && data.contact_number !== ' '){
+
+            if(data.email !== '' && data.email !== ' '){
   
+              if(data.password === '' || data.password === ' '){
+                console.log('error password');
+                condition = false;
+              }
+            }else{
+              console.log('error email');
+              condition = false;
+            }
+          }else{
+            console.log('error Contact_number');
+            condition = false;
+          }
+        }else{
+          console.log('error username');
+          condition = false;
+        }
+      }else{
+        console.log('error lastname');
+        condition = false;
+      }
+    }else{
+      console.log('error firstname');
+      condition = false;
+    }
+
+    return condition;
+  }
+
+
+  //Validating password strength______________________________________________________________________________
+  passStrength(password: string): boolean{
+    var condition = true;
+    if(password.length >= 8){
+      var regex = /[a-z]/g;
+      if(regex.test(password)){
+        regex = /[A-Z]/g;
+        if(regex.test(password)){
+          regex = /[0-9]/g;
+          if(regex.test(password)){
+            regex =  /\W/g;
+            if(!regex.test(password)){
+              condition = false;
+          //    this.handleStringError = "!The password must contain special characters";
+            }
+          }else{
+            condition = false;
+         //   this.handleStringError = "!The password must contain numeric values";
+          }
+        }else{
+          condition = false;
+        //  this.handleStringError = "!The password must contain uppercase characters";
+        }
+      }else{
+        condition = false;
+      //  this.handleStringError = "!The password must contain lowercase characters";
+      }
+    }else{
+      condition = false;
+    //  this.handleStringError = "!Length must be greater than 8 or equal to 8";
+    }
+
+
+    return condition;
+  }
 }
