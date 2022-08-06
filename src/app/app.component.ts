@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { MainServiceService } from './main_compo/main-service.service';
 
 @Component({
   selector: 'app-root',
@@ -44,7 +45,7 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   day_year_month_selected!: Array<string>;
 
-  constructor(public http: HttpClient, public router: Router, private formBuilder: FormBuilder){} 
+  constructor(public http: HttpClient, public router: Router, private formBuilder: FormBuilder, private service: MainServiceService){} 
 
   ngOnInit(): void {
     this.condition_menu = false;
@@ -172,8 +173,9 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   //Login button_______________________________________________________
   loginbttn(): void{
-    this.router.navigate(['/account/user']);
-    console.log(this.formGroup_login.value);
+    this.subs = this.service.sample().subscribe((data: any) => {
+     console.log('asdsad'+data); 
+    });
   }
 
   //SingUp button______________________________________________________
