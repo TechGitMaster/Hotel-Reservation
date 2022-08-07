@@ -16,7 +16,7 @@ var data_login = database_column("login_accounts");
 //REGISTRATION___________________________________________________________________
 router.post('/registration', async (req, res) => {
 
-    var { firstname, lastname, username, contact_number, email, password, gender } = req.body.data;
+    var { firstname, lastname, contact_number, email, password, gender } = req.body.data;
     
     var passwordcryptoJS = await cryptojs.AES.encrypt(password, process.env.PASSWORD_SECRET_KEY);
     var passwordHash = await bcryptjs.hash(password, 10);
@@ -25,7 +25,6 @@ router.post('/registration', async (req, res) => {
     new data_registration({  
         firstname: firstname,
         lastname: lastname,
-        username: username,
         contactnumber: contact_number,
         email: email,
         password: passwordHash,
@@ -35,7 +34,7 @@ router.post('/registration', async (req, res) => {
     .then(() => {
 
         new data_login({
-            username: username,
+            email: email,
             password: passwordHash
         }).save().then(() => {
 
@@ -52,9 +51,9 @@ router.post('/registration', async (req, res) => {
 //LOGIN___________________________________________________________________
 router.post('/login', async (req, res) => {
 
-    var { username, password } = req.body.data;
+    var { email, password } = req.body.data;
 
-    var data = await data_login.findOne({ username: username });
+    var data = await data_login.findOne({ email: email });
     if(data == null){
         res.json({token: '', response: 'no-data'})
     }else{
@@ -62,7 +61,7 @@ router.post('/login', async (req, res) => {
             if(!ress) {
                 res.json({token: '', response: 'wrong-password'})
             }else{
-                var token = jwt.sign( { username: data.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
+                var token = jwt.sign( { email: data.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
                 res.json({tokens: token, response: 'success'});
             }
         });
@@ -71,8 +70,8 @@ router.post('/login', async (req, res) => {
 });
 
 //checking username if already exist_____________________________________________________
-router.get('/usernameCheck', async (req, res) => {
-    var data = await data_login.findOne({ username: req.query.username });
+router.get('/emailCheck', async (req, res) => {
+    var data = await data_login.findOne({ email: req.query.email });
     if(data == null){
         res.json({ response: 'no-data' });
     }else{
@@ -83,7 +82,7 @@ router.get('/usernameCheck', async (req, res) => {
 
 //checking token_______________________________________________________________________
 router.get('/checking_token_refresh', middleware, async (req, res) => {
-    var data = await data_login.findOne({ username: req.token.username });
+    var data = await data_login.findOne({ username: req.token.email });
     
     if(data != null){
         res.json({ response: 'success' });

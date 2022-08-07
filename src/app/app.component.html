@@ -111,20 +111,36 @@
 
         <!--___Fill up___-->
         <div class="divFill">
-            <div class="divGoogle">
-                <div><img src="/assets/icon/google.png" class="img-fluid" style="max-height:25px;margin-right:10px;" /></div>
+            <div class="divGoogle" (click)="signInWithGoogle()">
+                <div style="display: flex;align-items: center;"><img src="/assets/icon/google.png" class="img-fluid" style="max-height:25px;margin-right:10px;" /></div>
                 <div><p class="paGoogle">Continue with Google</p></div>
             </div>
 
-            <p class="paOr">or</p>
+            <div style="display:flex;">
+                <div style="width:55%;display: flex;justify-content: center;align-items: center;">
+                    <div style="width:90%;height:1px;border:1px solid rgb(117, 112, 112);"></div>
+                </div>
+                <div style="width:10%;">
+                    <p class="paOr">or</p>
+                </div>
+                <div style="width:55%;display: flex;justify-content: center;align-items: center;">
+                    <div style="width:90%;height:1px;border:1px solid rgb(117, 112, 112);"></div>
+                </div>
+            </div>
             
             <form [formGroup]="formGroup_login">
                 <div>
-                    <input type="text" formControlName="username" placeholder="Username" class="form-control forminputLog" />
+                    <input type="text" formControlName="email" placeholder="Email" class="form-control forminputLog" />
+                    <div *ngIf="errorLoginArr[0][1]">
+                        <span class="paError">{{errorLoginArr[0][0]}}</span>
+                    </div>
                 </div>
     
                 <div style="margin-top:15px;">
                     <input type="password" formControlName="password" placeholder="Password" class="form-control forminputLog" />
+                    <div *ngIf="errorLoginArr[1][1]">
+                        <span class="paError">{{errorLoginArr[1][0]}}</span>
+                    </div>
                 </div>
             </form>
 
@@ -154,24 +170,35 @@
                 <div class="row">
                     <div class="col-6 padCol6">
                         <input type="text" formControlName="firstname" placeholder="First name" class="form-control forminputReg" />
+                        <div *ngIf="errorSignupArr[0][1]">
+                            <span class="paError">{{errorSignupArr[0][0]}}</span>
+                        </div>
                     </div>
                     <div class="col-6 padCol6">
                         <input type="text" formControlName="lastname" placeholder="Last name" class="form-control forminputReg" />
-                    </div>
-    
-                    <div class="col-12 margCol12">
-                        <input type="text" formControlName="username" placeholder="Username" class="form-control forminputReg" />
+                        <div *ngIf="errorSignupArr[1][1]">
+                            <span class="paError">{{errorSignupArr[1][0]}}</span>
+                        </div>
                     </div>
     
                     <div class="col-12 margCol12">
                         <input type="text" formControlName="contactnumber" placeholder="Contact number" class="form-control forminputReg" />
+                        <div *ngIf="errorSignupArr[2][1]">
+                            <span class="paError">{{errorSignupArr[2][0]}}</span>
+                        </div>
                     </div>
     
                     <div class="col-6 padCol6">
                         <input type="text" formControlName="email" placeholder="Email" class="form-control forminputReg" />
+                        <div *ngIf="errorSignupArr[3][1]">
+                            <span class="paError">{{errorSignupArr[3][0]}}</span>
+                        </div>
                     </div>
                     <div class="col-6 padCol6">
                         <input type="password" formControlName="password" placeholder="Password" class="form-control forminputReg" />
+                        <div *ngIf="errorSignupArr[4][1]">
+                            <span class="paError">{{errorSignupArr[4][0]}}</span>
+                        </div>
                     </div>
     
                     <p class="paGender">Gender:</p>
@@ -183,6 +210,9 @@
                             <option value="Female">Female</option>
                             <option value="Prefer not to say">Prefer not to say</option>
                         </select>
+                        <div *ngIf="errorSignupArr[5][1]">
+                            <span class="paError">{{errorSignupArr[5][0]}}</span>
+                        </div>
                     </div>
     
                     <button class="btn btn-primary signUpbttn" (click)="FuncsignUp()">Sign up</button>

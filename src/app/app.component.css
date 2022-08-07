@@ -565,6 +565,12 @@
     border-radius:10px;
 }
 
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
+}
+
 /* ________________________@MEDIA DESIGN_________________________ */
 
 @media (max-width:992px){

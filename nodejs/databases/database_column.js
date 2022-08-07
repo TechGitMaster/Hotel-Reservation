@@ -12,7 +12,6 @@ module.exports = (condition) => {
             column = new Schema({
                 firstname: { type: String, required: true },
                 lastname: { type: String, required: true },
-                username: { type: String, required: true },
                 contactnumber: { type: String, required: true },
                 email: { type: String, required: true },
                 password: { type: String, required: true },
@@ -24,7 +23,7 @@ module.exports = (condition) => {
         case "login_accounts":
 
             column = new Schema({
-                username: { type: String, required: true },
+                email: { type: String, required: true },
                 password: { type: String, required: true }
             }, { timestamps: true });
             

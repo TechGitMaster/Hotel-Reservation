@@ -14,6 +14,12 @@ import { MainServiceService } from './main_compo/main-service.service';
 import { AuRouteModule } from './a_users/au-route/au-route.module';
 import { Interceptor } from './INTERCEPTOR/Interceptor';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+
+
+import * as firebase from 'firebase/app';
+firebase.initializeApp(environment.firebase);
 
 @NgModule({
   declarations: [
@@ -29,7 +35,8 @@ import { CookieService } from 'ngx-cookie-service';
     AppRoutingModule,
     HttpClientModule,
     AuRouteModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    provideAuth(() => getAuth())
   ],
   bootstrap: [AppComponent],
   providers: [MainServiceService, CookieService, { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true}]

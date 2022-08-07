@@ -11,14 +11,13 @@ export interface dataRooms{
 }
 
 export interface login{
-    username: string,
+    email: string,
     password: string
 }
 
 export interface register{
     firstname: string,
     lastname: string,
-    username: string,
     contact_number: string,
     email: string,
     password: string,

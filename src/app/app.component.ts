@@ -9,6 +9,7 @@ import { MainServiceService } from './main_compo/main-service.service';
 import { register, login } from './objects';
 
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -28,6 +29,8 @@ export class AppComponent implements OnInit, AfterViewInit{
   formGroup_signup!: FormGroup;
   formGroup_login!: FormGroup;
   formGroup_setAppointment!: FormGroup;
+  errorLoginArr!: Array<Array<any>>;
+  errorSignupArr!: Array<Array<any>>;
 
   month_names: Array<string> = new Array<string>('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 
   'December');
@@ -85,17 +88,20 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.month_names_final.push(array);
     }
 
+    //Error login_______________________________________________
+    this.errorLoginArr = new Array<Array<any>>(['email', false], ['password', false]);
+    this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
+    ['email', false], ['password', false], ['gender', false]);
 
     //Forms_____________________________________________________
     this.formGroup_login = this.formBuilder.group({
-      username: [''],
+      email: [''],
       password: ['']
     });
 
     this.formGroup_signup = this.formBuilder.group({
       firstname:[''],
       lastname:[''],
-      username:[''],
       contactnumber:[''],
       email:[''],
       password:['']
@@ -175,23 +181,47 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
 
+  //Sign in with Google_______________________________________________
+  signInWithGoogle(){
+    this.service.googleService();
+  }
+
   //Login button_______________________________________________________
   loginbttn(): void{
     const obj_data = {
-      username: this.formGroup_login.value.username,
+      email: this.formGroup_login.value.email,
       password: this.formGroup_login.value.password,
     } as login;
 
-    if(obj_data.username.length > 0 && obj_data.password.length > 0){
+    this.errorLoginArr[0][1] = false;
+    this.errorLoginArr[1][1] = false;
+    if(obj_data.email.length > 0 && obj_data.password.length > 0){
       this.subs = this.service.login(obj_data).subscribe((result) => {
-        console.log(result);
-        this.cookieservice.set('token', result.tokens);
+        this.subs.unsubscribe();
+        if(result.response !== 'no-data' && result.response !== 'wrong-password'){
+          this.cookieservice.set('token', result.tokens);
+        }else if(result.response === 'wrong-password'){
+          //wrong password___________________
+          this.errorLoginArr[1][0] = "!Wrong password please try again.";
+          this.errorLoginArr[1][1] = true;
+        }else{
+          //no data_________________________
+          this.errorLoginArr[0][0] = "!Please check your email and try again.";
+          this.errorLoginArr[1][0] = "!Please check your password and try again.";
+          this.errorLoginArr[0][1] = true;
+          this.errorLoginArr[1][1] = true;
+        }
       });
     }else{
-      if(obj_data.username.length == 0){
-        console.log("error username");
+      this.errorLoginArr[0][0] = "!Please Fill up the email input field.";
+      this.errorLoginArr[1][0] = "!Please Fill up the password input field.";
+      if(obj_data.email.length == 0 && obj_data.password.length == 0){
+        this.errorLoginArr[0][1] = true;
+        this.errorLoginArr[1][1] = true;
+      }else if(obj_data.email.length == 0){
+        this.errorLoginArr[0][1] = true;
       }else{
-        console.log("error password");
+        this.errorLoginArr[1][1] = true;
       }
     }
   }
@@ -202,54 +232,67 @@ export class AppComponent implements OnInit, AfterViewInit{
     const obj_data = {
       firstname: this.formGroup_signup.value.firstname,
       lastname: this.formGroup_signup.value.lastname,
-      username: this.formGroup_signup.value.username,
       contact_number: this.formGroup_signup.value.contactnumber,
       email: this.formGroup_signup.value.email,
       password: this.formGroup_signup.value.password,
       gender: gender.value
     } as register;
     
-    //Checking all input field if empty or not_____________________________________________________
-    if(this.checkingField(obj_data)){
-        //Checking if username is already exist to database______________________________________________________
-        this.subs = this.service.checkingEmail(obj_data.username).subscribe((result) => {
-          this.subs.unsubscribe();
-          if(result.response === 'no-data'){
-    
-            //Checking if contact_number is validate________________________________________________________
-            if((/^\d+$/).test(obj_data.contact_number)){
-    
-                //Checking if email is validate________________________________________________________
-                if((/[@]/).test(obj_data.email) && (/[.]/).test(obj_data.email)){
-    
+    this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
+    ['email', false], ['password', false], ['gender', false]);
+
+      //Checking all input field if empty or not_____________________________________________________
+      if(this.checkingField(obj_data)){
+
+          //Checking if contact_number is validate________________________________________________________
+          if((/^\d+$/).test(obj_data.contact_number)){
+        
+            //Checking if email is validate________________________________________________________
+            if((/[@]/).test(obj_data.email) && (/[.]/).test(obj_data.email)){
+
+              //Checking if email is already exist to database______________________________________________________
+              this.subs = this.service.checkingEmail(obj_data.email).subscribe((result) => {
+                this.subs.unsubscribe();
+                if(result.response === 'no-data'){
+                  
                   //Checking the password strength________________________________________________________
                   if(this.passStrength(obj_data.password)){
-    
+
                     //Checking the Gender if validate________________________________________________________
                     if(obj_data.gender === 'Male' || obj_data.gender === 'Female' || obj_data.gender === 'Prefer not to say'){
-    
+
                       //Finally creating account of user_____________________________________________________
                       this.subs = this.service.register(obj_data).subscribe((result) => {
-    
+
                         this.subs.unsubscribe();
                         console.log(result);
-    
+
                       }, (err) => console.log(err));
-    
+
                     }else{
                       console.log('error Gender');
+                      this.errorSignupArr[5][0] = "!Please select your gender.";
+                      this.errorSignupArr[5][1] = true;
                     }
                   }
+
                 }else{
-                  console.log('error email');
+                  console.log('email already exist');
+                  this.errorSignupArr[3][0] = "!This Email is already exist.";
+                  this.errorSignupArr[3][1] = true;
                 }
+              });
             }else{
-              console.log('error contact number');
+              console.log('error email');
+              this.errorSignupArr[3][0] = "!this Email is already taken.";
+              this.errorSignupArr[3][1] = true;
             }
-          }else{
-            console.log('error username');
-          }
-        });
+        }else{
+          console.log('error contact number');
+          this.errorSignupArr[2][0] = "!Please check your contact-number";
+          this.errorSignupArr[2][1] = true;
+        }
+
     }
 
   }
@@ -433,33 +476,38 @@ export class AppComponent implements OnInit, AfterViewInit{
 
       if(data.lastname !== '' && data.lastname !== ' '){
 
-        if(data.username !== '' && data.lastname !== ' '){
-          if(data.contact_number !== '' && data.contact_number !== ' '){
+        if(data.contact_number !== '' && data.contact_number !== ' '){
 
-            if(data.email !== '' && data.email !== ' '){
-  
-              if(data.password === '' || data.password === ' '){
-                console.log('error password');
-                condition = false;
-              }
-            }else{
-              console.log('error email');
+          if(data.email !== '' && data.email !== ' '){
+
+            if(data.password === '' || data.password === ' '){
+              console.log('error password');
+              this.errorSignupArr[4][0] = "!Please Fill up the password input field.";
+              this.errorSignupArr[4][1] = true;
               condition = false;
             }
           }else{
-            console.log('error Contact_number');
+            console.log('error email');
+            this.errorSignupArr[3][0] = "!Please Fill up the email input field.";
+            this.errorSignupArr[3][1] = true;
             condition = false;
           }
         }else{
-          console.log('error username');
+          console.log('error Contact_number');
+          this.errorSignupArr[2][0] = "!Please Fill up the contact-number input field.";
+          this.errorSignupArr[2][1] = true;
           condition = false;
         }
       }else{
         console.log('error lastname');
+        this.errorSignupArr[1][0] = "!Please Fill up the lastname input field.";
+        this.errorSignupArr[1][1] = true;
         condition = false;
       }
     }else{
       console.log('error firstname');
+      this.errorSignupArr[0][0] = "!Please Fill up the firstname input field.";
+      this.errorSignupArr[0][1] = true;
       condition = false;
     }
 
@@ -470,6 +518,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   //Validating password strength______________________________________________________________________________
   passStrength(password: string): boolean{
     var condition = true;
+    var txtErr = "";
     if(password.length >= 8){
       var regex = /[a-z]/g;
       if(regex.test(password)){
@@ -480,25 +529,27 @@ export class AppComponent implements OnInit, AfterViewInit{
             regex =  /\W/g;
             if(!regex.test(password)){
               condition = false;
-          //    this.handleStringError = "!The password must contain special characters";
+              txtErr = "!The password must contain special characters";
             }
           }else{
             condition = false;
-         //   this.handleStringError = "!The password must contain numeric values";
+            txtErr = "!The password must contain numeric values";
           }
         }else{
           condition = false;
-        //  this.handleStringError = "!The password must contain uppercase characters";
+          txtErr = "!The password must contain uppercase characters";
         }
       }else{
         condition = false;
-      //  this.handleStringError = "!The password must contain lowercase characters";
+        txtErr = "!The password must contain lowercase characters";
       }
     }else{
       condition = false;
-    //  this.handleStringError = "!Length must be greater than 8 or equal to 8";
+      txtErr = "!Length must be greater than 8 or equal to 8";
     }
 
+    this.errorSignupArr[4][0] = txtErr;
+    this.errorSignupArr[4][1] = condition ? false: true;
 
     return condition;
   }
