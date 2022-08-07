@@ -36,6 +36,7 @@ export class MainServiceService {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
+        console.log(error);
       });
   } 
 
