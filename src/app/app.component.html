@@ -21,7 +21,7 @@
 
                             <!--______________________Condition login and sign in______________________-->
                             <div *ngIf="!condition_login">
-                                <button class="btn btn-primary btn_signin" (click)="funcSignIn(true)">Sign in</button>
+                                <button class="btn btn-primary btn_signin" (click)="funcSignIn('true')">Sign in</button>
                             </div>
     
                             <div *ngIf="condition_login" style="display: flex;align-items: center;position:relative;left:-20px;">
@@ -85,7 +85,7 @@
 
                     <div *ngIf="!condition_login">
                         <div class="divborder1">
-                            <div class="navclickable" (click)="funcSignIn(true)"><span style="cursor: pointer;">Sign in</span></div>
+                            <div class="navclickable" (click)="funcSignIn('true')"><span style="cursor: pointer;">Sign in</span></div>
                         </div>
                     </div>
                 </div>
@@ -102,11 +102,11 @@
 
 <!--______________________Login Singup______________________-->
 
-<div class="container-fluid containerloginSignup" *ngIf="condition_clicked_signup"  >
+<div class="container-fluid containerloginSignup" *ngIf="condition_clicked_signup === 'true'"  >
 
     <!--________LOG IN__________-->
-    <div *ngIf="!condition_login_signup_clicked" class="logindiv">
-        <p class="paX" (click)="funcSignIn(false)">X</p>
+    <div *ngIf="condition_login_signup_clicked === 'login'" class="logindiv">
+        <p class="paX" (click)="funcSignIn('false')">X</p>
         <p class="paLoginSignup">Login</p>
 
         <!--___Fill up___-->
@@ -149,19 +149,101 @@
 
         <!--___Forgot and Create one___-->
         <div style="margin-top:20px;">
-            <p class="paForgot">Forgot password?</p>
+            <p class="paForgot" (click)="createOneForgotLogin('forgotpassword')">Forgot password?</p>
+
             <p style="text-align: center;margin:10px 0px 10px 0px;"><span class="padontHave">Don't have one? </span> 
-                <span class="paCreate" (click)="createOne()">Create one</span></p>
+                <span class="paCreate" (click)="createOneForgotLogin('sign-up')">Create one</span></p>
         </div>
     </div>
 
 
 
+    <!--________FORGOT PASSWORD__________-->
+    <div *ngIf="condition_login_signup_clicked === 'forgotpassword'" class="forgotDiv">
+
+        <p class="paX" (click)="funcSignIn('false')">X</p>
+        <p class="paForgotPass">Forgot Password</p>
+
+        <div style="padding:0px 20px 10px 20px;">
+            <p class="paNote">Note:</p>
+            <ul class="ulBu">
+                <li>Get OTP code to procced.</li>
+                <li>You can see the code through your email.</li>
+            </ul>
+
+            <!--____________________GET OTP EMAIL______________________-->
+            <div [formGroup]="formGroup_forgotPassword">
+                <div class="row">
+                    <div class="col-9" style="margin:0%;">
+                        <input type="text" formControlName="email" placeholder="Enter your email" class="form-control forminputReg" />
+                        <div *ngIf="errArrForgotPassword[0][1]">
+                            <span class="paError">{{errArrForgotPassword[0][0]}}</span>
+                        </div>
+                    </div>
+                    <div class="col-3" style="margin:0%;padding:0px 10px 0px 0px;">
+                        <button class="btn btn-primary btn-getOTP" (click)="sendOTP()">{{sendOTTxt}}</button>
+                    </div>
+                </div>
+    
+                <div *ngIf="condition_OTP">
+                    <div style="width:100%;border:2px solid #6D6871;margin:15px 0px 15px 0px;border-radius:10px;"></div>
+    
+                    <!--____________________Validate CODE______________________-->
+                    <div class="row">
+                        <div class="col-9" style="margin:0%;">
+                            <input type="text" formControlName="verify" placeholder="Enter the code" class="form-control forminputReg" />
+                                <div *ngIf="errArrForgotPassword[1][1]">
+                                    <span class="paError">{{errArrForgotPassword[1][0]}}</span>
+                                </div>
+                        </div>
+                        <div class="col-3" style="margin:0%;padding:0px 10px 0px 0px;">
+                            <button class="btn btn-primary btn-getOTP" (click)="verfiyOTP()">{{verifyTxt}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--________CHANGE PASSWORD__________-->
+    <div *ngIf="condition_login_signup_clicked === 'changePassword'" class="divchangePass">
+        <p class="paX" (click)="funcSignIn('false')">X</p>
+        <p class="paForgotPass">Change Password</p>
+
+        <div [formGroup]="formGroup_newPassword"  style="padding:0px 20px 10px 20px;margin-top:30px;">
+            <div style="margin-bottom:20px;">
+                <input type="password" formControlName="newPassword" placeholder="Enter your new password" class="form-control forminputReg" />
+                <div *ngIf="errArrForgotPassword[0][1]">
+                    <span class="paError">{{errArrForgotPassword[0][0]}}</span>
+                </div>
+            </div>
+            <div style="margin-bottom:10px;">
+                <input type="password" formControlName="verifyPassword" placeholder="Verify your new password" class="form-control forminputReg" />
+                <div *ngIf="errArrForgotPassword[1][1]">
+                    <span class="paError">{{errArrForgotPassword[1][0]}}</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary passwordChange" (click)="changePassword()">{{changingTXT}}</button>
+        </div>
+    </div>
+
+
+
+    <!--________SUCCESS CHANGE PASSWORD________-->
+    <div *ngIf="condition_login_signup_clicked === 'successChange'" class="divSuccesschangePass">
+        <div>
+            <p class="paSuccessChange">Successfully changing your password!</p>
+            <button class="btn btn-primary passwordChange" (click)="successChange()">Close</button>
+        </div>
+    </div>
+
 
     
-    <!--________Sign Up__________-->
-    <div *ngIf="condition_login_signup_clicked" class="signUpdiv">
-        <p class="paX" (click)="funcSignIn(false)">X</p>
+    <!--________SIGN UP__________-->
+    <div *ngIf="condition_login_signup_clicked === 'sign-up'" class="signUpdiv">
+        <p class="paX" (click)="funcSignIn('false')">X</p>
         <p class="paLoginSignup">Sign up</p>
 
         <!--___Fill up___-->
@@ -201,7 +283,7 @@
                         </div>
                     </div>
     
-                    <p class="paGender">Gender:</p>
+                    <p class="paGenderAccount">Gender:</p>
     
                     <div class="col-12 margCol12">
                         <select class="form-select formselect">
@@ -214,7 +296,35 @@
                             <span class="paError">{{errorSignupArr[5][0]}}</span>
                         </div>
                     </div>
-    
+
+
+                    <p class="paGenderAccount">Type of account:</p>
+                    
+                    <div class="col-12 margCol12" style="display:flex;">
+                        <div style="display:flex;align-items: center;margin-right:10px;">
+                            <input class="form-check-input" (click)="adminNotAdmin(false)" style="padding:0%;margin:3px 5px 0px 0px;" 
+                                type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <span class="form-check-label" >
+                                Not-Admin
+                            </span>
+                        </div>
+
+                        <div style="display:flex;align-items: center;">
+                            <input class="form-check-input" (click)="adminNotAdmin(true)" style="padding:0%;margin:3px 5px 0px 0px;" 
+                                type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <span class="form-check-label" >
+                                Admin
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 margCol12" *ngIf="condition_adminNotAdmin">
+                        <input type="password" formControlName="adminPassword" placeholder="Enter the current password of admin" class="form-control forminputReg" />
+                        <div *ngIf="errorSignupArr[6][1]">
+                            <span class="paError">{{errorSignupArr[6][0]}}</span>
+                        </div>
+                    </div>
+
                     <button class="btn btn-primary signUpbttn" (click)="FuncsignUp()">Sign up</button>
                 </div>
             </form>

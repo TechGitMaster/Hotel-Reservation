@@ -23,3 +23,9 @@ export interface register{
     password: string,
     gender: string
 }
+
+export interface googleDataUser{
+    fullName: string,
+    email: string,
+    response: string
+}

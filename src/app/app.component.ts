@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { MainServiceService } from './main_compo/main-service.service';
-import { register, login } from './objects';
+import { register, login, googleDataUser } from './objects';
 
 
 
@@ -18,8 +18,8 @@ import { register, login } from './objects';
 export class AppComponent implements OnInit, AfterViewInit{
   subs!: Subscription;
   condition_login!: boolean;
-  condition_login_signup_clicked!: boolean;
-  condition_clicked_signup!: boolean;
+  condition_login_signup_clicked!: string;
+  condition_clicked_signup!: string;
   condition_menu!: boolean;
   clicked_handle!: string;
   notification_icon!: string;
@@ -29,8 +29,15 @@ export class AppComponent implements OnInit, AfterViewInit{
   formGroup_signup!: FormGroup;
   formGroup_login!: FormGroup;
   formGroup_setAppointment!: FormGroup;
+  formGroup_forgotPassword!: FormGroup;
+  formGroup_newPassword!: FormGroup;
   errorLoginArr!: Array<Array<any>>;
   errorSignupArr!: Array<Array<any>>;
+  condition_signin!: boolean;
+  condition_adminNotAdmin!: boolean;
+  condition_OTP!: boolean;
+  handle_email_OTP!: string;
+  errArrForgotPassword!: Array<Array<any>>;
 
   month_names: Array<string> = new Array<string>('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 
   'December');
@@ -57,12 +64,16 @@ export class AppComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.condition_menu = false;
     this.condition_login = false;
-    this.condition_login_signup_clicked = false;
-    this.condition_clicked_signup = false;
+    this.condition_login_signup_clicked = 'login';
+    this.condition_clicked_signup = 'false';
+    this.condition_signin = false;
+    this.condition_adminNotAdmin = false;
+    this.condition_OTP = false;
+    this.handle_email_OTP = '';
     this.clicked_handle = 'home';
     this.notification_icon = "assets/icon/bell.png";
     this.menubar_icon = "/assets/icon/menu.png";
-
+    
 
     this.count_0day = 0;
     this.day_year_month_selected = new Array<string>("", "", "");
@@ -91,7 +102,10 @@ export class AppComponent implements OnInit, AfterViewInit{
     //Error login_______________________________________________
     this.errorLoginArr = new Array<Array<any>>(['email', false], ['password', false]);
     this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
-    ['email', false], ['password', false], ['gender', false]);
+    ['email', false], ['password', false], ['gender', false], ['admin password', false]);
+
+    //Error forgot password_________________________________________
+    this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
 
     //Forms_____________________________________________________
     this.formGroup_login = this.formBuilder.group({
@@ -104,7 +118,8 @@ export class AppComponent implements OnInit, AfterViewInit{
       lastname:[''],
       contactnumber:[''],
       email:[''],
-      password:['']
+      password:[''],
+      adminPassword: ['']
     });
 
     this.formGroup_setAppointment = this.formBuilder.group({
@@ -115,6 +130,16 @@ export class AppComponent implements OnInit, AfterViewInit{
       letusknown: [''],
       time: [''],
       amPm: [''],
+    });
+
+    this.formGroup_forgotPassword = this.formBuilder.group({
+      email: [''],
+      verify: ['']
+    });
+
+    this.formGroup_newPassword = this.formBuilder.group({
+      newPassword: [''],
+      verifyPassword: ['']
     });
   }
 
@@ -169,22 +194,23 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   //Sign_in button_____________________________________________________
-  funcSignIn(condition: boolean): void{
+  funcSignIn(condition: string): void{
     this.condition_clicked_signup = condition;
-    this.condition_login_signup_clicked = false;
+    this.condition_login_signup_clicked = 'login';
     this.condition_menu = false;
+    
+    this.errorLoginArr = new Array<Array<any>>(['email', false], ['password', false]);
+    this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
+    ['email', false], ['password', false], ['gender', false], ['admin password', false]);
+
+    this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
   }
 
   //Create One button__________________________________________________
-  createOne(): void{
-    this.condition_login_signup_clicked = true;
+  createOneForgotLogin(condition: string): void{
+    this.condition_login_signup_clicked = condition;
   }
 
-
-  //Sign in with Google_______________________________________________
-  signInWithGoogle(){
-    this.service.googleService();
-  }
 
   //Login button_______________________________________________________
   loginbttn(): void{
@@ -199,7 +225,11 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.subs = this.service.login(obj_data).subscribe((result) => {
         this.subs.unsubscribe();
         if(result.response !== 'no-data' && result.response !== 'wrong-password'){
+          
           this.cookieservice.set('token', result.tokens);
+
+          //refresh browser________________________________________________
+
         }else if(result.response === 'wrong-password'){
           //wrong password___________________
           this.errorLoginArr[1][0] = "!Wrong password please try again.";
@@ -226,6 +256,56 @@ export class AppComponent implements OnInit, AfterViewInit{
     }
   }
 
+  
+  //Function button admin or not admin_______________________________________
+  adminNotAdmin(condition: boolean): void{
+    this.condition_adminNotAdmin = condition;
+  }
+
+  //Sign in with Google button_______________________________________________
+  signInWithGoogle(){
+    if(!this.condition_signin){
+      this.condition_signin = true;
+
+      //get the data of user from google_____________________________________________________________
+      this.subs = this.service.googleService().subscribe(({fullName, email, response}: googleDataUser) => {
+        this.subs.unsubscribe();
+        if(response !== 'no-data'){
+
+          //Checking if the Email is already exist_________________________________________________________________
+          this.subs = this.service.checkingEmail(email).subscribe((data) => {
+            this.subs.unsubscribe();
+
+            if(data.response === 'no-data'){
+
+              //if the email is not exist create an account, login and get the token_____________________________________________________
+              this.subs = this.service.gmailRegister({ firstname: '', lastname: '', contact_number: '', email: email, password: '', gender: ''} as register,
+              fullName).subscribe((datas) => {
+
+                this.subs.unsubscribe();
+                this.condition_signin = false;
+                this.cookieservice.set('token', datas.tokens);
+
+                //refresh browser________________________________________________
+              });
+            }else{
+
+              //get the email of user and convert it to token_____________________________________________________
+              this.subs = this.service.gmailLogin({ email: email, password: '' } as login).subscribe((datas) => {
+                this.subs.unsubscribe();
+                this.condition_signin = false;
+                this.cookieservice.set('token', datas.tokens);
+              });
+            }
+          });
+        }else{
+          console.log(response);
+          this.condition_signin = false;
+        }
+      });
+    }
+  }
+
   //SingUp button______________________________________________________
   FuncsignUp(): void{
     const gender = <HTMLSelectElement> document.querySelector('.formselect');
@@ -239,7 +319,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     } as register;
     
     this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
-    ['email', false], ['password', false], ['gender', false]);
+    ['email', false], ['password', false], ['gender', false], ['admin password', false]);
 
       //Checking all input field if empty or not_____________________________________________________
       if(this.checkingField(obj_data)){
@@ -253,42 +333,44 @@ export class AppComponent implements OnInit, AfterViewInit{
               //Checking if email is already exist to database______________________________________________________
               this.subs = this.service.checkingEmail(obj_data.email).subscribe((result) => {
                 this.subs.unsubscribe();
+
                 if(result.response === 'no-data'){
                   
                   //Checking the password strength________________________________________________________
                   if(this.passStrength(obj_data.password)){
 
-                    //Checking the Gender if validate________________________________________________________
-                    if(obj_data.gender === 'Male' || obj_data.gender === 'Female' || obj_data.gender === 'Prefer not to say'){
 
-                      //Finally creating account of user_____________________________________________________
-                      this.subs = this.service.register(obj_data).subscribe((result) => {
-
+                    //check if user enable admin, and check all the current password of admins______________________________________________
+                    if(this.condition_adminNotAdmin){
+                      
+                      this.subs = this.service.checkingAdminpassword(this.formGroup_signup.value.adminPassword).subscribe((result) => {
                         this.subs.unsubscribe();
                         console.log(result);
+                        
+                        if(result.response !== 'no'){
+                          this.creatingAccount(obj_data, 'admin');
+                        }else{
+                          this.errorSignupArr[6][0] = "!Please check the admin password and try again.";
+                          this.errorSignupArr[6][1] = true;
+                        }
 
-                      }, (err) => console.log(err));
+                      });
 
                     }else{
-                      console.log('error Gender');
-                      this.errorSignupArr[5][0] = "!Please select your gender.";
-                      this.errorSignupArr[5][1] = true;
+                      this.creatingAccount(obj_data, 'not-admin');
                     }
                   }
 
                 }else{
-                  console.log('email already exist');
                   this.errorSignupArr[3][0] = "!This Email is already exist.";
                   this.errorSignupArr[3][1] = true;
                 }
               });
             }else{
-              console.log('error email');
-              this.errorSignupArr[3][0] = "!this Email is already taken.";
+              this.errorSignupArr[3][0] = "!The Email is undefined.";
               this.errorSignupArr[3][1] = true;
             }
         }else{
-          console.log('error contact number');
           this.errorSignupArr[2][0] = "!Please check your contact-number";
           this.errorSignupArr[2][1] = true;
         }
@@ -297,15 +379,166 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   }
 
+  //creating account func________________________________________________
+  creatingAccount(obj_data: register, adminNot: string): void{
+
+     //Finally creating account of user_____________________________________________________
+     this.subs = this.service.register(obj_data, adminNot).subscribe((result) => {
+
+      this.subs.unsubscribe();
+      
+      this.condition_clicked_signup = 'false';
+
+    }, (err) => console.log(err));
+  }
+
   //Set Appointment button______________________________________________
   submitAppointment(): void{
     console.log(this.day_year_month_selected);
     console.log(this.formGroup_setAppointment.value);
   }
 
+
+
+  //FORGOT PASSWORD__________________________________________________________________________________________________
+
+
+  //send OTP code___________________________________________________
+  sendOTTxt: string = 'Get OTP';
+  sendOTP(): void{
+      const email = this.formGroup_forgotPassword.value.email;
+
+      this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
+
+      if(email !== '' && email !== ' '){
+        if((/[@]/).test(email) && (/[.]/).test(email)){
+          
+          if(this.sendOTTxt === 'Get OTP'){
+
+            this.sendOTTxt = 'Sending..';
+
+            this.subs = this.service.sendOTP(email).subscribe((result) => {
+              this.subs.unsubscribe();
+              this.sendOTTxt = 'Get OTP';
+              
+              if(result.response === 'success'){
+      
+                this.condition_OTP = true;
+                this.handle_email_OTP = email;
+      
+              }else{
+                this.errArrForgotPassword[0] = ["!The Email is undefined.", true];
+              }
+            }, (err) => { this.sendOTTxt = 'Get OTP'; console.log(err) });
+          }
+        }else{
+          this.errArrForgotPassword[0] = ["!The Email is undefined.", true];
+        }
+      }else{
+        this.errArrForgotPassword[0] = ['!Please Fill up the email input field.', true];
+      }
+  }
+
+
+  //Verify OTP code________________________________________________________
+  verifyTxt: string = 'Verify';
+  verfiyOTP(): void{
+    var verify = this.formGroup_forgotPassword.value.verify;
+    this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
+    
+    if(verify !== '' && verify !== ' '){
+      if((/^\d+$/).test(verify)){
+
+        if(this.verifyTxt === 'Verify'){
+          this.verifyTxt = 'Verifying..';
+
+          this.subs = this.service.verifyCode(this.handle_email_OTP, verify).subscribe((result) => {
+            this.subs.unsubscribe();
+            this.verifyTxt = 'Verify';
+
+            if(result.response === 'success'){
+              this.condition_login_signup_clicked = 'changePassword';
+            }else if(result.response === 'no-data'){
+
+            }else{
+              console.log('incorrect');
+              this.errArrForgotPassword[1] = ['!Incorrect code. Try again.', true];
+            }
+          });
+
+        }
+      }else{
+        console.log('err');
+       this.errArrForgotPassword[1] = ['!No letter included. Just a number.', true];
+      }
+    }else{
+      console.log('err');
+      this.errArrForgotPassword[1] = ['!Please Fill up the verify input field.', true];
+    }
+  }
+
+
+
+  //Change password_______________________________________________________________________
+  changingTXT: string = "Change";
+  changePassword(): void{
+      const { newPassword, verifyPassword } = this.formGroup_newPassword.value;
+      this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
+
+      if((newPassword !== '' && newPassword !== ' ') && (verifyPassword !== '' && verifyPassword !== ' ')){
+
+        if(this.passStrength(newPassword)){
+
+          if(newPassword === verifyPassword){
+
+            if(this.handle_email_OTP !== ''){
+
+              if(this.changingTXT === 'Change'){
+                this.changingTXT = 'Changing..';
+                this.subs = this.service.changePassword(this.handle_email_OTP, newPassword).subscribe((result) => {
+                  this.subs.unsubscribe();
+                  this.changingTXT = 'Change';
+
+                  if(result.response === 'success'){
+                    this.condition_login_signup_clicked = "successChange";
+                  }
+                });
+              }
+            }else{
+              this.errArrForgotPassword[0] = ['!No email. Refresh the browser.', true];
+            }
+          }else{
+            this.errArrForgotPassword[0] = ['!Please check the 2 input field. It must be same.', true];
+            this.errArrForgotPassword[1] = ['!Please check the 2 input field. It must be same.', true];
+          }
+        }else{
+          this.errArrForgotPassword[0] = [this.errorSignupArr[4][0], true];
+        }
+      }else{
+
+        if((newPassword === '' || newPassword === ' ') && (verifyPassword === '' || verifyPassword === ' ')){
+          this.errArrForgotPassword[0] = ['!Please Fill up the input field.', true];
+          this.errArrForgotPassword[1] = ['!Please Fill up the input field.', true];
+        }else if((newPassword === '' && newPassword === ' ')){
+          this.errArrForgotPassword[0] = ['!Please Fill up the input field.', true];
+        }else{
+          this.errArrForgotPassword[1] = ['!Please Fill up the input field.', true];
+        }
+        
+      }
+  }
+
+
+  //Success alert_________________________________________________
+  successChange(): void{
+    this.condition_clicked_signup = 'false';
+  }
+
   
 
   //___________________________________________________________________________________________________________________
+
+
   isLeapYear(year: any): any {
       return (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) || (year % 100 === 0 && year % 400 ===0)
   }
@@ -480,12 +713,31 @@ export class AppComponent implements OnInit, AfterViewInit{
 
           if(data.email !== '' && data.email !== ' '){
 
-            if(data.password === '' || data.password === ' '){
-              console.log('error password');
-              this.errorSignupArr[4][0] = "!Please Fill up the password input field.";
-              this.errorSignupArr[4][1] = true;
-              condition = false;
-            }
+              if(data.password !== '' && data.password !== ' '){
+
+                if(data.gender === 'Male' || data.gender === 'Female' || data.gender === 'Prefer not to say'){
+
+                  if(this.condition_adminNotAdmin && this.formGroup_signup.value.adminPassword === '' || this.formGroup_signup.value.adminPassword === ' '){
+                    console.log('error admin password');
+                    this.errorSignupArr[6][0] = '!Please Fill up the password input field.';
+                    this.errorSignupArr[6][1] = true;
+                    condition = false;
+                  } 
+
+                }else{
+                  console.log('error Gender');
+                  this.errorSignupArr[5][0] = "!Please select your gender.";
+                  this.errorSignupArr[5][1] = true;
+                }
+
+              }else{
+                console.log('error password');
+                this.errorSignupArr[4][0] = "!Please Fill up the password input field.";
+                this.errorSignupArr[4][1] = true;
+                condition = false;
+              }        
+
+          
           }else{
             console.log('error email');
             this.errorSignupArr[3][0] = "!Please Fill up the email input field.";
@@ -510,6 +762,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.errorSignupArr[0][1] = true;
       condition = false;
     }
+
 
     return condition;
   }

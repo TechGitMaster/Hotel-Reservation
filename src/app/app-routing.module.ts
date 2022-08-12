@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'contact-us', component: ContactsComponent },
   { path: 'rooms', component: RoomsComponent },
 
-  { path: 'account', loadChildren: () => import('./a_users/au-route/au-route.module').then(module => module.AuRouteModule) }
+  { path: '', loadChildren: () => import('./a_users/au-route/au-route.module').then(module => module.AuRouteModule) }
 ];
 
 @NgModule({

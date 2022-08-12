@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaderResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { register, login } from '../objects';
+import { register, login, googleDataUser } from '../objects';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 @Injectable({
@@ -9,7 +9,6 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 })
 export class MainServiceService {
 
-  provider: GoogleAuthProvider = new GoogleAuthProvider();
 
   constructor(private http: HttpClient) { }
 
@@ -18,15 +17,27 @@ export class MainServiceService {
   }
 
 
-  //Google service________________________________________________
-  googleService(){
-    const auth = getAuth();
-    signInWithPopup(auth, this.provider)
+  //Google login________________________________________________
+  googleService(): Observable<googleDataUser>{
+    return new Observable((obs) => {
+      const googleDataUser = {
+        fullName: '',
+        email: '',
+        response: 'have-data'
+      } as googleDataUser;
+
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider() as GoogleAuthProvider;
+      signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
-        console.log(user);
+
+        googleDataUser.fullName = user.displayName+'';
+        googleDataUser.email = user.email+'';
+
+        obs.next(googleDataUser);
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
@@ -36,23 +47,58 @@ export class MainServiceService {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
-        console.log(error);
+
+        googleDataUser.response = "no-data";
+        obs.next(googleDataUser);
       });
+    });
   } 
+
+
+  //checking all admin passwords____________________________________
+  checkingAdminpassword(adminPassword: string): Observable<any>{
+    return this.http.post<any>('/api/checkingAdminPassword', { adminPassword: adminPassword });
+  }
 
   //checking email________________________________________________
   checkingEmail(email: string): Observable<any>{
-    return this.http.get('/emailCheck', { params: { email: email } });
+    return this.http.get('/api/emailCheck', { params: { email: email } });
   }
 
   //login__________________________________________________________
   login(data: login): Observable<any>{
-    return this.http.post<any>('/login', { data: data });
+    return this.http.post<any>('/api/login', { data: data, condition: 'norms-login' });
+  }
+
+  //login__________________________________________________________
+  gmailLogin(data: login): Observable<any>{
+    return this.http.post<any>('/api/login', { data: data, condition: 'gmail-login' });
   }
 
   //register__________________________________________________________
-  register(data: register): Observable<any>{
-    return this.http.post<any>('/registration', { data: data });
+  register(data: register, adminNot: string): Observable<any>{
+    return this.http.post<any>('/api/registration', { data: data, fullName: '', adminNot: adminNot, condition: 'norms-register' });
+  }
+  
+  //Gmail register____________________________________________________
+  gmailRegister(data: register, fullname: string): Observable<any>{
+    return this.http.post<any>('/api/registration', { data: data, fullName: fullname, adminNot: 'not-admin', condition: 'gmail-register' });
   }
 
+
+  //SEND OTP_________________________________________________________
+  sendOTP(email: string): Observable<any>{
+    return this.http.post<any>('/api/forgotPasswordMail', { to: email });
+  }
+
+  //Verifying code___________________________________________________
+  verifyCode(email: string, code: string): Observable<any>{
+    return this.http.get('/api/otpCode', { params: { email: email, otp_code: code }});
+  }
+
+  //Change Password___________________________________________________
+  changePassword(email: string, newPassword: string): Observable<any>{
+    return this.http.post<any>('/api/changePassword', { email: email, newPassword: newPassword });
+  }
+  
 }

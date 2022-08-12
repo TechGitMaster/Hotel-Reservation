@@ -10,13 +10,14 @@ module.exports = (condition) => {
         case "registered_accounts":
 
             column = new Schema({
-                firstname: { type: String, required: true },
-                lastname: { type: String, required: true },
-                contactnumber: { type: String, required: true },
+                firstname: { type: String, required: false },
+                lastname: { type: String, required: false },
+                fullName: { type: String, required: true },
+                contactnumber: { type: String, required: false },
                 email: { type: String, required: true },
-                password: { type: String, required: true },
-                passwordSecond: { type: String, required: true },
-                gender: { type: String, required: true },
+                password: { type: String, required: false },
+                iv: { type: String, required: false },
+                gender: { type: String, required: false },
             }, { timestamps: true });
 
         break;
@@ -24,7 +25,10 @@ module.exports = (condition) => {
 
             column = new Schema({
                 email: { type: String, required: true },
-                password: { type: String, required: true }
+                password: { type: String, required: false },
+                iv: { type: String, required: false },
+                admin: { type: String, required: true },
+                OTP_code: { type: String, required: false }
             }, { timestamps: true });
             
         break;

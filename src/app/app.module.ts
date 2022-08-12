@@ -18,8 +18,8 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 
-import * as firebase from 'firebase/app';
 
+import * as firebase from 'firebase/app';
 firebase.initializeApp(environment.firebase);
 
 
