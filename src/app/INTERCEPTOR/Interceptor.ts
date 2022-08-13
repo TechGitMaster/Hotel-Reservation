@@ -9,9 +9,10 @@ import { CookieService } from "ngx-cookie-service";
 export class Interceptor implements HttpInterceptor {
   constructor(private tokenExtractor: HttpXsrfTokenExtractor, private cookieService: CookieService) {}
 
-  catchErr(err: HttpErrorResponse): Observable<any>{
+  /*catchErr(err: HttpErrorResponse): Observable<any>{
+    console.log('asd');
     return of(err);
-  }
+  }*/
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
@@ -21,6 +22,6 @@ export class Interceptor implements HttpInterceptor {
         withCredentials: true
     });
 
-    return next.handle(req).pipe( catchError(this.catchErr) );
+    return next.handle(req);
   }
 }

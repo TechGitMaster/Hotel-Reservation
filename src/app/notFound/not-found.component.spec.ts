@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NormalUsersComponent } from './normal-users.component';
+import { NotFoundComponent } from './not-found.component';
 
-describe('NormalUsersComponent', () => {
-  let component: NormalUsersComponent;
-  let fixture: ComponentFixture<NormalUsersComponent>;
+describe('NotFoundComponent', () => {
+  let component: NotFoundComponent;
+  let fixture: ComponentFixture<NotFoundComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NormalUsersComponent ]
+      declarations: [ NotFoundComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NormalUsersComponent);
+    fixture = TestBed.createComponent(NotFoundComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

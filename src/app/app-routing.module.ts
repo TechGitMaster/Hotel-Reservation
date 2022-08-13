@@ -1,16 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './main_compo/home/home.component';
-import { ContactsComponent } from './main_compo/contacts/contacts.component';
-import { RoomsComponent } from './main_compo/rooms/rooms.component';
+import { AdGuardGuard } from './guard/adG/ad-guard.guard';
+import { McGuardGuard } from './guard/mcG/mc-guard.guard';
+import { NotFoundComponent } from './notFound/not-found.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'contact-us', component: ContactsComponent },
-  { path: 'rooms', component: RoomsComponent },
 
-  { path: '', loadChildren: () => import('./a_users/au-route/au-route.module').then(module => module.AuRouteModule) }
+  { path: '', redirectTo: '/mc/home', pathMatch: 'full' },
+
+  //MC compo_________________________________________________
+  { path: 'mc', loadChildren: () => import('./main_compo/mc-route/mc-route.module').then( module => module.McRouteModule),
+  data: { condition: 'mc' }, canActivate: [McGuardGuard] },
+
+  //AD compo___________________________________________________
+
+  { path: 'ad', loadChildren: () => import('./admin/ad-route/ad-route.module').then(module => module.AdRouteModule), 
+  canActivate: [AdGuardGuard] },
+
+  { path: '**', component: NotFoundComponent }
+
 ];
 
 @NgModule({

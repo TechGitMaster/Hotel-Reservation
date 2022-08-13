@@ -47,7 +47,7 @@ router.post('/registration', async (req, res) => {
             if(condition === 'gmail-register'){
                 
                 var token = jwt.sign({ email: email, adminNot: adminNot }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
-                res.json({ tokens: token, response: 'Success creating account' });
+                res.json({ tokens: token, response: 'Success creating account'});
 
             }else{
                 res.json({ tokens: '', response: 'Success creating account' });
@@ -77,7 +77,7 @@ router.post('/login', async (req, res) => {
                 res.json({token: '', response: 'wrong-password'})
             }else{
                 var token = jwt.sign( { email: data.email, adminNot: data.admin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
-                res.json({tokens: token, response: 'success'});
+                res.json({tokens: token, response: 'success', adminNot: data.admin});
             };
         }
     }else{
@@ -221,9 +221,9 @@ router.get('/checking_token_refresh', middleware, async (req, res) => {
     var data = await data_login.findOne({ username: req.token.email });
     
     if(data != null){
-        res.json({ response: 'success' });
+        res.json({ response: 'success', data: req.token });
     }else{
-        res.json({ response: 'no-data' });
+        res.json({ response: 'no-data'});
     }
 });
 
@@ -236,9 +236,12 @@ function middleware(req, res, next){
         if(get_token === '' && get_token === ' ') res.sendStatus(401);
 
         jwt.verify(get_token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
-            if(err) res.sendStatus(401);
-            req.token = result;
-            next();
+            if(err){
+                res.sendStatus(401);
+            }else{
+                req.token = result;
+                next();
+            }
         });
 
     }else{

@@ -5,8 +5,9 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
-import { MainServiceService } from './main_compo/main-service.service';
+import { MainServiceService } from './main_serivce/main-service.service';
 import { register, login, googleDataUser } from './objects';
+import { initializeApp } from '@firebase/app';
 
 
 
@@ -17,6 +18,7 @@ import { register, login, googleDataUser } from './objects';
 })
 export class AppComponent implements OnInit, AfterViewInit{
   subs!: Subscription;
+  condition_admin_user!: boolean;
   condition_login!: boolean;
   condition_login_signup_clicked!: string;
   condition_clicked_signup!: string;
@@ -62,6 +64,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     private formBuilder: FormBuilder, private service: MainServiceService){} 
 
   ngOnInit(): void {
+    this.condition_admin_user = false;
     this.condition_menu = false;
     this.condition_login = false;
     this.condition_login_signup_clicked = 'login';
@@ -141,10 +144,49 @@ export class AppComponent implements OnInit, AfterViewInit{
       newPassword: [''],
       verifyPassword: ['']
     });
+
+    this.checkingAdminUser();
   }
 
   ngAfterViewInit(): void {
   }
+
+
+
+  //Checking if admin or normal_user _____________________________________________________________________
+  checkingAdminUser(): void{
+    var token = this.cookieservice.get('token');
+
+    if(token !== '' && token !== ' '){
+      
+      this.subs = this.service.checkingToken().subscribe((result) => {
+        this.subs.unsubscribe();
+        if(result.response !== 'no-data'){
+          if(result.data.adminNot === 'admin'){
+           
+            //admin_______________________
+
+          }else{
+            //normal-user ____________________
+            //home page____________________
+            this.condition_login = true;
+            this.condition_admin_user = true;
+          }
+        }else{
+          this.cookieservice.deleteAll();
+          this.condition_admin_user = true;
+        }
+      }, (err) => {
+        this.subs.unsubscribe();
+        this.cookieservice.deleteAll();
+        this.condition_admin_user = true;
+      });
+    }else{
+      this.cookieservice.deleteAll();
+      this.condition_admin_user = true;
+    }
+  }
+
 
   //clicked Menu Icon___________________________________________________________
   clickedMenu(condition: boolean): void{
@@ -154,42 +196,10 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   //Selected navigation_____________________________________________________________
   funcClickable(condition: string): void{
-    var element = document.querySelectorAll('.navclickable');
-    var username = this.condition_login ? <HTMLSpanElement> document.querySelector('.username'): <HTMLSpanElement> document.querySelector('.sd');
-    var navigationforAll = <HTMLDivElement> document.querySelector('.navigationforAll');
-
     this.condition_menu = false;
-
-    if(condition !== '' && condition !== ' ' && this.clicked_handle !== condition){
-      if(condition === 'contact-us'){
-
-        element.forEach((divelement) => {
-          var docs = <HTMLDivElement>divelement;
-          docs.style.color = "black";
-        });
-
-        this.notification_icon = "assets/icon/bell 1.png";
-        this.menubar_icon = "/assets/icon/menu1.png";
-
-        if(this.condition_login) username.style.color = "#0A2B6A";
-        navigationforAll.style.background = "none";
-
-      }else{
-
-        element.forEach((divelement) => {
-          var docs = <HTMLDivElement>divelement;
-          docs.style.color = "#FCFBFB";
-        });
-        
-        this.notification_icon = "assets/icon/bell.png";
-        this.menubar_icon = "/assets/icon/menu.png";
-
-        if(this.condition_login) username.style.color = "#FCFBFB";
-        navigationforAll.style.background = "rgba(0, 0, 0, 0.582)";
-      }
-
+    if(condition !== '' && condition !== ' '){
       this.clicked_handle = condition;
-      this.router.navigate(['/'+condition]);
+      this.router.navigate([`/mc/${condition}`]);
     }
   }
 
@@ -225,10 +235,19 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.subs = this.service.login(obj_data).subscribe((result) => {
         this.subs.unsubscribe();
         if(result.response !== 'no-data' && result.response !== 'wrong-password'){
-          
-          this.cookieservice.set('token', result.tokens);
+          var expiredDate = new Date();
+          expiredDate.setDate( expiredDate.getDate() + 1 );
+          this.cookieservice.set('token', result.tokens, expiredDate);
 
-          //refresh browser________________________________________________
+          //if not admin refresh the browser________________________________________________
+          if(result.adminNot === 'admin') {
+            this.condition_admin_user = false;
+            this.condition_clicked_signup = 'false';
+
+            this.router.navigate(['/ad/admin']);
+          }else {
+            location.reload();
+          };
 
         }else if(result.response === 'wrong-password'){
           //wrong password___________________
@@ -264,6 +283,10 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   //Sign in with Google button_______________________________________________
   signInWithGoogle(){
+
+    var expiredDate = new Date();
+    expiredDate.setDate( expiredDate.getDate() + 1 );
+
     if(!this.condition_signin){
       this.condition_signin = true;
 
@@ -283,23 +306,24 @@ export class AppComponent implements OnInit, AfterViewInit{
               fullName).subscribe((datas) => {
 
                 this.subs.unsubscribe();
-                this.condition_signin = false;
-                this.cookieservice.set('token', datas.tokens);
+                this.cookieservice.set('token', datas.tokens, expiredDate);
 
                 //refresh browser________________________________________________
+                location.reload();
               });
             }else{
 
               //get the email of user and convert it to token_____________________________________________________
               this.subs = this.service.gmailLogin({ email: email, password: '' } as login).subscribe((datas) => {
                 this.subs.unsubscribe();
-                this.condition_signin = false;
-                this.cookieservice.set('token', datas.tokens);
+                this.cookieservice.set('token', datas.tokens, expiredDate);
+
+                //refresh browser________________________________________________
+                location.reload();
               });
             }
           });
         }else{
-          console.log(response);
           this.condition_signin = false;
         }
       });
