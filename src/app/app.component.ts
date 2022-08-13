@@ -165,6 +165,8 @@ export class AppComponent implements OnInit, AfterViewInit{
           if(result.data.adminNot === 'admin'){
            
             //admin_______________________
+            this.condition_admin_user = false;
+            this.condition_clicked_signup = 'false';
 
           }else{
             //normal-user ____________________
