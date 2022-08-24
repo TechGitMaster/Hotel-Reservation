@@ -1,0 +1,259 @@
+
+/* ________________________Font from ttf extension_________________________ */
+
+@font-face {
+    font-family: inter_regular;
+    src: url(/assets/Inter-Regular.ttf);
+}
+
+@font-face {
+    font-family: inter_medium;
+    src: url(/assets/Inter-Medium.ttf);
+}
+
+@font-face {
+    font-family: inter_semibold;
+    src: url(/assets/Inter-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: inter_bold;
+    src: url(/assets/Inter-Bold.ttf);
+}
+
+
+@font-face {
+    font-family: inria_serif_bold;
+    src: url(/assets/InriaSerif-Bold.ttf);
+}
+
+
+/*__________________________________________________________________________*/
+
+
+.fixedDiv{
+    width:100%;
+    height:100vh;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    background:rgba(0, 0, 0, 0.245);
+    z-index:5;
+    position:fixed;
+}
+
+
+.divSetTime{
+    max-width:400px;
+    min-height:100px;
+    background:white;
+    border-radius:10px;
+    padding-bottom:30px;
+}
+
+
+.paX{
+    font-family: inter_bold;
+    font-size:20px; 
+    padding-top:10px;
+    cursor: pointer;
+}
+
+.paTime{
+    font-family: inter_bold;
+    font-size:21px;
+    margin:0%;
+    padding:0%;
+    text-align: center;
+    color:#0063A8;
+    margin:-30px 0px 30px 0px;
+}
+
+.paME{
+    font-family: inter_medium;
+    font-size:18px;
+    text-align: center;
+    margin:0%;
+}
+
+.paInter{
+    font-family: inter_regular;
+    font-size:14px;
+    text-align: center;
+    margin:0px 0px 20px 0px; 
+}
+
+.hours{
+    max-width:120px;
+    height:35px;
+    border: 1px solid black;
+}
+
+.paMinH{
+    text-align: center;
+    margin:8px 0px 0px 0px;
+    font-family: inter_medium;
+    font-size: 16px;
+}
+
+.pS{
+    font-size:20px;
+    font-weight: bold;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.btnSet{
+    background:#FFD700;
+    border-radius:10px;
+    font-family: inter_regular;
+    font-size:17px;
+    width:150px;
+    color:black;
+    border:none;
+}
+
+.img_icon{
+    width:100%;
+    height:340px;
+}
+
+.main{
+    height:100vh;
+    margin-top:-340px;
+    z-index:2;
+    display: flex;
+    position:relative;
+}
+
+.components{
+    max-width:250px;
+    background:white;
+}
+
+.routers{
+    width:100%;
+    padding:20px 15px 0px 15px;
+}
+
+.routers_through{
+    width:100%;
+    height:100%;
+    background:white;
+    border-radius:10px 10px 0px 0px;
+    position: relative;
+    overflow-y:scroll;
+}
+
+.divHeader-compo{
+    display:flex;
+    justify-content: center;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.pName{
+    margin:0%;
+    font-family: inter_bold;
+    font-size:16px;
+    color:#493B3B;
+    text-align: center;
+}
+
+.pAdmin{
+    margin:5px 0px 0px 0px;
+    font-family: inter_medium;
+    font-size:15px;
+    color:#98969A;
+    text-align: center;
+}
+
+.divCompo-body{
+    padding:0px 15px 0px 15px;
+    
+}
+
+.pComponent{
+    margin:0%;
+    font-family: inter_bold;
+    font-size:16px;
+    color:#493B3B;
+    margin-bottom:15px;
+}
+
+.div_clickables_compo{
+    padding:10px 10px 10px 10px;
+    border-radius:10px;
+    display:flex;
+    cursor: pointer;
+    margin-bottom:5px;
+}
+
+.div_clickables_compo:hover{
+    background: #FEE2BB;
+}
+
+.backgrondDiv{
+    background:#FEE2BB;
+}
+
+.sNameCompo{
+    font-family: inter_medium;
+    font-size:16px;
+    color:#493B3B;
+}
+
+.havePopup{
+    min-height:100px;
+    display: flex;
+    justify-content: center;
+}
+
+.boxHS{
+    max-width:350px;
+    min-height:130px;
+    background:white;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
+    padding:20px 20px 10px 20px;    
+}
+
+.paCancel{
+    font-family: inter_medium;
+    font-size:18px;
+}
+
+.paMe{
+    font-family: inter_regular;
+    font-size:13px;
+    line-height: 120%;
+    margin-bottom: 20px;
+}
+
+.paYes{
+    font-family: inter_bold;
+    padding:0px 20px 0px 20px;
+    margin-right:5px;
+    font-size:13px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.paYes:hover{
+    background:rgb(240, 215, 215);
+    color:rgb(237, 52, 52);
+}
+
+.paNo{
+    font-family: inter_bold;
+    padding:5px 20px 5px 20px;
+    font-size:13px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.paNo:hover{
+    background:rgb(240, 215, 215);
+    color:rgb(237, 52, 52);
+}

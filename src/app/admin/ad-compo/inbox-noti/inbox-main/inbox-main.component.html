@@ -1,0 +1,76 @@
+<div class="container-fluid" style="padding:30px 10px 5px 10px;">
+    <div style="display:flex;">
+
+
+        <!--_____________SELECTION COMPONENTS_____________________-->
+        <div class="container navigationInbox">            
+
+            <!--__________________FOLDERS__________________-->
+            <div>
+                <p class="pfolders">Folders</p>
+
+                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 0 ? 'backgrondDiv':'']" (click)="funcSelected(0)">
+                    <div class="divIconInboxes">
+                        <img src="/assets/icon/mail_received_admin.png" class="img-fluid" style="height:25px;"  />
+                    </div>
+                    <div style="width:79%;display: flex;align-items: center;">
+                        <span class="sNameCompo">Inbox</span>
+                    </div>
+                </div>
+
+                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 1 ? 'backgrondDiv':'']" (click)="funcSelected(1)">
+                    <div class="divIconInboxes">
+                        <img src="/assets/icon/favo_mail_admin.png" class="img-fluid" style="height:25px;"  />
+                    </div>
+                    <div style="width:79%;display: flex;align-items: center;">
+                        <span class="sNameCompo">Favorites</span>
+                    </div>
+                </div>
+
+                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 2 ? 'backgrondDiv':'']" (click)="funcSelected(2)">
+                    <div class="divIconInboxes">
+                        <img src="/assets/icon/accept_admin.png" class="img-fluid" style="height:25px;"  />
+                    </div>
+                    <div style="width:79%;display: flex;align-items: center;">
+                        <span class="sNameCompo">Accepted</span>
+                    </div>
+                </div>
+
+
+                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 3 ? 'backgrondDiv':'']" (click)="funcSelected(3)">
+                    <div class="divIconInboxes">
+                        <img src="/assets/icon/decline_admin.png" class="img-fluid" style="height:25px;"  />
+                    </div>
+                    <div style="width:79%;display: flex;align-items: center;">
+                        <span class="sNameCompo">Declined</span>
+                    </div>
+                </div>
+
+                <div class="div_clickables_compo" [ngClass]="['div_clickables_compo', num_selectionCondition == 4 ? 'backgrondDiv':'']" (click)="funcSelected(4)">
+                    <div class="divIconInboxes">
+                        <img src="/assets/icon/trash_admin.png" class="img-fluid" style="height:25px;"  />
+                    </div>
+                    <div style="width:79%;display: flex;align-items: center;">
+                        <span class="sNameCompo">Trash</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!--____________________COMPONENTS APP________________________-->
+        <div style="width:100%;">
+            <p class="pInbox">{{arr_named[num_selectionCondition]}}</p>
+            <div class="line"></div>
+
+            <div>
+                <app-inbox *ngIf="num_selectionCondition == 0"></app-inbox>
+                <app-favorites *ngIf="num_selectionCondition == 1"></app-favorites>
+                <app-accept *ngIf="num_selectionCondition == 2"></app-accept>
+                <app-decline *ngIf="num_selectionCondition == 3"></app-decline>
+                <app-trash *ngIf="num_selectionCondition == 4"></app-trash>
+            </div>
+        </div>
+    </div>
+</div>

@@ -32,9 +32,9 @@
 
 .navigationforAll{
     background:rgba(0, 0, 0, 0.582);
-    z-index:1;
+    z-index:3;
     padding:0px;
-    position: absolute;
+    position: fixed;
 }
 
 .naviclicked{

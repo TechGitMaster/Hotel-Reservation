@@ -18,10 +18,12 @@ import { initializeApp } from '@firebase/app';
 })
 export class AppComponent implements OnInit, AfterViewInit{
   subs!: Subscription;
+  subsEventEmitter!: Subscription;
   condition_admin_user!: boolean;
   condition_login!: boolean;
   condition_login_signup_clicked!: string;
   condition_clicked_signup!: string;
+  condition_appointment!: boolean;
   condition_menu!: boolean;
   clicked_handle!: string;
   notification_icon!: string;
@@ -41,8 +43,8 @@ export class AppComponent implements OnInit, AfterViewInit{
   handle_email_OTP!: string;
   errArrForgotPassword!: Array<Array<any>>;
 
-  month_names: Array<string> = new Array<string>('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 
-  'December');
+  month_names: Array<string> = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 
+  'Dec');
 
   month_names_final!: Array<Array<string>>;
 
@@ -63,7 +65,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   constructor(public http: HttpClient, private router: Router, private cookieservice: CookieService,
     private formBuilder: FormBuilder, private service: MainServiceService){} 
 
-  ngOnInit(): void {
+  ngOnInit(){
     this.condition_admin_user = false;
     this.condition_menu = false;
     this.condition_login = false;
@@ -72,6 +74,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.condition_signin = false;
     this.condition_adminNotAdmin = false;
     this.condition_OTP = false;
+    this.condition_appointment = false;
     this.handle_email_OTP = '';
     this.clicked_handle = 'home';
     this.notification_icon = "assets/icon/bell.png";
@@ -86,21 +89,8 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.day_numbers = new Array<Array<string>>();
     this.generateCalendar(this.curr_month.value, this.curr_year.value);    
 
-    this.month_names_final = new Array<Array<string>>();
-
     //Disable past month_________________________________________________
-    var condition = false;
-    for(var count = 0;count < this.month_names.length;count++){
-      var array = new Array<string>();
-      array.push(this.month_names[count]);
-      if(this.month_names[count] === this.month_names[this.currDate.getMonth()]){
-        condition = true;
-      }
-
-      array.push(`${condition}`);
-
-      this.month_names_final.push(array);
-    }
+    this.disableMonths();
 
     //Error login_______________________________________________
     this.errorLoginArr = new Array<Array<any>>(['email', false], ['password', false]);
@@ -157,6 +147,14 @@ export class AppComponent implements OnInit, AfterViewInit{
   checkingAdminUser(): void{
     var token = this.cookieservice.get('token');
 
+    //The subscribe still running but it will only stop once the EventEmitter has data__________________________________
+    //not-found.comonents will give the EventEmitter a data_____________________________
+    this.subsEventEmitter = this.service.dataSTR.subscribe((data) => {
+      this.subsEventEmitter.unsubscribe();
+      setTimeout(() => { this.condition_appointment = true; }, 50);
+    });
+
+
     if(token !== '' && token !== ' '){
       
       this.subs = this.service.checkingToken().subscribe((result) => {
@@ -167,7 +165,6 @@ export class AppComponent implements OnInit, AfterViewInit{
             //admin_______________________
             this.condition_admin_user = false;
             this.condition_clicked_signup = 'false';
-
           }else{
             //normal-user ____________________
             //home page____________________
@@ -175,16 +172,18 @@ export class AppComponent implements OnInit, AfterViewInit{
             this.condition_admin_user = true;
           }
         }else{
-          this.cookieservice.deleteAll();
+          this.cookieservice.deleteAll('/');
           this.condition_admin_user = true;
         }
       }, (err) => {
+        
         this.subs.unsubscribe();
-        this.cookieservice.deleteAll();
+        this.cookieservice.deleteAll('/');
         this.condition_admin_user = true;
       });
     }else{
-      this.cookieservice.deleteAll();
+      console.log('asd');
+      this.cookieservice.deleteAll('/');
       this.condition_admin_user = true;
     }
   }
@@ -239,7 +238,7 @@ export class AppComponent implements OnInit, AfterViewInit{
         if(result.response !== 'no-data' && result.response !== 'wrong-password'){
           var expiredDate = new Date();
           expiredDate.setDate( expiredDate.getDate() + 1 );
-          this.cookieservice.set('token', result.tokens, expiredDate);
+          this.cookieservice.set('token', result.tokens, { expires: expiredDate, path: '/', sameSite: 'Strict'});
 
           //if not admin refresh the browser________________________________________________
           if(result.adminNot === 'admin') {
@@ -308,8 +307,7 @@ export class AppComponent implements OnInit, AfterViewInit{
               fullName).subscribe((datas) => {
 
                 this.subs.unsubscribe();
-                this.cookieservice.set('token', datas.tokens, expiredDate);
-
+                this.cookieservice.set('token', datas.tokens, { expires: expiredDate, path: '/', sameSite: 'Strict'});
                 //refresh browser________________________________________________
                 location.reload();
               });
@@ -318,8 +316,7 @@ export class AppComponent implements OnInit, AfterViewInit{
               //get the email of user and convert it to token_____________________________________________________
               this.subs = this.service.gmailLogin({ email: email, password: '' } as login).subscribe((datas) => {
                 this.subs.unsubscribe();
-                this.cookieservice.set('token', datas.tokens, expiredDate);
-
+                this.cookieservice.set('token', datas.tokens, { expires: expiredDate, path: '/', sameSite: 'Strict'});
                 //refresh browser________________________________________________
                 location.reload();
               });
@@ -663,6 +660,13 @@ export class AppComponent implements OnInit, AfterViewInit{
     }
   }
 
+  month_picker: any = document.querySelector('#month-picker')
+  
+  
+  clickMonthPicker(){
+    this.condition_clickedmonth = true;
+  }
+
   calenpick(index:number, condition: string){
     if(condition === "true"){
       this.condition_clickedmonth = false;
@@ -672,19 +676,12 @@ export class AppComponent implements OnInit, AfterViewInit{
     }
   }
 
-  month_picker: any = document.querySelector('#month-picker')
-  
-  
-  clickMonthPicker(){
-    this.condition_clickedmonth = true;
-  }
-
   curr_year_condition = this.curr_year.value;
 
   prevtxt: string = "";
   nextxt: string = ">";
   
-  prevyear(){
+  async prevyear(){
     if((this.curr_year.value-1) == this.curr_year_condition){
       --this.curr_year.value;
 
@@ -700,6 +697,9 @@ export class AppComponent implements OnInit, AfterViewInit{
 
       nextDocu.style.cursor = "pointer";
       prevDocu.style.cursor = "none";
+
+      //Disable past month_________________________________________________
+      await this.disableMonths();
       
       this.generateCalendar(this.curr_month.value, this.curr_year.value)
     }
@@ -722,8 +722,34 @@ export class AppComponent implements OnInit, AfterViewInit{
 
       nextDocu.style.cursor = "none";
       prevDocu.style.cursor = "pointer";
-  
+      
+      this.month_names_final = new Array<Array<string>>();
+
+      //Enable past month_________________________________________________
+      this.month_names.forEach((month) => {
+        this.month_names_final.push(new Array<string>(month, 'true'));
+      });
+
       this.generateCalendar(this.curr_month.value, this.curr_year.value)
+    }
+  }
+
+
+  disableMonths(): void{
+    this.month_names_final = new Array<Array<string>>();
+
+    //Disable past month_________________________________________________
+    var condition = false;
+    for(var count = 0;count < this.month_names.length;count++){
+      var array = new Array<string>();
+      array.push(this.month_names[count]);
+      if(this.month_names[count] === this.month_names[this.currDate.getMonth()]){
+        condition = true;
+      }
+
+      array.push(`${condition}`);
+
+      this.month_names_final.push(array);
     }
   }
  

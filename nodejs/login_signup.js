@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const jwt = require('jsonwebtoken');
-const database_column = require('./databases/database_column');
+const database_column = require('./databases/logReg_column');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
@@ -279,9 +279,9 @@ async function decryptData(iv, password){
     decryptedData += decipher.final("utf8");
  
     // display the decrypted string
-    console.log(decryptedData);
     return { password: decryptedData };
 }
+
 
 
 module.exports = router;

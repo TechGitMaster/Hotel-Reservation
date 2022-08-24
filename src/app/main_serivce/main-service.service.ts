@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaderResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { register, login, googleDataUser } from '../objects';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,16 @@ export class MainServiceService {
 
   constructor(private http: HttpClient) { }
 
+
+  //EventEmitter is more like Observable..._____________________________________
+  dataSTR: EventEmitter<string> = new EventEmitter<string>();
+  emitsNotFound(): void{
+    this.dataSTR.emit('notFound');
+  }
+
   checkingToken(): Observable<any>{
     return this.http.get('/checking_token_refresh');
   }
-
 
   //Google login________________________________________________
   googleService(): Observable<googleDataUser>{
@@ -27,11 +34,11 @@ export class MainServiceService {
       } as googleDataUser;
 
       const auth = getAuth();
-      const provider = new GoogleAuthProvider() as GoogleAuthProvider;
+      const provider = new GoogleAuthProvider();
+
       signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
+      
         const user = result.user;
 
         googleDataUser.fullName = user.displayName+'';
@@ -47,7 +54,6 @@ export class MainServiceService {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
-
         googleDataUser.response = "no-data";
         obs.next(googleDataUser);
       });

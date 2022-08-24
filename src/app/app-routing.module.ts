@@ -13,7 +13,6 @@ const routes: Routes = [
   data: { condition: 'mc' }, canActivate: [McGuardGuard] },
 
   //AD compo___________________________________________________
-
   { path: 'ad', loadChildren: () => import('./admin/ad-route/ad-route.module').then(module => module.AdRouteModule), 
   canActivate: [AdGuardGuard] },
 

@@ -1,0 +1,162 @@
+<div class="container-fluid" style="padding:0%;position: relative;">
+    <div class="divHeader">
+        <div style="display:flex;align-items: center;">
+
+            <!--_________ALL___________-->
+            <div style="display:flex;align-items: center;" *ngIf="!condition_selectMails">
+                <div style="margin-top:5px;"><span class="pAll">all</span></div>
+                <div><input type="checkbox" class="form-check-input checksBox checkBoxParent" (click)="checkAllbox($event)"  /></div>
+            </div>
+
+            <!--_________Selected mails___________-->
+            <div *ngIf="condition_selectMails" style="margin-right:15px;cursor: pointer;">
+                <img src="/assets/icon/arrow_back.png" class="img-fluid" style="height:15px;" (click)="condition_selectMails = false" />
+            </div>
+
+            <!--_________Trash Icon___________-->
+            <div style="cursor:pointer;">
+                <img src="/assets/icon/trash_admin.png" class="img-fluid" style="height:25px;" (click)="deleteMails()" />
+            </div>
+        </div>
+
+        <div *ngIf="deleteMailsMessage">
+            <div class="deleteMails" [ngStyle]="{'background': successDelete ? 'rgb(235, 47, 47)': '#28a745'}">
+                <span>{{messageDelete}}</span>
+            </div>
+        </div>
+
+        <!--_______________COUNT of mail and left and right clicks______________________-->
+        <div style="display: flex;align-items: center;" *ngIf="!condition_selectMails">
+
+            <!--___Count of mail____-->
+            <div style="margin-right:20px;">
+                <span class="pNumbs">{{lengthMails}}-{{numbCountLimit}} of {{numb_allMails}}</span>
+            </div>
+
+
+            <!--___LEFT and RIGHT clicks_____-->
+            <div class="row leftRight">
+                <div class="col-6 left" (click)="callMailsBack()">
+                    <span><</span>
+                </div>
+                <div class="col-6 right" (click)="callMailsNext()">
+                    <span>></span>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    
+    <!--________Mails Inbox_________-->
+    <div>
+
+        <!--this is the mail-->
+        <div class="mails_divs" *ngIf="!condition_loading && !condition_selectMails">
+            <div *ngFor="let data of numbMailsArr_notForAll; index as number">
+                <div [ngClass]="['board_boxMail', 'board_boxMail_'+number]" (click)="funcSeeMessage(number)">
+                    
+                    <div [ngClass]="['container', 'divInput_'+number]" style="max-width:40px;">
+                        <input type="checkbox" [ngClass]="['form-check-input', 'checksBoxMail','checksBoxMail_'+number]" 
+                        (click)="funcChecked_manually(number, $event);$event.stopPropagation()" />
+                    </div>
+
+                    <div class="container starFavo">
+                        <img src='/assets/icon/favo_star.png' class="img-fluid" style="margin-top:3px;height:20px;" />
+                    </div>
+
+                    <div class="container paDateName" style="width:150px;font-family: inter_bold;margin-top:3px;"><span>{{data.fullname}}</span></div>
+                    <div style="width:87%;font-family: inter_bold;" class="paMails"><span>{{data.message}}</span></div>
+                    <div style="width:12%;color:#76707A;" class="paDateName">
+                        <span style="float:right;">
+                            {{  
+                                dateCalcu(data.timeDate.split(',')[1].split(' ')[1], 
+                                data.timeDate.split(',')[1].split(' ')[0], 
+                                data.timeDate.split(',')[0])
+                            }}
+                        </span>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+
+
+        <!--___________________________________Appointment and INQUERY MESSAGE_________________________________-->
+        <div *ngIf="condition_selectMails" style="padding:0px 10px 0px 10px;">
+            <!--_________________HEADER______________________-->
+            <div style="display: flex;justify-content: space-between;">
+
+                <!--____Email____-->
+                <div>
+                    <span class="sEmail">{{arr_selectedMail[0]}}</span>
+                </div>
+
+                <!--____Date time and favorite____-->
+                <div style="display:flex;">
+                    <div style="margin-right:10px;">
+                        <span class="sDate">{{arr_selectedMail[1]}}</span>
+                    </div>
+                    <div style="display: flex;align-items: center;">
+                        <img src="/assets/icon/favo_star.png" class="img-fluid" style="height:23px;" />
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom:40px;"><span style="color:#5E5E5E;">to me</span></div>
+
+
+            <div class="divMessage">
+
+                <!--________________THIS IS FOR APPOINTMENT___________________-->
+                <div *ngIf="condition_InqueryAppointment">
+                    <p class="pAhC">{{arr_selectedMail[3]}}:</p>
+
+                    <p class="paInfo">Full name: {{arr_selectedMail[4]}}</p>
+                    <p class="paInfo">Email: {{arr_selectedMail[5]}}</p>
+                    <p class="paInfo">Number of Guest: {{arr_selectedMail[6]}}</p>
+                    <p class="paInfo">Contact number: {{arr_selectedMail[7]}}</p>
+                    <p class="paInfo">Date Arrival: {{arr_selectedMail[10]}}</p>
+                    
+
+                    <p class="paMessage">{{arr_selectedMail[8]}}</p>
+                    
+                    <!--______________Accepted or Decline_______________-->
+                    <div style="display:flex;" *ngIf="condition_newMailSelected === 'new'">
+                        <button class="btn btn-primary btns btnsA" (click)="funcAcceptDecline(true)">Accept</button>
+                        <div style="display: flex;align-items: center;margin-right:10px;margin-left:10px;">
+                            <p style="margin:0%;">or</p>
+                        </div>
+                        <button class="btn btn-primary btns btnsD" (click)="funcAcceptDecline(false)">Decline</button>
+                    </div>
+
+                    <!--______________POSTED ACCEPTED OR NOT______________-->
+                    <div *ngIf="condition_newMailSelected !== 'new'">
+                        <div *ngIf="condition_newMailSelected === 'true'">
+                            <button class="btn btn-primary btnsAT">Accepted</button>
+                        </div>
+
+                        <div *ngIf="condition_newMailSelected === 'false'">
+                            <button class="btn btn-primary btnsDT">Declined</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <!--__________________THIS IS FOR INQUERY MESSAGE__________________-->
+                <div *ngIf="!condition_InqueryAppointment">
+                    <p class="pAhC">{{arr_selectedMail[3]}}</p>
+
+                    <p class="paInfo">Full name: {{arr_selectedMail[4]}}</p>
+                    <p class="paInfo">Email: a{{arr_selectedMail[5]}}</p>
+
+
+                    <p class="paMessage">{{arr_selectedMail[8]}}</p>
+                </div>
+
+        </div>
+
+        <!--____________LOADING______________-->
+        <div *ngIf="condition_loading" >
+            <span>{{st_LoadingNoData}}</span>
+        </div>
+    </div>
+</div>

@@ -15,9 +15,9 @@ import { McRouteModule } from './main_compo/mc-route/mc-route.module';
 import { AdRouteModule } from './admin/ad-route/ad-route.module';
 import { AdGuardGuard } from './guard/adG/ad-guard.guard';
 import { McGuardGuard } from './guard/mcG/mc-guard.guard';
+import { NotFoundComponent } from './notFound/not-found.component';
 
 import * as firebase from 'firebase/app';
-import { NotFoundComponent } from './notFound/not-found.component';
 firebase.initializeApp(environment.firebase);
 
 
