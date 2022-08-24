@@ -583,8 +583,8 @@ disableMonths(): void{
       if(this.checkBoxsAM.length > 0){
         let arrTime_tmpo = this.AM_avail;
 
-        for await(let index of this.checkBoxsAM){
-          arrTime_tmpo.splice(index);
+        for await(let index of this.checkBoxsAM){ 
+          arrTime_tmpo = arrTime_tmpo.filter((time) => time !== this.AM_avail[index]);
         }
 
         this.AM_avail = arrTime_tmpo.sort();
@@ -592,12 +592,12 @@ disableMonths(): void{
       }
 
       if(this.checkBoxsPM.length > 0){
-        let arrTime_tmpo = this.PM_avail;
+        let arrTime_tmpos = this.PM_avail;
 
         for await(let index of this.checkBoxsPM){
-          arrTime_tmpo.splice(index);
+          arrTime_tmpos = arrTime_tmpos.filter((time) => time !== this.PM_avail[index]);
         }
-        this.PM_avail = arrTime_tmpo.sort();
+        this.PM_avail = arrTime_tmpos.sort();
       }
 
     }

@@ -209,6 +209,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.condition_clicked_signup = condition;
     this.condition_login_signup_clicked = 'login';
     this.condition_menu = false;
+    this.condition_adminNotAdmin = false;
     
     this.errorLoginArr = new Array<Array<any>>(['email', false], ['password', false]);
     this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 

@@ -100,12 +100,12 @@
 </div>
 
 
-<!--______________________Login Singup______________________-->
+<!--______________________Login, Singup and Forgot password______________________-->
 
-<div class="container-fluid containerloginSignup" *ngIf="condition_clicked_signup === 'true'"  >
+<div class="container-fluid containerloginSignup" (click)="funcSignIn('false')" *ngIf="condition_clicked_signup === 'true'"  >
 
     <!--________LOG IN__________-->
-    <div *ngIf="condition_login_signup_clicked === 'login'" class="logindiv">
+    <div *ngIf="condition_login_signup_clicked === 'login'" class="logindiv" (click)="$event.stopPropagation()" >
         <p class="paX" (click)="funcSignIn('false')">X</p>
         <p class="paLoginSignup">Login</p>
 
@@ -149,17 +149,17 @@
 
         <!--___Forgot and Create one___-->
         <div style="margin-top:20px;">
-            <p class="paForgot" (click)="createOneForgotLogin('forgotpassword')">Forgot password?</p>
+            <p class="paForgot" (click)="createOneForgotLogin('forgotpassword');$event.stopPropagation()">Forgot password?</p>
 
             <p style="text-align: center;margin:10px 0px 10px 0px;"><span class="padontHave">Don't have one? </span> 
-                <span class="paCreate" (click)="createOneForgotLogin('sign-up')">Create one</span></p>
+                <span class="paCreate" (click)="createOneForgotLogin('sign-up');$event.stopPropagation()">Create one</span></p>
         </div>
     </div>
 
 
 
     <!--________FORGOT PASSWORD__________-->
-    <div *ngIf="condition_login_signup_clicked === 'forgotpassword'" class="forgotDiv">
+    <div *ngIf="condition_login_signup_clicked === 'forgotpassword'" class="forgotDiv" (click)="$event.stopPropagation()">
 
         <p class="paX" (click)="funcSignIn('false')">X</p>
         <p class="paForgotPass">Forgot Password</p>
@@ -207,7 +207,7 @@
 
 
     <!--________CHANGE PASSWORD__________-->
-    <div *ngIf="condition_login_signup_clicked === 'changePassword'" class="divchangePass">
+    <div *ngIf="condition_login_signup_clicked === 'changePassword'" class="divchangePass" (click)="$event.stopPropagation()">
         <p class="paX" (click)="funcSignIn('false')">X</p>
         <p class="paForgotPass">Change Password</p>
 
@@ -232,7 +232,7 @@
 
 
     <!--________SUCCESS CHANGE PASSWORD________-->
-    <div *ngIf="condition_login_signup_clicked === 'successChange'" class="divSuccesschangePass">
+    <div *ngIf="condition_login_signup_clicked === 'successChange'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
         <div>
             <p class="paSuccessChange">Successfully changing your password!</p>
             <button class="btn btn-primary passwordChange" (click)="successChange()">Close</button>
@@ -242,7 +242,7 @@
 
     
     <!--________SIGN UP__________-->
-    <div *ngIf="condition_login_signup_clicked === 'sign-up'" class="signUpdiv">
+    <div *ngIf="condition_login_signup_clicked === 'sign-up'" class="signUpdiv" (click)="$event.stopPropagation()">
         <p class="paX" (click)="funcSignIn('false')">X</p>
         <p class="paLoginSignup">Sign up</p>
 
