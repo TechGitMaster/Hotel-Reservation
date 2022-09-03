@@ -1,34 +1,4 @@
 
-/* ________________________Font from ttf extension_________________________ */
-
-@font-face {
-    font-family: inter_regular;
-    src: url(/assets/Inter-Regular.ttf);
-}
-
-@font-face {
-    font-family: inter_medium;
-    src: url(/assets/Inter-Medium.ttf);
-}
-
-@font-face {
-    font-family: inter_semibold;
-    src: url(/assets/Inter-SemiBold.ttf);
-}
-
-@font-face {
-    font-family: inter_bold;
-    src: url(/assets/Inter-Bold.ttf);
-}
-
-
-@font-face {
-    font-family: inria_serif_bold;
-    src: url(/assets/InriaSerif-Bold.ttf);
-}
-
-
-/*__________________________________________________________________________*/
 
 
 .divHeader{

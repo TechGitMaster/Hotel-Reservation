@@ -43,7 +43,7 @@ export interface mails{
     timeDate: string,
     favorite: boolean,
     acceptedNot: string,
-    appointmentNot: boolean,
+    appointmentNot: string,
     newNot: boolean,   
 }
 
@@ -52,6 +52,7 @@ export interface schedAppointment{
     IDS: string,
     fullname: string,
     email: string,
+    reserved_email: string,
     numGuest: string,
     contact_num: string,
     message: string,
@@ -78,4 +79,54 @@ export interface calendarApp{
     Description: string,
     StartTime: Date,
     EndTime: Date
+}
+
+export interface room{
+    _id: string,
+    nameRoom: string,
+    addInfo: string,
+    defaultPrice: string,
+    goodPersons: string,
+    pricePersons: string,
+    typeRoom: boolean,
+    imgArr: Array<Array<string>>,
+
+    account_id: string,
+    checkin_date: string,
+    checkout_date: string,
+    acquired_persons: string,
+    persons_price: string,
+    total_price: string,
+    first_name: string,
+    last_name: string,
+    phone_number: string,
+    email: string,
+    image_transaction: Array<Array<any>>,
+    transaction_date: string,
+    confirmation_date: string,
+
+    confirmNot: boolean,
+}
+
+export interface reservation{
+    room_id: string,
+    email_id: string,
+
+    img_room: Array<string>,
+    name_room: string,
+
+    checkin_date: string,
+    checkout_date: string,
+    acquired_persons: string,
+    persons_price: string,
+    total_price: string,
+    first_name: string,
+    last_name: string,
+    phone_number: string,
+    email: string,
+    image_transaction: Array<Array<string>>,
+    confirmation_date: string,
+    transaction_date: string,
+                
+    confirmNot: string
 }

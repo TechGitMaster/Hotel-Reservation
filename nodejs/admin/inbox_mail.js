@@ -34,6 +34,7 @@ router.get('/inboxSaving_user', middleware_user, (req, res) => {
         appointmentNot: req.query.appointmentNot,
         newNot: true
     }).save().then(() => {
+        //send email to the admin_____________________________________
         res.json({ response: 'success' });
     });
 
@@ -49,21 +50,23 @@ function middleware_user(req, res, next){
         const token = auth.split(' ')[1];
         if(token !== ''){
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
-                if(err) res.sendStatus(401);
-
-                data_login.findOne({ email: result.email }).then((dataRest) => {
-                    if(dataRest != null){
-                        if(dataRest.admin !== 'admin'){
-                            req.email = dataRest.email;
-                            req.condition = true;
-                            next();
+                if(err) {
+                    next();
+                }else{
+                    data_login.findOne({ email: result.email }).then((dataRest) => {
+                        if(dataRest != null){
+                            if(dataRest.admin !== 'admin'){
+                                req.email = dataRest.email;
+                                req.condition = true;
+                                next();
+                            }else{
+                                res.sendStatus(401);
+                            }
                         }else{
                             res.sendStatus(401);
                         }
-                    }else{
-                        res.sendStatus(401);
-                    }
-                }); 
+                    });
+                } 
             });
         }else{
             next();
@@ -117,7 +120,7 @@ router.post('/saveNotFavorite', middleware_admin, async (req, res) => {
             message: data.message,
             dateArrival: data.dateArrival,
             timeDate: data.timeDate,
-            favorite: data.favorite,
+            favorite: true,
             acceptedNot: data.acceptedNot,
             appointmentNot: data.appointmentNot
         }).save().then(re => {  
@@ -156,7 +159,6 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
         data = await favo_col.findOne({ IDS: id });
     }
 
-
     //accepted__________________
     if(condition === 'true'){
         let find = null;
@@ -186,6 +188,7 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
                             IDS: id,
                             fullname: data.fullname,
                             email: (data.email !== '' ? data.email: data.reserved_email),
+                            reserved_email: data.reserved_email,
                             numGuest: data.numGuest,
                             contact_num: data.contact_num,
                             message: data.message,

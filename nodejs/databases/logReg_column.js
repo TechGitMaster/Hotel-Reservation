@@ -19,7 +19,7 @@ module.exports = (condition) => {
                 password: { type: String, required: false },
                 iv: { type: String, required: false },
                 gender: { type: String, required: false },
-            }, { timestamps: true });
+            });
 
         break;
         case "login_accounts":
@@ -30,7 +30,7 @@ module.exports = (condition) => {
                 iv: { type: String, required: false },
                 admin: { type: String, required: true },
                 OTP_code: { type: String, required: false }
-            }, { timestamps: true });
+            });
             
         break;
     }

@@ -1,0 +1,438 @@
+
+
+.div_createdRooms{
+    max-width:350px;
+    background:white;
+    border-right: 4px solid #F1F1F1;
+    border-bottom: 4px solid #F1F1F1;
+    padding:0%;
+}
+
+.header{
+    width:95%;
+    min-height:60px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    background: #F9FAFD;
+    border-top: 3px solid #F1F1F1;
+    border-bottom: 3px solid #F1F1F1;
+    border-left: 3px solid #F1F1F1;
+    margin-right:-4px;
+    margin-top:20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom:20px;
+}
+
+.paCreatedRC{
+    font-family: inter_bold;
+    color:black;
+    font-size:17px;
+}
+
+.paSeeAll{
+    color:#3F51B5;
+    font-family: inter_regular;
+    font-size:16px;
+    text-decoration:underline;
+    text-align: right;
+    cursor: pointer;
+    padding-right:10px;
+}
+
+.btnSeeA{
+    width:70%;
+    background:#493D3D;
+    border:none;
+    border-radius:10px;
+    color:white;
+    font-family: inter_semibold;
+    padding:5px;
+    font-size:15px;
+}
+
+.divRooms{
+    margin-top:10px;
+    padding:10px;
+}
+
+.divRoomSection{
+    border-radius:10px;
+    overflow: hidden;
+    border: 3px solid #F1F1F1;
+    margin-top:10px;
+    background:white;
+}
+
+.divRoomSectionSee{
+    max-width: 300px;
+    border-radius:10px;
+    overflow: hidden;
+    border: 4px solid #e1e1e1;
+    margin-top:10px;
+    margin-right:15px;
+    display:inline-block;
+    padding:0%;
+}
+
+.titleRoom{
+    font-family: inter_bold;
+    font-size:15px;
+    margin:0%;
+}
+
+.typeRoomCreated{
+    font-family: inter_regular;
+    font-size:14px;
+}
+
+.paRe{
+    font-family: inter_bold;
+    font-size:15px;
+    margin:0%;
+}
+
+.paSeeDetails{
+    font-family: inter_regular;
+    font-size:15px;
+    color:#3F51B5;
+    text-decoration:underline;
+    cursor: pointer;
+}
+
+.paInfo{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0%;
+    position: relative;
+    top:15px;
+}
+
+.paNoreserved{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0%;
+}
+
+.noRooms{
+    font-family: inter_semibold;
+    font-size:16px;
+    text-align: center;
+}
+
+.btnEdit{
+    border:none;
+    border-radius:20px;
+    background:#FFD700;
+    color:black;
+    font-family: inter_regular;
+    width:100%;
+    font-size:14px;
+}
+
+
+.addRoomsDiv{
+    width:100%;
+    height:100%;
+    padding:20px;
+}
+
+.paAddTitle{
+    font-family: inter_semibold;
+    font-size:24px;
+    margin:0%;
+    text-align: center;
+}
+
+.painfoTitleMe{
+    font-family: inter_regular;
+    font-size:15px;
+    text-align: center;
+}
+
+.paReserved{
+    font-family: inter_bold;
+    font-size:17px;
+    letter-spacing: 1px;
+    margin-top:2px;
+}
+
+.imgfillarrow{
+    height:23px;
+    cursor: pointer;
+}
+
+.imgfillarrowrotate{
+    height:23px;
+    cursor: pointer;
+    transform: rotate(-90deg);
+}
+
+.paNoone{
+    font-family: inter_regular;
+    font-size:15px;
+}
+
+.sectionAdd{
+    margin-top:15px;
+    padding:15px;
+    border-radius:10px;
+    border: 3px solid #F1F1F1;   
+    background: white; 
+}
+
+.sectionReservedBy{
+    margin-top:15px;
+    padding:15px;
+    border-radius:10px;
+    border: 2px solid rgb(158, 158, 158);   
+    background: white; 
+}
+
+.divDetails{
+    background:#493D3D;
+    border-radius:10px;
+    padding:20px;
+}
+
+.divCheckInOut{
+    max-width: 170px;
+    border-radius:10px;
+    border:1px solid #FFD700;
+    padding:20px;
+}
+
+.paCheckINOut{
+    margin:0%;
+    text-align: center;
+    font-size:14px;
+}
+
+.paNumbCheckInOut{
+    margin:0%;
+    text-align: center;
+    font-family: inter_regular;
+    font-size:30px;
+    color:white;
+}
+
+.pdetails{
+    padding:10px;
+    font-family: inter_semibold;
+    font-size:17px;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
+.paDetailsMiddle{
+    display: flex;
+    justify-content: space-between;
+    color:white;
+    font-family: inter_regular;
+    padding:5px 10px 2px 10px;
+    font-size:14px;
+}
+
+.divForAdded{
+    max-height:300px;
+    overflow: auto;
+}
+
+.imageAddDiv{
+    padding:15px;
+    border: 3px solid #F1F1F1;
+    margin-bottom:10px;
+}
+
+.paImageS, .paRate, .paImageC{
+    font-family: inter_semibold;
+    font-size:19px;
+    letter-spacing: 1px;
+}
+
+.addImageR{
+    width:146px;
+    height:130px;
+    border-radius:5px;
+    overflow:hidden;
+    display: inline-block;
+    margin-right:10px;
+    margin-top:5px;
+    position: relative;
+}
+
+.paUpload{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0px 0px 10px 0px;
+    text-align: center;
+}
+
+.deleteImage{
+    height:100%;
+    width:100%;
+    background:rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;
+}
+
+.imgD{
+    margin-right:10px;
+    border-radius:10px;
+    padding:5px;
+    background:#18e318;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.deleteD{
+    border-radius:10px;
+    padding:5px;
+    background:#DC3545;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.disImageDelete{
+    display: none;
+}
+
+.addImageR:hover > .disImageDelete{
+    display: block;
+}
+
+.paRInfoT{
+    font-family:inter_semibold;
+    font-size:19px;
+    letter-spacing: 1px;
+    margin:20px 0px 0px 0px;
+}
+
+.paMeInfoT{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0px 0px 15px 0px;
+}
+
+.paLMes{
+    font-family: inter_regular;
+    font-size:14px;
+}
+
+.labels{
+    font-family: inter_medium;
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.forminput{
+    height:35px;
+    border-radius: 10px;
+    padding:10px;
+    font-size:15px;
+    font-family: inter_regular;
+}
+
+.forminputs{
+    height:35px;
+    border-radius: 10px;
+    padding:10px;
+    font-size:15px;
+    font-family: inter_regular;
+    background:rgb(246, 246, 246);
+}
+
+.fieldA{
+    padding:0%;
+    margin-right:20px;
+    margin-top:10px;
+}
+
+.fieldR{
+    max-width:300px;
+    padding:0%;
+}
+
+.paAddtionInfo{
+    font-family: inter_medium;
+    font-size:15px;
+    margin:10px 0px 5px 0px;
+}
+
+.textareas{
+    width:100%;
+    height:200px;
+    resize: none;
+    font-size:15px;
+    font-family: inter_regular;
+}
+
+.divPriceRate{
+    border: 3px solid #F1F1F1;
+    padding:15px;
+    margin-bottom: 10px;
+}
+
+.equ{
+    display: inline-block;
+    font-family: inter_regular;
+    font-size:17px;
+    margin:0px 10px 0px 10px;
+}
+
+.btnCreate{
+    margin:10px 0px 10px 0px;
+    width:40%;
+    background:#FFD700;
+    border:none;
+    border-radius:10px;
+    padding:5px;
+    font-size:15px;
+    font-family: inter_medium;
+    color:black;
+    padding:10px 0px 10px 0px;
+}
+
+.btnSaveDetails, .btnDelete{
+    margin:10px 10px 10px 0px;
+    width:30%;
+    border:none;
+    border-radius:10px;
+    padding:5px;
+    font-size:15px;
+    font-family: inter_medium;
+    padding:10px 0px 10px 0px;
+}
+
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
+}
+
+.seeAllroomDiv{
+    width:100%;
+    padding:20px 40px 20px 40px;
+}
+
+.paSeeRoomsAll{
+    text-align: center;
+    font-family: inter_semibold;
+    font-size:25px;
+    margin:0%;
+}
+
+.imgSeeAllRooms{
+    height:20px;
+    cursor:pointer;
+    position: absolute;
+    top:10px;
+}

@@ -123,7 +123,7 @@ export class SchedulesComponent implements OnInit {
               id: this.data_schedAppointment[count]._id,
               Subject: "Appointment",
               Description: `<span>Full name: ${this.data_schedAppointment[count].fullname}</span><br/>
-                            <span>Email: ${this.data_schedAppointment[count].email}</span><br/>
+                            <span>Email: ${this.data_schedAppointment[count].reserved_email}</span><br/>
                             <span>Number of guest: ${this.data_schedAppointment[count].numGuest}</span><br/>
                             <span>Contact number: ${this.data_schedAppointment[count].contact_num}</span><br/><br/>
                             <span>${this.data_schedAppointment[count].message}</span>`,

@@ -228,24 +228,89 @@ router.get('/checking_token_refresh', middleware, async (req, res) => {
 });
 
 
+
+//get the Information_______________________________________________________________________
+router.post('/getInformation', middleware, async (req, res) => {
+    const { adminNot } = req.body;
+    const token = req.token;
+
+
+    const data = await data_registration.findOne({ email: token.email});
+    const passwords = await decryptData(data.iv, data.password);
+
+    const arr_data = [["First name", data.firstname], ["Last name", data.lastname], ["Email", data.email], ["Gender", data.gender],
+    ["Password", passwords.password ]];
+
+
+    if(adminNot === 'admin'){
+        if(token.adminNot === 'admin'){
+            res.json({ response: 'success', data: arr_data });
+        }else{
+            res.sendStatus(401);
+        }
+    }else if(adminNot === 'not-admin'){
+        if(token.adminNot === 'not-admin'){
+            res.json({ response: 'success', data: arr_data });
+        }else{
+            res.sendStatus(401);
+        }
+    }
+
+});
+
+
+
+//Checking password for changing Password____________________________________________________
+router.post('/checkingPassword', middleware, async(req, res) => {
+    const { currPassword, adminNot } = req.body;
+    const token = req.token;
+
+    const data = await data_login.findOne({ email: token.email });
+    const pass = await decryptData(data.iv, data.password);
+
+    if(adminNot === 'admin'){
+        if(token.adminNot === 'admin'){
+            res.json({ response: pass.password === currPassword ? 'success':'not', email: token.email });
+        }else{
+            res.sendStatus(401);
+        }
+    }else if(adminNot === 'not-admin'){
+        if(token.adminNot === 'not-admin'){
+            res.json({ response: pass.password === currPassword ? 'success':'not', email: token.email });
+        }else{
+            res.sendStatus(401);
+        }
+    }
+
+
+});
+
+
+
+
+
+
 //Middleware checking__________________________________________________________________
 function middleware(req, res, next){
-    var bearer = req.headers['authorization'];
-    if(typeof bearer !== 'undefined'){
-        var get_token = bearer.split(' ')[1];
-        if(get_token === '' && get_token === ' ') res.sendStatus(401);
+    try{
+        let bearer = req.headers['authorization'];
+        if(typeof bearer !== 'undefined'){
+            var get_token = bearer.split(' ')[1];
+            if(get_token === '' && get_token === ' ') res.sendStatus(401);
+            jwt.verify(get_token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
+                if(err){
+                    res.sendStatus(401);
+                }else{
+                    req.token = result;
+                    next();
+                }
+            });
 
-        jwt.verify(get_token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
-            if(err){
-                res.sendStatus(401);
-            }else{
-                req.token = result;
-                next();
-            }
-        });
-
-    }else{
-        res.sendStatus(403);
+        }else{
+            res.sendStatus(403);
+        }
+    }catch(err){
+        console.log(err);
     }
 }
 

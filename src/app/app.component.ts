@@ -102,8 +102,8 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     //Forms_____________________________________________________
     this.formGroup_login = this.formBuilder.group({
-      email: [''],
-      password: ['']
+      email: ['kyleAdmin375@gmail.com'],
+      password: ['YF9ac466i1AwQwkb@']
     });
 
     this.formGroup_signup = this.formBuilder.group({

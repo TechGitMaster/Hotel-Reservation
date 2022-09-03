@@ -621,7 +621,7 @@
 
 .divSuccesschangePass{
     width:500px;
-    min-height:250px;
+    max-height:250px;
     padding:10px 20px 10px 20px;
     background:white;
     border-radius:10px;

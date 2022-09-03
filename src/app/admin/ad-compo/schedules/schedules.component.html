@@ -118,7 +118,9 @@
                     <div style="display:flex;justify-content: space-between;align-items:center;margin-bottom:20px;">
                         <p class="paAvail" style="padding:0px;margin:0%;">Available Time:</p>
                         <div *ngIf="condition_delete">
-                            <button class="btn btn-danger btnD" (click)="deleteCheckBox()">Delete</button>
+                            <div (click)="deleteCheckBox()" class="delete_div">
+                                <img src="/assets/icon/trash_white.png" class="img-fluid" style="height:30px;" />
+                            </div>
                         </div>
                     </div>
 

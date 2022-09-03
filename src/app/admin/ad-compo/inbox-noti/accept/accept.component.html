@@ -8,9 +8,9 @@
                 <div><input type="checkbox" class="form-check-input checksBox checkBoxParent" (click)="checkAllbox($event)"  /></div>
             </div>
 
-            <!--_________Selected mails___________-->
+            <!--__________Arrow back___________-->
             <div *ngIf="condition_selectMails" style="margin-right:15px;cursor: pointer;">
-                <img src="/assets/icon/arrow_back.png" class="img-fluid" style="height:15px;" (click)="condition_selectMails = false" />
+                <img src="/assets/icon/arrow_back.png" class="img-fluid" style="height:15px;" (click)="condition_selectMails = false; this.arr_Checked = [];" />
             </div>
 
             <!--_________Trash Icon___________-->
@@ -133,12 +133,12 @@
                 </div>
             </div>
 
-                <!--__________________THIS IS FOR INQUERY MESSAGE__________________-->
+                <!--__________________THIS IS FOR INQUERY AND RESERVATION MESSAGE__________________-->
                 <div *ngIf="!condition_InqueryAppointment">
                     <p class="pAhC">{{arr_selectedMail[3]}}</p>
 
                     <p class="paInfo">Full name: {{arr_selectedMail[4]}}</p>
-                    <p class="paInfo">Email: a{{arr_selectedMail[5]}}</p>
+                    <p class="paInfo">Email: {{arr_selectedMail[5]}}</p>
 
 
                     <p class="paMessage">{{arr_selectedMail[8]}}</p>

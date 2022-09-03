@@ -15,9 +15,12 @@ import { TrashComponent } from '../ad-compo/inbox-noti/trash/trash.component';
 import { InboxMainComponent } from '../ad-compo/inbox-noti/inbox-main/inbox-main.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from 'src/app/INTERCEPTOR/Interceptor';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { ScheduleAllModule, View } from '@syncfusion/ej2-angular-schedule';
 import { DayService, WeekService, WorkWeekService, MonthService, MonthAgendaService} from '@syncfusion/ej2-angular-schedule';
+import { ReservationComponent } from '../ad-compo/reservation/reservation.component';
 
 @NgModule({
   declarations: [
@@ -30,10 +33,12 @@ import { DayService, WeekService, WorkWeekService, MonthService, MonthAgendaServ
     AcceptComponent,
     DeclineComponent,
     TrashComponent,
-    InboxMainComponent
+    InboxMainComponent,
+    ReservationComponent
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     AdRouteRoutingModule,
     ScheduleAllModule
   ],

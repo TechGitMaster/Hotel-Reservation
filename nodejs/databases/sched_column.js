@@ -11,13 +11,14 @@ const mongooseSchema = (name_column) => {
                 IDS: { type: String, required: true },
                 fullname: { type: String, required: true },
                 email: { type: String, requires: true },
+                reserved_email: { type: String, required: true },
                 numGuest: { type: String, requires: true },
                 contact_num: { type: String, requires: true },
                 message: { type: String, requires: true },
                 timeDate: { type: String, requires: true },
                 date: { type: String, requires: true },
-                appointmentNot: { type: Boolean, requires: true }
-            }, { timeStamp: true });
+                appointmentNot: { type: String, requires: true }
+            });
         break;
         case "admin_timeAMPM_Date":
             schema_handle = new Schema({
@@ -25,7 +26,7 @@ const mongooseSchema = (name_column) => {
                 AM: { type: [], required: false },
                 PM: { type: [], required: false },
                 DATE: { type: [], required: false }
-            }, { timeStamp: true });
+            });
         break;
         case "accepted_MailTime":
             schema_handle = new Schema({
@@ -33,7 +34,7 @@ const mongooseSchema = (name_column) => {
                 timeDate: { type: String, required: true },
                 time: { type: String, required: true },
                 date: { type: String, required: true },
-            }, { timeStamp: true });
+            });
         break;
     }
 

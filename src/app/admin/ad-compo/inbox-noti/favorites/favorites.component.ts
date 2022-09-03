@@ -153,15 +153,16 @@ export class FavoritesComponent implements OnInit {
 
       this.condition_newMailSelected = data.acceptedNot;
 
-      this.condition_InqueryAppointment = data.appointmentNot;
+      this.condition_InqueryAppointment = data.appointmentNot === 'appointment' ? true: false;
 
       var email = ( data.email === '' ? data.reserved_email: data.email);
       var arr_dateTime = data.timeDate.split(',');
       var time = arr_dateTime[0];
       var date = arr_dateTime[1];
 
-      this.arr_selectedMail = new Array<any>(email, 
-      `${date}, ${time}`, String(data.favorite), (data.appointmentNot ? 'Appointment':'Inquery Message'), data.fullname, email, 
+      this.arr_selectedMail = new Array<any>(data.reserved_email !== 'Bot message' ? email: data.reserved_email, 
+      `${date}, ${time}`, String(data.favorite), (data.appointmentNot === 'appointment' ? 'Appointment':
+      (data.appointmentNot === 'inquery' ? 'Inquery Message': 'Reservation')), data.fullname, data.reserved_email, 
       data.numGuest, data.contact_num, data.message, number, data.dateArrival);
 
       this.condition_checkedAll = false;
