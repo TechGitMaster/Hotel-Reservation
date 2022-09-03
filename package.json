@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm-run-all -p server client",
+    "start": "node server.js",
     "client": "ng serve --proxy-config proxy.config.json --live-reload false",
     "server": "supervisor server.js",
     "heroku-postbuild": "ng build --prod",
