@@ -21,7 +21,7 @@ export class MainServiceService {
   }
 
   checkingToken(): Observable<any>{
-    return this.http.get('/api/checking_token_refresh');
+    return this.http.get('/checking_token_refresh');
   }
 
   //Google login________________________________________________
@@ -63,48 +63,48 @@ export class MainServiceService {
 
   //checking all admin passwords____________________________________
   checkingAdminpassword(adminPassword: string): Observable<any>{
-    return this.http.post<any>('/api/checkingAdminPassword', { adminPassword: adminPassword });
+    return this.http.post<any>('/checkingAdminPassword', { adminPassword: adminPassword });
   }
 
   //checking email________________________________________________
   checkingEmail(email: string): Observable<any>{
-    return this.http.get('/api/emailCheck', { params: { email: email } });
+    return this.http.get('/emailCheck', { params: { email: email } });
   }
 
   //login__________________________________________________________
   login(data: login): Observable<any>{
-    return this.http.post<any>('/api/login', { data: data, condition: 'norms-login' });
+    return this.http.post<any>('/login', { data: data, condition: 'norms-login' });
   }
 
   //login__________________________________________________________
   gmailLogin(data: login): Observable<any>{
-    return this.http.post<any>('/api/login', { data: data, condition: 'gmail-login' });
+    return this.http.post<any>('/login', { data: data, condition: 'gmail-login' });
   }
 
   //register__________________________________________________________
   register(data: register, adminNot: string): Observable<any>{
-    return this.http.post<any>('/api/registration', { data: data, fullName: '', adminNot: adminNot, condition: 'norms-register' });
+    return this.http.post<any>('/registration', { data: data, fullName: '', adminNot: adminNot, condition: 'norms-register' });
   }
   
   //Gmail register____________________________________________________
   gmailRegister(data: register, fullname: string): Observable<any>{
-    return this.http.post<any>('/api/registration', { data: data, fullName: fullname, adminNot: 'not-admin', condition: 'gmail-register' });
+    return this.http.post<any>('/registration', { data: data, fullName: fullname, adminNot: 'not-admin', condition: 'gmail-register' });
   }
 
 
   //SEND OTP_________________________________________________________
   sendOTP(email: string): Observable<any>{
-    return this.http.post<any>('/api/forgotPasswordMail', { to: email });
+    return this.http.post<any>('/forgotPasswordMail', { to: email });
   }
 
   //Verifying code___________________________________________________
   verifyCode(email: string, code: string): Observable<any>{
-    return this.http.get('/api/otpCode', { params: { email: email, otp_code: code }});
+    return this.http.get('/otpCode', { params: { email: email, otp_code: code }});
   }
 
   //Change Password___________________________________________________
   changePassword(email: string, newPassword: string): Observable<any>{
-    return this.http.post<any>('/api/changePassword', { email: email, newPassword: newPassword });
+    return this.http.post<any>('/changePassword', { email: email, newPassword: newPassword });
   }
   
 }
