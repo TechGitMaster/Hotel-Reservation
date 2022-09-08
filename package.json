@@ -6,7 +6,7 @@
     "start": "node server.js",
     "client": "ng serve --proxy-config proxy.config.json --live-reload false",
     "server": "supervisor server.js",
-    "heroku-postbuild": "npm run build",
+    "heroku-postbuild": "ng build --prod",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
