@@ -82,11 +82,19 @@
                                   <button class="btn btn-danger btnActionNew" style="width:50%;" (click)="accept_Decline(indexes, false)">Decline</button>
                                 </div>
 
-                                <button *ngIf="data.confirmNot === 'true' && str_radioCondition === 'all'" 
+                                <button *ngIf="(data.confirmNot === 'true' || data.confirmNot === 'true false') && str_radioCondition === 'all'" 
                                     class="btn btn-success btnActionNew" style="width:60%;">Accepted</button>
+
+                                <button *ngIf="data.confirmNot === 'true false' && str_radioCondition === 'all'" 
+                                    class="btn btn-primary btnActionNew" style="width:60%;">Canceled</button>
+
                                 <button *ngIf="data.confirmNot === 'false' && str_radioCondition === 'all'" 
                                     class="btn btn-danger btnActionNew" style="width:60%;">Declined</button>
 
+
+                                <button *ngIf="data.confirmNot === 'true false' && str_radioCondition !== 'all'"
+                                    class="btn btn-primary btnActionNew" style="width:60%;">Canceled</button>
+                                    
                                 <button class="btn btn-primary btnAction" (click)="info(indexes)" [ngStyle]="{'width':str_radioCondition === 'all' ? '32%':'90%'}">Info</button>
                             </div>
 

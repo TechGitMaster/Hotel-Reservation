@@ -155,8 +155,16 @@ export class AcceptComponent implements OnInit {
 
       var email = ( data.email === '' ? data.reserved_email: data.email);
       var arr_dateTime = data.timeDate.split(',');
-      var time = arr_dateTime[0];
       var date = arr_dateTime[1];
+      var Time = arr_dateTime[0].split(":");
+      var time =  '';
+      if(parseInt(Time[0]) < 10){
+        time = `0${parseInt(Time[0])}:${Time[1]}`;
+      }else if(parseInt(Time[0]) < 13){
+        time = arr_dateTime[0];
+      }else{
+        time = `0${parseInt(Time[0])-12}:${Time[1]}`;
+      }
 
       this.arr_selectedMail = new Array<any>(data.reserved_email !== 'Bot message' ? email: data.reserved_email, 
       `${date}, ${time}`, String(data.favorite), (data.appointmentNot === 'appointment' ? 'Appointment':

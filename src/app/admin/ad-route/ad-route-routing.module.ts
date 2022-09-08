@@ -8,9 +8,9 @@ import { SchedulesComponent } from '../ad-compo/schedules/schedules.component';
 import { AdminComponent } from '../admin/admin.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/ad/admin/reservations', pathMatch: 'full' },
+  { path: '', redirectTo: '/ad/admin/inbox-mail', pathMatch: 'full' },
   { path: 'admin', component: AdminComponent, children: [
-    { path: '', redirectTo: 'reservations', pathMatch: 'full' },
+    { path: '', redirectTo: 'inbox-mail', pathMatch: 'full' },
     { path: 'inbox-mail', component: InboxMainComponent },
     { path: 'schedules', component: SchedulesComponent },
     { path: 'rooms', component: RoomsComponent },

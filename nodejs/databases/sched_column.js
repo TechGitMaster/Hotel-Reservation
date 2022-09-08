@@ -9,6 +9,7 @@ const mongooseSchema = (name_column) => {
         case "admin_calendarsched":
             schema_handle = new Schema({
                 IDS: { type: String, required: true },
+                usermail_id: { type: String, required: false },
                 fullname: { type: String, required: true },
                 email: { type: String, requires: true },
                 reserved_email: { type: String, required: true },

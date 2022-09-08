@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { dataRooms } from '../../objects';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { MainServiceService } from 'src/app/main_serivce/main-service.service';
+import { getRoomsLandpage } from '../../objects';
 
 @Component({
   selector: 'app-rooms',
@@ -8,46 +11,57 @@ import { dataRooms } from '../../objects';
 })
 export class RoomsComponent implements OnInit {
 
-  handle_data_rooms!: dataRooms;
+  constructor(private service: MainServiceService, private router: Router) { }
 
-  sample_data: Array<Array<any>> = 
-    new Array<Array<any>>( [0, 'Studio Type with Balcon', 'Located in General Roxas Ave, Cubao, Quezon City, Metro Manila.',
-    'Manhattan Plaza Tower 1', '11-D', '1 Bedroom Studio type', '30.20 SQM', '', new Array<string>("/assets/image/roomsample.png") ]
-    );
-
-  final_converted_data!: Array<any>;
-
-  constructor() { }
-
+  condition_have_room!: boolean;
+  final_converted_data!: Array<getRoomsLandpage>;
+  subs!: Subscription;
   ngOnInit(): void {
+    this.final_converted_data = new Array<getRoomsLandpage>();
+    this.condition_have_room = false;
 
-    this.final_converted_data = new Array<any>();
-    var condition_left_or_right = true;
-    for(var count = 0;count < this.sample_data.length;count++){
-      this.handle_data_rooms = { 
-        id: this.sample_data[count][0],
-        title: this.sample_data[count][1],
-        txt: this.sample_data[count][2],
-        tower: this.sample_data[count][3],
-        info1: this.sample_data[count][4],
-        info2: this.sample_data[count][5],
-        info3: this.sample_data[count][6],
-        images: this.sample_data[count][8],
-        Left_Or_Right: (condition_left_or_right ? 'right':'left'),
-       }
+    //GET ALL ROOM___________________________________________________________
+    this.subs = this.service.getAllRoom().subscribe(async (result) => {
+      this.subs.unsubscribe();
+      this.condition_have_room = true;
+        if(result.response === 'success'){
 
-       if(condition_left_or_right){
-        condition_left_or_right = false;
-       }else{
-        condition_left_or_right = true;
-       }
+          let condition = false;
+          for await(let data of result.data){
 
-       this.final_converted_data.push(this.handle_data_rooms);
-    }
+            let objs = {
+              _id: data._id,
+              nameRoom: data.nameRoom,
+              addInfo: data.addInfo,
+              defaultPrice: data.defaultPrice,
+              goodPersons: data.goodPersons,
+              pricePersons: data.pricePersons,
+              typeRoom: data.typeRoom,
+              imgArr: data.imgArr,
+              confirmNot: data.confirmNot,
+              Left_Or_Right: !condition ? 'right':'left'
+            } as getRoomsLandpage;
+
+            condition = !condition ? true:false;
+            this.final_converted_data.push(objs);
+          }   
+
+        }
+    }); 
   }
 
 
   reserve(id: number): void{
     return;
+  }
+
+
+  //Navigate to contact us________________________________________________
+  navigates(): void{
+    window.scrollTo({ top: 0 });
+
+    setTimeout(() => {
+      this.router.navigate(['/mc/contact-us']);
+    }, 350);
   }
 }

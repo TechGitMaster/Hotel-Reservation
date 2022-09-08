@@ -1,15 +1,3 @@
-export interface dataRooms{
-    id: number,
-    title: string,
-    txt: string,
-    tower: string,
-    info1: string,
-    info2: string,
-    info3: string,
-    images: Array<string>,
-    Left_Or_Right: string
-}
-
 export interface login{
     email: string,
     password: string
@@ -109,11 +97,14 @@ export interface room{
 }
 
 export interface reservation{
+    _id: string,
     room_id: string,
     email_id: string,
 
     img_room: Array<string>,
     name_room: string,
+
+    defaultPrice: string,
 
     checkin_date: string,
     checkout_date: string,
@@ -129,4 +120,18 @@ export interface reservation{
     transaction_date: string,
                 
     confirmNot: string
+}
+
+
+export interface getRoomsLandpage{
+    _id: string,
+    nameRoom: string,
+    addInfo: string,
+    defaultPrice: string,
+    goodPersons: string,
+    pricePersons: string,
+    typeRoom: boolean,
+    imgArr: Array<Array<string>>,
+    confirmNot: boolean,
+    Left_Or_Right: string
 }

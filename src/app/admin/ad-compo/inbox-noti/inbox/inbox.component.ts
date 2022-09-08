@@ -155,13 +155,22 @@ export class InboxComponent implements OnInit {
 
       var email = ( data.email === '' ? data.reserved_email: data.email);
       var arr_dateTime = data.timeDate.split(',');
-      var time = arr_dateTime[0];
       var date = arr_dateTime[1];
+      var Time = arr_dateTime[0].split(":");
+      var time =  '';
+      if(parseInt(Time[0]) < 10){
+        time = `0${parseInt(Time[0])}:${Time[1]}`;
+      }else if(parseInt(Time[0]) < 13){
+        time = arr_dateTime[0];
+      }else{
+        time = `0${parseInt(Time[0])-12}:${Time[1]}`;
+      }
+
 
 
       this.arr_selectedMail = new Array<any>((data.reserved_email !== 'Bot message' ? email: data.reserved_email), 
       `${date}, ${time}`, String(data.favorite), (data.appointmentNot === 'appointment' ? 'Appointment':
-      (data.appointmentNot === 'inquery' ? 'Inquery Message': 'Reservation')), data.fullname, data.reserved_email, 
+      (data.appointmentNot === 'inquery' ? 'Inquery Message': 'Reservation')), data.fullname, (data.reserved_email === 'Bot message' ? email: data.reserved_email), 
       data.numGuest, data.contact_num, data.message, number, data.dateArrival);
 
       this.subs = this.service.newClicked(this.numbMailsArr_notForAll[number]._id).subscribe((result) => {
@@ -331,6 +340,6 @@ export class InboxComponent implements OnInit {
         location.reload();
       });
     }
-}
+  }
 
 }

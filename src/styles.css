@@ -64,4 +64,19 @@
 }
 
 
+@font-face {
+    font-family: poppins_regular;
+    src: url(/assets/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: poppins_bold;
+    src: url(/assets/Poppins-Bold.ttf);
+}
+
+@font-face {
+    font-family: poppins_semibold;
+    src: url(/assets/Poppins-SemiBold.ttf);
+}
+
 /*__________________________________________________________________________*/

@@ -41,6 +41,8 @@ module.exports = (name_column) => {
                 img_room: { type: Array, required: true },
                 name_room: { type: String, required: true },
 
+                defaultPrice: { type: String, required: false  },
+
                 checkin_date: { type: String, required: true },
                 checkout_date: { type: String, required: true },
                 acquired_persons: { type: String, required: true },

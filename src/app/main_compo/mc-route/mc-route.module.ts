@@ -9,6 +9,8 @@ import { AboutComponent } from '../about/about.component';
 import { ContactsComponent } from '../contacts/contacts.component';
 import { UserComponent } from '../account/user/user.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
+import { McGuardGuard } from 'src/app/guard/mcG/mc-guard.guard';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { UserComponent } from '../account/user/user.component';
   ],
   imports: [
     CommonModule,
-    McRouteRoutingModule
-  ]
+    McRouteRoutingModule,
+    ReactiveFormsModule
+  ],
+  providers: [ McGuardGuard ]
 })
 export class McRouteModule { }

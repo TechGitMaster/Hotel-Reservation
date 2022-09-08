@@ -224,7 +224,7 @@ export class ReservationComponent implements OnInit {
   accept_Decline(numbs: number, condition: boolean): void{
     if(this.dataReservationSelected.length > 0){
       let data_handle = this.dataReservationSelected[numbs] as reservation;
-      this.subs = this.service.accept_declineReservation(data_handle.room_id, data_handle.email_id, this.date_converting(), condition).subscribe((res) => {
+      this.subs = this.service.accept_declineReservation(data_handle._id, data_handle.room_id, data_handle.email_id, this.date_converting(), condition).subscribe((res) => {
         this.subs.unsubscribe();
 
         console.log(res);
@@ -246,20 +246,21 @@ export class ReservationComponent implements OnInit {
   subsCall!: Subscription;
   handle_image!: Array<string>;
   info(numbs: number): void{
+    console.log(this.dataReservationSelected[numbs]);
     this.service.emitCall(new Array<any>("reservation_info", this.dataReservationSelected[numbs]));
     this.subsCall = this.service.emitBackEmitter.subscribe((res) => {
       this.subsCall.unsubscribe();
 
       //Checking if the admin click the delete bttn____________________________________
       if(res[0] === 'delete'){
-        this.subs = this.service.deleteReservation(this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe((result) => {
-
+        this.subs = this.service.deleteReservation(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe((result) => {
+          this.subs.unsubscribe();
           if(result.response === 'delete'){
             if(result.img_arr.length == 0){
               this.callLoading();
             }else{  
               this.handle_image = result.img_arr;
-              this.deleting_image(0, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id);
+              this.deleting_image(0, this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id);
             }
           }else{
             this.callLoading();
@@ -269,7 +270,17 @@ export class ReservationComponent implements OnInit {
           this.subs.unsubscribe();
           location.reload();
         });
-      }
+      }else if(res[0] === 'cancelReservation'){
+
+        //Cancel reservation__________________________________________________________
+        this.subs = this.service.cancelReservation(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe(() => {
+          this.subs.unsubscribe();
+          this.dataReservationSelected[numbs].confirmNot = 'true false';
+        }, (err) => {
+          this.subs.unsubscribe();
+          location.reload();
+        });
+      } 
 
     });
   }
@@ -288,7 +299,7 @@ export class ReservationComponent implements OnInit {
 
 
   //Deleting image 1v1 to cloudinary______________________________________________________________________________________________
-  deleting_image(numb: number, room_id: string, email_id: string): void{
+  deleting_image(numb: number, id: string, room_id: string, email_id: string): void{
     this.service.emitCall(new Array<any>("progress", Math.floor((numb * 95) / this.handle_image.length), 'Successfully deleting request.'));
 
     this.subs = this.service.deleteImageCloudinary(this.handle_image[numb][1]).subscribe((res) => {
@@ -296,9 +307,9 @@ export class ReservationComponent implements OnInit {
 
       if(numb+1 !== this.handle_image.length){
         numb += 1;
-        this.deleting_image(numb, room_id, email_id); 
+        this.deleting_image(numb, id, room_id, email_id); 
       }else{
-        this.subs = this.service.deleteReservation_Final(room_id, email_id).subscribe((result) => {
+        this.subs = this.service.deleteReservation_Final(id, room_id, email_id).subscribe((result) => {
           this.service.emitCall(new Array<any>("progress", 100, 'Successfully deleting request.'));
 
           this.skip = 0;

@@ -4,15 +4,41 @@ const router = express.Router();
 
 const jwt = require('jsonwebtoken');
 const database_column = require('./databases/logReg_column');
+const sched_db = require('./databases/sched_column');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const middleware_admin = require('./admin/authorization');
 
 //Column db_______________________________________________________________
 var data_registration = database_column('registered_accounts');
 var data_login = database_column("login_accounts");
+var sched_column = sched_db('admin_timeAMPM_Date');
+var mailTime_column = sched_db('accepted_MailTime');
+
 
 // set encryption algorithm
 const algorithm = 'aes-256-cbc'
+
+
+
+//Getting the available date___________________________________________________________
+router.get('/gettingAvailableDate', async (req, res) => {
+    let data = await sched_column.find();
+    if(data.length > 0){
+        res.json({ response: 'success', data: data[0] });
+    }
+});
+
+//Getting the not available time________________________________________________________
+router.post('/getting_not_AvailableTime', async (req, res) => {
+    let data = await mailTime_column.find({ date: req.body.date });
+    if(data.length > 0){
+        res.json({ response: 'success', data: data });
+    }else{
+        res.json({ response: 'no-data' });
+    }
+});
+
 
 //REGISTRATION___________________________________________________________________
 router.post('/registration', async (req, res) => {
@@ -218,10 +244,12 @@ router.post('/changePassword', async (req, res) => {
 
 //checking token_______________________________________________________________________
 router.get('/checking_token_refresh', middleware, async (req, res) => {
-    var data = await data_login.findOne({ username: req.token.email });
-    
+    var data = await data_login.findOne({ email: req.token.email });
+
+    var info_full_name = await data_registration.findOne({ email: req.token.email });
+
     if(data != null){
-        res.json({ response: 'success', data: req.token });
+        res.json({ response: 'success', data: req.token, fullname: info_full_name.fullName });
     }else{
         res.json({ response: 'no-data'});
     }
@@ -287,6 +315,12 @@ router.post('/checkingPassword', middleware, async(req, res) => {
 
 
 
+
+//Get name of ADMIN________________________________________________________________________
+router.get('/getNameAdmin', middleware_admin, async (req, res) => {
+    const data = await data_registration.findOne({ email: req.token.email }, { _id: 0, fullName: 1 });
+    res.json({ data: data });
+});
 
 
 

@@ -9,6 +9,13 @@ const calendar_sched_col = db_column('admin_calendarsched');
 const timeAMPMDate_col = db_column('admin_timeAMPM_Date');
 const accepted_timeDate = db_column('accepted_MailTime');
 
+const db_column_inboxes = require('../databases/inboxes_column');
+const inbox_col = db_column_inboxes('admin_inbox');
+const favo_col = db_column_inboxes('admin_favorite');
+const accept_col = db_column_inboxes('admin_accepted');
+const trash_col = db_column_inboxes('admin_trash');
+const inboxes_column_user = require('../databases/inboxes_user_column')('user_pending_mail');
+
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'October', 'Nov', 'Dec'];
 
 
@@ -79,17 +86,38 @@ router.post('/notAvailable_save', middleware_admin, async (req, res) => {
     
 });
 
+
 //This is to deleteEvent____________________________________________________________________________
 router.post('/deleteEvent', middleware_admin, async (req, res) => {
     let { id } = req.body.datas;
 
     const data = await calendar_sched_col.findOne({ _id: id });
-    
+
     calendar_sched_col.deleteOne({ _id: id }).then(() => {
 
         accepted_timeDate.deleteOne({ IDS: data.IDS }).then(() => {
-            //Send mail to user that the admin canceled the appointment_______________________________________________
-            res.json({ response: 'success' });
+
+            inbox_col.updateOne({ _id: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                favo_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                    accept_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                        trash_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(async () => {
+
+                            if(data.usermail_id !== ''){
+                                inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                                    //Send mail to user and notification that the admin canceled the appointment_______________________________________________
+                                    res.json({ response: 'success' });
+                                });
+                            }else{
+                                //Send mail to user that the admin canceled the appointment_______________________________________________
+                                res.json({ response: 'success' });
+                            }
+                            
+                            
+                        });
+                    });
+                });
+            });
+
         });
     });
 

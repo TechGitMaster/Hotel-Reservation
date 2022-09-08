@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaderResponse, HttpHeaders, HttpParams } from '@angula
 import { register, login, googleDataUser } from '../objects';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,31 @@ export class MainServiceService {
 
   //EventEmitter is more like Observable..._____________________________________
   dataSTR: EventEmitter<string> = new EventEmitter<string>();
+  showSuccess: EventEmitter<string> = new EventEmitter<string>();
+
   emitsNotFound(): void{
     this.dataSTR.emit('notFound');
+  }
+
+  emitShowSuccess(): void{
+    this.showSuccess.emit('success');
   }
 
   checkingToken(): Observable<any>{
     return this.http.get('/checking_token_refresh');
   }
+
+
+  //getting available date__________________________________________
+  gettingDate(): Observable<any>{
+    return this.http.get('/gettingAvailableDate');
+  }
+
+  //getting not avilable time___________________________________________
+  gettingTime(date: string): Observable<any>{
+    return this.http.post<any>('/getting_not_AvailableTime', { date:date });
+  }
+
 
   //Google login________________________________________________
   googleService(): Observable<googleDataUser>{
@@ -107,4 +126,28 @@ export class MainServiceService {
     return this.http.post<any>('/changePassword', { email: email, newPassword: newPassword });
   }
   
+  //Send appointment__________________________________________________________
+  sendAppointment(formGroup: FormGroup, dateArrival: string, timeDate: string, appointmentNot: string): Observable<any>{
+    return this.http.get('/inboxSaving_user', { params: {
+      fullname: formGroup.value.fullname, 
+      reserved_email: formGroup.value.email,
+      numGuest: formGroup.value.numberguest,
+      contact_num: formGroup.value.contactnumber,
+      message: formGroup.value.letusknown,
+      dateArrival: dateArrival,
+      timeDate: timeDate,
+      appointmentNot: appointmentNot
+    } });
+  }
+
+  //___________________________________________________________________________________________________________________________________________
+
+
+  //ROOM_________________________________________________________________________________________________________________________________________
+  getAllRoom(): Observable<any>{
+    return this.http.get<any>('/getRoomAll');
+  }
+
+
 }
+

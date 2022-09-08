@@ -15,6 +15,7 @@ module.exports = (req, res, next) => {
                     data_login.findOne({ email: result.email }).then((dataRest) => {
                         if(dataRest != null){
                             if(dataRest.admin === 'admin'){
+                                req.token = result;
                                 next();
                             }else{
                                 res.sendStatus(401);

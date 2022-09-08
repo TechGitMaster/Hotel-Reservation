@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { AdServiceService } from '../ad-service.service';
 
@@ -11,17 +12,19 @@ import { AdServiceService } from '../ad-service.service';
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private route: Router, private service: AdServiceService, private formBuild: FormBuilder) { }
+  constructor(private route: Router, private service: AdServiceService, private formBuild: FormBuilder, private cookieservice: CookieService) { }
 
+  str_name!: string;
 
   num_selectionCondition!: number;
   arr_route!: Array<string>;
   conditionFixDiv: boolean = false;
-  conditionFixDiv2: boolean = true;
-  conditionSeeImage: boolean = true;
+  conditionFixDiv2: boolean = false;
+  conditionSeeImage: boolean = false;
 
   subs!: Subscription;
   subs_rooms!: Subscription;
+  subs_name!: Subscription;
 
   arrHandle: Array<any> = new Array<any>("", "", "", 0, 0);
   arrLink: Array<string> = new Array<string>("/ad/admin/inbox-mail", "/ad/admin/schedules", "/ad/admin/rooms", "/ad/admin/reservations", "/ad/admin/account");
@@ -33,10 +36,12 @@ export class AdminComponent implements OnInit {
   slidesStore: Array<string> = new Array<string>("https://cloudinary.com/console/c-9b3c2829918a5648a364c53cc49833/media_library/folders/home/asset/8003ae4935bbf364f99759586513f950/manage?context=manage");
   
   ngOnInit(): void {
+    this.str_name = '';
     this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""]);
     this.condition_forPassword = false;
 
     this.num_selectionCondition = this.arrLink.indexOf(this.route.url) > -1 ? this.arrLink.indexOf(this.route.url): 0;
+
     this.arr_route = new Array<string>("inbox-mail", "schedules", "rooms", "reservations", "account", "");
 
     this.formGroup_newPassword = this.formBuild.group({
@@ -44,9 +49,30 @@ export class AdminComponent implements OnInit {
       newPass: ['']
     });
     
-    this.calling();
+
+    this.getName();
   }
 
+  //Logout bttn________________________________________________________________________
+  logOut(): void{
+    this.cookieservice.deleteAll('/');
+    location.reload();
+  }
+
+  //Get name of admin________________________________________________________________
+  getName(): void{
+    this.subs_name = this.service.getNameAdmin().subscribe((result) => {
+      this.subs_name.unsubscribe();
+
+      this.str_name = result.data.fullName;
+
+      this.calling();
+    }, (err) => {
+      this.subs_name.unsubscribe();
+      location.reload();
+    })
+  }
+  
 
   calling(): void{
 
@@ -305,10 +331,16 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  funcCancel_Reservation(): void{
+    this.conditionFixDiv2 = false;
+    this.service.backCall(new Array<any>("cancelReservation"));
+  }
 
   //close image_____________________________________________________________________________
   closeImage(): void{
    this.conditionSeeImage = false;
    if(this.arrHandle[0] === 'seeImage') this.conditionFixDiv2 = false;
   }
+
+
 }

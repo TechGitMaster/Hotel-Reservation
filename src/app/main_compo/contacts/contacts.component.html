@@ -69,6 +69,9 @@
         </div>
     </div>
 
+
+
+    <!--__________________________INQUERY__________________________-->
     <div class="container-fluid"  style="background:#FCFBFB;padding:0px;">
         <div class="container">
             <!--__________________________MESSAGE DIV__________________________-->
@@ -87,23 +90,32 @@
     
                         <!--__________________________Form INPUT FIELDS__________________________-->
                         <div class="divInputFields" style="margin-top:30px;">
-                            <form>
+                            <div [formGroup]="formGroup">
                                 <div class="form-group" style="margin-bottom:16px;">
-                                    <label class="labels">Your Name</label>
-                                    <input type="text" class="form-control forminput"/>
+                                    <label class="labels">Your full name</label>
+                                    <input type="text" formControlName="fullname" class="form-control forminput"/>
+                                    <div *ngIf="errInquery[0][1]">
+                                        <span class="paError">{{errInquery[0][0]}}</span>
+                                    </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom:16px;">
-                                    <label class="labels">Your Email</label>
-                                    <input type="text" class="form-control forminput" />
+                                    <label class="labels">Your email</label>
+                                    <input type="text" formControlName="email" class="form-control forminput" />
+                                    <div *ngIf="errInquery[1][1]">
+                                        <span class="paError">{{errInquery[1][0]}}</span>
+                                    </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom:16px;">
                                     <label class="labels">Message</label>
-                                    <textarea type="text" class="form-control forminputtextarea"></textarea>
+                                    <textarea type="text" formControlName="letusknown" class="form-control forminputtextarea"></textarea>
+                                    <div *ngIf="errInquery[2][1]">
+                                        <span class="paError">{{errInquery[2][0]}}</span>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
 
                             <div class="divBttnsendMessage">
-                                <button class="btn btn-primary btnsendMessage">Send Message</button>
+                                <button class="btn btn-primary btnsendMessage" (click)="inquerySubmit()">Send Message</button>
                             </div>
                         </div>
                     </div>

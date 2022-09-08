@@ -2,11 +2,11 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';  
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { MainServiceService } from './main_serivce/main-service.service';
-import { register, login, googleDataUser } from './objects';
+import { register, login, googleDataUser, timeDate } from './objects';
 import { initializeApp } from '@firebase/app';
 
 
@@ -18,12 +18,13 @@ import { initializeApp } from '@firebase/app';
 })
 export class AppComponent implements OnInit, AfterViewInit{
   subs!: Subscription;
-  subsEventEmitter!: Subscription;
   condition_admin_user!: boolean;
   condition_login!: boolean;
   condition_login_signup_clicked!: string;
   condition_clicked_signup!: string;
   condition_appointment!: boolean;
+  condition_footer!: boolean;
+  condition_header!: boolean;
   condition_menu!: boolean;
   clicked_handle!: string;
   notification_icon!: string;
@@ -42,6 +43,9 @@ export class AppComponent implements OnInit, AfterViewInit{
   condition_OTP!: boolean;
   handle_email_OTP!: string;
   errArrForgotPassword!: Array<Array<any>>;
+  showSuccessfully_request!: boolean;
+  handle_fullname!: string;
+
 
   month_names: Array<string> = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 
   'Dec');
@@ -49,6 +53,9 @@ export class AppComponent implements OnInit, AfterViewInit{
   month_names_final!: Array<Array<string>>;
 
   day_numbers!: Array<Array<string>>;
+
+  timeDate!: timeDate;
+  timeAvailable!: Array<any>;
 
   currDate: Date = new Date();
   
@@ -60,12 +67,14 @@ export class AppComponent implements OnInit, AfterViewInit{
   day_select!: string;
   count_0day!: number;
 
+  finalAppointment_date!: Array<string>;
   day_year_month_selected!: Array<string>;
 
   constructor(public http: HttpClient, private router: Router, private cookieservice: CookieService,
     private formBuilder: FormBuilder, private service: MainServiceService){} 
 
   ngOnInit(){
+    this.showSuccessfully_request = false;
     this.condition_admin_user = false;
     this.condition_menu = false;
     this.condition_login = false;
@@ -74,20 +83,22 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.condition_signin = false;
     this.condition_adminNotAdmin = false;
     this.condition_OTP = false;
-    this.condition_appointment = false;
     this.handle_email_OTP = '';
     this.clicked_handle = 'home';
     this.notification_icon = "assets/icon/bell.png";
     this.menubar_icon = "/assets/icon/menu.png";
-    
+    this.handle_fullname = '';
 
     this.count_0day = 0;
-    this.day_year_month_selected = new Array<string>("", "", "");
-    this.day_year_month_selected[0] = "0";
+    this.timeAvailable = new Array<any>();
+    this.finalAppointment_date = new Array<string>("", "am");
+
+    
+    let dates = new Date();
+    this.day_year_month_selected = new Array<string>(`${dates.getDate()}`, `${this.month_names[dates.getMonth()]}`, `${dates.getFullYear()}`);
 
     this.condition_clickedmonth = false;
     this.day_numbers = new Array<Array<string>>();
-    this.generateCalendar(this.curr_month.value, this.curr_year.value);    
 
     //Disable past month_________________________________________________
     this.disableMonths();
@@ -101,8 +112,10 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
 
     //Forms_____________________________________________________
+    //'kylevelarde374@gmail.com'
+    //'kyleAdmin375@gmail.com'
     this.formGroup_login = this.formBuilder.group({
-      email: ['kyleAdmin375@gmail.com'],
+      email: ['kylevelarde374@gmail.com'],
       password: ['YF9ac466i1AwQwkb@']
     });
 
@@ -120,9 +133,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       email: [''],
       numberguest: [''],
       contactnumber: [''],
-      letusknown: [''],
-      time: [''],
-      amPm: [''],
+      letusknown: ['']
     });
 
     this.formGroup_forgotPassword = this.formBuilder.group({
@@ -135,6 +146,25 @@ export class AppComponent implements OnInit, AfterViewInit{
       verifyPassword: ['']
     });
 
+
+    //checking if the link is contact-us.. then hide "set appointment"________________________
+    this.condition_appointment = false;
+    this.condition_footer = false;
+    this.condition_header = false;
+    this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.clicked_handle = this.router.url.split('/')[2];
+        if(this.router.url === '/mc/contact-us'){
+          this.condition_appointment = true;
+        }else if(this.router.url === '/mc/user-account'){
+          this.condition_appointment = true;
+          this.condition_footer = true;
+          this.condition_header = true;
+        }   
+      }
+    });
+
+
     this.checkingAdminUser();
   }
 
@@ -142,18 +172,34 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
 
+  //The subscribe still running but it will only stop once the EventEmitter has data__________________________________
+  //not-found.comonents will give the EventEmitter a data_____________________________
+  //Successfully send request will show when the EventEmitter activate______________________________
+  subsEventEmitter!: Subscription;
+  subsSuccessShow!: Subscription;
+  callWaiting():void{
+    this.subsEventEmitter = this.service.dataSTR.subscribe(() => {
+      this.subsEventEmitter.unsubscribe();
+      this.subsSuccessShow.unsubscribe();
+      this.condition_appointment = true;
+      this.callWaiting();
+    });
+
+    this.subsSuccessShow = this.service.showSuccess.subscribe(() => {
+      this.subsSuccessShow.unsubscribe();
+      this.subsEventEmitter.unsubscribe();
+
+      this.showSuccessfully_request = true;
+
+      this.callWaiting();
+    });
+  }
 
   //Checking if admin or normal_user _____________________________________________________________________
   checkingAdminUser(): void{
     var token = this.cookieservice.get('token');
 
-    //The subscribe still running but it will only stop once the EventEmitter has data__________________________________
-    //not-found.comonents will give the EventEmitter a data_____________________________
-    this.subsEventEmitter = this.service.dataSTR.subscribe((data) => {
-      this.subsEventEmitter.unsubscribe();
-      setTimeout(() => { this.condition_appointment = true; }, 50);
-    });
-
+    this.callWaiting();
 
     if(token !== '' && token !== ' '){
       
@@ -168,24 +214,169 @@ export class AppComponent implements OnInit, AfterViewInit{
           }else{
             //normal-user ____________________
             //home page____________________
+
+            this.handle_fullname = result.fullname;
+
             this.condition_login = true;
             this.condition_admin_user = true;
+            this.availableDate();
           }
         }else{
           this.cookieservice.deleteAll('/');
           this.condition_admin_user = true;
+          this.availableDate();
         }
       }, (err) => {
         
         this.subs.unsubscribe();
         this.cookieservice.deleteAll('/');
         this.condition_admin_user = true;
+        this.availableDate();
       });
     }else{
-      console.log('asd');
       this.cookieservice.deleteAll('/');
       this.condition_admin_user = true;
+      this.availableDate();
     }
+  }
+
+
+  //Getting the not available date and time, for set appointment_____________________________________________________________
+  array_data_notAvailable: Array<any> = new Array<any>();
+  array_time_available: Array<any> = new Array<any>();
+
+  //get the available time and not available date___________________________________
+  availableDate(): void{
+    this.subs = this.service.gettingDate().subscribe((res) => {
+      this.subs.unsubscribe();
+      this.timeDate = res.data;
+      this.array_data_notAvailable = this.timeDate.DATE;
+      
+      this.availableTime(true);
+      this.generateCalendar(this.curr_month.value, this.curr_year.value);    
+    });
+  }
+
+  //Get not available time______________________________________________________________________
+  availableTime(condition: boolean): void{
+    this.timeAvailable = new Array<any>();
+
+    let doc = <HTMLSelectElement>document.querySelector('.ds_DF');
+    doc.selectedIndex = 0;
+    let doc2 = <HTMLSelectElement>document.querySelector('.ds_APM');
+    doc2.selectedIndex = condition ? 0:1;
+
+    this.finalAppointment_date = new Array<string>("", "am");
+    this.finalAppointment_date[1] = condition ? 'am':'pm';
+
+    this.array_time_available = new Array<any>();
+
+    this.subs = this.service.gettingTime(`${this.day_year_month_selected[1]} ${this.day_year_month_selected[0]} ${this.day_year_month_selected[2]}`).subscribe(async (result) => {
+    
+      this.subs.unsubscribe();
+      if(result.response === 'success'){
+        let time_tempos = new Array<any>();
+        if(condition){
+
+          //AM checking not available__________________________________________________
+          for await(let time of this.timeDate.AM){
+            let cond = true;
+
+            for await(let data of result.data){
+              let split = data.timeDate.split(',');
+              let split2 = split[0].split(' ');
+              if(split2[1] === 'am'){
+                if(time === data.time){
+                  cond = false;
+                  time_tempos.push([time, false]);
+                  break;
+                }
+              }
+            }
+
+            if(cond){
+              time_tempos.push([time, true]);
+            }
+          }
+
+          this.timeAvailable = time_tempos;
+        }else{
+
+
+          //PM checking not available____________________________________________________
+          
+          for await(let time of this.timeDate.PM){
+            let cond = true;
+
+            for await(let data of result.data){
+              let split = data.timeDate.split(',');
+              let split2 = split[0].split(' ');
+              if(split2[1] === 'pm'){
+                if(time === data.time){
+                  cond = false;
+                  time_tempos.push([time, false]);
+                  break;
+                }
+              }
+            }
+
+            if(cond){
+              time_tempos.push([time, true]);
+            }
+          }
+
+          //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
+          let arr_tempo = new Array<any>();
+          for await(let data of time_tempos){
+            let arr_time = data[0].split(':');
+            let date_num = parseInt(arr_time[0]);
+            if(date_num > 12){
+              arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, data[1]]);
+            }else{
+              arr_tempo.push([data[0], data[1]]);
+            }
+          }
+          this.timeAvailable = arr_tempo;
+
+        }
+      }else{
+        if(condition){
+          //AM________________________
+          for await(let data of this.timeDate.AM){
+            this.timeAvailable.push([data, true]);
+          }
+        }else{
+          //PM_______________________
+          //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
+          let arr_tempo = new Array<any>();
+          for await(let data of this.timeDate.PM){
+            let arr_time = data.split(':');
+            let date_num = parseInt(arr_time[0]);
+            if(date_num > 12){
+              arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, true]);
+            }else{
+              arr_tempo.push([data, true]);
+            }
+          }
+          this.timeAvailable = arr_tempo;
+        }
+      }
+    });
+  }
+
+  //AM and PM click_______________________________________________________________
+  async clickAM_PM(condition: boolean){
+
+    if(condition){
+      this.availableTime(true);
+    }else{  
+      this.availableTime(false);
+    }
+  }
+
+  //Click time____________________________________________________________________________
+  timeClick(numb: number): void{
+    this.finalAppointment_date[0] = this.finalAppointment_date[1] === 'am' ? this.timeDate.AM[numb]: this.timeDate.PM[numb];
   }
 
 
@@ -200,6 +391,17 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.condition_menu = false;
     if(condition !== '' && condition !== ' '){
       this.clicked_handle = condition;
+
+      if(this.clicked_handle === 'user-account'){
+        this.condition_appointment = true;
+        this.condition_footer = true;
+        this.condition_header = true;
+      }else{
+        this.condition_appointment = false;
+        this.condition_footer = false;
+        this.condition_header = false;
+      }
+
       this.router.navigate([`/mc/${condition}`]);
     }
   }
@@ -417,11 +619,111 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   //Set Appointment button______________________________________________
+  errAppointment: Array<Array<any>> = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false]);
   submitAppointment(): void{
-    console.log(this.day_year_month_selected);
-    console.log(this.formGroup_setAppointment.value);
+    this.errAppointment = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false]);
+
+    if(this.checkingAInputField()){
+      if(this.finalAppointment_date[0] !== ''){
+
+        let dateArrival = `${this.finalAppointment_date[0]} ${this.finalAppointment_date[1]},${this.day_year_month_selected[1]} ${this.day_year_month_selected[0]} ${this.day_year_month_selected[2]}`;
+        this.subs = this.service.sendAppointment(this.formGroup_setAppointment, dateArrival, this.date_converting(), 'appointment').subscribe((res) => {
+          this.subs.unsubscribe();
+          this.showSuccessfully_request = true;
+
+          this.formGroup_setAppointment = this.formBuilder.group({
+            fullname: [''],
+            email: [''],
+            numberguest: [''],
+            contactnumber: [''],
+            letusknown: ['']
+          });
+
+          let doc = <HTMLSelectElement>document.querySelector('.ds_DF');
+          doc.selectedIndex= 0;
+          
+          this.finalAppointment_date = new Array<string>("", "am");
+          this.day_year_month_selected = new Array<string>("", "", "");
+          this.day_year_month_selected[0] = "0";
+        }, (err) => {
+          this.subs.unsubscribe();
+          location.reload();
+        });
+
+      }else{
+        this.errAppointment[4] = ['!Please select time.', true];
+      }
+    }
   }
 
+  //Get date converted____________________________________________________________________________________________
+  date_converting(): string{
+    let date = new Date();
+
+    //Hours_________________________________________
+    let hours = date.getHours()
+    let converted_hours = (hours < 13 ? hours: (hours-12));
+    let converted_hours2 = ( new String(converted_hours).split('').length == 1 ? `0${converted_hours}`:converted_hours);
+
+    //AM-PM__________________________________________
+    let amPm = (hours < 12 ? 'am':'pm');
+
+    //Minutes___________________________________________
+    let minutes = date.getMinutes();
+    let converted_minutes = (minutes >= 10 ? minutes:`0${minutes}`);
+
+    //month______________________________________________
+    let arr_months = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+
+    return `${converted_hours2}:${converted_minutes} ${amPm},${arr_months[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
+  }
+
+
+  //Checking appointment input field_______________________________________________
+  checkingAInputField(): boolean{
+    let condition = true;
+    if(this.formGroup_setAppointment.value.fullname !== '' && this.formGroup_setAppointment.value.fullname !== ' '){
+      if((/[@]/).test(this.formGroup_setAppointment.value.email) && (/[.]/).test(this.formGroup_setAppointment.value.email)){
+        if((/^\d+$/).test(this.formGroup_setAppointment.value.numberguest) && this.formGroup_setAppointment.value.numberguest.length > 0){
+          if(!(/^\d+$/).test(this.formGroup_setAppointment.value.contactnumber) || this.formGroup_setAppointment.value.contactnumber.length == 0
+          || this.formGroup_setAppointment.value.contactnumber === ' '){
+            if(this.formGroup_setAppointment.value.contactnumber.length == 0 || this.formGroup_setAppointment.value.contactnumber === ' '){
+              this.errAppointment[3] = ['!Empty input field.', true];
+              condition = false;
+            }else{
+              this.errAppointment[3] = ['!Only numbers need.', true];
+              condition = false;
+            }
+          }
+        }else{
+          if(this.formGroup_setAppointment.value.numberguest.length == 0){
+            this.errAppointment[2] = ['!Empty input field.', true];
+            condition = false;
+          }else{
+            this.errAppointment[2] = ['!Only numbers need.', true];
+            condition = false;
+          }
+        }
+      }else{
+        this.errAppointment[1] = ['!Check email again.', true];
+        condition = false;
+      }
+    }else{
+      this.errAppointment[0] = ['!Empty input field.', true];
+      condition = false;
+    }
+    return condition;
+  }
+
+  funcOnlyNumber(condition: boolean): void{
+    if(!condition){
+      let guestNum = <HTMLInputElement>document.querySelector('.guestNum');
+      guestNum.value = guestNum.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+    }else{
+      let contact = <HTMLInputElement>document.querySelector('.contacts');
+      contact.value = contact.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+    }
+  }
 
 
   //FORGOT PASSWORD__________________________________________________________________________________________________
@@ -558,7 +860,15 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.condition_clicked_signup = 'false';
   }
 
-  
+
+
+
+
+
+
+
+
+
 
   //___________________________________________________________________________________________________________________
 
@@ -571,12 +881,6 @@ export class AppComponent implements OnInit, AfterViewInit{
       return this.isLeapYear(year) ? 29 : 28;
   }
   
-
-
-  array_data_notAvailable: Array<any> = new Array<any>(
-    { day:"12", month:"6", year:"2022" },
-    { day:"20", month:"6", year:"2022" },
-    );
 
   generateCalendar(month: any, year: any) {
   
@@ -648,6 +952,8 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.day_year_month_selected[0] = index;
       this.day_year_month_selected[1] = this.month_select;
       this.day_year_month_selected[2] = this.year_selected;
+
+      this.availableTime(true);
     }
   }
 
@@ -859,4 +1165,9 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     return condition;
   }
+
+
+
+
+
 }

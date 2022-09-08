@@ -77,17 +77,23 @@
 
 .forminput{
     border-radius: 15px;
-    border:none;
-    background:#ADD8E6;
+    border:2px solid black;
+    font-family: inter_regular;
     padding:10px;
+}
+
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
 }
 
 .forminputtextarea{
     height:200px;
     border-radius: 15px;
-    border:none;
-    background:#ADD8E6;
     padding:10px;
+    font-family: inter_regular;
+    border:2px solid black;
 }
 
 .divBttnsendMessage{

@@ -9,6 +9,7 @@ function columns(name_column){
 
     const schema_data = {
         IDS: { type: String, required: true },
+        usermail_id: { type: String, required: false },
         fullname: { type: String, required: true },
         email: { type: String, required: false },
         reserved_email: { type: String, required: false },
@@ -24,6 +25,7 @@ function columns(name_column){
 
     if(name_column === 'admin_inbox'){
         schema_column = new Schema({
+            usermail_id: { type: String, required: false },
             fullname: { type: String, required: false },
             email: { type: String, required: false },
             reserved_email: { type: String, required: false },
@@ -38,7 +40,7 @@ function columns(name_column){
             newNot: { type: Boolean, required: true }
         }, { timestamps: true });
     }else{
-        schema_column = new Schema(schema_data, { timeStamps: true });
+        schema_column = new Schema(schema_data, { timestamps: true });
     }
 
     if(mongoose.models[name_column]){

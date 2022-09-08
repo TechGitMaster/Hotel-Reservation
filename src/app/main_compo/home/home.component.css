@@ -1,50 +1,4 @@
 
-/* ________________________Font from ttf extension_________________________ */
-
-@font-face {
-    font-family: inter_regular;
-    src: url(/assets/Inter-Regular.ttf);
-}
-
-@font-face {
-    font-family: inter_medium;
-    src: url(/assets/Inter-Medium.ttf);
-}
-
-@font-face {
-    font-family: inter_semibold;
-    src: url(/assets/Inter-SemiBold.ttf);
-}
-
-@font-face {
-    font-family: inter_bold;
-    src: url(/assets/Inter-Bold.ttf);
-}
-
-
-@font-face {
-    font-family: inria_serif_bold;
-    src: url(/assets/InriaSerif-Bold.ttf);
-}
-
-
-@font-face {
-    font-family: poppins_regular;
-    src: url(/assets/Poppins-Regular.ttf);
-}
-
-@font-face {
-    font-family: poppins_bold;
-    src: url(/assets/Poppins-Bold.ttf);
-}
-
-@font-face {
-    font-family: poppins_semibold;
-    src: url(/assets/Poppins-SemiBold.ttf);
-}
-
-/*__________________________________________________________________________*/
-
 
 .header{
     background:url("/assets/image/backgroundhome.png") no-repeat bottom center fixed;
@@ -348,9 +302,11 @@
 .bttndetails{
     font-family: poppins_semibold;
     font-size:14px;
-    background:#F4694C;
-    border:none;
-    border-radius:0px;
+    background:#FFD700;
+    border-radius:10px;
+    font-family: inter_medium;
+    font-size:16px;
+    color:black;
 }
 
 .btnseemorbttn{
@@ -363,3 +319,34 @@
     color:black;
 }
 
+.notAvailable{
+    padding:15px;
+    border-radius:10px;
+    background:#FCFBFB;
+    display: flex;
+}
+
+.paNoAva{
+    margin:0px 0px 10px 0px;
+    font-family: inter_bold;
+    color:black;
+    font-size:25px;
+}
+
+.paNoAvaInfo{
+    margin: 0px 0px 15px 0px;
+    font-family: inter_regular;
+    font-size:20px;
+    color:black;
+    max-width: 90%;
+}
+
+.bttnContacts{
+    width:70%;
+    border-radius:20px;
+    font-size:18px;
+    font-family: inter_regular;
+    background:#FFD700;
+    border:none;
+    color:black;
+}

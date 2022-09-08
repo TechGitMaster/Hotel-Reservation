@@ -267,6 +267,7 @@ export class RoomsComponent implements OnInit {
 
   //Create new room to database________________________________________________________________________________
   createNewRoom(): void{
+    
     this.service.createNew_room(this.formGroup, this.clickedRadio_TypeRoom, this.arr_imageFinal).subscribe((result) => {
       this.subs.unsubscribe();
 
@@ -292,7 +293,8 @@ export class RoomsComponent implements OnInit {
       this.getAllRooms();
     }, (err) => {
       this.subs.unsubscribe();
-      location.reload();
+      console.log(err);
+      //location.reload();
     });
   }
 

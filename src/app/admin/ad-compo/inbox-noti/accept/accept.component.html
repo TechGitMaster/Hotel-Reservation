@@ -123,9 +123,10 @@
                     
 
                     <!--______________POSTED ACCEPTED OR NOT______________-->
-                    <div *ngIf="condition_newMailSelected === 'true'">
-                            <button class="btn btn-primary btnsAT">Accepted</button>
-                        </div>
+                    <div *ngIf="condition_newMailSelected === 'true' || condition_newMailSelected === 'true false'">
+                        <button class="btn btn-primary btnsAT">Accepted</button>
+                        <button *ngIf="condition_newMailSelected === 'true false'" class="btn btn-primary btnsCT">Canceled</button>
+                    </div>
 
                     <div *ngIf="condition_newMailSelected === 'false'">
                         <button class="btn btn-primary btnsDT">Declined</button>

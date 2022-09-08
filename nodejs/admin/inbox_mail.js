@@ -15,28 +15,65 @@ const decline_col = db_column('admin_declined');
 const trash_col = db_column('admin_trash');
 const sched_col = sched_column('admin_calendarsched'); 
 const timeDate_accepted = sched_column('accepted_MailTime'); 
+const inboxes_column_user = require('../databases/inboxes_user_column')('user_pending_mail');
 
 
 //Saving appointment and contact us more mail_____________________________________
 router.get('/inboxSaving_user', middleware_user, (req, res) => {
     const email = req.condition ? req.email: '';
-    new inbox_col({
-        fullname: req.query.fullname,
-        email: email,
-        reserved_email: req.query.reserved_email,
-        numGuest: req.query.numGuest,
-        contact_num: req.query.contact_num,
-        message: req.query.message,
-        dateArrival: req.query.dateArrival,
-        timeDate: req.query.timeDate,
-        favorite: false,
-        acceptedNot: 'new',
-        appointmentNot: req.query.appointmentNot,
-        newNot: true
-    }).save().then(() => {
-        //send email to the admin_____________________________________
-        res.json({ response: 'success' });
-    });
+
+    if(email !== ''){
+        new inboxes_column_user({
+            fullname: req.query.fullname,
+            email: email,
+            reserved_email: req.query.reserved_email,
+            numGuest: req.query.numGuest,
+            contact_num: req.query.contact_num,
+            message: req.query.message,
+            dateArrival: req.query.dateArrival,
+            timeDate: req.query.timeDate,
+            acceptedNot: 'new',
+            newNot: true  
+        }).save().then((data) => {
+            new inbox_col({
+                usermail_id: data._id,
+                fullname: req.query.fullname,
+                email: email,
+                reserved_email: req.query.reserved_email,
+                numGuest: req.query.numGuest,
+                contact_num: req.query.contact_num,
+                message: req.query.message,
+                dateArrival: req.query.dateArrival,
+                timeDate: req.query.timeDate,
+                favorite: false,
+                acceptedNot: 'new',
+                appointmentNot: req.query.appointmentNot,
+                newNot: true
+            }).save().then(() => {
+                //send email to the admin_____________________________________
+                res.json({ response: 'success' });
+            });  
+        });
+    }else{
+        new inbox_col({
+            usermail_id: '',
+            fullname: req.query.fullname,
+            email: email,
+            reserved_email: req.query.reserved_email,
+            numGuest: req.query.numGuest,
+            contact_num: req.query.contact_num,
+            message: req.query.message,
+            dateArrival: req.query.dateArrival,
+            timeDate: req.query.timeDate,
+            favorite: false,
+            acceptedNot: 'new',
+            appointmentNot: req.query.appointmentNot,
+            newNot: true
+        }).save().then(() => {
+            //send email to the admin_____________________________________
+            res.json({ response: 'success' });
+        });  
+    }
 
 });
 
@@ -112,6 +149,7 @@ router.post('/saveNotFavorite', middleware_admin, async (req, res) => {
     if(!condition){
         new favo_col({
             IDS: id,
+            usermail_id: data.usermail_id,
             fullname: data.fullname,
             email: data.email,
             reserved_email: data.reserved_email,
@@ -169,6 +207,7 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
             inbox_col.updateOne({ _id: id }, { $set: { acceptedNot: condition } }).then(() => {
                 new accept_col({
                         IDS: id,
+                        usermail_id: data.usermail_id,
                         fullname: data.fullname,
                         email: data.email,
                         reserved_email: data.reserved_email,
@@ -186,6 +225,7 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
                         let schedDate = data.dateArrival.split(',');
                         new sched_col({
                             IDS: id,
+                            usermail_id: data.usermail_id,
                             fullname: data.fullname,
                             email: (data.email !== '' ? data.email: data.reserved_email),
                             reserved_email: data.reserved_email,
@@ -196,17 +236,26 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
                             date: schedDate[1],
                             appointmentNot: data.appointmentNot
                         }).save().then(() => {
-                            favo_col.updateOne({ IDS: id }, { $set: { acceptedNot: condition }}).then(() => {
-
+                            favo_col.updateOne({ IDS: id }, { $set: { acceptedNot: condition }}).then(async () => {
+                                    
                                 new timeDate_accepted({
                                     IDS: id,
                                     timeDate: data.dateArrival,
                                     time: schedDate[0].split(" ")[0],
                                     date: schedDate[1]
                                 }).save().then(() => {
-                                    //send email to the user_____________________________________
-                                    res.json({ response: 'success' });
+
+                                    if(data.usermail_id !== ''){
+                                        inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'true' } } ).then(() => {
+                                            //send email to the user and notification_____________________________________
+                                            res.json({ response: 'success' });
+                                        });
+                                    }else{
+                                        //send email to the user_____________________________________
+                                        res.json({ response: 'success' });
+                                    }
                                 });
+                                
                             });
                         });
                 });
@@ -220,6 +269,7 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
         inbox_col.updateOne({ _id: id }, { $set: { acceptedNot: condition } }).then(() => {
             new decline_col({
                 IDS: id,
+                usermail_id: data.usermail_id,
                 fullname: data.fullname,
                 email: data.email,
                 reserved_email: data.reserved_email,
@@ -234,8 +284,20 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
             }).save().then(() => {
                 
                 favo_col.updateOne({ IDS: id }, { $set: { acceptedNot: condition }}).then(() => {
-                    //send email to the user_____________________________________
-                    res.json({ response: 'success' });
+
+                    if(data.usermail_id !== ''){
+                        inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'false' } } ).then(() => {
+                            //send email to the user and notification_____________________________________
+                            res.json({ response: 'success' });
+                        });    
+                    }else{
+                        inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'false' } } ).then(() => {
+                            //send email to the user_____________________________________
+                            res.json({ response: 'success' });
+                        });
+    
+                    }
+                    
                 });
             });
         });
@@ -341,6 +403,7 @@ router.post('/deleteMails', middleware_admin, async (req, res) => {
             //After find the mail, save the data to Trash mail______________________________________
             await new trash_col({
                 IDS: data_mail._id,
+                usermail_id: data_mail.usermail_id,
                 fullname: data_mail.fullname,
                 email: data_mail.email,
                 reserved_email: data_mail.reserved_email,

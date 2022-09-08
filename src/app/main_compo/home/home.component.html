@@ -168,38 +168,51 @@
             <div class="container containermiddlelocation" style="max-width:1330px;">
 
                 <div class="row">
-                    <div class="col-lg-6 col-12" style="display: flex;align-items: center;">
-
+                    <div class="col-lg-6 col-12">
+                        <div>asd</div>
                         <div style="width:100%;">
 
                             <p class="availableAbegeil">Available Rooms by <br />Abegeil Padilla on Manhattan Garden</p>
 
-                            <div class="row justify-content-center" style="margin-bottom:25px;">
-                                <div class="col-6">
-                                    <div class="roomavailalable">
-                                        <img src="/assets/image/room.jpg" class="img-fluid" style="width:100%;max-height:400px;" />
-                                        <div class="infodivroom">
-                                            <p class="roomtxtinfo">Room - 1 bedroom Studio type</p>
-                                            <button class="btn btn-danger bttndetails">Details</button>
+                            <!--___Available Room___-->
+                            <div *ngIf="room_arr.length > 0">
+                                <div class="row" style="margin-bottom:25px;">
+                                    <div *ngFor="let data of room_arr; index as indexes" class="col-6">
+                                        <div class="roomavailalable">
+                                            <img [src]="data[0]" class="img-fluid" style="width:100%;height:200px;" />
+                                            <div class="infodivroom">
+                                                <p class="roomtxtinfo">{{data[1]}}</p>
+                                                <button class="btn btn-primary bttndetails" (click)="navigates(false)">See details</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="roomavailalable">
-                                        <img src="/assets/image/room.jpg" class="img-fluid" style="width:100%;max-height:400px;" />
-                                        <div class="infodivroom">
-                                            <p class="roomtxtinfo">Room - 1 bedroom Studio type</p>
-                                            <button class="btn btn-danger bttndetails">Details</button>
-                                        </div>
-                                    </div>
+    
+                                <div style="display: flex;justify-content: center;" *ngIf="count_room > 2">
+                                    <button class="btn btn-primary btnseemorbttn">See more</button>
                                 </div>
                             </div>
 
-                            <div style="display: flex;justify-content: center;">
-                                <button class="btn btn-primary btnseemorbttn">See more</button>
+                            <!--___NOT AVAILABLE ROOM___-->
+                            <div *ngIf="room_arr.length == 0 && condition_show">
+                                <div class="notAvailable">
+                                    <div style="width:50%;">
+                                        <img src="/assets/icon/empty_room.png" class="img-fluid" />
+                                    </div>
+                                    <div style="width:50%;display: flex;align-items: center;">
+                                        <div>
+                                            <p class="paNoAva">No rooms available</p>
+                                            <p class="paNoAvaInfo">For more info contact us.</p>
+                                            <div style="display: flex;justify-content: center;">
+                                                <button class="btn btn-primary bttnContacts" (click)="navigates(true)">Contact us</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-6 col-12" style="display:flex;justify-content: center;align-items: center;">
 
                         <div class="locationdiv">

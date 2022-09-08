@@ -108,12 +108,16 @@
     left:-20px;
 }
 
-.username{
+.email{
     font-size:17px;
     font-family: inter_bold;
     color:#FCFBFB;
-    margin-left:15px;
+    margin:0px 0px 0px 15px;
     cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width:150px;
 }
 
 .iconNoti{
@@ -164,10 +168,11 @@
 }
 
 .forminput{
-    border-radius: 12px;
-    border:none;
-    background:#ADD8E6;
+    border-radius: 10px;
     padding:10px;
+    font-size:15px;
+    font-family: inter_regular;
+    border:1px solid black;
 }
 
 .divformrow{
@@ -177,9 +182,8 @@
 .forminputtextarea{
     height:270px;
     border-radius: 15px;
-    border:none;
-    background:#ADD8E6;
     padding:10px;
+    border:1px solid black;
 }
 
 .dates{
@@ -565,6 +569,12 @@
     border-radius:10px;
 }
 
+.formselectAppointment{
+    padding:10px 5px 10px 5px;
+    border-radius:10px;
+    border:1px solid black;
+}
+
 .paError{
     font-family: inter_bold;
     font-size:14px;
@@ -628,6 +638,35 @@
     display: flex;
     align-items: center;
 }
+
+.divSuccesss{
+    max-width:400px;
+    background:white;
+    border-radius:10px;
+    padding:30px;
+}
+
+.paSuccess{
+    margin-top:-5px;
+    font-family: inter_bold;
+    font-size:20px;
+    text-align: center;
+    margin-bottom:20px;
+}
+
+.successBttn{
+    width:100%;
+    border-radius:20px;
+    font-size:17px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+}
+
 
 
 /* ________________________@MEDIA DESIGN_________________________ */

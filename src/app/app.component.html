@@ -1,5 +1,5 @@
 <!--______________________Navigation______________________-->
-<div *ngIf="condition_admin_user" class="container-fluid navigationforAll">
+<div *ngIf="condition_admin_user && !condition_header" class="container-fluid navigationforAll">
     <div class="container" style="max-width: 1360px;">
         <div class="row" style="margin:0%;">
             <div class="col-4" style="display:flex;align-items: center;">
@@ -29,7 +29,7 @@
                                     <img [src]="notification_icon" class="img-fluid" />
                                 </div>
                                 <div>
-                                    <span class="username">Kyle velarde..</span>
+                                    <p class="email">{{handle_fullname}}</p>
                                 </div>
                             </div>
                         </div>
@@ -76,10 +76,7 @@
                     <!--______________________Condition login and sign in______________________-->
                     <div *ngIf="condition_login">
                         <div class="divborder1">
-                            <div class="navclickable" (click)="funcClickable('home')"><span style="cursor: pointer;">Notification</span></div>
-                        </div>
-                        <div class="divborder1">
-                            <div class="navclickable" (click)="funcClickable('home')"><span style="cursor: pointer;">Your Account</span></div>
+                            <div class="navclickable" (click)="funcClickable('user-account')"><span style="cursor: pointer;">Your Account</span></div>
                         </div>
                     </div>
 
@@ -101,7 +98,6 @@
 
 
 <!--______________________Login, Singup and Forgot password______________________-->
-
 <div class="container-fluid containerloginSignup" (click)="funcSignIn('false')" *ngIf="condition_clicked_signup === 'true'"  >
 
     <!--________LOG IN__________-->
@@ -332,6 +328,13 @@
     </div>
 </div>
 
+<!--_______________________Show successfully send request____________________________-->
+<div class="container-fluid containerloginSignup" *ngIf="showSuccessfully_request" (click)="showSuccessfully_request = false">
+    <div class="container divSuccesss" (click)="$event.stopPropagation()">
+        <p class="paSuccess">Success sending request!</p>
+        <button class="btn btn-primary successBttn" (click)="showSuccessfully_request = false">Close</button>
+    </div>
+</div>
 
 
 <!--______________________Router outlets______________________-->
@@ -344,7 +347,7 @@
         <div class="container" style="max-width:1330px;">
             <div style="margin-bottom:10px;">
                 <p class="appointtxttitle">Set An Appointment</p>
-                <p class="appointtxtinfo">To Visit the Manhattan Garden City, you’re free to set an Appointment by fill-up the form.</p>
+                <p class="appointtxtinfo">To Visit the Manhattan Garden City, you're free to set an Appointment by fill-up the form.</p>
             </div>
     
             <div class="row">
@@ -360,12 +363,18 @@
                                         <div>
                                             <label class="labels">Full Name</label>
                                             <input type="text" formControlName="fullname" class="form-control forminput" />
+                                            <div *ngIf="errAppointment[0][1]">
+                                                <span class="paError">{{errAppointment[0][0]}}</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div>
                                             <label class="labels">Email</label>
                                             <input type="text" formControlName="email" class="form-control forminput" />
+                                            <div *ngIf="errAppointment[1][1]">
+                                                <span class="paError">{{errAppointment[1][0]}}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -373,12 +382,18 @@
     
                             <div class="col-12 divformrow">
                                 <label class="labels">Number of Guest</label>
-                                <input type="text" formControlName="numberguest" class="form-control forminput" />
+                                <input type="text" formControlName="numberguest" class="form-control guestNum forminput" (input)="funcOnlyNumber(false)"/>
+                                <div *ngIf="errAppointment[2][1]">
+                                    <span class="paError">{{errAppointment[2][0]}}</span>
+                                </div>
                             </div>
     
                             <div class="col-12 divformrow">
                                 <label class="labels">Contact Number</label>
-                                <input type="text" formControlName="contactnumber" class="form-control forminput" />
+                                <input type="text" formControlName="contactnumber" class="form-control contacts forminput" (input)="funcOnlyNumber(true)"/>
+                                <div *ngIf="errAppointment[3][1]">
+                                    <span class="paError">{{errAppointment[3][0]}}</span>
+                                </div>
                             </div>
     
     
@@ -398,12 +413,23 @@
                             <div class="row">
                                 <div class="col-8" style="padding-right:0px;">
                                     <label class="labels">Time</label>
-                                    <input type="text" formControlName="time" class="form-control forminput" />
+                                    <select class="form-select formselectAppointment ds_DF">
+                                        <option selected>Select your time</option>
+                                        <option *ngFor="let data of timeAvailable; index as indexes" (click)="timeClick(indexes)" [disabled]="!data[1]">
+                                            <span>{{data[0]}} {{ !data[1] ? 'reserved':'' }}</span>
+                                        </option>
+                                    </select>
+                                    <div *ngIf="errAppointment[4][1]">
+                                        <span class="paError">{{errAppointment[4][0]}}</span>
+                                    </div>
                                 </div>
         
                                 <div class="col-4">
-                                    <p class="labels" style="margin:0%;">AM/PM</p>
-                                    <input type="text"  formControlName="amPm" class="form-control forminput" style="margin-top:10px;" />
+                                    <label class="labels">AM/PM</label>
+                                    <select class="form-select formselectAppointment ds_APM">
+                                        <option selected (click)="clickAM_PM(true)">am</option>
+                                        <option value="Male" (click)="clickAM_PM(false)">pm</option>
+                                    </select>
                                 </div>
                             </div>
                         </form>
@@ -509,7 +535,7 @@
 </div>
 
 <!--____________________Footer____________________-->
-<div *ngIf="condition_admin_user">
+<div *ngIf="condition_admin_user && !condition_footer">
     <div class="container-fluid" style="background: #F5F5F5;padding:0px;" *ngIf="clicked_handle !== 'contact-us'">
         <div class="container" style="max-width:1200px;padding:40px;">
             <div class="row">

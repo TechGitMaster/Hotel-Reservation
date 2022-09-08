@@ -89,7 +89,7 @@
         </div>
 
 
-        <!--___________________________________Appointment and INQUERY MESSAGE SELECTED_________________________________-->
+        <!--___________________________________Appointment, INQUERY AND BOT MESSAGE SELECTED_________________________________-->
         <div *ngIf="condition_selectMails" style="padding:0px 10px 0px 10px;">
             <!--_________________HEADER______________________-->
             <div style="display: flex;justify-content: space-between;">
@@ -139,8 +139,9 @@
 
                     <!--______________POSTED ACCEPTED OR NOT______________-->
                     <div *ngIf="condition_newMailSelected !== 'new'">
-                        <div *ngIf="condition_newMailSelected === 'true'">
+                        <div *ngIf="condition_newMailSelected === 'true' || condition_newMailSelected === 'true false'">
                             <button class="btn btn-primary btnsAT">Accepted</button>
+                            <button *ngIf="condition_newMailSelected === 'true false'" class="btn btn-primary btnsCT">Canceled</button>
                         </div>
 
                         <div *ngIf="condition_newMailSelected === 'false'">

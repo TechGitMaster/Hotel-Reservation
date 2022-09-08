@@ -117,6 +117,35 @@ router.post('/getRooms', middleware_admin, async (req, res) => {
 
 });
 
+//Getting room to show to landing page____________________________________________________________________
+router.get('/getRoomLanding', async (req, res) => {
+    const count = await rooms_column.count();
+    const data = await rooms_column.find().sort( { createdAt: -1 } ).skip(0).limit(2);
+    if(data.length > 0){
+        let arr_room = [];
+        for await(let room of data){
+            arr_room.push([room.imgArr[0][0], room.nameRoom]);
+        }
+
+        res.json({ response: 'success', data: arr_room, count: count });
+    }else{
+        res.json({ response: 'no-data' });
+    }
+});
+
+//Getting all rooms to show to landing page______________________________________________________________
+router.get('/getRoomAll', async (req, res) => {
+    const data = await rooms_column.find({}, { _id: 1, nameRoom: 1, addInfo: 1, defaultPrice: 1, goodPersons: 1, pricePersons: 1,
+        typeRoom: 1, imgArr: 1, confirmNot: 1});
+    if(data.length > 0){
+        res.json({ response: 'success', data: data });
+    }else{
+        res.json({ response: 'no-data' }); 
+    }
+});
+
+
+
 //Delete image and update room______________________________________________________________________________________________
 router.post('/deleteImage', async (req, res) => {
     const { id_img } = req.body;
@@ -157,6 +186,8 @@ router.post('/deleteRoom', (req, res) => {
         res.json({ response: 'success' });
     });
 }); 
+
+
 
 
 

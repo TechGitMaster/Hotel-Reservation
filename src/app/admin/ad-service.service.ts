@@ -14,6 +14,14 @@ export class AdServiceService {
 
 
 
+
+  //ADMIN____________________________________________________________________________________________________________
+  getNameAdmin(): Observable<any>{
+    return this.http.get('/getNameAdmin');
+  }
+
+
+
   //INBOX______________________________________________________________________________________
 
   //Getting mails from inbox, favorite, accepted, declined and trash________________________________________________
@@ -200,15 +208,20 @@ export class AdServiceService {
     { skip: skip, limit: limit, radioCondition: radioCondition, searchingNot: searchingNot, searchString: searchString});
   }
 
-  accept_declineReservation(room_id: string, email_id: string, confirmation: string, condition: boolean): Observable<any>{
-    return this.http.post<any>('/A-D_Request', { room_id: room_id,  email_id: email_id, confirmation_date: confirmation, condition: condition});
+  accept_declineReservation(id: string, room_id: string, email_id: string, confirmation: string, condition: boolean): Observable<any>{
+    console.log(id);
+    return this.http.post<any>('/A-D_Request', { id: id, room_id: room_id,  email_id: email_id, confirmation_date: confirmation, condition: condition});
   }
 
-  deleteReservation(room_id: string, email_id: string): Observable<any>{
-    return this.http.post<any>('/deleteReservation', { room_id: room_id,  email_id: email_id });
+  deleteReservation(id: string, room_id: string, email_id: string): Observable<any>{
+    return this.http.post<any>('/deleteReservation', { id: id, room_id: room_id,  email_id: email_id });
   }
 
-  deleteReservation_Final(room_id: string, email_id: string): Observable<any>{
-    return this.http.post<any>('/deleteReservation_final', { room_id: room_id,  email_id: email_id });
+  deleteReservation_Final(id: string, room_id: string, email_id: string): Observable<any>{
+    return this.http.post<any>('/deleteReservation_final', { id: id, room_id: room_id,  email_id: email_id });
+  }
+
+  cancelReservation(id: string, room_id: string, email_id: string): Observable<any>{
+    return this.http.post<any>('/cancelReservation', { id: id, room_id: room_id,  email_id: email_id });
   }
 } 
