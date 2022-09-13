@@ -18,6 +18,8 @@ export class MainServiceService {
   //EventEmitter is more like Observable..._____________________________________
   dataSTR: EventEmitter<string> = new EventEmitter<string>();
   showSuccess: EventEmitter<string> = new EventEmitter<string>();
+  menubarComponent: EventEmitter<string> = new EventEmitter<string>();
+
 
   emitsNotFound(): void{
     this.dataSTR.emit('notFound');
@@ -26,6 +28,11 @@ export class MainServiceService {
   emitShowSuccess(): void{
     this.showSuccess.emit('success');
   }
+
+  emitComponent(component: string): void{
+    this.menubarComponent.emit(component);
+  }
+
 
   checkingToken(): Observable<any>{
     return this.http.get('/checking_token_refresh');
@@ -147,6 +154,47 @@ export class MainServiceService {
   getAllRoom(): Observable<any>{
     return this.http.get<any>('/getRoomAll');
   }
+
+  //________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+  //ACCOUNT_______________________________________________________________________________________________________________________________________
+  emitSending: EventEmitter<any> = new EventEmitter<any>();
+  emitBack: EventEmitter<any> = new EventEmitter<any>();
+
+  emitCall(arr: Array<any>): void{
+    this.emitSending.emit(arr);
+  }
+
+  emitCallBack(arr: Array<any>): void{
+    this.emitBack.emit(arr);
+  }
+
+
+  //DETAILS_____________________________________________________________________________________________________________
+  getInformation(): Observable<any>{
+    return this.http.post<any>('/getInformation', { adminNot: 'not-admin' });
+  }
+
+  checkingPassword(currPass: string): Observable<any>{
+    return this.http.post<any>('/checkingPassword', { currPassword: currPass, adminNot: 'not-admin' });
+  }
+
+  changePasswords(email: string, newPass: string): Observable<any>{
+    return this.http.post<any>('/changePassword', { email: email, newPassword: newPass });
+  }
+
+
+
+
+
+
+
+
 
 
 }

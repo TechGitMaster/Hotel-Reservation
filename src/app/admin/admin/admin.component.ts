@@ -88,6 +88,10 @@ export class AdminComponent implements OnInit {
         this.condition_forPassword = true;
       }
 
+      if(this.arrHandle[0] === 'deleteEvent'){
+        this.cancelDelete(true);
+      }
+
       this.calling();
     });
 
@@ -116,7 +120,23 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  //Move to trash event__________________________________________________________
+  moveToTrash(): void{
+    this.conditionFixDiv = false;
+    this.service.backEmitters(new Array<any>(true, true, true));
+  }
 
+
+  //Choose Delete or cancel event_________________________________________________________
+  conditionTo_cancelDeleteSched: boolean = false;
+  cancelDelete(condition: boolean): void{
+    this.conditionTo_cancelDeleteSched = condition;
+    if(!condition){
+      this.arrHandle = new Array<any>("haveSame", "Cancel Event", "Are you sure you want to cancel this event?");
+    }else{
+      this.arrHandle = new Array<any>("haveSame", "Delete Event", "Are you sure you want to delete this event?");
+    }
+  }
 
   //Close div timer and yesNo__________________________________________________________
   funcErase(): void{
@@ -128,7 +148,7 @@ export class AdminComponent implements OnInit {
 
   yesNO(condition: boolean): void{
     this.conditionFixDiv = false;
-    this.service.backEmitters(new Array<any>(true, condition));
+    this.service.backEmitters(new Array<any>(true, condition, this.conditionTo_cancelDeleteSched));
   }
 
 
@@ -259,11 +279,6 @@ export class AdminComponent implements OnInit {
   }
 
 
-  successChange(): void{
-    location.reload();
-  }
-
-
   //Validating password strength______________________________________________________________________________
   passStrength(password: string): boolean{
     var condition = true;
@@ -318,22 +333,58 @@ export class AdminComponent implements OnInit {
     return str;
   }
 
-  //Close reservation and room_____________________________________________________________
-  funcCloseReseroom(condition: boolean): void{
-    if(!condition){
-      if(this.arrHandle[0] !== 'progress'){
-        this.conditionFixDiv2 = false;
-        this.service.backCall(new Array<any>("notDelete"));
+
+  //Yes or No Reservation_______________________________________________________________
+  string_condition: string = '';
+  arr_reservation = ["", ""];
+  deleteCancel_Reservation(condition: boolean): void{
+    if(condition){
+      this.conditionFixDiv2 = false;
+      this.boolean_reservation = false;
+      if(this.string_condition === 'delete'){
+        this.service.backCall(new Array<any>("delete"));
+      }else{
+        this.service.backCall(new Array<any>("cancelReservation"));
       }
     }else{
-      this.conditionFixDiv2 = false;
-      this.service.backCall(new Array<any>("delete"));
+      this.boolean_reservation = false;
+      this.service.backCall(new Array<any>("notDeleteCancel"));
     }
   }
 
-  funcCancel_Reservation(): void{
-    this.conditionFixDiv2 = false;
-    this.service.backCall(new Array<any>("cancelReservation"));
+  //Close reservation and room_____________________________________________________________
+  boolean_reservation: boolean = false;
+  funcCloseReseroom(condition: boolean): void{
+    if(this.arrHandle[0] !== 'progress'){
+      this.conditionFixDiv2 = false;
+      this.service.backCall(new Array<any>("notDeleteCancel"));
+    }
+  }
+
+  funcDelete_reservation(condition: boolean): void{
+    if(condition){
+      this.string_condition = 'delete';
+      this.arr_reservation[0] = "Delete request";
+      this.arr_reservation[1] = "Are you sure you want to delete this request?";
+      this.boolean_reservation = true;
+    }else{
+      this.conditionFixDiv2 = false;
+      this.boolean_reservation = false;
+      this.service.backCall(new Array<any>("moveTo_trash"));
+    }
+  }
+
+  funcCancel_Reservation(condition: boolean): void{
+    if(condition){
+      this.string_condition = 'cancel';
+      this.arr_reservation[0] = "Cancel request";
+      this.arr_reservation[1] = "Are you sure you want to Cancel this request?";
+      this.boolean_reservation = true;
+    }else{
+      this.conditionFixDiv2 = false;
+      this.boolean_reservation = false;
+      this.service.backCall(new Array<any>("Retrieve"));
+    }
   }
 
   //close image_____________________________________________________________________________

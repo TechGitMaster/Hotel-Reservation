@@ -5,6 +5,18 @@
         <div class="container" style="min-height:100%;display: flex;justify-content: center;align-items: center;" (click)="$event.stopPropagation()">
 
             <!--__________THIS IS FOR Have same arrival date when accepting appointment DIV_______________-->
+
+            <div *ngIf="arrHandle[0] === 'chooseSchedMoveTrash_cancel'" class="container havePopup">
+                <div class="container boxHS">
+                    <span class="paCancel">Choose Event</span>
+
+                    <div class="cancelDeleteEvents" (click)="cancelDelete(false)">Cancel Event</div>
+                    <div class="cancelDeleteEvents" (click)="moveToTrash()">Move to trash</div>
+                </div>
+            </div>
+
+            <!--<div class="cancelDeleteEvents" (click)="cancelDelete(true)">Move to trash</div>-->
+
             <div *ngIf="arrHandle[0] === 'haveSame'" class="havePopup">
                 <div class="container boxHS">
                     <div style="display: flex;justify-content: space-between;margin-bottom: 20px;">
@@ -83,7 +95,7 @@
                     <div style="display: flex;justify-content: center;">
                         <p class="paSuccessChange">Successfully changing your password!</p>
                     </div>
-                    <button class="btn btn-primary passwordChange" (click)="successChange()">Close</button>
+                    <button class="btn btn-primary passwordChange" (click)="conditionFixDiv = false">Close</button>
                 </div>
             </div>
 
@@ -92,8 +104,31 @@
 
 
 
+    <!--_____________POPUP FIRST BEFORE TO "Move trash" OR CANCEL THE RESERVATION_______________-->
+    <div *ngIf="boolean_reservation" class="popupInfoReser" (click)="this.boolean_reservation = false;">
+        <div class="container havePopup">
+            <div class="container boxHS" (click)="$event.stopPropagation()">
+                <div style="display: flex;justify-content: space-between;margin-bottom: 20px;">
+                    <div class="paCancel">
+                        <span>{{arr_reservation[0]}}</span>
+                    </div>
+                </div>
+
+                <div class="paMe">{{arr_reservation[1]}}</div>
+                
+                <div>
+                    <div style="max-width:120px;float: right;display: flex;">
+                        <div class="paYes" (click)="deleteCancel_Reservation(true)">YES</div>
+                        <div class="paNo" (click)="deleteCancel_Reservation(false)">NO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--______Call FIXED ROOMS and RESERVATION_____-->
     <div class="fixedDiv" *ngIf="conditionFixDiv2" (click)="funcCloseReseroom(false)">
+
         <div class="container" style="min-height:100%;padding:10px;display:flex;justify-content: center;align-items: center;">    
             
             <!--_________________THIS IS LOADING PROGRESS__________________-->
@@ -126,11 +161,11 @@
                 <div class="container boxHS">
                     <div style="display: flex;justify-content: space-between;margin-bottom: 20px;">
                         <div class="paCancel">
-                            <span>Already reserved</span>
+                            <span>{{this.arrHandle[1]}}</span>
                         </div>
                     </div>
 
-                    <div class="paMe">The room is already reserved by someone.</div>
+                    <div class="paMe">{{this.arrHandle[2]}}</div>
                     
                     <div>
                         <div style="max-width:120px;float: right;">
@@ -150,7 +185,7 @@
                 </div>
 
                 <!-- __IMG TRANSACTION__ -->
-                <div class="imageAddDiv">
+                <div *ngIf="this.arrHandle[1].paymentMethod === 'payment1'" class="imageAddDiv">
                     <p class="paImageS" style="margin:0%;">Image transactions:</p>
                     <span class="paLMes">The provided payment image transaction of the user.</span>
 
@@ -193,6 +228,10 @@
                                         <label class="labels">Contact number:</label>
                                         <input type="text" [value]="this.arrHandle[1].phone_number" class="form-control forminputs" />
                                     </div>
+                                    <div class="col-12" style="margin-top:10px;">
+                                        <label class="labels" style="font-weight: bold;">Payment Method:</label>
+                                        <span style="margin-left:5px;">{{this.arrHandle[1].paymentMethod}}</span>
+                                    </div>
                                 </div>
                             </div>  
                         </div>
@@ -226,15 +265,17 @@
                                 <div style="margin-top:20px;">
                                     <div class="pdetails">Details</div>
 
-                                    <div class="paDetailsMiddle">
+                                    <div *ngIf="this.arrHandle[1].paymentMethod==='payment1'" class="paDetailsMiddle">
                                         <span style="font-family: inter_medium !important;">Confirmation date</span>
-                                        <span>{{this.arrHandle[1].confirmation_date}}</span>
+                                        <span>{{this.arrHandle[1].confirmation_date !== '' ? this.arrHandle[1].confirmation_date: 'no-date'}}</span>
                                     </div>
 
                                     <div class="paDetailsMiddle">
-                                        <span style="font-family: inter_medium !important;">Transaction date</span>
+                                        <span style="font-family: inter_medium !important;">
+                                            {{this.arrHandle[1].paymentMethod==='payment2' ? "Transaction paid date":'Transaction date'}}</span>
                                         <span>{{this.arrHandle[1].transaction_date}}</span>
                                     </div>
+
 
                                     <div class="paDetailsMiddle">
                                         <span style="font-family: inter_medium !important;">{{this.arrHandle[1].acquired_persons}} persons</span>
@@ -261,11 +302,20 @@
                     </div>
                 </div>
 
-                <div style="display:flex;justify-content: center;">
-                    <button class="btn btn-danger" style="width:25%;" (click)="funcCloseReseroom(true)">Delete request</button>
+                <div>
+                    <div *ngIf="this.arrHandle[1].delete_admin === 'false'" style="display:flex;justify-content: center;">
+                        <button class="btn btn-danger" style="width:25%;" (click)="funcDelete_reservation(false)">Move to trash</button>
 
-                    <button *ngIf="this.arrHandle[1].confirmNot === 'true'" class="btn btn-primary" style="margin-left:10px;width:25%;" 
-                    (click)="funcCancel_Reservation()">Cancel request</button>
+                        <button *ngIf="this.arrHandle[1].confirmNot === 'true' && this.arrHandle[1].paymentMethod==='payment1'" 
+                        class="btn btn-primary" style="margin-left:10px;width:25%;" 
+                        (click)="funcCancel_Reservation(true)">Cancel request</button>
+                    </div>
+
+                    <div *ngIf="this.arrHandle[1].delete_admin === 'tempoDelete'" style="display:flex;justify-content: center;">
+                        <button class="btn btn-danger" style="width:25%;" (click)="funcDelete_reservation(true)">Delete permanent</button>
+
+                        <button  class="btn btn-primary" style="margin-left:10px;width:25%;" (click)="funcCancel_Reservation(false)">Retrieve request</button>
+                    </div>
                 </div> 
             </div>
 
@@ -280,6 +330,8 @@
             </div>
         </div>  
     </div>
+
+
 
 
     <!--____________________background image____________________-->

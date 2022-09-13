@@ -20,6 +20,9 @@
         
 
             <!-- __ROOMS__ -->
+            <div style="display: flex;justify-content: center;margin-bottom: 10px;">
+                <button class="btn btn-danger btnSeeD" (click)="getAllDeletedRoom()">See deleted rooms</button>
+            </div>
             <div *ngIf="getRooms.length > 0" style="display: flex;justify-content: center;">
                 <button class="btn btn-primary btnSeeA" (click)="getAllRoomsFromAll()">See all rooms</button>
             </div>
@@ -40,25 +43,28 @@
                     </div>
                     
                     <!--__reserved by none__-->
-                    <div *ngIf="!data.confirmNot" style="padding:15px;border:1px solid #F1F1F1;">
-                        <p class="paRe">Reserved by:</p>
-                        <span class="paNoreserved">No one right now.</span>
+                    <div *ngIf="data.confirmNot === 'false'" style="padding:15px;border:1px solid #F1F1F1;">
+                        <div *ngIf="data.typeRoom">
+                            <p class="paRe">Reserved by:</p>
+                            <span class="paNoreserved">No one right now.</span>
+                        </div>
+
+                        <div *ngIf="!data.typeRoom">
+                            <p class="paRe">Appointment only</p>
+                        </div>
                     </div>
 
 
                     <!--__reserved by someone__-->
-                    <div *ngIf="data.confirmNot" style="padding:15px 15px 25px 15px;border:1px solid #F1F1F1;">
-                        <div style="display: flex;justify-content: space-between;">
-                            <span class="paRe">Reserved by:</span>
-                            <span class="paSeeDetails">See details</span>
-                        </div>
+                    <div *ngIf="data.confirmNot === 'true'" style="padding:15px 15px 25px 15px;border:1px solid #F1F1F1;">
+                        <span class="paRe">Reserved by:</span>
                         <p class="paInfo">Name: {{data.first_name}} {{data.last_name}}</p>
                         <p class="paInfo">Contact number: {{ data.phone_number }}</p>
                     </div>
 
                     <!--__Button edit__-->
                     <div style="padding:15px;">
-                        <button class="btn btn-primary btnEdit" (click)="editRoom(indexes)">Edit</button>
+                        <button class="btn btn-primary btnEdit" (click)="editRoom(indexes)">Edit / See details</button>
                     </div>
                 </div>
                 
@@ -83,7 +89,7 @@
 
 
             <!-- ___RESERVED BY: Section___-->
-            <div *ngIf="object_roomSelected != null" class="sectionReservedBy">
+            <div *ngIf="object_roomSelected != null && object_roomSelected.typeRoom" class="sectionReservedBy">
                 <div style="display: flex;justify-content: space-between;">
                         <span class="paReserved">Reserved By:</span>
                     
@@ -94,12 +100,13 @@
                 </div>
 
                 <div *ngIf="condition_ClickedseeReserved">
-                    <p *ngIf="!object_roomSelected.confirmNot" class="paNoone" style="margin:10px 0px 0px 10px;">No one right now.</p>
+                    <p *ngIf="object_roomSelected.confirmNot === 'false'" class="paNoone" style="margin:10px 0px 0px 10px;">
+                        {{condition_to_image_click !== 'see' ? 'No one right now.': 'No user reserve on this room.'}}</p>
 
-                    <div *ngIf="object_roomSelected.confirmNot" style="margin-top:10px;">
+                    <div *ngIf="object_roomSelected.confirmNot === 'true'" style="margin-top:10px;">
 
                         <!-- __IMG TRANSACTION__ -->
-                        <div class="imageAddDiv">
+                        <div *ngIf="object_roomSelected.paymentMethod !== 'payment2'" class="imageAddDiv">
                             <p class="paImageS" style="margin:0%;">Image transactions:</p>
                             <span class="paLMes">The provided payment image transaction of the user.</span>
 
@@ -144,6 +151,10 @@
                                                 <label class="labels">Contact number:</label>
                                                 <input type="text" [value]="object_roomSelected.phone_number" class="form-control forminputs" />
                                             </div>
+                                            <div class="col-12" style="margin-top:10px;">
+                                                <label class="labels" style="font-weight: bold;">Payment Method:</label>
+                                                <span style="margin-left:5px;">{{object_roomSelected.paymentMethod}}</span>
+                                            </div>
                                         </div>
                                     </div>  
                                 </div>
@@ -177,13 +188,14 @@
                                         <div style="margin-top:20px;">
                                             <div class="pdetails">Details</div>
 
-                                            <div class="paDetailsMiddle">
+                                            <div *ngIf="object_roomSelected.paymentMethod==='payment1'" class="paDetailsMiddle">
                                                 <span style="font-family: inter_medium !important;">Confirmation date</span>
                                                 <span>{{object_roomSelected.confirmation_date}}</span>
                                             </div>
 
                                             <div class="paDetailsMiddle">
-                                                <span style="font-family: inter_medium !important;">Transaction date</span>
+                                                <span style="font-family: inter_medium !important;">
+                                                    {{object_roomSelected.paymentMethod==='payment2' ? "Transaction paid date":'Transaction date'}}</span>
                                                 <span>{{object_roomSelected.transaction_date}}</span>
                                             </div>
 
@@ -229,13 +241,18 @@
                         <span class="paImageS">Image Section:</span>
                         <span class="paImageC">{{countShownumb_images}}</span>
                     </div>
-                    <span class="paLMes">The file size must to be less than 500kb and you must upload more than 5 images.</span>
+                    <span class="paLMes">
+                        {{  this.condition_to_image_click !== 'see' ?
+                            'The file size must to be less than 500kb and you must upload more than 5 images.':
+                            'All the image of this room.'
+                        }}
+                    </span>
 
                     <!-- __IMG ADD__ -->
                     <div class="divForAdded" style="margin-top:15px;">
 
                         <!--__ADD__-->
-                        <div class="addImageR" style="background:#DDE1FA;cursor: pointer;">
+                        <div *ngIf="this.condition_to_image_click !== 'see'" class="addImageR" style="background:#DDE1FA;cursor: pointer;">
                             <div style="height:100%;cursor:pointer;display:flex;align-items: center;justify-content: center;position: relative;">
 
                                 <input type="file" style="height:100%;border:1px solid black;cursor:pointer;position: absolute;opacity: 0.0;" 
@@ -254,7 +271,7 @@
                         <div *ngFor="let url of arr_image_tempo; index as indexes"  class="addImageR">
                             <div [ngClass]="['addImageR']">
                                 <!-- delete image -->
-                                <div class="disImageDelete">
+                                <div *ngIf="condition_to_image_click !== 'see'" class="disImageDelete">
                                     <div class="deleteImage">
                                         <div class="imgD">
                                             <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;" (click)="displayImage(indexes)" />
@@ -366,14 +383,20 @@
                     <button *ngIf="object_roomSelected == null" class="btn btn-primary btnCreate" (click)="createRoom()">Create room</button>
 
                     <!--_____Edit Room______-->
-                    <div *ngIf="object_roomSelected != null" style="width:100%;display:flex;justify-content: center;">
+                    <div *ngIf="object_roomSelected != null && condition_to_image_click !== 'see'" style="width:100%;display:flex;justify-content: center;">
 
                         <button *ngIf="changingRoom_condition" class="btn btn-primary btnSaveDetails" style="color:black;background:#FFD700;" 
                         (click)="changeDetails()">Change details</button>
 
-                        <button class="btn btn-danger btnDelete" style="color:white;" (click)="deleteRoom()">Delete room</button>
+                        <button class="btn btn-danger btnDelete" style="color:white;" (click)="moveRoom_Trash()">Move to trash</button>
                     </div>
 
+
+                    <div *ngIf="condition_to_image_click === 'see'" style="width:100%;display:flex;justify-content: center;">
+
+                        <button class="btn btn-danger btnDelete" style="color:white;" (click)="deleteRoom()">Delete permanent</button>
+                        <button class="btn btn-primary btnSaveDetails" (click)="retrieve_specific_room()">Retrieve</button>
+                    </div>
                 </div>
 
             </div>
@@ -389,12 +412,15 @@
     <div *ngIf="condition_ClickedseeAllRoom" class="seeAllroomDiv">
         <!-- __HEADER__ -->
         <div style="position: relative;">
-            <img src="/assets/icon/arrow_back.png" class="img-fluid imgSeeAllRooms" (click)="condition_ClickedseeAllRoom = false" />
-            <p class="paSeeRoomsAll">All the Room</p>
+            <img src="/assets/icon/arrow_back.png" class="img-fluid imgSeeAllRooms" (click)="backBttnss()" />
+            <p class="paSeeRoomsAll">{{!roomNot_allDeleted ? 'All the Room':'All deleted Room'}}</p>
         </div>
         <div style="display: flex;justify-content: center;">
             <p class="painfoTitleMe" style="width:60%;margin:5px 0px 0px 0px;">
-                In this section you can now see all the rooms you created. feel free to click the edit button if you want edit the details of the room.</p>
+                {{  !roomNot_allDeleted ?
+                    'In this section you can now see all the rooms you created. feel free to click the edit button if you want edit the details of the room.':
+                    'In this section you can now see all the deleted room. If you want to retrieve or delete permanently the room just click the buttons.'
+                }}</p>
         </div>  
 
         <!-- __No Rooms__ -->
@@ -402,10 +428,11 @@
             <p class="noRooms" style="margin-top:30px;">{{messageForRooms}}</p>
         </div>
 
-        <div style="margin-top:20px;display: flex;justify-content: center;">
-
+        <div class="row" style="margin-top:20px;display: flex;justify-content: center;">
+            
             <!--__Room1 section__-->
-            <div *ngFor="let data of getAllRoomsF; index as indexes" class="divRoomSectionSee">
+            <div *ngFor="let data of getAllRoomsF; index as indexes" [ngClass]="[  
+            !roomNot_allDeleted ?'divRoomSectionSee': 'divRoomSectionDeleted']">
                 <img [src]="data.imgArr[0][0]" style="width:100%;height:200px;" />
                 <div style="padding:15px;">
                     <p class="titleRoom">{{data.nameRoom}}</p>
@@ -413,25 +440,38 @@
                 </div>
                 
                 <!--__reserved by none__-->
-                <div *ngIf="!data.confirmNot" style="padding:15px;border:1px solid #F1F1F1;">
-                    <p class="paRe">Reserved by:</p>
-                    <span class="paNoreserved">No one right now.</span>
+                <div *ngIf="data.confirmNot === 'false'" style="padding:15px;border:1px solid #F1F1F1;">
+                    <div *ngIf="data.typeRoom">
+                        <p class="paRe">Reserved by:</p>
+                        <span class="paNoreserved">No one right now.</span>
+                    </div>
+
+                    <div *ngIf="!data.typeRoom">
+                        <p class="paRe">Appointment only</p>
+                    </div>
                 </div>
 
 
                 <!--__reserved by someone__-->
-                <div *ngIf="data.confirmNot" style="padding:15px 15px 25px 15px;border:1px solid #F1F1F1;">
-                    <div style="display: flex;justify-content: space-between;">
-                        <span class="paRe">Reserved by:</span>
-                        <span class="paSeeDetails">See details</span>
-                    </div>
+                <div *ngIf="data.confirmNot === 'true'" style="padding:15px 15px 25px 15px;border:1px solid #F1F1F1;">
+                    <span class="paRe">Reserved by:</span>
                     <p class="paInfo">Name: {{data.first_name}} {{data.last_name}}</p>
                     <p class="paInfo">Contact number: {{ data.phone_number }}</p>
                 </div>
 
                 <!--__Button edit__-->
                 <div style="padding:15px;">
-                    <button class="btn btn-primary btnEdit" (click)="editRoomFromAll(indexes)">Edit</button>
+                    <div *ngIf="!roomNot_allDeleted">
+                        <button class="btn btn-primary btnEdit" (click)="editRoomFromAll(indexes)">Edit</button>
+                    </div>
+
+                    <div *ngIf="roomNot_allDeleted">
+                        <div style="display: flex;margin-bottom: 7px;">
+                            <button class="btn btn-danger btnDeletePerma" (click)="deleteRoom_fromAll(indexes)">Delete permanent</button>
+                            <button class="btn btn-primary btnDeleteRetrieve" (click)="retrieve_room(indexes)">Retrieve</button>
+                        </div>
+                        <button class="btn btn-primary btnEdit" (click)="deleteRoomFromAll(indexes)">See details</button>
+                    </div>
                 </div>
             </div>
         </div>

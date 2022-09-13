@@ -5,20 +5,9 @@
     <div *ngIf="arr_data.length > 0">
         <div class="row rowInfo">
             <div *ngFor="let arr of arr_data; index as indexes" class="col-12" style="padding:0%;">
-                <div class="divIn" *ngIf="indexes < 4">
+                <div class="divIn">
                     <span><span style="font-family: inter_bold;">{{arr[0]}}: </span> 
                     <span style="font-family: inter_regular;">{{arr[1]}}</span></span>
-                </div>
-
-                <div class="divIn" style="display:flex;align-items:center;justify-content: space-between;" *ngIf="indexes == 4">
-                    <div>
-                        <span class="da"><span style="font-family: inter_bold;">{{arr[0]}}: </span> 
-                        <span style="font-family: inter_regular;">{{arr[1]}}</span></span>
-                    </div>
-
-                    <div>
-                        <img [src]="hiddenNot_src" class="img-fluid" style="cursor:pointer;height:30px;" (click)="hiddenNotPass()"  />
-                    </div>
                 </div>
             </div>
         </div>

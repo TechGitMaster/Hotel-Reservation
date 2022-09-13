@@ -11,6 +11,11 @@ import { UserComponent } from '../account/user/user.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { McGuardGuard } from 'src/app/guard/mcG/mc-guard.guard';
+import { NotificationComponent } from '../account/notification/notification.component';
+import { AppointmentComponent } from '../account/appointment/appointment.component';
+import { ReservationComponent } from '../account/reservation/reservation.component';
+import { ArchiveComponent } from '../account/archive/archive.component';
+import { DetailsComponent } from '../account/details/details.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +24,12 @@ import { McGuardGuard } from 'src/app/guard/mcG/mc-guard.guard';
     RoomsComponent,
     AboutComponent,
     ContactsComponent,
-    UserComponent
+    UserComponent,
+    NotificationComponent,
+    AppointmentComponent,
+    ReservationComponent,
+    ArchiveComponent,
+    DetailsComponent
   ],
   imports: [
     CommonModule,

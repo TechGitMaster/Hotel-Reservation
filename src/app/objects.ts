@@ -33,6 +33,7 @@ export interface mails{
     acceptedNot: string,
     appointmentNot: string,
     newNot: boolean,   
+    folderName: string
 }
 
 export interface schedAppointment{
@@ -93,7 +94,7 @@ export interface room{
     transaction_date: string,
     confirmation_date: string,
 
-    confirmNot: boolean,
+    confirmNot: string,
 }
 
 export interface reservation{
@@ -105,6 +106,7 @@ export interface reservation{
     name_room: string,
 
     defaultPrice: string,
+    paymentMethod: string,
 
     checkin_date: string,
     checkout_date: string,

@@ -45,11 +45,17 @@ export class SchedulesComponent implements OnInit {
 
   data_schedAppointment!: Array<schedAppointment>;
   goForCalendarAppointment: Array<calendarApp> = new Array<calendarApp>();
+  data_AppointmentDeleted!: Array<schedAppointment>;
+
+  header_info!: Array<any>;
 
   public eventSettings!: EventSettingsModel;
   constructor(private service: AdServiceService) { }
 
   ngOnInit(): void {
+    this.data_AppointmentDeleted = new Array<schedAppointment>();
+    this.header_info = new Array<any>(true);
+
     this.str_AMPM = "Loading...";
     this.PM_avail = new Array<string>();
     this.AM_avail = new Array<string>();
@@ -59,18 +65,6 @@ export class SchedulesComponent implements OnInit {
 
     this.condition_clickedmonth = false;
     this.day_numbers = new Array<Array<string>>();    
-
-    //this is to remove license alert window of scheduler.js_____________________________________ 
-    try{
-      let jslicensing = <HTMLDivElement>document.querySelector('#js-licensing');
-      jslicensing.remove();
-
-    }catch(err){
-      window.onload = () => {
-        let jslicensing = <HTMLDivElement>document.querySelector('#js-licensing');
-        jslicensing.remove();
-      }
-    }
 
 
     //This is to get the timeDate____________________________________________________
@@ -100,9 +94,96 @@ export class SchedulesComponent implements OnInit {
       location.reload()
     });
 
+    this.getAppointments();
+  }
 
-    //This is to get all the appointment of the admin___________________________________________________
 
+  //Click change to deleted shedules and show all schedules______________________________________________________________
+  click_change_header(): void{
+    if(this.header_info[0]){
+      this.getDeleted_Appointment();
+      this.header_info = new Array<any>(false);
+    }else{
+      this.getAppointments();
+      this.header_info = new Array<any>(true);
+    }
+
+  }
+
+
+  //Get the deleted appointment_______________________________________________________________
+  message: string = '';
+  getDeleted_Appointment(): void{
+    this.data_AppointmentDeleted = new Array<schedAppointment>();
+    this.message = 'Loading...';
+
+    var subs = this.service.getDeletedAppointment().subscribe((ress) => {
+      subs.unsubscribe();
+
+      if(ress.response === 'success'){
+        this.message = 'success';
+        this.data_AppointmentDeleted = ress.data;
+      }else{
+        this.message = 'No deleted schedule ever recorded.';
+      }
+
+    }, (err) => {
+      subs.unsubscribe();
+      location.reload();
+    });
+
+  }
+
+  //Retrieve appointment_______________________________________________________________________
+  retrieve(numb: number): void{
+    var subs = this.service.retrieve_appointment(this.data_AppointmentDeleted[numb]._id).subscribe(() => {
+      subs.unsubscribe();
+      this.getDeleted_Appointment();
+    }, (err) => {
+      subs.unsubscribe();
+      location.reload();
+    });
+  }
+
+  //This is to delete permanently the schedule______________________________________________________
+  deleteSched(numb: number): void{
+    this.service.openCall(new Array<any>("deleteEvent"));
+
+    var subs = this.service.backEmitter.subscribe((ress) => {
+      subs.unsubscribe();
+      if(ress[0] && ress[1]){
+        subs = this.service.delete_permanently(this.data_AppointmentDeleted[numb]._id).subscribe(() => {
+          subs.unsubscribe();
+          this.getDeleted_Appointment();
+        }, (err) => {
+          subs.unsubscribe();
+          location.reload();
+        })
+      }
+    });
+  }
+
+
+
+
+  //This is to get all the appointment of the admin___________________________________________________
+  getAppointments(): void{
+    //this is to remove license alert window of scheduler.js_____________________________________ 
+    try{
+      setTimeout(() => {
+        let jslicensing = <HTMLDivElement>document.querySelector('#js-licensing');
+        jslicensing.remove();
+      }, .1);
+    }catch(err){
+      window.onload = () => {
+        setTimeout(() => {
+          let jslicensing = <HTMLDivElement>document.querySelector('#js-licensing');
+          jslicensing.remove();
+        }, .1);
+      }
+    }
+
+    this.goForCalendarAppointment = new Array<calendarApp>();
     this.subsAppointment = this.service.getAllSched().subscribe((result) => {
       this.subsAppointment.unsubscribe();
       if(result.response === 'success'){
@@ -144,14 +225,11 @@ export class SchedulesComponent implements OnInit {
       this.subs.unsubscribe();
       location.reload()
     });
-
   }
 
 
 
-
-
-  //APPOINTMENT SCHEDULE______________________________________________________________________________________________________
+  //APPOINTMENT SCHEDULE Action______________________________________________________________________________________________________
   subsDeleteEvent!: Subscription;
   backSubs!: Subscription;
 
@@ -164,7 +242,7 @@ export class SchedulesComponent implements OnInit {
   
   deleleFunc(args: any): void{
     let obs = args.data as any;
-    this.service.openCall(new Array<any>("haveSame", "Cancel Event", "Are you sure you want to cancel this event?"));
+    this.service.openCall(new Array<any>("chooseSchedMoveTrash_cancel"));
 
     this.backSubs = this.service.backEmitter.subscribe((res) => {
       this.backSubs.unsubscribe();
@@ -172,7 +250,7 @@ export class SchedulesComponent implements OnInit {
         if(res[1]){
           this.goForCalendarAppointment = this.goForCalendarAppointment.filter((obj) => { return obj.id !== obs['id'] });
 
-          this.subsDeleteEvent = this.service.deleteEvent(obs['id']).subscribe(() => {
+          this.subsDeleteEvent = this.service.cancelTrashEvent(obs['id'], res[2]).subscribe(() => {
             this.subsDeleteEvent.unsubscribe();
             this.eventSettings = { dataSource: this.goForCalendarAppointment, allowEditing: false, allowAdding: false }; 
           },(error) => 

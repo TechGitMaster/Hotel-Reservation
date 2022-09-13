@@ -344,7 +344,7 @@ function middleware(req, res, next){
             res.sendStatus(403);
         }
     }catch(err){
-        console.log(err);
+        res.sendStatus(403);
     }
 }
 

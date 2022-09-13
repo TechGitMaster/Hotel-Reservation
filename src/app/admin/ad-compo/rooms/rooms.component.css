@@ -47,7 +47,15 @@
     border:none;
     border-radius:10px;
     color:white;
-    font-family: inter_semibold;
+    padding:5px;
+    font-size:15px;
+}
+
+.btnSeeD{
+    width:70%;
+    border:none;
+    border-radius:10px;
+    color:white;
     padding:5px;
     font-size:15px;
 }
@@ -66,7 +74,17 @@
 }
 
 .divRoomSectionSee{
-    max-width: 300px;
+    max-width: 350px;
+    border-radius:10px;
+    overflow: hidden;
+    border: 4px solid #e1e1e1;
+    margin-top:10px;
+    margin-right:15px;
+    padding:0%;
+}
+
+.divRoomSectionDeleted{
+    max-width: 370px;
     border-radius:10px;
     overflow: hidden;
     border: 4px solid #e1e1e1;
@@ -128,6 +146,21 @@
     color:black;
     font-family: inter_regular;
     width:100%;
+    font-size:14px;
+}
+
+.btnDeletePerma{
+    border:none;
+    border-radius:10px;
+    width:49%;
+    font-size:14px;
+    margin-right: 5px;
+}
+
+.btnDeleteRetrieve{
+    border:none;
+    border-radius:10px;
+    width:49%;
     font-size:14px;
 }
 

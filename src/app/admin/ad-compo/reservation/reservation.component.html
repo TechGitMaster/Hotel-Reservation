@@ -5,31 +5,37 @@
             <p class="paMeReser">Reservation component means to see all the request reservation of the user on every rooms available.</p>
         </div>
 
-        <div class="container" style="margin-top:40px;">
+        <div style="margin-top:40px;">
             <div>
                 <!--___SORTING and SEARCHING___-->
                 <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">
 
                     <!--__SORTING__-->
                     <div style="display: flex;align-items: center;">
-                        <div class="form-check" style="margin-right:10px;">
+                      <div class="form-check" style="margin-right:10px;">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="clickRadio('all')" checked>
                             <label class="form-check-label" for="flexRadioDefault1">
                               All
                             </label>
                         </div>
-                          <div class="form-check" style="margin-right:10px;">
+                        <div class="form-check" style="margin-right:10px;">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="clickRadio('accepted')">
                             <label class="form-check-label" for="flexRadioDefault2">
                               Accepted
                             </label>
                         </div>
-                          <div class="form-check" style="margin-right:10px;">
+                        <div class="form-check" style="margin-right:10px;">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('declined')">
                             <label class="form-check-label" for="flexRadioDefault3">
                               Declined
                             </label>
                         </div>
+                        <div class="form-check" style="margin-right:10px;">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('trash')">
+                          <label class="form-check-label" for="flexRadioDefault3">
+                            Trash
+                          </label>
+                      </div>
                     </div>
 
                     <!--__SEARCHING__-->
@@ -51,6 +57,7 @@
                         <th scope="col">check-in</th>
                         <th scope="col">check-out</th>
                         <th scope="col">Transaction date</th>
+                        <th scope="col">Pay method</th>
                         <th scope="col">Action</th>
                       </tr>
                     </thead>
@@ -58,7 +65,7 @@
 
                       <!--___NOTHING REQUEST___-->
                       <tr *ngIf="dataReservationAll.length == 0">
-                        <td colspan="7">
+                        <td colspan="8">
                             <p class="paNothing">{{strLoadingNothing}}</p>
                         </td>
                       </tr>
@@ -75,27 +82,36 @@
                         <td>{{ data.checkin_date }}</td>
                         <td>{{ data.checkout_date }}</td>
                         <td>{{ data.transaction_date }}</td>
+                        <td>{{ data.paymentMethod }}</td>
                         <td>
                             <div style="display: flex;justify-content: center;">
-                                <div style="display: flex;" *ngIf="data.confirmNot === 'new'">
+                                <div style="display: flex;" *ngIf="data.confirmNot === 'new' && str_radioCondition === 'all'">
                                   <button class="btn btn-success btnActionNew" style="width:50%;" (click)="accept_Decline(indexes, true)" >Accept</button>
                                   <button class="btn btn-danger btnActionNew" style="width:50%;" (click)="accept_Decline(indexes, false)">Decline</button>
                                 </div>
 
-                                <button *ngIf="(data.confirmNot === 'true' || data.confirmNot === 'true false') && str_radioCondition === 'all'" 
+                                <div style="display: flex;" *ngIf="data.confirmNot === 'new' && str_radioCondition === 'trash'">
+                                  <button class="btn btn-success btnActionNew" style="width:50%;" disabled>Accept</button>
+                                  <button class="btn btn-danger btnActionNew" style="width:50%;" disabled>Decline</button>
+                                </div>
+
+                                <button *ngIf="(data.confirmNot === 'true' || data.confirmNot === 'true false') && (str_radioCondition === 'all' || str_radioCondition === 'trash')" 
                                     class="btn btn-success btnActionNew" style="width:60%;">Accepted</button>
 
-                                <button *ngIf="data.confirmNot === 'true false' && str_radioCondition === 'all'" 
+                                <button *ngIf="data.confirmNot === 'true false' && (str_radioCondition === 'all' || str_radioCondition === 'trash')" 
                                     class="btn btn-primary btnActionNew" style="width:60%;">Canceled</button>
 
-                                <button *ngIf="data.confirmNot === 'false' && str_radioCondition === 'all'" 
+                                <button *ngIf="data.confirmNot === 'false' && (str_radioCondition === 'all' || str_radioCondition === 'trash')" 
                                     class="btn btn-danger btnActionNew" style="width:60%;">Declined</button>
 
 
-                                <button *ngIf="data.confirmNot === 'true false' && str_radioCondition !== 'all'"
-                                    class="btn btn-primary btnActionNew" style="width:60%;">Canceled</button>
-                                    
-                                <button class="btn btn-primary btnAction" (click)="info(indexes)" [ngStyle]="{'width':str_radioCondition === 'all' ? '32%':'90%'}">Info</button>
+                                <button *ngIf="data.confirmNot === 'true false' && (str_radioCondition === 'accepted')"
+                                    class="btn btn-primary btnActionNew" style="width:60%;">Canceled</button>  
+                                
+                                <button *ngIf="str_radioCondition !== 'trash'" class="btn btn-primary btnAction" (click)="info_tempo(indexes)" 
+                                [ngStyle]="{'width':str_radioCondition === 'trash' ? '32%':'90%'}">Info</button>   
+                                <button *ngIf="str_radioCondition === 'trash'" class="btn btn-primary btnAction" (click)="info(indexes)" 
+                                [ngStyle]="{'width':str_radioCondition === 'trash' ? '32%':'90%'}">Info</button>
                             </div>
 
                         </td>

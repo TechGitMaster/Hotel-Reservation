@@ -67,14 +67,14 @@
                         (click)="funcChecked_manually(number, $event);$event.stopPropagation()" />
                     </div>
 
-                    <div class="container starFavo">
+                    <div class="starFavo">
                         <img [src]="!data.favorite ? '/assets/icon/non_star_favo.png':'/assets/icon/favo_star.png'" class="img-fluid" 
                         style="margin-top:3px;height:20px;cursor: pointer;" (click)="favoriteClick(number, data.favorite, true);$event.stopPropagation()"  />
                     </div>
 
                     <div class="container paDateName" style="max-width:150px;font-family: inter_bold;margin-top:3px;"><span>{{data.fullname}}</span></div>
-                    <div style="width:87%;font-family: inter_bold;" class="paMails"><span>{{data.message}}</span></div>
-                    <div style="width:12%;color:#76707A;" class="paDateName">
+                    <div style="width:76%;font-family: inter_bold;" class="paMails"><span>{{data.message}}</span></div>
+                    <div style="width:15%;color:#76707A;" class="paDateName">
                         <span style="float:right;">
                             {{  
                                 dateCalcu(data.timeDate.split(',')[1].split(' ')[1], 

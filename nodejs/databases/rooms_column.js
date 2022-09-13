@@ -15,6 +15,8 @@ module.exports = (name_column) => {
                 typeRoom: { type: Boolean, required: true  },
                 imgArr: { type: Array, required: false  },
 
+                paymentMethod: { type: String, required: false },
+
                 account_id: { type: String, required: false },
                 checkin_date: { type: String, required: false },
                 checkout_date: { type: String, required: false },
@@ -30,18 +32,20 @@ module.exports = (name_column) => {
                 transaction_date: { type: String, required: false },
                 confirmation_date: { type: String, required: false },
 
-                confirmNot: { type: Boolean, required: false },
+                confirmNot: { type: String, required: false },
+                delete_room: { type: String, required: true }
             }, { timestamps: true });
         break;
         case "admin_user_reservation":
             schema_handle = new Schema({
                 room_id: { type: String, required: true },
-                email_id: { type: String, required: true },
+                email_id: { type: String, required: false },
 
                 img_room: { type: Array, required: true },
                 name_room: { type: String, required: true },
 
                 defaultPrice: { type: String, required: false  },
+                paymentMethod: { type: String, required: false },
 
                 checkin_date: { type: String, required: true },
                 checkout_date: { type: String, required: true },
@@ -59,8 +63,8 @@ module.exports = (name_column) => {
 
                 confirmNot: { type: String, required: true },
 
-                delete_admin: { type: Boolean, required: true },
-                delete_user: { type: Boolean, required: true }
+                delete_admin: { type: String, required: false },
+                delete_user: { type: String, required: false }
             }, { timestamps: true });
         break;
     }

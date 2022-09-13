@@ -95,6 +95,7 @@ export class RoomsComponent implements OnInit {
   //Get all rooms______________________________________________________________________
   getAllRooms(): void{
     this.countRoom = '0';
+    this.condition_ClickedseeAllRoom = false;
     this.messageForRooms = "Loading...";
     this.getRooms = new Array<room>();
     this.subsgetRoom = this.service.getRoom(false).subscribe((res) => {
@@ -119,8 +120,10 @@ export class RoomsComponent implements OnInit {
     });
   }
 
+  roomNot_allDeleted: boolean = false;
   getAllRoomsFromAll(){
     this.change_addRoom();
+    this.roomNot_allDeleted = false;
     this.condition_ClickedseeAllRoom = true;
     this.messageForRooms = "Loading...";
     this.getAllRoomsF = new Array<room>();
@@ -139,9 +142,32 @@ export class RoomsComponent implements OnInit {
         location.reload();
       });      
     }, 500);
-
   }
 
+  getAllDeletedRoom(): void{
+    if(!this.roomNot_allDeleted){
+      this.change_addRoom();
+    }
+    this.roomNot_allDeleted = true;
+    this.condition_ClickedseeAllRoom = true;
+    this.messageForRooms = "Loading...";
+    this.getAllRoomsF = new Array<room>();
+    setTimeout(() => {
+      this.subsgetRoom = this.service.getDeleted_room().subscribe((res) => {
+        this.subsgetRoom.unsubscribe();
+  
+        if(res.response === 'success'){
+          this.getAllRoomsF = res.data;
+        }else{
+          this.messageForRooms = "No deleted rooms.";
+        }
+  
+      }, (err) => {
+        this.subsgetRoom.unsubscribe();
+        location.reload();
+      });      
+    }, 500);
+  }
 
 
   clickRadio(condition: boolean): void{
@@ -294,7 +320,7 @@ export class RoomsComponent implements OnInit {
     }, (err) => {
       this.subs.unsubscribe();
       console.log(err);
-      //location.reload();
+      location.reload();
     });
   }
 
@@ -302,6 +328,7 @@ export class RoomsComponent implements OnInit {
   //This is create room bttn______________________________________________________________________
   async createRoom(){
     this.countNumb_images = 0;
+    this.countNumb_deleteAndBlob = 0;
 
     if(this.arr_image_tempo.length > 0 && this.arr_image_tempo.length >= 5){
       
@@ -413,12 +440,77 @@ export class RoomsComponent implements OnInit {
   editRoomFromAll(numb: number): void{
     this.condition_ClickedseeReserved = false;
     this.condition_ClickedseeAllRoom = false;
+    this.roomNot_allDeleted = false;
 
     setTimeout(() => {
       this.object_roomSelected = this.getAllRoomsF[numb];
       this.countShownumb_images = this.object_roomSelected.imgArr.length;
       this.editRoom_Change();
     }, 500);
+  }
+
+  //Click see details from "All deleted room"______________________________________________
+  deleteRoomFromAll(numb: number): void{
+    this.condition_ClickedseeReserved = false;
+    this.condition_ClickedseeAllRoom = false;
+    this.roomNot_allDeleted = false;
+
+    setTimeout(() => {
+      this.object_roomSelected = this.getAllRoomsF[numb];
+      this.countShownumb_images = this.object_roomSelected.imgArr.length;
+      this.deletedRoom_Change();
+    }, 500);
+  }
+
+  
+  //Change the "Add new room" to "Deleted room"_________________________________________________________
+  condition_to_image_click: string = '';
+  async deletedRoom_Change(){
+    this.arr_image_tempo = new Array<string>();
+    this.arr_image_blob = new Array<Blob>();
+    this.arr_deletedImage = new Array<string>();
+    this.arr_imgArrFinalChanging = new Array<Array<string>>();
+    this.countNumb_deleteAndBlob = 0;
+    this.countNumb_images = 0;
+    this.changingRoom_condition = false;
+    this.deleteRoom_condition = false;
+    this.condition_to_image_click = 'see';
+
+    let radio1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
+    let radio2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
+
+    this.header_txt = new Array<string>("Deleted Room", "In this section you can now see the details of deleted room.");
+                                                      
+    //Information of room_________________________________________________________________________
+    this.formGroup = this.formBuilder.group({
+      nameRoom: [this.object_roomSelected.nameRoom],
+      addInfo: [this.object_roomSelected.addInfo],
+      defaultPrice: [this.object_roomSelected.defaultPrice],
+      goodPersons: [this.object_roomSelected.goodPersons],
+      pricePersons: [this.object_roomSelected.pricePersons]
+    });
+
+
+    this.clickedRadio_TypeRoom = this.object_roomSelected.typeRoom;
+    if(!this.clickedRadio_TypeRoom){
+      radio1.checked = true;
+      radio2.checked = false;
+    }else{
+      radio1.checked = false;
+      radio2.checked = true;
+    }
+
+    radio1.disabled = true;
+    radio2.disabled = true;
+
+    //Images of room_______________________________________________________________________________________________
+    for await (let img of this.object_roomSelected.imgArr){
+      this.arr_image_tempo.push(img[0]);
+    }
+
+    if(this.getRooms.length == 0){
+      this.messageForRooms = "No rooms available."; 
+    }
   }
 
 
@@ -432,6 +524,7 @@ export class RoomsComponent implements OnInit {
     this.arr_image_blob = new Array<Blob>();
     this.arr_deletedImage = new Array<string>();
     this.arr_imgArrFinalChanging = new Array<Array<string>>();
+    this.condition_to_image_click = 'edit';
 
     let radio1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
     let radio2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
@@ -473,6 +566,7 @@ export class RoomsComponent implements OnInit {
     this.countNumb_deleteAndBlob = 0;
     this.countShownumb_images = 0;
     this.countNumb_images = 0;
+    this.roomNot_allDeleted = false;
     this.changingRoom_condition = false;
     this.deleteRoom_condition = false;
     this.object_roomSelected = null;
@@ -481,6 +575,7 @@ export class RoomsComponent implements OnInit {
     this.arr_image_blob = new Array<Blob>();
     this.arr_deletedImage = new Array<string>();
     this.arr_imgArrFinalChanging = new Array<Array<string>>();
+    this.condition_to_image_click = 'add';
 
     let radio1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
     let radio2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
@@ -599,18 +694,96 @@ export class RoomsComponent implements OnInit {
     });
   }
 
-  //Delete room bttn______________________________________________________________________________________________
-  async deleteRoom(){
-    this.arr_deletedImage = new Array<string>();
-    for await(let img of this.object_roomSelected.imgArr){
-      this.arr_deletedImage.push(img[1]);
-    }
 
-    for await(let imgs of this.object_roomSelected.image_transaction){
-      this.arr_deletedImage.push(imgs[1]);
+  condition_retrieve: boolean = false;
+  backBttnss(): void{
+    this.condition_ClickedseeAllRoom = false;
+    this.roomNot_allDeleted = false;
+
+    if(this.condition_retrieve){
+      this.condition_retrieve = false;
+      setTimeout(() => {
+        this.change_addRoom();
+        this.getAllRooms();
+      }, 500);
+    }else{
+      if(this.getRooms.length == 0){
+        this.messageForRooms = "No rooms available."; 
+      }
     }
+  }
+  
+  //Move room to trash__________________________________________________________________________________
+  moveRoom_Trash(): void{
+    var subs = this.service.moveRoom_trash(this.object_roomSelected._id).subscribe((ress) => {
+      subs.unsubscribe();
+      this.change_addRoom();
+      this.getAllRooms();
+    }, (err) => {
+      subs.unsubscribe();
+      location.reload();
+    });
+  }
+
+
+  //Retrieve from all___________________________________________________________________
+  retrieve_room(numbs: number): void{
+    this.condition_retrieve = true;
+    var subs = this.service.room_retreive(this.getAllRoomsF[numbs]._id).subscribe((ress) => {
+      subs.unsubscribe();
+      this.getAllDeletedRoom();
+    }, (err) => {
+      subs.unsubscribe();
+      location.reload();
+    });
+  }
+
+  //Retreive from specific______________________________________________________________________________
+  retrieve_specific_room(): void{
+    var subs = this.service.room_retreive(this.object_roomSelected._id).subscribe((ress) => {
+      subs.unsubscribe();
+      this.change_addRoom();
+      this.getAllRooms();
+    }, (err) => {
+      subs.unsubscribe();
+      location.reload();
+    });
+  }
+
+
+  //Delete room bttn______________________________________________________________________________________________
+  deleteRoom_fromAll(numbs: number): void{
+    this.object_roomSelected = this.getAllRoomsF[numbs];
+    this.deleteRoom();
+  }
+
+  //Delete from specific
+  deleteRoom(): void{
+    this.arr_image_tempo = new Array<string>();
+    this.arr_image_blob = new Array<Blob>();
+    this.arr_deletedImage = new Array<string>();
+    this.arr_imgArrFinalChanging = new Array<Array<string>>();
+    this.countNumb_deleteAndBlob = 0;
+    this.countNumb_images = 0;
     
-    this.deleteImageCloudinary();
+    this.service.openCall(new Array<any>("haveSame", "Delete Room", "Are you sure you want to delete this room?"));
+    var subs = this.service.backEmitter.subscribe(async (result) => {
+      subs.unsubscribe();
+      if(result[0]){
+        if(result[1]){
+          this.arr_deletedImage = new Array<string>();
+          for await(let img of this.object_roomSelected.imgArr){
+            this.arr_deletedImage.push(img[1]);
+          }
+      
+          for await(let imgs of this.object_roomSelected.image_transaction){
+            this.arr_deletedImage.push(imgs[1]);
+          }
+          
+          this.deleteImageCloudinary();
+        }
+      }
+    });
   }
 
   //Deleting finally room______________________________________________________________________________________
@@ -618,8 +791,13 @@ export class RoomsComponent implements OnInit {
     this.subs = this.service.deleteRoom(this.object_roomSelected._id).subscribe((res) => {
       this.subs.unsubscribe();
       this.service.emitCall(new Array<any>("progress", 100, 'Successfully deleting room.'));
-      this.change_addRoom();
-      this.getAllRooms();
+      if(!this.roomNot_allDeleted){
+        this.change_addRoom();
+        this.getAllRooms();
+      }else{
+        this.object_roomSelected = null;
+        this.getAllDeletedRoom();
+      }
     }, (err) => {
       this.subs.unsubscribe();
       location.reload();

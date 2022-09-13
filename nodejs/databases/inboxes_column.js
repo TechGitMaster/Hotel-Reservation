@@ -20,11 +20,13 @@ function columns(name_column){
         timeDate: { type: String, required: true },
         favorite: { type: Boolean, required: true },
         acceptedNot: { type: String, required: false },
-        appointmentNot: { type: String, required: true }
-    };
+        appointmentNot: { type: String, required: true },
+        folderName: { type: String, required: true }
+    };  
 
     if(name_column === 'admin_inbox'){
         schema_column = new Schema({
+            _id: String,
             usermail_id: { type: String, required: false },
             fullname: { type: String, required: false },
             email: { type: String, required: false },
@@ -37,7 +39,8 @@ function columns(name_column){
             favorite: { type: Boolean, required: false },
             acceptedNot: { type: String, required: false },
             appointmentNot: { type: String, required: false },
-            newNot: { type: Boolean, required: true }
+            newNot: { type: Boolean, required: true },
+            folderName: { type: String, required: true }
         }, { timestamps: true });
     }else{
         schema_column = new Schema(schema_data, { timestamps: true });

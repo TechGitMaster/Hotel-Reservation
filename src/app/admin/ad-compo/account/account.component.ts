@@ -10,11 +10,10 @@ import { AdServiceService } from '../../ad-service.service';
 })
 export class AccountComponent implements OnInit {
 
-  constructor(private service: AdServiceService, private cookieService: CookieService) { }
+  constructor(private service: AdServiceService) { }
 
   arr_data!: Array<Array<string>>;
   subs!: Subscription;
-  handPass!: string;
   passConvert!: string;
 
   hiddenNot_src!: string;
@@ -28,10 +27,9 @@ export class AccountComponent implements OnInit {
     this.subs = this.service.getInformation().subscribe((result) => {
       this.subs.unsubscribe();
       this.passConvert = "";
-      this.handPass = result.data[4][1];
+      let pass = result.data[4][1] as string;
 
-
-      this.handPass.split('').forEach((d) => {
+      pass.split('').forEach((d) => {
         this.passConvert += '*';
       });
 
@@ -44,24 +42,6 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  
-  hiddenNotPass(): void{
-    let arr_div = document.querySelectorAll(".rowInfo > div");
-    let divChild = arr_div[4].querySelectorAll(".divIn > div");
-    let span = divChild[0].querySelectorAll('.da > span');
-
-    let convert = <HTMLSpanElement>span[1];
-
-    if(!this.condition_hiddenNot){
-      this.condition_hiddenNot = true;
-      this.hiddenNot_src = "/assets/icon/hiddenNot.png";
-      convert.innerHTML = this.handPass;
-    }else{
-      this.condition_hiddenNot = false;
-      this.hiddenNot_src = "/assets/icon/hidden.png";
-      convert.innerHTML = this.passConvert;
-    }
-  }
 
   changePass(): void{
     this.service.openCall(new Array<any>("ChangePassAdmin"));

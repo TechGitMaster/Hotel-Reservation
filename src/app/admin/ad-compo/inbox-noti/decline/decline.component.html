@@ -60,7 +60,7 @@
                         (click)="funcChecked_manually(number, $event);$event.stopPropagation()" />
                     </div>
 
-                    <div class="container starFavo">
+                    <div class="starFavo">
                         <img [src]="!data.favorite ? '/assets/icon/non_star_favo.png':'/assets/icon/favo_star.png'" class="img-fluid" 
                         style="margin-top:3px;height:20px;cursor: pointer;" (click)="favoriteClick(number, data.favorite, true);$event.stopPropagation()"  />
                     </div>

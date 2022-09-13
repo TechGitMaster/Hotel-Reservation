@@ -1,0 +1,195 @@
+.naviclicked{
+    height:100vh;
+    padding:0px;
+    z-index:3;
+    padding-top:50px;
+    padding-top:50px;
+    background:#493B3B;
+    position:fixed;
+}
+
+.conX{
+    color:white;
+    font-family: inter_bold;
+    font-size:30px;
+    margin-bottom:40px;
+    cursor: pointer;
+}
+
+.divLogoCorner{
+    display:none;
+}
+
+.logomenu{
+    max-width:400px;
+    max-height:400px;
+    display:block;
+}
+
+.divborder1{
+    border-top:1px solid #747272;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+
+.navclickable{
+    font-family: inria_serif_bold;
+    padding-left:20px;
+    padding-right:20px;
+    color:rgb(255, 255, 255);
+    font-size:30px;
+    letter-spacing: 2px;
+}
+
+.fixedDiv{
+    width:100%;
+    height:100vh;
+    background:rgba(0, 0, 0, 0.245);
+    z-index:5;
+    overflow-y: scroll;
+    position:fixed;
+}
+
+.paX{
+    font-family: inter_bold;
+    font-size:20px; 
+    padding-top:10px;
+    cursor: pointer;
+}
+
+.chPass{
+    max-width: 500px;
+    background:white;
+    border-radius:10px;
+    padding:0px 10px 10px 10px;
+}
+
+.paForgotPass{
+    margin-top:-5px;
+    font-family: inter_bold;
+    font-size:23px;
+    text-align: center;
+    color:#0063A8;
+    margin-bottom:15px;
+}
+
+.forminputReg{
+    border-radius: 10px;
+    border:none;
+    border:2px solid black;
+    padding: 10px 15px 10px 15px;
+    font-size:17px;
+}
+
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
+}
+
+.passwordChange{
+    width:100%;
+    border-radius:20px;
+    font-size:16px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:10px;
+}
+
+.divSuccesschangePass{
+    max-width:500px;
+    max-height:250px;
+    padding:30px 20px 30px 20px;
+    background:white;
+    border-radius:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paSuccessChange{
+    width: 80%;
+    margin:0px 0px 10px 0px;
+    font-family: inter_bold;
+    font-size:20px;
+    text-align: center;
+    color:#0063A8;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px 10px 0px;
+    margin-bottom: 0px;
+}
+
+.paAcc{
+    font-family: inter_bold;
+    font-size:32px;
+    color:#0063A8;
+    margin:0%;
+}
+
+.paAccInfo{
+    font-family: inter_regular;
+    font-size:18px;
+}
+
+
+.compo_selection{
+    max-width: 280px;
+    background:white;
+    border-right:4px solid #F1F1F1;
+    padding:20px;
+
+}
+
+.router{
+    width:100%;
+    overflow-x: scroll;
+}
+
+.selection{
+    display: flex;
+    padding:10px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.paNavigation{
+    font-family: inter_medium;
+    font-size:18px;
+    margin:0px 0px 0px 10px;
+}
+
+
+.bttn_logout{
+    width: 100%;
+    font-family: inter_semibold;
+    font-size:16px;
+    text-align: center;
+    border-radius: 25px;
+    background:#FFD700;
+    border:none;
+    padding:13px;
+    color:black;
+    margin-top: 15px;
+}
+
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+@media (max-width:992px){
+    .divLogoCorner{
+        display: block;
+    }
+
+    .logomenu{
+        display:none;
+    }
+}

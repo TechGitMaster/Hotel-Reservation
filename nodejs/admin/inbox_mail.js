@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const middleware_admin = require('./authorization');
 const db_column = require('../databases/inboxes_column');
@@ -21,7 +22,7 @@ const inboxes_column_user = require('../databases/inboxes_user_column')('user_pe
 //Saving appointment and contact us more mail_____________________________________
 router.get('/inboxSaving_user', middleware_user, (req, res) => {
     const email = req.condition ? req.email: '';
-
+    var _id = mongoose.Types.ObjectId();
     if(email !== ''){
         new inboxes_column_user({
             fullname: req.query.fullname,
@@ -36,6 +37,7 @@ router.get('/inboxSaving_user', middleware_user, (req, res) => {
             newNot: true  
         }).save().then((data) => {
             new inbox_col({
+                _id: _id,
                 usermail_id: data._id,
                 fullname: req.query.fullname,
                 email: email,
@@ -48,14 +50,15 @@ router.get('/inboxSaving_user', middleware_user, (req, res) => {
                 favorite: false,
                 acceptedNot: 'new',
                 appointmentNot: req.query.appointmentNot,
-                newNot: true
+                newNot: true,
+                folderName: 'inbox'
             }).save().then(() => {
-                //send email to the admin_____________________________________
                 res.json({ response: 'success' });
             });  
         });
     }else{
         new inbox_col({
+            _id: _id,
             usermail_id: '',
             fullname: req.query.fullname,
             email: email,
@@ -68,9 +71,9 @@ router.get('/inboxSaving_user', middleware_user, (req, res) => {
             favorite: false,
             acceptedNot: 'new',
             appointmentNot: req.query.appointmentNot,
-            newNot: true
+            newNot: true,
+            folderName: 'inbox'
         }).save().then(() => {
-            //send email to the admin_____________________________________
             res.json({ response: 'success' });
         });  
     }
@@ -160,7 +163,8 @@ router.post('/saveNotFavorite', middleware_admin, async (req, res) => {
             timeDate: data.timeDate,
             favorite: true,
             acceptedNot: data.acceptedNot,
-            appointmentNot: data.appointmentNot
+            appointmentNot: data.appointmentNot,
+            folderName: 'favorite'
         }).save().then(re => {  
 
             inbox_col.updateOne({ _id: id }, { $set: { favorite: true } }).then(() => {
@@ -193,8 +197,10 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
     let data = null;
     if(name_column === 'inbox'){
         data = await inbox_col.findOne({ _id: id });
-    }else{
+    }else if(name_column === 'favo'){
         data = await favo_col.findOne({ IDS: id });
+    }else{
+        data = await trash_col.findOne({ IDS: id });
     }
 
     //accepted__________________
@@ -218,7 +224,8 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
                         timeDate: data.timeDate,
                         favorite: data.favorite,
                         acceptedNot: condition,
-                        appointmentNot: data.appointmentNot
+                        appointmentNot: data.appointmentNot,
+                        folderName: 'accept'
                     }).save().then(() => {
                         
                         //save to schedule calendar_________________________________
@@ -234,28 +241,29 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
                             message: data.message,
                             timeDate: data.dateArrival,
                             date: schedDate[1],
-                            appointmentNot: data.appointmentNot
+                            appointmentNot: data.appointmentNot,
+                            delete_admin: false
                         }).save().then(() => {
-                            favo_col.updateOne({ IDS: id }, { $set: { acceptedNot: condition }}).then(async () => {
-                                    
-                                new timeDate_accepted({
-                                    IDS: id,
-                                    timeDate: data.dateArrival,
-                                    time: schedDate[0].split(" ")[0],
-                                    date: schedDate[1]
-                                }).save().then(() => {
-
-                                    if(data.usermail_id !== ''){
-                                        inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'true' } } ).then(() => {
-                                            //send email to the user and notification_____________________________________
+                            favo_col.updateOne({ IDS: id }, { $set: { acceptedNot: condition }}).then(() => {
+                                trash_col.updateOne({ IDS: id }, { $set: { acceptedNot: condition }}).then(async () => {
+                                    new timeDate_accepted({
+                                        IDS: id,
+                                        timeDate: data.dateArrival,
+                                        time: schedDate[0].split(" ")[0],
+                                        date: schedDate[1]
+                                    }).save().then(() => {
+    
+                                        if(data.usermail_id !== ''){
+                                            inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'true' } } ).then(() => {
+                                                //send email to the user and notification_____________________________________
+                                                res.json({ response: 'success' });
+                                            });
+                                        }else{
+                                            //send email to the user_____________________________________
                                             res.json({ response: 'success' });
-                                        });
-                                    }else{
-                                        //send email to the user_____________________________________
-                                        res.json({ response: 'success' });
-                                    }
+                                        }
+                                    });
                                 });
-                                
                             });
                         });
                 });
@@ -280,23 +288,23 @@ router.post('/acceptDecline_Appointments', middleware_admin, async (req, res) =>
                 timeDate: data.timeDate,
                 favorite: data.favorite,
                 acceptedNot: condition,
-                appointmentNot: data.appointmentNot
+                appointmentNot: data.appointmentNot,
+                folderName: 'decline'
             }).save().then(() => {
                 
                 favo_col.updateOne({ IDS: id }, { $set: { acceptedNot: condition }}).then(() => {
-
-                    if(data.usermail_id !== ''){
-                        inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'false' } } ).then(() => {
-                            //send email to the user and notification_____________________________________
-                            res.json({ response: 'success' });
-                        });    
-                    }else{
-                        inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'false' } } ).then(() => {
+                    trash_col.updateOne({ IDS: id }, { $set: { acceptedNot: condition }}).then(async () => {
+                        if(data.usermail_id !== ''){
+                            inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'false' } } ).then(() => {
+                                //send email to the user and notification_____________________________________
+                                res.json({ response: 'success' });
+                            });    
+                        }else{
                             //send email to the user_____________________________________
                             res.json({ response: 'success' });
-                        });
-    
-                    }
+                        }
+                    });
+                    
                     
                 });
             });
@@ -402,7 +410,7 @@ router.post('/deleteMails', middleware_admin, async (req, res) => {
         if(data_mail != null){
             //After find the mail, save the data to Trash mail______________________________________
             await new trash_col({
-                IDS: data_mail._id,
+                IDS: name_column === 'inbox' ? data_mail._id: data_mail.IDS,
                 usermail_id: data_mail.usermail_id,
                 fullname: data_mail.fullname,
                 email: data_mail.email,
@@ -414,7 +422,8 @@ router.post('/deleteMails', middleware_admin, async (req, res) => {
                 timeDate: data_mail.timeDate,
                 favorite: data_mail.favorite,
                 acceptedNot: data_mail.acceptedNot,
-                appointmentNot: data_mail.appointmentNot
+                appointmentNot: data_mail.appointmentNot,
+                folderName: data_mail.folderName
             }).save();
 
 
@@ -443,6 +452,105 @@ router.post('/deleteMails', middleware_admin, async (req, res) => {
 });
 
 
+//Retrive data and assign them to their folder____________________________________________________
+router.post('/retriveMails', middleware_admin, async (req, res) => {
+
+    const { ids_arr } = req.body.datas;
+
+    const data = await trash_col.findOne({ _id:ids_arr[0][0] });
+
+    var data_column = null;
+    switch(ids_arr[0][2]){
+        case 'inbox':
+            data_column = inbox_col;
+        break;
+        case 'favorite':
+            data_column = favo_col;
+        break;
+        case 'accept':
+            data_column = accept_col;
+        break;
+        case 'decline':
+            data_column = decline_col;
+        break;
+    }
+
+    if(ids_arr[0][2] !== 'inbox'){
+        new data_column({
+            IDS: data.IDS,
+            usermail_id: data.usermail_id,
+            fullname: data.fullname,
+            email: data.email,
+            reserved_email: data.reserved_email,
+            numGuest: data.numGuest,
+            contact_num: data.contact_num,
+            message: data.message,
+            dateArrival: data.dateArrival,
+            timeDate: data.timeDate,
+            favorite: data.favorite,
+            acceptedNot: data.acceptedNot,
+            appointmentNot: data.appointmentNot,
+            folderName: data.folderName
+        }).save().then(async (ress) => {
+            if(ids_arr[0][2] === 'favorite'){
+                await inbox_col.updateOne({ _id: data.IDS }, { $set: { favorite: true } });
+                await accept_col.updateOne({ IDS: data.IDS }, { $set: { favorite: true } });
+                await decline_col.updateOne({ IDS: data.IDS }, { $set: { favorite: true } });
+            }else{
+                const find = await favo_col.findOne({ IDS: data.IDS });
+                
+                if(find != null){
+                    await inbox_col.updateOne({ _id: data.IDS }, { $set: { favorite: true } });
+                    await accept_col.updateOne({ IDS: data.IDS }, { $set: { favorite: true } });
+                    await decline_col.updateOne({ IDS: data.IDS }, { $set: { favorite: true } });
+                }else{
+                    await inbox_col.updateOne({ _id: data.IDS }, { $set: { favorite: false } });
+                    await accept_col.updateOne({ IDS: data.IDS }, { $set: { favorite: false } });
+                    await decline_col.updateOne({ IDS: data.IDS }, { $set: { favorite: false } });
+                }
+            }
+
+            trash_col.deleteOne({ _id: ids_arr[0][0] }).then(() => {
+                res.json({ response: 'success' });
+            });
+        });
+    }else{
+        var _id = data.IDS;
+        new data_column({
+            _id: _id,
+            usermail_id: data.usermail_id,
+            fullname: data.fullname,
+            email: data.email,
+            reserved_email: data.reserved_email,
+            numGuest: data.numGuest,
+            contact_num: data.contact_num,
+            message: data.message,
+            dateArrival: data.dateArrival,
+            timeDate: data.timeDate,
+            favorite: data.favorite,
+            acceptedNot: data.acceptedNot,
+            appointmentNot: data.appointmentNot,
+            folderName: data.folderName,
+            newNot: false
+        }).save().then(async () => {
+            const find = await favo_col.findOne({ IDS: data.IDS });
+                
+            if(find != null){
+                await inbox_col.updateOne({ _id: data.IDS }, { $set: { favorite: true } });
+                await accept_col.updateOne({ IDS: data.IDS }, { $set: { favorite: true } });
+                await decline_col.updateOne({ IDS: data.IDS }, { $set: { favorite: true } });
+            }else{
+                await inbox_col.updateOne({ _id: data.IDS }, { $set: { favorite: false } });
+                await accept_col.updateOne({ IDS: data.IDS }, { $set: { favorite: false } });
+                await decline_col.updateOne({ IDS: data.IDS }, { $set: { favorite: false } });
+            }
+
+            trash_col.deleteOne({ _id: ids_arr[0][0] }).then(() => {
+                res.json({ response: 'success' });
+            });  
+        });
+    }
+});
 
 
 //Delete permanently Mails from Trash mail_____________________________________________________

@@ -22,11 +22,23 @@ const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'O
 //This is for getting Current Appointment Schedule____________________________________________
 router.get('/getAllSched', middleware_admin, async (req, res) => {
 
-    const data = await calendar_sched_col.find();
+    const data = await calendar_sched_col.find({ delete_admin: false });
     if(data.length > 0){
         res.json({response: 'success', data: data})   
     }else{
         res.json({response: 'no-data'})   
+    }
+});
+
+
+//This is for getting deleted appointment__________________________________________________________________________
+router.get('/getDeleteAppointment', middleware_admin, async (req, res) => {
+    const data = await calendar_sched_col.find({ delete_admin: true });
+
+    if(data.length > 0){
+        res.json({ response: 'success', data: data });
+    }else{
+        res.json({ response: 'no-data' });
     }
 });
 
@@ -87,39 +99,66 @@ router.post('/notAvailable_save', middleware_admin, async (req, res) => {
 });
 
 
-//This is to deleteEvent____________________________________________________________________________
-router.post('/deleteEvent', middleware_admin, async (req, res) => {
-    let { id } = req.body.datas;
+//Move to trash the event______________________________________________________________
+router.post('/deletePermanent', middleware_admin, async (req, res) => {
+   let { _id } = req.body;
+    
+    calendar_sched_col.deleteOne({ _id: _id }).then(() => {
+        res.json({ response: 'success' });
+    });
 
-    const data = await calendar_sched_col.findOne({ _id: id });
+});
 
-    calendar_sched_col.deleteOne({ _id: id }).then(() => {
 
-        accepted_timeDate.deleteOne({ IDS: data.IDS }).then(() => {
+//retrieve appointment_____________________________________________________________________________________
+router.post('/retrieveAppointment', middleware_admin, async (req, res) => {
+    const { _id } = req.body;
+    calendar_sched_col.updateOne({ _id: _id }, { $set: { delete_admin: false } }).then(() => {
+        res.json({ response: 'success' });
+    });
+});
 
-            inbox_col.updateOne({ _id: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                favo_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                    accept_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                        trash_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(async () => {
 
-                            if(data.usermail_id !== ''){
-                                inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                                    //Send mail to user and notification that the admin canceled the appointment_______________________________________________
+
+//This is to cancelTrashEvent____________________________________________________________________________
+router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
+    let { id, cancelDelete } = req.body.datas;
+
+    if(!cancelDelete){
+        const data = await calendar_sched_col.findOne({ _id: id });
+
+        calendar_sched_col.deleteOne({ _id: id }).then(() => {
+    
+            accepted_timeDate.deleteOne({ IDS: data.IDS }).then(() => {
+    
+                inbox_col.updateOne({ _id: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                    favo_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                        accept_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                            trash_col.updateOne({ IDS: data.IDS }, { $set: { acceptedNot: 'true false' } }).then(async () => {
+    
+                                if(data.usermail_id !== ''){
+                                    inboxes_column_user.updateOne({ _id: data.usermail_id }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                                        //Send mail to user and notification that the admin canceled the appointment_______________________________________________
+                                        res.json({ response: 'success' });
+                                    });
+                                }else{
+                                    //Send mail to user that the admin canceled the appointment_______________________________________________
                                     res.json({ response: 'success' });
-                                });
-                            }else{
-                                //Send mail to user that the admin canceled the appointment_______________________________________________
-                                res.json({ response: 'success' });
-                            }
-                            
-                            
+                                }
+                                
+                                
+                            });
                         });
                     });
                 });
+    
             });
-
+        });   
+    }else{
+        calendar_sched_col.updateOne({ _id: id }, { $set: { delete_admin: true } }).then(() => {
+            res.json({ response: 'success' });
         });
-    });
+    }
 
 });
 

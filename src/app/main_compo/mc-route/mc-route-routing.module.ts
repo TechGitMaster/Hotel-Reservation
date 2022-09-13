@@ -7,7 +7,7 @@ import { HomeComponent } from '../home/home.component';
 import { RoomsComponent } from '../rooms/rooms.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/mc/user-account', pathMatch: 'full' },
+  { path: '', redirectTo: '/mc/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'contact-us', component: ContactsComponent },
   { path: 'rooms', component: RoomsComponent },

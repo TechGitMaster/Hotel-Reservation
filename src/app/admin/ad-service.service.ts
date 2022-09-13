@@ -77,6 +77,11 @@ export class AdServiceService {
     return this.http.post<any>('/deleteMailTrash', { datas: { ids_arr: arr_datas } });
   }
 
+  //This is for retrive email and send it to their assigned folder__________________________________________________
+  retriveMails(arr_datas: Array<Array<any>>): Observable<any>{
+    return this.http.post<any>('/retriveMails', { datas: { ids_arr: arr_datas } });
+  }
+
 
   //__________________________________________________________________________________________________________
 
@@ -108,8 +113,21 @@ export class AdServiceService {
     return this.http.post<any>('/updateAMPM', { datas: { AM: AM, PM: PM } });
   }
 
-  deleteEvent(id: string): Observable<any>{
-    return this.http.post<any>('/deleteEvent', { datas: { id: id } });
+  getDeletedAppointment(): Observable<any>{
+    return this.http.get<any>('/getDeleteAppointment');
+  }
+
+
+  delete_permanently(_id: string): Observable<any>{
+    return this.http.post('/deletePermanent', { _id: _id });
+  }
+
+  retrieve_appointment(_id: string): Observable<any>{
+    return this.http.post('/retrieveAppointment', { _id: _id });
+  }
+
+  cancelTrashEvent(id: string, cancelDelete: boolean): Observable<any>{
+    return this.http.post<any>('/cancelTrashEvent', { datas: { id: id, cancelDelete: cancelDelete } });
   }
 
   //Schedule EventEmitters_______________________________________________________________________________________
@@ -160,6 +178,10 @@ export class AdServiceService {
     return this.http.post('/getRooms', { condition: condition });
   }
 
+  getDeleted_room(): Observable<any>{
+    return this.http.post('/getdeleteRoom', {});
+  }
+
   uploadImage(img: Blob): Observable<any>{
     let formdata = new FormData();
     formdata.append('image', img);
@@ -193,6 +215,14 @@ export class AdServiceService {
     });
   }
 
+  moveRoom_trash(_id: string): Observable<any>{
+    return this.http.post<any>('/moveToTrash', { _id:_id });
+  }
+
+  room_retreive(_id: string): Observable<any>{
+    return this.http.post<any>('/room_retreive', { _id:_id });
+  }
+
   deleteRoom(_id: string): Observable<any>{
     return this.http.post<any>('/deleteRoom', { _id:_id });
   }
@@ -211,6 +241,14 @@ export class AdServiceService {
   accept_declineReservation(id: string, room_id: string, email_id: string, confirmation: string, condition: boolean): Observable<any>{
     console.log(id);
     return this.http.post<any>('/A-D_Request', { id: id, room_id: room_id,  email_id: email_id, confirmation_date: confirmation, condition: condition});
+  }
+
+  deleteReservation_tempo(id: string, room_id: string, email_id: string): Observable<any>{
+    return this.http.post<any>('/deleteReservation_tempo', { id: id, room_id: room_id,  email_id: email_id });
+  }
+
+  retrieve_reservation(id: string, room_id: string, email_id: string): Observable<any>{
+    return this.http.post<any>('/retrieve_Reservation', { id: id, room_id: room_id,  email_id: email_id });
   }
 
   deleteReservation(id: string, room_id: string, email_id: string): Observable<any>{

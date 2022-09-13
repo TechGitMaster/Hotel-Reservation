@@ -1,181 +1,194 @@
 <div class="container-fluid" style="padding-bottom:30px;">
-    <p class="paAppointSched">Appointment schedule</p>
 
-    <!--__________Scheduler__________-->
-    <div style="margin-top:10px;margin-bottom:25px;">
-        <ejs-schedule height='500px' [eventSettings]="eventSettings" (popupOpen)="popupOpen($event)" >
-            <e-views>
-                <e-view option="Day"></e-view>
-                <e-view option='Week'></e-view>
-                <e-view option='Month'></e-view>
-            </e-views>
-        </ejs-schedule>
-    </div> 
-
-
-    <!--___________________________________SCHEDULE MANIFEST___________________________________________-->
-    <div class="container" style="padding:0px;">
-        <div class="row">
-
-            <!--___________________________________CALENDAR___________________________________________-->
-            <div class="col-lg-5 col-12">
-                <p class="paCalendar">Calendar:</p>
-                <div style="padding:0px 10px 0px 20px">
-                    <div>
-                        <input type="checkbox" class="form-check-input checkBoxs" (click)="checkBoxes($event)" />
-                        <label class="laCheck">Check to set not available days</label>
-                    </div>
-
-                    <!--_______________________Calendar_______________________-->
-                    <div style="margin-top:20px;">
-                    <div class="calendar">
-                        <div class="row" *ngIf="!condition_clickedmonth">
-                            <div class="col-6">
-                                <span class="month-picker" id="month-picker" (click)="clickMonthPicker()">{{month_select}}</span>
-                            </div>
-                            <div class="col-6">
-                                <div class="year-picker">
-                                    <div style="margin-right:10px;">
-                                        <p class="preprev year-change" (click)="prevyear()" style="margin:0%;">{{prevtxt}}</p>
-                                    </div>
-                                    <div>
-                                        <p id="year" style="margin:0%;">{{year_selected}}</p>
-                                    </div>
-                                    <div style="margin-left:10px;">
-                                        <p class="prenext year-change" (click)="nextyear()" id="next-year" style="margin:0%;">{{nextxt}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="calendar-body" *ngIf="!condition_clickedmonth">
-                            <div style="width:95%;">
-                                <div class="calendar-week-day">
-                                    <div>Sun</div>
-                                    <div>Mon</div>
-                                    <div>Tue</div>
-                                    <div>Wed</div>
-                                    <div>Thu</div>
-                                    <div>Fri</div>
-                                    <div>Sat</div>
-                                </div>
-                                <div class="calendar-days">
-                                    <div *ngFor="let days of day_numbers;index as dayindex">
-                                        <div (mouseover)="daypick_hover(days[0], days[1], 'mouseover')" (mouseout)="daypick_hover(days[0], days[1], 'mouseout')"  
-                                        (click)="daypick(days[0], days[1], dayindex)"
-                                        [ngStyle]="{'cursor':(days[1] === 'true' || days[1] === 'falses' ? 'pointer':'context-menu'), 'background':
-                                        (days[1] === 'falses' ? '#FFD700': 
-                                        (days[0] === ''+numshandlePickDay ? '#ADD8E6':(days[1] === 'false' ? 'rgb(213, 213, 213)':'')) )}"
-                                        class="cols"
-                                        >
-                                            {{ days[0] }}
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                                
-                        <div class="month-list" *ngIf="condition_clickedmonth">
-                            <div class="row" style="margin:0%;">
-                                <div class="col-4" style="padding:5px;margin-top:5px;" *ngFor="let stringa of month_names_final; index as nindex">
-                                    <div class="colfdivmontjh">
-                                        <div [ngClass]="[(stringa[1] !== 'false' ? 'colmonth': 'colmonth2')]" (click)="calenpick(nindex, stringa[1])">
-                                            <span class="coltxtmonth">{{ stringa[0] }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-
-                    <div style="margin-top:15px;">
-                        <div style="display:flex;float:right;">
-                            <div style="display:flex;margin-right:15px;">
-                                <div class="boxNotAvail"></div>
-                                <span class="paNotAvail">Not Available day</span>
-                            </div>
-                            <div style="display:flex">   
-                                <div class="boxDisable"></div>
-                                <span class="paDisable">Disabled</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!--___________________________________SCHEDULE AND TIME MANIFEST___________________________________________-->
+    <div *ngIf="header_info[0]" class="container-fluid" style="padding:0%;">
+        <div style="display: flex;justify-content: space-between;margin-top:15px;">
+            <div>
+                <p class="paAppointSched">Appointment schedule</p>
+                <span>See all the appointment schedule you have.</span>
             </div>
+            <div style="width:20%;display: flex;align-items: center;justify-content: flex-end;">
+                <button [ngClass]="['btn btn-danger', 'btnSeeD']" (click)="click_change_header()">See deleted schedules</button>
+            </div>
+        </div>
 
-        
-            <!--___________________________________AVAILABLE TIME___________________________________________-->
-            <div class="col-lg-7 col-12">
-                <div style="padding:0px 20px 0px 0px">
+        <!--__________Scheduler__________-->
+        <div style="margin-top:10px;margin-bottom:25px;">
+            <ejs-schedule height='500px' [eventSettings]="eventSettings" (popupOpen)="popupOpen($event)" >
+                <e-views>
+                    <e-view option="Day"></e-view>
+                    <e-view option='Week'></e-view>
+                    <e-view option='Month'></e-view>
+                </e-views>
+            </ejs-schedule>
+        </div> 
 
-                    <!--______HEADER________-->
-                    <div style="display:flex;justify-content: space-between;align-items:center;margin-bottom:20px;">
-                        <p class="paAvail" style="padding:0px;margin:0%;">Available Time:</p>
-                        <div *ngIf="condition_delete">
-                            <div (click)="deleteCheckBox()" class="delete_div">
-                                <img src="/assets/icon/trash_white.png" class="img-fluid" style="height:30px;" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--____Morning and Evening____-->
-                    <div>
-
-                        <!--_______MORNING________-->
-                        <div class="morningDiv" style="margin-bottom:20px;">
-                            <div style="display:flex;justify-content: space-between;">
-                                <p class="mM">Morning</p>
-                                <p class="paAdd" (click)="clickAddAM()">+Add slots</p>
-                            </div>
-                            <p class="numbs">9:00 AM to 11:59 AM</p>
-
+        <div>
+            <!--___________________________________SCHEDULE MANIFEST___________________________________________-->
+            <div class="container" style="padding:0px;">
+                <div class="row">
+    
+                    <!--___________________________________CALENDAR___________________________________________-->
+                    <div class="col-lg-5 col-12">
+                        <p class="paCalendar">Calendar:</p>
+                        <div style="padding:0px 10px 0px 20px">
                             <div>
-                                <!--_________TIME__________-->
-                                <p *ngIf="AM_avail.length == 0">{{str_AMPM}}</p>
-                                <div *ngIf="AM_avail.length > 0">
-                                    <div>
-                                        <div *ngFor="let numb of AM_avail; index as indexes" class="arrNumbDiv">
-                                            <div class="arrNumbO">
-                                                <div>
-                                                    <input type="checkbox" class="form-check-input checkBoxsNumb" (click)="checkBoxeTimer('AM', indexes, $event)" />
+                                <input type="checkbox" class="form-check-input checkBoxs" (click)="checkBoxes($event)" />
+                                <label class="laCheck">Check to set not available days</label>
+                            </div>
+    
+                            <!--_______________________Calendar_______________________-->
+                            <div style="margin-top:20px;">
+                            <div class="calendar">
+                                <div class="row" *ngIf="!condition_clickedmonth">
+                                    <div class="col-6">
+                                        <span class="month-picker" id="month-picker" (click)="clickMonthPicker()">{{month_select}}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="year-picker">
+                                            <div style="margin-right:10px;">
+                                                <p class="preprev year-change" (click)="prevyear()" style="margin:0%;">{{prevtxt}}</p>
+                                            </div>
+                                            <div>
+                                                <p id="year" style="margin:0%;">{{year_selected}}</p>
+                                            </div>
+                                            <div style="margin-left:10px;">
+                                                <p class="prenext year-change" (click)="nextyear()" id="next-year" style="margin:0%;">{{nextxt}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <div class="calendar-body" *ngIf="!condition_clickedmonth">
+                                    <div style="width:95%;">
+                                        <div class="calendar-week-day">
+                                            <div>Sun</div>
+                                            <div>Mon</div>
+                                            <div>Tue</div>
+                                            <div>Wed</div>
+                                            <div>Thu</div>
+                                            <div>Fri</div>
+                                            <div>Sat</div>
+                                        </div>
+                                        <div class="calendar-days">
+                                            <div *ngFor="let days of day_numbers;index as dayindex">
+                                                <div (mouseover)="daypick_hover(days[0], days[1], 'mouseover')" (mouseout)="daypick_hover(days[0], days[1], 'mouseout')"  
+                                                (click)="daypick(days[0], days[1], dayindex)"
+                                                [ngStyle]="{'cursor':(days[1] === 'true' || days[1] === 'falses' ? 'pointer':'context-menu'), 'background':
+                                                (days[1] === 'falses' ? '#FFD700': 
+                                                (days[0] === ''+numshandlePickDay ? '#ADD8E6':(days[1] === 'false' ? 'rgb(213, 213, 213)':'')) )}"
+                                                class="cols"
+                                                >
+                                                    {{ days[0] }}
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
                                                 </div>
-                                                <div>
-                                                    <span>{{numb}} AM</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                        
+                                <div class="month-list" *ngIf="condition_clickedmonth">
+                                    <div class="row" style="margin:0%;">
+                                        <div class="col-4" style="padding:5px;margin-top:5px;" *ngFor="let stringa of month_names_final; index as nindex">
+                                            <div class="colfdivmontjh">
+                                                <div [ngClass]="[(stringa[1] !== 'false' ? 'colmonth': 'colmonth2')]" (click)="calenpick(nindex, stringa[1])">
+                                                    <span class="coltxtmonth">{{ stringa[0] }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-
-                        <!--____________EVENING__________-->
-                        <div class="eveningDiv">
-                            <div style="display:flex;justify-content: space-between;">
-                                <p class="mM">Evening</p>
-                                <p class="paAdd" (click)="clickAddPM()">+Add slots</p>
                             </div>
-                            <p class="numbs">12:00 PM to 4:59 PM</p>
-
+    
+                            <div style="margin-top:15px;">
+                                <div style="display:flex;float:right;">
+                                    <div style="display:flex;margin-right:15px;">
+                                        <div class="boxNotAvail"></div>
+                                        <span class="paNotAvail">Not Available day</span>
+                                    </div>
+                                    <div style="display:flex">   
+                                        <div class="boxDisable"></div>
+                                        <span class="paDisable">Disabled</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                
+                    <!--___________________________________AVAILABLE TIME___________________________________________-->
+                    <div class="col-lg-7 col-12">
+                        <div style="padding:0px 20px 0px 0px">
+    
+                            <!--______HEADER________-->
+                            <div style="display:flex;justify-content: space-between;align-items:center;margin-bottom:20px;">
+                                <p class="paAvail" style="padding:0px;margin:0%;">Available Time:</p>
+                                <div *ngIf="condition_delete">
+                                    <div (click)="deleteCheckBox()" class="delete_div">
+                                        <img src="/assets/icon/trash_white.png" class="img-fluid" style="height:30px;" />
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!--____Morning and Evening____-->
                             <div>
-                                <!--_________TIME__________-->
-                                <p *ngIf="PM_avail.length == 0">{{str_AMPM}}</p>
-                                <div *ngIf="PM_avail.length > 0">
+    
+                                <!--_______MORNING________-->
+                                <div class="morningDiv" style="margin-bottom:20px;">
+                                    <div style="display:flex;justify-content: space-between;">
+                                        <p class="mM">Morning</p>
+                                        <p class="paAdd" (click)="clickAddAM()">+Add slots</p>
+                                    </div>
+                                    <p class="numbs">9:00 AM to 11:59 AM</p>
+    
                                     <div>
-                                        <div *ngFor="let numb of PM_avail; index as indexes" class="arrNumbDiv">
-                                            <div class="arrNumbO">
-                                                <div>
-                                                    <input type="checkbox" class="form-check-input checkBoxsNumb" (click)="checkBoxeTimer('PM', indexes, $event)"/>
+                                        <!--_________TIME__________-->
+                                        <p *ngIf="AM_avail.length == 0">{{str_AMPM}}</p>
+                                        <div *ngIf="AM_avail.length > 0">
+                                            <div>
+                                                <div *ngFor="let numb of AM_avail; index as indexes" class="arrNumbDiv">
+                                                    <div class="arrNumbO">
+                                                        <div>
+                                                            <input type="checkbox" class="form-check-input checkBoxsNumb" (click)="checkBoxeTimer('AM', indexes, $event)" />
+                                                        </div>
+                                                        <div>
+                                                            <span>{{numb}} AM</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <span>{{PMConverting(numb)}} PM</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+    
+                                <!--____________EVENING__________-->
+                                <div class="eveningDiv">
+                                    <div style="display:flex;justify-content: space-between;">
+                                        <p class="mM">Evening</p>
+                                        <p class="paAdd" (click)="clickAddPM()">+Add slots</p>
+                                    </div>
+                                    <p class="numbs">12:00 PM to 4:59 PM</p>
+    
+                                    <div>
+                                        <!--_________TIME__________-->
+                                        <p *ngIf="PM_avail.length == 0">{{str_AMPM}}</p>
+                                        <div *ngIf="PM_avail.length > 0">
+                                            <div>
+                                                <div *ngFor="let numb of PM_avail; index as indexes" class="arrNumbDiv">
+                                                    <div class="arrNumbO">
+                                                        <div>
+                                                            <input type="checkbox" class="form-check-input checkBoxsNumb" (click)="checkBoxeTimer('PM', indexes, $event)"/>
+                                                        </div>
+                                                        <div>
+                                                            <span>{{PMConverting(numb)}} PM</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,4 +202,39 @@
         </div>
     </div>
 
+    <!--___________________________________DELETED SCHEDULE MANIFEST____________________________________-->
+    <div *ngIf="!header_info[0]" style="margin-top:15px;margin-bottom: 15px;">
+        <!-- __HEADER__ -->
+        <div style="position: relative;">
+            <img src="/assets/icon/arrow_back.png" class="img-fluid imgSeeAllRooms" (click)="click_change_header()" />
+            <p class="paSeeRoomsAll">All deleted Schedule</p>
+        </div>
+        <div style="display: flex;justify-content: center;">
+            <p class="painfoTitleMe" style="width:60%;margin:5px 0px 0px 0px;">
+                In this section you can now see all the deleted schedule. If you want to retrieve or delete permanently the schedule just click the buttons.</p>
+        </div>
+
+        <p *ngIf="this.message !== 'success'" style="margin-top:30px;" class="paDeleteNo">{{message}}</p>
+
+        <!--_____DELETED APPOINTMENT______-->
+        <div class="row" style="padding:20px;display: flex;justify-content: center;margin-top:20px;">
+            <div *ngFor="let data of data_AppointmentDeleted; index as indexes" class="divDeleted">
+                <p class="paAppD">Appointment details</p>
+
+                <p class="paInfo">Full name: {{data.fullname}}</p>
+                <p class="paInfo">Email: {{data.email}}</p>
+                <p class="paInfo">Number of Guest: {{data.numGuest}}</p>
+                <p class="paInfo">Contact number: {{data.contact_num}}</p>
+                <p class="paInfo">Date Arrival: {{data.date}}</p>
+
+
+                <p class="paMessage">{{data.message}}</p>
+
+                <div style="display: flex;margin-bottom: 7px;margin-top:30px;">
+                    <button class="btn btn-danger btnDeletePerma" (click)="deleteSched(indexes)">Delete permanent</button>
+                    <button class="btn btn-primary btnDeleteRetrieve" (click)="retrieve(indexes)">Retrieve</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

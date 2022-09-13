@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-
+const mongoose = require('mongoose');
 const router = express.Router();
 
 //Middleware admin______________________________________________________________
@@ -19,34 +19,108 @@ const rooms_column = rooms_db('admin_rooms');
 //Save reservation request made by user___________________________________________________
 router.post('/saveReservation', middleware_user, async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
-        last_name, phone_number, email, image_transaction, transaction_date} = req.body.data;
-    const { token } = req;
+        last_name, phone_number, email, image_transaction, transaction_date, paymentMethod} = req.body.data;
+    const { token } = req;  
+    var _id = mongoose.Types.ObjectId();
 
-    if(token.adminNot === 'not-admin'){
+    if(paymentMethod === 'payment1'){
 
-        //Checking if the user already requested the room_____________________________
-        const reservation_check = await reservation_column.find({ room_id: room_id, email_id: token.email }); 
-        let condition = true;
-        for await(let dd of reservation_check){
-            if(dd.confirmNot === 'true' || dd.confirmNot === 'new'){
-                condition = false;
-            }
-        }
+        if(token != null){
+            if(token.adminNot === 'not-admin'){
+
+                //Checking if the user already requested the room_____________________________
+                const reservation_check = await reservation_column.find({ room_id: room_id, email_id: token.email }); 
+                let condition = true;
+                for await(let dd of reservation_check){
+                    if(dd.confirmNot === 'true' || dd.confirmNot === 'new'){
+                        condition = false;
+                    }
+                }
+                
+                if(condition){
         
-        if(condition){
+                    const roomdata = await rooms_column.findOne({ _id: room_id });
+                    let room_img = roomdata.imgArr[0];
+                    let room_name = roomdata.nameRoom;
+            
+                    new reservation_column({
+                        room_id: room_id,
+                        email_id: token.email,
+            
+                        img_room: room_img,
+                        name_room: room_name,
+                        
+                        defaultPrice: roomdata.defaultPrice,
+                        paymentMethod: paymentMethod,
+        
+                        checkin_date: checkin_date,
+                        checkout_date:  checkout_date,
+                        acquired_persons: acquired_persons,
+                        persons_price: persons_price,
+                        total_day_price: total_day_price,
+                        total_price: total_price,
+                        first_name: first_name,
+                        last_name: last_name,
+                        phone_number: phone_number,
+                        email: email,
+                        image_transaction: image_transaction,
+                        confirmation_date: '',
+                        transaction_date: transaction_date,
+                        
+                        confirmNot: 'new',
+            
+                        delete_admin: 'false',
+                        delete_user: 'false'
+                    }).save().then(() => {
+            
+                        //Send mail to admin______________________________________________________________
+                        new inboxes_column({
+                            _id: _id,
+                            fullname: first_name+" "+last_name,
+                            email: email,
+                            reserved_email: 'Bot message',
+                            numGuest: '',
+                            contact_num: '',
+                            message: 'New reservation request. Must check it out on "Reservations component".',
+                            dateArrival: '',
+                            timeDate: transaction_date,
+                            favorite: false,
+                            acceptedNot: 'new',
+                            appointmentNot: 'reservation',
+                            newNot: true,
+                            folderName: 'inbox'
+                        }).save().then(() => {
+                            res.json({ response: 'success' });
+                        });
+                    });
+                }else{
+                    res.json({ 'response': 'have' });
+                }
+        
+            }else{
+                res.sendStatus(401);
+            }
+        }else{
+            res.json({ response: 'Need sign in' });
+        }
 
-            const roomdata = await rooms_column.findOne({ _id: room_id });
-            let room_img = roomdata.imgArr[0];
-            let room_name = roomdata.nameRoom;
-    
+    }else if(paymentMethod === 'payment2'){
+
+        const roomdata = await rooms_column.findOne({ _id: room_id });
+        let room_img = roomdata.imgArr[0];
+        let room_name = roomdata.nameRoom;
+
+        if(roomdata.confirmNot === 'false'){
+            //Save reservation info to column reservation_________________________________________________
             new reservation_column({
                 room_id: room_id,
-                email_id: token.email,
-    
+                email_id: (token == null ? '': token.email),
+
                 img_room: room_img,
                 name_room: room_name,
                 
                 defaultPrice: roomdata.defaultPrice,
+                paymentMethod: paymentMethod,
 
                 checkin_date: checkin_date,
                 checkout_date:  checkout_date,
@@ -59,40 +133,59 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 phone_number: phone_number,
                 email: email,
                 image_transaction: image_transaction,
-                confirmation_date: '',
+                confirmation_date: transaction_date,
                 transaction_date: transaction_date,
                 
-                confirmNot: 'new',
-    
-                delete_admin: false,
-                delete_user: false
+                confirmNot: 'true',
+
+                delete_admin: 'false',
+                delete_user: 'false'
             }).save().then(() => {
-    
-                //Send mail to admin______________________________________________________________
-                new inboxes_column({
-                    fullname: first_name+" "+last_name,
+
+                //Update the room already reserved_______________________________________________________
+                rooms_column.updateOne({ _id: room_id }, { $set: {
+                    paymentMethod: paymentMethod,
+                    account_id: (token == null ? '': token.email),
+                    checkin_date: checkin_date,
+                    checkout_date:  checkout_date,
+                    acquired_persons: acquired_persons,
+                    persons_price: persons_price,
+                    total_day_price: total_day_price,
+                    total_price: total_price,
+                    first_name: first_name,
+                    last_name: last_name,
+                    phone_number: phone_number,
                     email: email,
-                    reserved_email: 'Bot message',
-                    numGuest: '',
-                    contact_num: '',
-                    message: 'New reservation request. Must check it out on "Reservations component".',
-                    dateArrival: '',
-                    timeDate: transaction_date,
-                    favorite: false,
-                    acceptedNot: 'new',
-                    appointmentNot: 'reservation',
-                    newNot: true
-                }).save().then(() => {
-                    //send email to the admin_____________________________________
-                    res.json({ response: 'success' });
+                    image_transaction: [],
+                    transaction_date: transaction_date,
+                    confirmation_date: transaction_date,
+        
+                    confirmNot: 'true'
+                } }).then(() => {
+                    //Send mail to admin______________________________________________________________
+                    new inboxes_column({
+                        _id: _id,
+                        fullname: first_name+" "+last_name,
+                        email: email,
+                        reserved_email: 'Bot message',
+                        numGuest: '',
+                        contact_num: '',
+                        message: `The room already have paid by the user. To see the details, check it to "Reservation component".`,
+                        dateArrival: '',
+                        timeDate: transaction_date,
+                        favorite: false,
+                        acceptedNot: 'new',
+                        appointmentNot: 'reservation',
+                        newNot: true,
+                        folderName: 'inbox'
+                    }).save().then(() => {
+                        res.json({ response: 'success' });
+                    });
                 });
             });
         }else{
-            res.json({ 'response': 'have' });
+            res.json({ response: 'have' });
         }
-
-    }else{
-        res.sendStatus(401);
     }
 });
 
@@ -106,7 +199,8 @@ function middleware_user(req, res, next){
             if(get_token === '' && get_token === ' ') res.sendStatus(401);
             jwt.verify(get_token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
                 if(err){
-                    res.sendStatus(401);
+                    res.token = null;
+                    next();
                 }else{
                     req.token = result;
                     next();
@@ -114,10 +208,12 @@ function middleware_user(req, res, next){
             });
 
         }else{
-            res.sendStatus(403);
+            res.token = null;
+            next();
         }
     }catch(err){
-        res.sendStatus(403);
+        res.token = null;
+        next();
     }
 }
 
@@ -138,19 +234,24 @@ router.post('/getReservation', middleware_admin, async (req, res) => {
     if(!searchingNot){
         switch(radioCondition){
             case 'all':
-                count = await reservation_column.find({ delete_admin: false }).count();
-                data = await reservation_column.find({ delete_admin: false }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                count = await reservation_column.find({ delete_admin: 'false' }).count();
+                data = await reservation_column.find({ delete_admin: 'false' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
                 message = 'No reservation request right now.';
             break;
             case 'accepted':
-                count = await reservation_column.find({ delete_admin: false, $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}] }).count();
-                data = await reservation_column.find({ delete_admin: false, $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}] }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                count = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}] }).count();
+                data = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}] }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
                 message = 'No accepted reservation ever recorded.';
             break;
             case 'declined':
-                count = await reservation_column.find({ delete_admin: false, confirmNot: 'false' }).count();
-                data = await reservation_column.find({ delete_admin: false, confirmNot: 'false' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                count = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false' }).count();
+                data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
                 message = 'No declined reservation ever recorded.';
+            break;
+            case 'trash':
+                count = await reservation_column.find({ delete_admin: 'tempoDelete' }).count();
+                data = await reservation_column.find({ delete_admin: 'tempoDelete' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                message = 'No delete reservation ever recorded.';
             break;
         }
     }
@@ -159,18 +260,22 @@ router.post('/getReservation', middleware_admin, async (req, res) => {
     if(searchingNot){
         switch(radioCondition){
             case 'all':
-                count = await reservation_column.find({ delete_admin: false, $text: { $search: searchString  } }).count();
-                data = await reservation_column.find({ delete_admin: false, $text: { $search: searchString  }}).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                count = await reservation_column.find({ delete_admin: 'false', $text: { $search: searchString  } }).count();
+                data = await reservation_column.find({ delete_admin: 'false', $text: { $search: searchString  }}).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
             break;
             case 'accepted':
-                count = await reservation_column.find({ delete_admin: false, $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}], 
+                count = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}], 
                     $text: { $search: searchString  } }).count();
-                data = await reservation_column.find({ delete_admin: false, $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}], 
+                data = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}], 
                     $text: { $search: searchString  } }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
             break;
             case 'declined':
-                count = await reservation_column.find({ delete_admin: false, confirmNot: 'false', $text: { $search: searchString  } }).count();
-                data = await reservation_column.find({ delete_admin: false, confirmNot: 'false', $text: { $search: searchString  } }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                count = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false', $text: { $search: searchString  } }).count();
+                data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false', $text: { $search: searchString  } }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+            break;
+            case 'trash':
+                count = await reservation_column.find({ delete_admin: 'tempoDelete', $text: { $search: searchString  } }).count();
+                data = await reservation_column.find({ delete_admin: 'tempoDelete', $text: { $search: searchString  } }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
             break;
         }
     }
@@ -190,12 +295,13 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
     if(condition){
         const checking = await rooms_column.findOne({ _id: room_id});
         const data = await reservation_column.findOne({ _id: id, room_id: room_id, email_id: email_id });
-        if(!checking.confirmNot){
+        if(checking.confirmNot === 'false' && checking.delete_room === 'false'){
             reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: {
                 confirmation_date: confirmation_date,
                 confirmNot: 'true'
             } }).then(() => {
                 rooms_column.updateOne({ _id: room_id }, { $set: {
+                    paymentMethod: data.paymentMethod,
                     account_id: email_id,
                     checkin_date: data.checkin_date,
                     checkout_date: data.checkout_date,
@@ -211,7 +317,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
                     transaction_date: data.transaction_date,
                     confirmation_date: confirmation_date,
     
-                    confirmNot: true
+                    confirmNot: 'true'
                 } }).then(() => {
                     //send email to user that the admin accept the request__________________________________________
                     res.json({ response: 'success' });
@@ -219,7 +325,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
     
             });   
         }else{
-            res.json({ response: 'not' });
+            res.json({ response: checking.confirmNot === 'true' ? 'not':'deleted' });
         }        
     }else{
         reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: {
@@ -234,16 +340,55 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
 });
 
 
+
+//retrieve Reservation________________________________________________________________
+router.post('/retrieve_Reservation', middleware_user, async (req, res) => {
+    const { id, room_id, email_id } = req.body;
+    if(req.token.adminNot === 'admin'){
+        reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: { 
+            delete_admin: 'false'
+         } }).then(() => {
+            res.json({ response: 'success' });
+         });
+    }else{
+        reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: { 
+            delete_user: 'false'
+         } }).then(() => {
+            res.json({ response: 'success' });
+         });
+    }
+});
+
+
+//Delete reservation temporary________________________________________________________
+router.post('/deleteReservation_tempo', middleware_user, async (req, res) => {
+    const { id, room_id, email_id } = req.body;
+    if(req.token.adminNot === 'admin'){
+        reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: { 
+            delete_admin: 'tempoDelete'
+         } }).then(() => {
+            res.json({ response: 'success' });
+         });
+    }else{
+        reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: { 
+            delete_user: 'tempoDelete'
+         } }).then(() => {
+            res.json({ response: 'success' });
+         });
+    }
+});
+
+
 //Delete reservation checking____________________________________________________________
 router.post('/deleteReservation', middleware_user, async (req, res) => {
     const { id, room_id, email_id } = req.body;
 
     let data = await reservation_column.findOne({ _id: id, room_id: room_id, email_id: email_id  });
     if(req.token.adminNot === 'admin'){
-        if(!data.delete_user){
+        if(data.delete_user !== 'deleted'){
 
             reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: { 
-                delete_admin: true
+                delete_admin: 'deleted'
              } }).then(() => {
                 res.json({ response: 'success' });
              });
@@ -258,10 +403,10 @@ router.post('/deleteReservation', middleware_user, async (req, res) => {
             }
         }
     }else{
-        if(!data.delete_admin){
+        if(data.delete_admin !== 'deleted'){
 
             reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: { 
-                delete_user: true
+                delete_user: 'deleted'
              } }).then(() => {
                 res.json({ response: 'success' });
              });
@@ -289,6 +434,7 @@ router.post('/cancelReservation', middleware_user, async (req, res) => {
     reservation_column.updateOne({ _id: id, email_id: email_id, room_id: room_id }, { $set: { confirmNot: 'true false' } }).then(() => {
         rooms_column.updateOne({ _id: room_id, account_id: email_id }, { $set: {
 
+            paymentMethod: '',
             account_id: '',
             checkin_date: '',
             checkout_date: '',
@@ -304,7 +450,7 @@ router.post('/cancelReservation', middleware_user, async (req, res) => {
             transaction_date: '',
             confirmation_date: '',
     
-            confirmNot: false
+            confirmNot: 'false'
 
         } }).then(() => {
 
@@ -326,6 +472,7 @@ router.post('/cancelReservation', middleware_user, async (req, res) => {
 //TEMPORARY________________________________________________________________________
 router.get('/temporary', (req, res) => {
     rooms_column.updateOne({ _id: "630f47884480b80261a68636" }, { $set: {
+        paymentMethod: "",
         account_id: "",
         checkin_date: "",
         checkout_date: "",
@@ -341,7 +488,7 @@ router.get('/temporary', (req, res) => {
         transaction_date: "",
         confirmation_date: "",
 
-        confirmNot: false
+        confirmNot: 'false'
     } }).then(() => {
         //send email to user that the admin accept the request__________________________________________
         res.json({ response: 'success' });

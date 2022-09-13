@@ -70,6 +70,7 @@ router.post('/createNewRoom', middleware_admin, (req, res) => {
         typeRoom: typeRoom,
         imgArr: imgArr,
 
+        paymentMethod: '',
         account_id: '',
         checkin_date: '',
         checkout_date: '',
@@ -85,7 +86,8 @@ router.post('/createNewRoom', middleware_admin, (req, res) => {
         transaction_date: '',
         confirmation_date: '',
 
-        confirmNot: false,
+        confirmNot: 'false',
+        delete_room: 'false'
     }).save().then(() => {
         res.json({ response: 'success' });
     });
@@ -98,15 +100,15 @@ router.post('/getRooms', middleware_admin, async (req, res) => {
 
     const { condition } = req.body;
     let datas = [];
-    let tempo = await rooms_column.count();
+    let tempo = await rooms_column.count({ delete_room: 'false'});
 
     if(condition){
-        datas = await rooms_column.find().sort({ createdAt: 'descending' });
+        datas = await rooms_column.find({ delete_room: 'false'}).sort({ createdAt: 'descending' });
     }else{
         if(tempo < 2){
-            datas = await rooms_column.find().sort({ createdAt: 'descending' }).skip(0).limit(2);
+            datas = await rooms_column.find({ delete_room: 'false'}).sort({ createdAt: 'descending' }).skip(0).limit(2);
         }else{
-            datas = await rooms_column.find().sort({ createdAt: -1 }).skip(0).limit(2);
+            datas = await rooms_column.find({ delete_room: 'false'}).sort({ createdAt: -1 }).skip(0).limit(2);
         }
     }
     if(datas.length > 0){
@@ -117,10 +119,21 @@ router.post('/getRooms', middleware_admin, async (req, res) => {
 
 });
 
+
+//Getting deleted room________________________________________________________________________________________
+router.post('/getdeleteRoom', middleware_admin, async (req, res) => {
+    const data = await rooms_column.find({ delete_room: 'true' }).sort({ createdAt: 'descending' });
+    if(data.length > 0){
+        res.json({ response: 'success', data: data });
+    }else{
+        res.json({ response: 'not-have' });
+    }
+});
+
 //Getting room to show to landing page____________________________________________________________________
 router.get('/getRoomLanding', async (req, res) => {
-    const count = await rooms_column.count();
-    const data = await rooms_column.find().sort( { createdAt: -1 } ).skip(0).limit(2);
+    const count = await rooms_column.count({ delete_room: 'false'});
+    const data = await rooms_column.find({ delete_room: 'false'}).sort( { createdAt: -1 } ).skip(0).limit(2);
     if(data.length > 0){
         let arr_room = [];
         for await(let room of data){
@@ -135,7 +148,7 @@ router.get('/getRoomLanding', async (req, res) => {
 
 //Getting all rooms to show to landing page______________________________________________________________
 router.get('/getRoomAll', async (req, res) => {
-    const data = await rooms_column.find({}, { _id: 1, nameRoom: 1, addInfo: 1, defaultPrice: 1, goodPersons: 1, pricePersons: 1,
+    const data = await rooms_column.find({ delete_room: 'false'}, { _id: 1, nameRoom: 1, addInfo: 1, defaultPrice: 1, goodPersons: 1, pricePersons: 1,
         typeRoom: 1, imgArr: 1, confirmNot: 1});
     if(data.length > 0){
         res.json({ response: 'success', data: data });
@@ -177,6 +190,27 @@ router.post('/updateDetailsRoom', (req, res) => {
     });
 
 });
+
+
+//Move to trash___________________________________________________________________________
+router.post('/moveToTrash', middleware_admin, (req , res) => {
+    const { _id } = req.body;
+
+    rooms_column.updateOne({ _id: _id }, { $set: { delete_room: 'true' } }).then(() => {
+        res.json({ response: 'success' });
+    });
+
+});
+
+router.post('/room_retreive', middleware_admin, async (req, res) => {
+    const { _id } = req.body;
+
+    rooms_column.updateOne({ _id: _id }, { $set: { delete_room: 'false' } }).then(() => {
+        res.json({ response: 'success' });
+    });
+});
+
+
 
 
 //Delete room finally________________________________________________________________________________________

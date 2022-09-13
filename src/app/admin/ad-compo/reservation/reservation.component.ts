@@ -196,6 +196,10 @@ export class ReservationComponent implements OnInit {
 
 
 
+  //Get date convert hrs_____________________________________________________________________________________
+  
+
+
 
   //Get date converted____________________________________________________________________________________________
   date_converting(): string{
@@ -224,16 +228,20 @@ export class ReservationComponent implements OnInit {
   accept_Decline(numbs: number, condition: boolean): void{
     if(this.dataReservationSelected.length > 0){
       let data_handle = this.dataReservationSelected[numbs] as reservation;
-      this.subs = this.service.accept_declineReservation(data_handle._id, data_handle.room_id, data_handle.email_id, this.date_converting(), condition).subscribe((res) => {
+      var dates = this.date_converting();
+      this.subs = this.service.accept_declineReservation(data_handle._id, data_handle.room_id, data_handle.email_id, dates, condition).subscribe((res) => {
         this.subs.unsubscribe();
-
-        console.log(res);
 
         if(res.response === 'success'){
           this.dataReservationSelected[numbs].confirmNot = `${condition}`;
+          this.dataReservationSelected[numbs].confirmation_date = dates;
         }else{
-          //alert_________________________________
-          this.service.emitCall(new Array<any>("warning"));
+          //alert reserved_________________________________
+          if(res.response === 'not'){
+            this.service.emitCall(new Array<any>("warning", "Already reserved", "The room is already reserved by someone."));
+          }else{
+            this.service.emitCall(new Array<any>("warning", "Deleted room", "This room is not exist on available rooms. To check if still exist, check it on your trash"));
+          }
         }
 
       }, (err) => {
@@ -243,16 +251,55 @@ export class ReservationComponent implements OnInit {
     }
   }
 
+
+
+  //Deleting temporary the reservation request___________________________________
+  info_tempo(numbs: number): void{
+    this.service.emitCall(new Array<any>("reservation_info", this.dataReservationSelected[numbs]));
+  
+      var subsCall = this.service.emitBackEmitter.subscribe((res) => {
+        subsCall.unsubscribe();
+
+        if(res[0] === 'moveTo_trash'){
+          var subs = this.service.deleteReservation_tempo(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe(() => {
+            subs.unsubscribe();
+            this.skip = 0;
+            this.limit = 25;
+            this.countDataAll = 0;
+            this.getData();
+
+          }, (err) => {
+            subs.unsubscribe();
+            location.reload();
+          });
+        }else if(res[0] === 'cancelReservation'){
+
+          //Cancel reservation__________________________________________________________
+          this.subs = this.service.cancelReservation(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe(() => {
+            this.subs.unsubscribe();
+            this.dataReservationSelected[numbs].confirmNot = 'true false';
+          }, (err) => {
+            this.subs.unsubscribe();
+            location.reload();
+          });
+        } 
+
+      });
+  }
+
+
+
+  //Deleting permanently the reservation request_____________________________________________________
   subsCall!: Subscription;
   handle_image!: Array<string>;
   info(numbs: number): void{
-    console.log(this.dataReservationSelected[numbs]);
     this.service.emitCall(new Array<any>("reservation_info", this.dataReservationSelected[numbs]));
     this.subsCall = this.service.emitBackEmitter.subscribe((res) => {
       this.subsCall.unsubscribe();
 
       //Checking if the admin click the delete bttn____________________________________
       if(res[0] === 'delete'){
+        this.service.emitCall(new Array<any>("progress", Math.floor(Math.random() * 90), 'Successfully deleting request.'));
         this.subs = this.service.deleteReservation(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe((result) => {
           this.subs.unsubscribe();
           if(result.response === 'delete'){
@@ -270,31 +317,31 @@ export class ReservationComponent implements OnInit {
           this.subs.unsubscribe();
           location.reload();
         });
-      }else if(res[0] === 'cancelReservation'){
-
-        //Cancel reservation__________________________________________________________
-        this.subs = this.service.cancelReservation(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe(() => {
+      }else if(res[0] === 'Retrieve'){  
+        this.subs = this.service.retrieve_reservation(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe(() =>{
           this.subs.unsubscribe();
-          this.dataReservationSelected[numbs].confirmNot = 'true false';
+
+          this.skip = 0;
+          this.limit = 25;
+          this.countDataAll = 0;
+          this.getData();
         }, (err) => {
           this.subs.unsubscribe();
           location.reload();
-        });
+        })
       } 
 
     });
   }
 
-  callLoading(): void{
-    this.service.emitCall(new Array<any>("progress", Math.floor(Math.random() * 90), 'Successfully deleting request.'));
-    setTimeout(() => {
-      this.service.emitCall(new Array<any>("progress", 100, 'Successfully deleting request.'));
 
-      this.skip = 0;
-      this.limit = 25;
-      this.countDataAll = 0;
-      this.getData();
-    }, 2000);
+  callLoading(): void{
+    this.service.emitCall(new Array<any>("progress", 100, 'Successfully deleting request.'));
+
+    this.skip = 0;
+    this.limit = 25;
+    this.countDataAll = 0;
+    this.getData();
   }
 
 

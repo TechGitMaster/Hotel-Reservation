@@ -1,14 +1,12 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';  
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {  NavigationEnd, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { MainServiceService } from './main_serivce/main-service.service';
 import { register, login, googleDataUser, timeDate } from './objects';
-import { initializeApp } from '@firebase/app';
-
+import { HostListener } from '@angular/core';
 
 
 @Component({
@@ -17,6 +15,11 @@ import { initializeApp } from '@firebase/app';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewInit{
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    location.reload();
+  }
+
   subs!: Subscription;
   condition_admin_user!: boolean;
   condition_login!: boolean;
@@ -172,12 +175,15 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
 
-  //The subscribe still running but it will only stop once the EventEmitter has data__________________________________
-  //not-found.comonents will give the EventEmitter a data_____________________________
+  //The subscribe still running but it will only stop once the EventEmitter is emitting__________________________________
+  //not-found.components will give the EventEmitter a data_____________________________
   //Successfully send request will show when the EventEmitter activate______________________________
   subsEventEmitter!: Subscription;
   subsSuccessShow!: Subscription;
+  subsComponent!: Subscription;
   callWaiting():void{
+
+    
     this.subsEventEmitter = this.service.dataSTR.subscribe(() => {
       this.subsEventEmitter.unsubscribe();
       this.subsSuccessShow.unsubscribe();
@@ -185,6 +191,8 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.callWaiting();
     });
 
+
+    //Appointment and Inquery success send_________________________________________
     this.subsSuccessShow = this.service.showSuccess.subscribe(() => {
       this.subsSuccessShow.unsubscribe();
       this.subsEventEmitter.unsubscribe();
@@ -193,6 +201,21 @@ export class AppComponent implements OnInit, AfterViewInit{
 
       this.callWaiting();
     });
+
+    //When the user click the component from "Account settings"______________________
+    this.subsComponent = this.service.menubarComponent.subscribe((result) => {
+      this.condition_header = false;
+
+      if(result !== 'contact-us'){
+        this.condition_admin_user = true;
+        this.condition_appointment = false;
+      }else{
+        this.condition_admin_user = true;
+      }
+
+      this.callWaiting();
+    });
+
   }
 
   //Checking if admin or normal_user _____________________________________________________________________

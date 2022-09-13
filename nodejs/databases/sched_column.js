@@ -18,7 +18,8 @@ const mongooseSchema = (name_column) => {
                 message: { type: String, requires: true },
                 timeDate: { type: String, requires: true },
                 date: { type: String, requires: true },
-                appointmentNot: { type: String, requires: true }
+                appointmentNot: { type: String, requires: true },
+                delete_admin: { type: Boolean, required: true }
             });
         break;
         case "admin_timeAMPM_Date":

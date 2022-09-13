@@ -6,7 +6,7 @@ import { NotFoundComponent } from './notFound/not-found.component';
 
 const routes: Routes = [
 
-  { path: '', redirectTo: '/mc/user-account', pathMatch: 'full' },
+  { path: '', redirectTo: '/mc/home', pathMatch: 'full' },
 
   //MC compo_________________________________________________
   { path: 'mc', loadChildren: () => import('./main_compo/mc-route/mc-route.module').then( module => module.McRouteModule),

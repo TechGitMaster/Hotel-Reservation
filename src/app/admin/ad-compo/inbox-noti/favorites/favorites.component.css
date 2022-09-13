@@ -82,7 +82,7 @@
     font-size:14px;
     padding-left:5px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;
     display: flex;
-    align-items: center;
+    margin-top:3px;
 }
 
 .paDateName{
@@ -91,9 +91,10 @@
 }
 
 .starFavo{
-    max-width:50px;
+    width:60px;
     display:flex;
     align-items: center;
+    justify-content: center;
 }
 
 .sEmail{

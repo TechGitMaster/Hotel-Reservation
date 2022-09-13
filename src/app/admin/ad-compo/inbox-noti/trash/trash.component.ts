@@ -174,7 +174,8 @@ export class TrashComponent implements OnInit {
       this.condition_checkedAll = false;
       this.arr_Checked = new Array<Array<any>>();
         
-      this.arr_Checked.push(new Array<any>(data._id, number));
+      this.arr_Checked.push(new Array<any>(data._id, number, data.folderName));
+        
     }
   }
 
@@ -229,13 +230,49 @@ export class TrashComponent implements OnInit {
     }
   }
 
-  //Delete the checked box mails_______________________________________________________
+
+  //Retrive mails and go back to there assigned folder__________________________________________________
   deleteMailsMessage: boolean = false;
-  successDelete: boolean = false;
+  successDelete: string = 'false';
   messageDelete: string = 'Deleting the mails';
+  retrives(): void{
+    if(this.arr_Checked.length > 0){
+      this.successDelete = 'retrieve';
+      this.deleteMailsMessage = true;
+      this.condition_Delete = true;
+
+      this.messageDelete = `Retrieving mail`;
+
+      var subs = this.service.retriveMails(this.arr_Checked).subscribe((result) => {
+        subs.unsubscribe();
+
+        this.messageDelete = `Successfully retrieve mail`;
+        this.successDelete = 'false';
+
+
+        setTimeout(() => this.deleteMailsMessage = false, 1000);
+      
+
+        this.condition_Delete = false; 
+        this.condition_selectMails = false;
+        this.numbCountSkip = 0;
+        this.numbCountLimit = 15;
+        this.condition_loading = true;
+        this.st_LoadingNoData = 'Loading...';
+        this.funcCallMails();
+      }, (err) => {
+        subs.unsubscribe();
+        location.reload();
+      })
+    }
+  }
+
+
+
+  //Delete the checked box mails_______________________________________________________
   deleteMails(){
     if(this.arr_Checked.length > 0 && !this.condition_Delete){
-      this.successDelete = true;
+      this.successDelete = 'delete';
       this.deleteMailsMessage = true;
       this.condition_Delete = true;
 
@@ -245,7 +282,7 @@ export class TrashComponent implements OnInit {
         this.subs.unsubscribe();
 
         this.messageDelete = `Successfully deleting Mail${this.arr_Checked.length > 1 ? 's':''}`;
-        this.successDelete = false;
+        this.successDelete = 'false';
 
 
         setTimeout(() => this.deleteMailsMessage = false, 1000);
