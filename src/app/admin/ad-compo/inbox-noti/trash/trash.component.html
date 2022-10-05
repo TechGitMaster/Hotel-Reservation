@@ -4,7 +4,7 @@
 
             <!--_________ALL___________-->
             <div style="display:flex;align-items: center;" *ngIf="!condition_selectMails">
-                <div style="margin-top:5px;"><span class="pAll">all</span></div>
+                <div style="margin-top:5px;"><span class="pAll">All</span></div>
                 <div><input type="checkbox" class="form-check-input checksBox checkBoxParent" (click)="checkAllbox($event)"  /></div>
             </div>
 
@@ -100,49 +100,6 @@
             </div>
             <div style="margin-bottom:40px;"><span style="color:#5E5E5E;">to me</span></div>
 
-
-            <div class="divMessage">
-
-                <!--________________THIS IS FOR APPOINTMENT___________________-->
-                <div *ngIf="condition_InqueryAppointment">
-                    <p class="pAhC">{{arr_selectedMail[3]}}:</p>
-
-                    <p class="paInfo">Full name: {{arr_selectedMail[4]}}</p>
-                    <p class="paInfo">Email: {{arr_selectedMail[5]}}</p>
-                    <p class="paInfo">Number of Guest: {{arr_selectedMail[6]}}</p>
-                    <p class="paInfo">Contact number: {{arr_selectedMail[7]}}</p>
-                    <p class="paInfo">Date Arrival: {{arr_selectedMail[10]}}</p>
-                    
-
-                    <p class="paMessage">{{arr_selectedMail[8]}}</p>
-                    
-                    <div style="display: flex;">
-                        <!--______________Accepted or Decline_______________-->
-                        <div style="display:flex;" *ngIf="condition_newMailSelected === 'new'">
-                            <button class="btn btn-primary btns btnsA" disabled>Accept</button>
-                            <div style="display: flex;align-items: center;margin-right:10px;margin-left:10px;">
-                                <p style="margin:0%;">or</p>
-                            </div>
-                            <button class="btn btn-primary btns btnsD" disabled>Decline</button>
-                        </div>
-
-                        <!--______________POSTED ACCEPTED OR NOT______________-->
-                        <div *ngIf="condition_newMailSelected !== 'new'">
-                            <div *ngIf="condition_newMailSelected === 'true' || condition_newMailSelected === 'true false'">
-                                <button class="btn btn-primary btnsAT">Accepted</button>
-                                <button *ngIf="condition_newMailSelected === 'true false'" class="btn btn-primary btnsCT">Canceled</button>
-                            </div>
-
-                            <div *ngIf="condition_newMailSelected === 'false'">
-                                <button class="btn btn-primary btnsDT">Declined</button>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary btns" style="margin-left: 10px;"(click)="retrives()">Retrive</button>
-                    </div>
-                    
-                </div>
-            </div>
 
             <!--__________________THIS IS FOR INQUERY AND RESERVATION MESSAGE__________________-->
             <div *ngIf="!condition_InqueryAppointment">

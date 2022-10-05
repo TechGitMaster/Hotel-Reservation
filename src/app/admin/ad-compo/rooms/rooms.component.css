@@ -293,6 +293,13 @@
     display: inline-block;
     margin-right:10px;
     margin-top:5px;
+    background:black;
+}
+
+.addImageRTS{
+    display: flex;
+    justify-content: center;
+    height:100%;
     position: relative;
 }
 
@@ -304,15 +311,15 @@
 }
 
 .deleteImage{
-    height:100%;
     width:100%;
+    height:100%;
     background:rgba(255, 255, 255, 0.4);
     z-index: 5;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    top:0px;
+    top:0px;left:0px;
 }
 
 .imgD{
@@ -338,15 +345,19 @@
     display: none;
 }
 
-.addImageR:hover > .disImageDelete{
+.addImageR:hover > .addImageRTS > .disImageDelete{
     display: block;
 }
 
 .paRInfoT{
     font-family:inter_semibold;
     font-size:19px;
-    letter-spacing: 1px;
     margin:20px 0px 0px 0px;
+}
+
+.paHeaderapp{
+    font-size:17px;
+    margin:0px 0px 10px 0px;
 }
 
 .paMeInfoT{

@@ -20,14 +20,16 @@ export class AdminComponent implements OnInit {
   arr_route!: Array<string>;
   conditionFixDiv: boolean = false;
   conditionFixDiv2: boolean = false;
+  conditionFixDiv3: boolean = false;
   conditionSeeImage: boolean = false;
 
   subs!: Subscription;
   subs_rooms!: Subscription;
+  subs_appointment!: Subscription;
   subs_name!: Subscription;
 
   arrHandle: Array<any> = new Array<any>("", "", "", 0, 0);
-  arrLink: Array<string> = new Array<string>("/ad/admin/inbox-mail", "/ad/admin/schedules", "/ad/admin/rooms", "/ad/admin/reservations", "/ad/admin/account");
+  arrLink: Array<string> = new Array<string>("/ad/admin/inbox-mail", "/ad/admin/appointments", "/ad/admin/schedules", "/ad/admin/rooms", "/ad/admin/reservations", "/ad/admin/account");
 
   errArrPassword!: Array<Array<any>>;
   condition_forPassword!: boolean;
@@ -42,7 +44,7 @@ export class AdminComponent implements OnInit {
 
     this.num_selectionCondition = this.arrLink.indexOf(this.route.url) > -1 ? this.arrLink.indexOf(this.route.url): 0;
 
-    this.arr_route = new Array<string>("inbox-mail", "schedules", "rooms", "reservations", "account", "");
+    this.arr_route = new Array<string>("inbox-mail", "appointments", "schedules", "rooms", "reservations", "account", "");
 
     this.formGroup_newPassword = this.formBuild.group({
       currentPass: [''],
@@ -81,6 +83,7 @@ export class AdminComponent implements OnInit {
       this.conditionFixDiv = true;
       this.subs.unsubscribe();
       this.subs_rooms.unsubscribe();
+      this.subs_appointment.unsubscribe();
 
       this.arrHandle = result;
 
@@ -99,6 +102,7 @@ export class AdminComponent implements OnInit {
     this.subs_rooms = this.service.emitShowEmitter.subscribe((result) => {
       this.subs.unsubscribe();
       this.subs_rooms.unsubscribe();
+      this.subs_appointment.unsubscribe();
 
       this.conditionFixDiv2 = true;
       this.arrHandle = result;
@@ -106,16 +110,26 @@ export class AdminComponent implements OnInit {
       if(this.arrHandle[0] === 'seeImage'){
         this.conditionSeeImage = true;
       }
-
       this.calling();
     });
 
+    //This is for appointment call_________________________________________________________
+    this.subs_appointment = this.service.emitShowEmitter_appointment.subscribe((result) => {
+      this.subs.unsubscribe();
+      this.subs_rooms.unsubscribe();
+      this.subs_appointment.unsubscribe();
+
+      this.conditionFixDiv3 = true;
+      this.arrHandle = result;
+
+      this.calling();
+    });
   }
 
 
   funcSelected(number: number): void{
     this.num_selectionCondition = number;
-    if(number != 5){
+    if(number != 6){
       this.route.navigate([`/ad/admin/${this.arr_route[number]}`]);
     }
   }
@@ -339,16 +353,20 @@ export class AdminComponent implements OnInit {
   arr_reservation = ["", ""];
   deleteCancel_Reservation(condition: boolean): void{
     if(condition){
+      this.conditionFixDiv3 = false;
       this.conditionFixDiv2 = false;
       this.boolean_reservation = false;
       if(this.string_condition === 'delete'){
         this.service.backCall(new Array<any>("delete"));
+        this.service.backCall_appointment(new Array<any>("delete"));
       }else{
         this.service.backCall(new Array<any>("cancelReservation"));
+        this.service.backCall_appointment(new Array<any>("cancelAppointment"));
       }
     }else{
       this.boolean_reservation = false;
       this.service.backCall(new Array<any>("notDeleteCancel"));
+      this.service.backCall_appointment(new Array<any>("notDeleteCancel"));
     }
   }
 
@@ -369,8 +387,10 @@ export class AdminComponent implements OnInit {
       this.boolean_reservation = true;
     }else{
       this.conditionFixDiv2 = false;
+      this.conditionFixDiv3 = false;
       this.boolean_reservation = false;
       this.service.backCall(new Array<any>("moveTo_trash"));
+      this.service.backCall_appointment(new Array<any>("moveTo_trash"));
     }
   }
 
@@ -382,8 +402,10 @@ export class AdminComponent implements OnInit {
       this.boolean_reservation = true;
     }else{
       this.conditionFixDiv2 = false;
+      this.conditionFixDiv3 = false;
       this.boolean_reservation = false;
       this.service.backCall(new Array<any>("Retrieve"));
+      this.service.backCall_appointment(new Array<any>("Retrieve"));
     }
   }
 

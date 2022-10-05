@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     this.condition_show = false;
     this.room_arr = new Array<Array<string>>();
 
-    this.subs = (this.http.get<any>('/getRoomLanding') as Observable<any>).subscribe((res) => {
+    this.subs = (this.http.get<any>('/api/getRoomLanding') as Observable<any>).subscribe((res) => {
       if(res.response === 'success'){
         this.room_arr = res.data;
         this.count_room = res.count;

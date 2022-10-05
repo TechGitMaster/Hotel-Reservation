@@ -16,6 +16,7 @@ import { AppointmentComponent } from '../account/appointment/appointment.compone
 import { ReservationComponent } from '../account/reservation/reservation.component';
 import { ArchiveComponent } from '../account/archive/archive.component';
 import { DetailsComponent } from '../account/details/details.component';
+import { PaymentComponent } from '../payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DetailsComponent } from '../account/details/details.component';
     AppointmentComponent,
     ReservationComponent,
     ArchiveComponent,
-    DetailsComponent
+    DetailsComponent,
+    PaymentComponent
   ],
   imports: [
     CommonModule,

@@ -235,12 +235,20 @@ export class ReservationComponent implements OnInit {
         if(res.response === 'success'){
           this.dataReservationSelected[numbs].confirmNot = `${condition}`;
           this.dataReservationSelected[numbs].confirmation_date = dates;
+
+          this.service.emit_socket_notification(data_handle.email_id);
+
+          this.skip = 0;
+          this.limit = 25;
+          this.countDataAll = 0;
+          this.getData();
+
         }else{
           //alert reserved_________________________________
           if(res.response === 'not'){
             this.service.emitCall(new Array<any>("warning", "Already reserved", "The room is already reserved by someone."));
           }else{
-            this.service.emitCall(new Array<any>("warning", "Deleted room", "This room is not exist on available rooms. To check if still exist, check it on your trash"));
+            this.service.emitCall(new Array<any>("warning", "Deleted room", "This room is not exist on available rooms. To check if still exist, check it on your trash. If not maybe you deleted it."));
           }
         }
 
@@ -278,6 +286,9 @@ export class ReservationComponent implements OnInit {
           this.subs = this.service.cancelReservation(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe(() => {
             this.subs.unsubscribe();
             this.dataReservationSelected[numbs].confirmNot = 'true false';
+
+            this.service.emit_socket_notification(this.dataReservationSelected[numbs].email_id);
+
           }, (err) => {
             this.subs.unsubscribe();
             location.reload();
@@ -299,7 +310,7 @@ export class ReservationComponent implements OnInit {
 
       //Checking if the admin click the delete bttn____________________________________
       if(res[0] === 'delete'){
-        this.service.emitCall(new Array<any>("progress", Math.floor(Math.random() * 90), 'Successfully deleting request.'));
+        this.service.emitCall(new Array<any>("progress", 0, 'Successfully deleting request.'));
         this.subs = this.service.deleteReservation(this.dataReservationSelected[numbs]._id, this.dataReservationSelected[numbs].room_id, this.dataReservationSelected[numbs].email_id).subscribe((result) => {
           this.subs.unsubscribe();
           if(result.response === 'delete'){
@@ -358,11 +369,7 @@ export class ReservationComponent implements OnInit {
       }else{
         this.subs = this.service.deleteReservation_Final(id, room_id, email_id).subscribe((result) => {
           this.service.emitCall(new Array<any>("progress", 100, 'Successfully deleting request.'));
-
-          this.skip = 0;
-          this.limit = 25;
-          this.countDataAll = 0;
-          this.getData();
+          this.callLoading();
         });
       }
     });

@@ -30,8 +30,27 @@ app.get('/*', (req, res) =>
 
 var server = require('http').createServer(app);
 
-// Start the app by listening on the default Heroku port__________________________
 
+//Socket io______________________________________________________
+const io = require('socket.io')(server, {
+	serveClient: true,
+        cors: {
+            origins: ['//localhost:4200']
+        }
+});
+
+io.on('connect' || 'connection' ,(soc) => {
+
+    soc.on('user', (data) => {
+        io.emit('user', data);
+    });
+
+    //soc.emit('admin_notification', 'new');
+    //soc.emit('admin_reservation', 'new');
+});
+
+
+// Start the app by listening on the default Heroku port__________________________
 connected_db();
 mongoose.connection.once('open', () => {
     server.listen(process.env.PORT || 8080);

@@ -33,7 +33,10 @@ export interface mails{
     acceptedNot: string,
     appointmentNot: string,
     newNot: boolean,   
-    folderName: string
+    folderName: string,
+    guest_member: string,
+    transaction_ID: string,
+    deleteNot: string
 }
 
 export interface schedAppointment{
@@ -120,7 +123,9 @@ export interface reservation{
     image_transaction: Array<Array<string>>,
     confirmation_date: string,
     transaction_date: string,
-                
+    guest_member: string,
+    transaction_id: string,
+
     confirmNot: string
 }
 
@@ -134,6 +139,39 @@ export interface getRoomsLandpage{
     pricePersons: string,
     typeRoom: boolean,
     imgArr: Array<Array<string>>,
-    confirmNot: boolean,
+    confirmNot: string,
     Left_Or_Right: string
+}
+
+
+export interface notification_user{
+    _id: string,
+    email: string,
+    name: string,
+    message: string,
+    date: string,
+    deleteNot: string
+}
+
+export interface appointment_user{
+    _id: string,
+    fullname: string,
+    email: string,
+    reserved_email: string,
+    numGuest: string,
+    contact_num: string,
+    message: string,
+    dateArrival: string,
+    timeDate: string,
+    acceptedNot: string,
+    newNot: boolean,
+    deleteNot: boolean,
+    guest_member: string,
+    transaction_ID: string
+}
+
+export interface ImageFacilities{
+    url: string;
+    row: string;
+    col: string;
 }

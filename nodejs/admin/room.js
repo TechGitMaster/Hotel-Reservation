@@ -36,14 +36,12 @@ const upload = multer({
 
 
 //UPLOAD IMAGE TO CLOUDINARY and... return the id of that image from cloudinary___________________________________________________________
-router.post('/uploadImage', middleware_admin, async (req, res) => {
+router.post('/uploadImage', async (req, res) => {
     try {
         upload(req,res, async function(err){
             if (err instanceof multer.MulterError) {
-                console.log(err);
                 res.sendStatus(504);
             }else if(err) {
-                console.log(err);
                 res.sendStatus(504);
             }
 
@@ -51,14 +49,13 @@ router.post('/uploadImage', middleware_admin, async (req, res) => {
             res.json({ response: 'success', data: { avatar: result.secure_url, cloudinary_id: result.public_id} });
         });
     }catch(err){
-        res.json({ response: error });
-        throw err;
+        res.json({ response: err });
     }
 });
 
 
 //Create new Room____________________________________________________________________________________
-router.post('/createNewRoom', middleware_admin, (req, res) => {
+router.post('/createNewRoom', (req, res) => {
 
     const { nameRoom, addInfo, defaultPrice, goodPersons, pricePersons, typeRoom, imgArr } = req.body;
     new rooms_column({
@@ -71,6 +68,8 @@ router.post('/createNewRoom', middleware_admin, (req, res) => {
         imgArr: imgArr,
 
         paymentMethod: '',
+        transaction_id: '',
+        
         account_id: '',
         checkin_date: '',
         checkout_date: '',
@@ -85,7 +84,8 @@ router.post('/createNewRoom', middleware_admin, (req, res) => {
         image_transaction: [],
         transaction_date: '',
         confirmation_date: '',
-
+        
+        guest_member: '',
         confirmNot: 'false',
         delete_room: 'false'
     }).save().then(() => {

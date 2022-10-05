@@ -15,6 +15,7 @@ var data_login = database_column("login_accounts");
 var sched_column = sched_db('admin_timeAMPM_Date');
 var mailTime_column = sched_db('accepted_MailTime');
 
+var notification_click_col = require('./databases/notification_column')('user_notification_click');
 
 // set encryption algorithm
 const algorithm = 'aes-256-cbc'
@@ -69,14 +70,31 @@ router.post('/registration', async (req, res) => {
             admin: adminNot,
             OTP_code: ''
         }).save().then(() => {
-            
-            if(condition === 'gmail-register'){
-                
-                var token = jwt.sign({ email: email, adminNot: adminNot }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
-                res.json({ tokens: token, response: 'Success creating account'});
 
+            if(adminNot === 'not-admin'){
+                new notification_click_col({
+                    email: email,
+                    number: 0,
+                    clicked: false
+                }).save().then(() => {
+                    if(condition === 'gmail-register'){
+                    
+                        var token = jwt.sign({ email: email, adminNot: adminNot }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
+                        res.json({ tokens: token, response: 'Success creating account'});
+        
+                    }else{
+                        res.json({ tokens: '', response: 'Success creating account' });
+                    }
+                });
             }else{
-                res.json({ tokens: '', response: 'Success creating account' });
+                if(condition === 'gmail-register'){
+                    
+                    var token = jwt.sign({ email: email, adminNot: adminNot }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
+                    res.json({ tokens: token, response: 'Success creating account'});
+    
+                }else{
+                    res.json({ tokens: '', response: 'Success creating account' });
+                }
             }
 
 

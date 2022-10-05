@@ -1,1 +1,343 @@
-<p>reservation works!</p>
+<div class="container-fluid" style="padding:20px;">
+    <!--____HEADER_____-->
+    <div style="margin-bottom: 20px;">
+        <p class="paAppo">Reservation</p>
+        <span>All your reservation request. Check everything upon your reservation.</span>
+    </div>
+
+    <!--__________Appointment all__________________-->
+    <div *ngIf="!selected_condition">
+
+        <!--___HEADER SELECTION and Arrow_____-->
+        <div style="display: flex;justify-content: space-between;margin-bottom: 15px;">
+
+            <!--__SELECTION__-->
+            <div style="display: flex;">
+                <div class="form-check" style="margin-right:10px;">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="clickRadio('pending')" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Pending
+                    </label>
+                </div>
+                <div class="form-check" style="margin-right:10px;">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="clickRadio('accepted')">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      Accepted
+                    </label>
+                </div>
+                <div class="form-check" style="margin-right:10px;">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('declined')">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                      Declined
+                    </label>
+                </div>
+                <div class="form-check" style="margin-right:10px;">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" (click)="clickRadio('canceled')">
+                  <label class="form-check-label" for="flexRadioDefault4">
+                    Canceled
+                  </label>
+                </div>
+            </div>
+
+            <!--__Arrow left and right__-->
+            <div style="display: flex;align-items: center;">
+
+                <!--___Count of mail____-->
+                <div style="margin-right:20px;">
+                    <span class="pNumbs">{{count_for5}}-5 of {{count}}</span>
+                </div>
+
+
+                <!--___LEFT and RIGHT clicks_____-->
+                <div class="row leftRight">
+                    <div class="col-6 left" (click)="left()">
+                        <span><</span>
+                    </div>
+                    <div class="col-6 right" (click)="right()">
+                        <span>></span>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+
+
+        <!--________CREATE DIV RESERVATION______________-->
+        <div>
+
+            <p *ngIf="arr_data.length == 0" style="text-align: center;">
+                {{loadingMessage}}
+            </p>
+
+            <div *ngFor="let data of arr_data; index as indexes" class="divAppParent">
+                
+                <!--___HEADER NOTIFI___-->
+                <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">    
+                    <!--____New and Name_____-->
+                    <span class="nameHeader">{{nomalizeSelected}}</span>
+
+                    <!--____X button or date_____-->
+                    <div *ngIf="radioName === 'pending'" class="paDate">{{checking(false, data.transaction_date)}}</div>
+                    <div *ngIf="radioName !== 'pending'" class="xDateBttn" (click)="movetoTrash(indexes)">X</div>
+                </div>
+
+                <!--_____MIDDLE INFORMATION____-->
+                <p class="paMessage">Transaction ID: {{data.transaction_id}}</p>
+                <p class="paMessage">Room name: {{data.name_room}}</p>
+                <p class="paMessage">Payment method: {{(data.paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</p>
+
+                
+                <!--_____FOOTER DATE_____-->
+                <div style="display: flex;justify-content: space-between;">
+                    
+                    <!--____PENDING_____-->
+                    <div *ngIf="radioName === 'pending'" style="width:100%;display: flex;justify-content: space-between;margin-top:5px;">
+                        <p class="details_cancel" (click)="cancelRequest(indexes)">Cancel request</p>
+                        <p class="details_cancel" (click)="click_details(indexes)">See details</p>
+                    </div>
+
+                    <!--____Accepted Declined and Canceled____-->
+                    <div *ngIf="radioName !== 'pending'" style="width:100%;display: flex;justify-content: space-between;margin-top:5px;">
+                        <p class="details_cancel" (click)="click_details(indexes)">See details</p>
+                        <div class="paDate">{{checking(false, data.transaction_date)}}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--________SELECTED DIV_________-->
+    <div *ngIf="selected_condition" class="selectedID">
+
+        <!--_______HEADER________-->
+        <div style="display: flex;justify-content:space-between;margin-bottom: 20px;">
+            <div style="display: flex;">
+                <div>
+                    <img src="/assets/icon/arrow_back.png" class="img-fluid" style="height:20px;cursor: pointer;" (click)="clickBack_selected()" />
+                </div>
+                <div class="paNameSelected">{{nomalizeSelected}}</div>
+            </div>
+            <div *ngIf="radioName !== 'pending'" class="xDateBttn" (click)="movetoTrash(arr_selected_data[1])">X</div>
+        </div>
+
+        <!--______BODY arr_selected_data[1]_______-->
+        <div>
+
+            <!--______HEADER______-->
+            <div style="margin-bottom: 10px;">
+                <p class="pa_header_body"><span style="font-family: inter_medium;">Transaction ID</span>: 
+                    <span style="font-family: inter_regular;">{{arr_selected_data[0].transaction_id}}</span></p>
+                <p class="pa_header_body"><span style="font-family: inter_medium;">Room name</span>: 
+                    <span style="font-family: inter_regular;">{{arr_selected_data[0].name_room}}</span></p>
+                <p class="pa_header_body"><span style="font-family: inter_medium;">Payment method</span>: 
+                    <span style="font-family: inter_regular;">{{(arr_selected_data[0].paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</span></p>
+            </div>
+
+
+            <!--_________BODY_____________-->
+            <div>
+                <!-- __ADD IMAGE SECTION__ -->
+                <div *ngIf="this.arr_data[0].paymentMethod === 'payment1'" class="imageAddDiv">
+                    <span class="paImageS">Image Section:</span>
+                    <p class="paLMes">{{radioName === 'pending'? 
+                                        'Put your transaction payment pictures here.': 
+                                        (this.arr_data[0].image_transaction.length == 0 ? '':'Your provided image transaction.') }}</p>
+
+                    <!-- __IMG ADD__ -->
+                    <div class="divForAdded" style="margin-top:15px;">
+
+                        <!--__ADD__-->
+                        <div *ngIf="radioName === 'pending'" class="addImageR" style="background:#DDE1FA;cursor: pointer;">
+                            <div style="height:100%;cursor:pointer;display:flex;align-items: center;justify-content: center;position: relative;">
+
+                                <input type="file" style="height:100%;border:1px solid black;cursor:pointer;position: absolute;opacity: 0.0;" 
+                                (change)="selectImage($event)"  accept="image/png, image/jpeg" multiple/>
+
+                                <div>
+                                    <p class="paUpload" style="cursor:pointer;">Upload image</p>
+                                    <div style="display: flex;justify-content: center;">
+                                        <img src="/assets/icon/addImage.png" class="img-fluid" type="file" style="height:45px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--____No image transaction but accepted____-->
+                        <div *ngIf="radioName !== 'pending' && this.arr_data[0].image_transaction.length == 0">
+                            <p class="paLMes">No transaction payment picture.</p>
+                        </div>
+
+                        <!--___Already added image____-->
+                        <div class="addImageR" *ngFor="let data of this.arr_data[0].image_transaction">
+                            <div class="addChildIR">
+                                <div *ngIf="condition_delete" class="disImageDelete">
+                                    <div class="deleteImage">
+                                        <div class="imgD">
+                                            <!--(click)="displayImage(indexes)"-->
+                                            <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;"  />
+                                        </div>
+                                    </div>
+                                </div>
+                                <img [src]="data[0]" class="img-fluid" style="height:100%;" />
+                            </div>
+                        </div>
+
+
+                        <!--__Added Image__ -->
+                        <div class="addImageR" *ngFor="let data of arr_image_tempo; index as indexes">
+                            <div class="addChildIR">
+                                <!-- delete image -->
+                                <div *ngIf="condition_delete" class="disImageDelete">
+                                    <div class="deleteImage">
+                                        <div class="imgD">
+                                            <!--(click)="displayImage(indexes)"-->
+                                            <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;"  />
+                                        </div>
+                                        <div class="deleteD">
+                                            <img src="/assets/icon/trash_white.png" class="img-fluid" style="height:25px;" (click)="deleteImage(data)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <img [src]="data" class="img-fluid" style="height:100%;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- __INFORMATION OF RESERVATION__ -->
+                <div style="margin-bottom:15px;">
+                    <p class="paRInfoT">Information of reservation:</p>
+
+                    <div class="row" style="padding:0%;margin-top:5px;">
+
+                        <!--__filled information__-->
+                        <div class="col-6">
+                            <div style="margin-top:10px;">
+                                
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="labels">First name:</label>
+                                        <input type="text"  [value]="arr_selected_data[0].first_name" class="form-control forminputs" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="labels">Last name:</label>
+                                        <input type="text" [value]="arr_selected_data[0].last_name" class="form-control forminputs" />
+                                    </div>
+                                    <div class="col-12" style="margin-top:10px;">
+                                        <label class="labels">Email:</label>
+                                        <input type="text" [value]="arr_selected_data[0].email" class="form-control forminputs" />
+                                    </div>
+                                    <div class="col-12" style="margin-top:10px;">
+                                        <label class="labels">Contact number:</label>
+                                        <input type="text" [value]="arr_selected_data[0].phone_number" class="form-control forminputs" />
+                                    </div>
+                                    <div class="col-12" style="margin-top:10px;">
+                                        <p class="paRInfoT">Guest info:</p>
+                                        <span *ngIf="arr_selected_data[0].guest_member.split('\n')[0].length == 0" >No guest info filled up.</span>
+
+                                        <table *ngIf="arr_selected_data[0].guest_member.split('\n')[0].length != 0" class="table">
+                                            <thead>
+                                              <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Full name</th>
+                                                <th scope="col">Contact-number</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr *ngFor="let guestInfo of arr_selected_data[0].guest_member.split('\n'); index as indexes">
+                                                <th scope="row">{{(indexes+1)}}</th>
+                                                <td>{{guestInfo.split(',')[0]}}</td>
+                                                <td>{{guestInfo.split(',')[1]}}</td>
+                                              </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>  
+                        </div>
+                        
+                        <!--__details of reservation including "confirmation date"__-->
+                        <div class="col-6">
+                            <div class="divDetails">
+
+                                <div style="display: flex;justify-content: center;">
+
+                                    <!--____Check in____-->
+                                    <div class="divCheckInOut" style="margin-right:20px;">
+                                        <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK IN</p>
+                                        <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(arr_selected_data[0].checkin_date, [1])}}</p>
+                                        <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                            {{dateCheckOutCheckIn(arr_selected_data[0].checkin_date, [0,2])}}
+                                        </p>
+                                    </div>
+
+                                    <!--____Check out____-->
+                                    <div class="divCheckInOut">
+                                        <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK OUT</p>
+                                        <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(arr_selected_data[0].checkout_date, [1])}}</p>
+                                        <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                            {{dateCheckOutCheckIn(arr_selected_data[0].checkout_date, [0,2])}}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!--___DETAILS___-->
+                                <div style="margin-top:20px;">
+                                    <div class="pdetails">Details</div>
+
+                                    <div *ngIf="arr_selected_data[0].paymentMethod==='payment1'" class="paDetailsMiddle">
+                                        <span style="font-family: inter_medium !important;">Confirmation date</span>
+                                        <span>{{arr_selected_data[0].confirmation_date !== '' ? arr_selected_data[0].confirmation_date: 'no-date'}}</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle">
+                                        <span style="font-family: inter_medium !important;">
+                                            {{arr_selected_data[0].paymentMethod==='payment2' ? "Transaction paid date":'Transaction date'}}</span>
+                                        <span>{{arr_selected_data[0].transaction_date}}</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle">
+                                        <span style="font-family: inter_medium !important;">Price:</span>
+                                        <span>{{arr_selected_data[0].defaultPrice}}</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle">
+                                        <span style="font-family: inter_medium !important;">{{arr_selected_data[0].acquired_persons}} persons total:</span>
+                                        <span>{{arr_selected_data[0].persons_price}}</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle">
+                                        <span style="font-family: inter_medium !important;">Total price per day:</span>
+                                        <span>{{arr_selected_data[0].total_day_price}}</span>
+                                    </div>
+
+
+
+                                    <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                                        <span>Total</span>
+                                        <span>{{arr_selected_data[0].total_price}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+            <!--_________FOOTER BTTNS____________-->
+            <div *ngIf="radioName === 'pending'" style="display: flex;justify-content: center;">
+                <button *ngIf="condition_ShowUpdate" class="btn btn-primary btnUpdateImage" (click)="uploadImage()">Update Image</button>
+                <button class="btn btn-primary btnCancelRequest" (click)="cancelRequest(arr_selected_data[1])">Cancel request</button>
+            </div>
+        </div>
+    </div>
+
+</div>

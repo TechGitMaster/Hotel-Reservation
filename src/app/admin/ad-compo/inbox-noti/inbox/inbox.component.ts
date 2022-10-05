@@ -112,7 +112,7 @@ export class InboxComponent implements OnInit {
       this.subs.unsubscribe();
       this.funcUncheckBox();
       if(result.response !== 'no-data'){
-
+        
         this.numbMailsArr_notForAll = result.data;
         this.condition_loading = false;
         this.numb_allMails = result.count_data;
@@ -151,8 +151,6 @@ export class InboxComponent implements OnInit {
 
       this.condition_newMailSelected = data.acceptedNot;
 
-      this.condition_InqueryAppointment = data.appointmentNot === 'appointment' ? true: false;
-
       var email = ( data.email === '' ? data.reserved_email: data.email);
       var arr_dateTime = data.timeDate.split(',');
       var date = arr_dateTime[1];
@@ -169,8 +167,10 @@ export class InboxComponent implements OnInit {
 
 
       this.arr_selectedMail = new Array<any>((data.reserved_email !== 'Bot message' ? email: data.reserved_email), 
-      `${date}, ${time}`, String(data.favorite), (data.appointmentNot === 'appointment' ? 'Appointment':
-      (data.appointmentNot === 'inquery' ? 'Inquery Message': 'Reservation')), data.fullname, (data.reserved_email === 'Bot message' ? email: data.reserved_email), 
+      `${date}, ${time}`, String(data.favorite), (data.appointmentNot === 'appointments_message' ? 'Appointment':
+      (data.appointmentNot === 'inquery' ? 'Inquery Message': data.appointmentNot === 'reservation' ? 'Reservation':
+      data.appointmentNot === 'cancel_app' ? 'Cancel appointment': 'Cancel reservation')), 
+      data.fullname, (data.reserved_email === 'Bot message' ? email: data.reserved_email), 
       data.numGuest, data.contact_num, data.message, number, data.dateArrival);
 
       this.subs = this.service.newClicked(this.numbMailsArr_notForAll[number]._id).subscribe((result) => {
@@ -189,47 +189,6 @@ export class InboxComponent implements OnInit {
         });
       }
   }
-
-
-  //Accept or Decline_________________________________________________________________
-  subsAD!: Subscription;
-  funcAcceptDecline(acceptNot: boolean): void{
-    if(this.handle_numberSelected != -1){
-
-      var data = this.numbMailsArr_notForAll[this.handle_numberSelected] as mails;
-      this.subs = this.service.acceptDecline(data._id, acceptNot, 'inbox', true).subscribe((result) => {
-        this.subs.unsubscribe();
-        if(result.response !== 'have'){
-          this.numbMailsArr_notForAll[this.handle_numberSelected].acceptedNot = String(acceptNot);
-          this.condition_newMailSelected = String(acceptNot);
-        }else{
-          this.service.openCall(new Array<any>("haveSame", "Already listed", "Are you sure you want to accept the appointment that has been listed to your schedule?"));
-          this.subsAD = this.service.backEmitter.subscribe((result) => {
-            this.subsAD.unsubscribe();
-            if(result[0]){
-              if(result[1]){
-                this.subs = this.service.acceptDecline(data._id, acceptNot, 'inbox', false).subscribe((res) => {
-                  this.subs.unsubscribe();
-                  this.numbMailsArr_notForAll[this.handle_numberSelected].acceptedNot = String(acceptNot);
-                  this.condition_newMailSelected = String(acceptNot);
-                },(error) => 
-                {
-                  this.subs.unsubscribe();
-                  location.reload()
-                });
-              }
-            }
-          });
-        }
-      }, (error) => 
-      {
-        this.subs.unsubscribe();
-        location.reload()
-      });
-    }
-  }
-
-
 
   //Favorite click_______________________________________________________________
   favoriteClick(number: number, favo_condition: any, condition: boolean): void{

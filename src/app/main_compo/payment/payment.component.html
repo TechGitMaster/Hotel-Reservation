@@ -1,0 +1,545 @@
+<div class="container-fluid" style="min-height:100vh;padding: 0%;background:#F2F3F6;z-index: 10;">
+
+    <!--_____________________POSITION FIXED___________________________-->
+    <div class="fixedDiv" *ngIf="arrHandle[0] === 'progress'">
+
+        <!--_________________THIS IS LOADING PROGRESS__________________-->
+        <div  style="display: flex;justify-content: center;align-items: center;height:100%;">
+            <div (click)="$event.stopPropagation()" class="divProgress">
+                <div class="container" style="padding:0%;position: relative;">
+                    <div>
+                        <!--___Percent text___-->
+                        <div class="numberProgress" [ngStyle]="{'position': 'absolute', 
+                        'top': arrHandle[1] == 100 ? '24%':'29%'}">{{arrHandle[1]}}%</div>
+                        <!--___Progress animation___-->
+                        <label [ngClass]="['container', arrHandle[1] == 100 ? 'progressStop': 'progressStart']">
+                            <div class="container checkDiv" [ngStyle]="{'display': arrHandle[1] != 100 ? 'none': 'block'}">
+                                <div class="container check-icon"></div>
+                            </div>
+                        </label>
+                    </div>
+    
+                    <div style="margin-top:20px;">
+                        <p class="paMessLoading" *ngIf="arrHandle[1] != 100">{{arrHandle[2]}}</p>
+                        <p class="paMessLoading" *ngIf="arrHandle[1] == 100">{{arrHandle[2]}}</p>
+                        <div style="display: flex;justify-content: center;" *ngIf="arrHandle[1] == 100">
+                            <button class="btn btn-primary btnfinishUpload" (click)="arrHandle[0] = ''">Finish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--_______________________Show login first____________________________-->
+    <div class="container-fluid containerloginSignup" *ngIf="arrHandle[0] === 'showing'" (click)="arrHandle[0] = ''">
+        <div class="container divSuccesss" (click)="$event.stopPropagation()">
+            <p class="paSuccess">Login first before using gcash as payment method!</p>
+            <button class="btn btn-primary successBttn" (click)="arrHandle[0] = ''">Close</button>
+        </div>
+    </div>
+
+
+    <!--Not expired-->
+    <div *ngIf="this.condition_expiredNot === 'false'">
+
+        <!--_______HEADER_______-->
+        <div style="background:#373434;">
+            <div class="container headerPayment">
+                <span class="paPaymentSect">Payment {{condition_paymentSection ? 'section': 'details'}}</span>
+                <img src="/assets/logo/logo.png" class="img-fluid" style="height:100px;">
+            </div>
+        </div>
+
+        <!--_______HEADER footer______-->
+        <div style="background:white;">
+            <div class="container headerFooter">
+                <div (click)="goHome()" style="display: flex;align-items: center;position: absolute;left:0px;cursor: pointer;">
+                    <img src="/assets/icon/arrow_back.png" class="img-fluid" style="height:19px;cursor: pointer;" />
+                    <span class="paBack">Home</span>
+                </div>
+                <div style="display: flex;align-items: center;">
+                    <img src="/assets/icon/secure.png" class="img-fluid" style="height:19px;cursor: pointer;" />
+                    <span class="paBack">{{condition_paymentSection ? 'Secured section (It only takes 5 minutes)':'Secured details'}}</span>
+                </div>
+                <div style="display: flex;position: absolute;right:0px;top:9px;">
+                    <div class="stepNumber" [ngStyle]="{'border':'2px solid #373434', 
+                        'background': condition_paymentSection ? '#373434':'', 'color': condition_paymentSection ? 'white':'black'}">1</div>
+                    <div class="stepNumber" [ngStyle]="{'margin-left':'8px', 
+                        'border':'2px solid #373434', 'background': !condition_paymentSection ? '#373434':'', 
+                        'color': !condition_paymentSection ? 'white':'black'}">2</div>
+                </div>
+            </div>
+        </div>
+
+        <!--_______PAYMENT SECTION______-->
+        <div *ngIf="condition_paymentSection" class="container" style="max-width:1230px;padding:15px 0px 15px 0px;">
+            <div class="row">
+
+                <!--_______INFORMATION DETAILS USER__________-->
+                <div [formGroup]="formGroup_payment" class="col-lg-8 col-12 col-12" style="padding:0px 10px 0px 0px;">
+                    <div class="details_payment">
+
+                       <p class="paEnterD">Enter your details</p>
+
+                       <!--_______DETAILS________-->
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-6">
+                                <label class="labels">First Name:</label>
+                                <input type="text" formControlName="first_name" class="form-control forminput" />
+                                <div *ngIf="errAppointment[0][1]">
+                                    <span class="paError">{{errAppointment[0][0]}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <label class="labels">Last Name:</label>
+                                <input type="text" formControlName="last_name" class="form-control forminput" />
+                                <div *ngIf="errAppointment[1][1]">
+                                    <span class="paError">{{errAppointment[1][0]}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-4">
+                                <label class="labels">Email:</label>
+                                <input type="text" formControlName="email" class="form-control forminput" />
+                                <div *ngIf="errAppointment[2][1]">
+                                    <span class="paError">{{errAppointment[2][0]}}</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <label class="labels">Email (re-confirm):</label>
+                                <input type="text" formControlName="email_re" class="form-control forminput" />
+                                <div *ngIf="errAppointment[3][1]">
+                                    <span class="paError">{{errAppointment[3][0]}}</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <label class="labels">Contact number:</label>
+                                <input type="text" formControlName="contact_number" (input)="only_number_contact()" class="form-control forminput forminputC" />
+                                <div *ngIf="errAppointment[4][1]">
+                                    <span class="paError">{{errAppointment[4][0]}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--_________CHECK BOX__________-->
+                        <div style="margin-bottom:50px;">
+                            <div>
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" (click)="GDetails_check()"
+                                    style="margin-right:8px;position: relative;top:1px;">
+
+                                <label class="form-check-label paAllGuest" for="flexCheckChecked">
+                                    I want to add all guest names.
+                                </label>
+                            </div>
+
+                            <!--___GUEST DETAILS___-->
+                            <div *ngIf="countD != 1" class="parentGD">
+                                <div style="display: flex;">
+                                    <!--___IMAGE___-->
+                                    <div style="max-width:110px;">
+                                        <img [src]="data_room.img_first" class="img-fluid" style="height:85px;border-radius:5px;" />
+                                    </div>
+                                    <div style="width:100%;padding:0px 10px 0px 10px;">
+                                        <!--{{data_room.nameRoom}}-->
+                                        <p class="patiGuest">{{data_room.nameRoom}}</p>
+
+                                        <!--____TABLE_____-->
+                                        <div style="width:90%;">
+                                            <!--___HEADER___-->
+                                            <div style="display: flex;">
+                                                <div style="width:30%;font-weight: bold;font-size:13px">First name</div>
+                                                <div style="width:30%;font-weight: bold;font-size:13px">Last name</div>
+                                                <div style="width:30%;font-weight: bold;font-size:13px;">Contact number</div>
+                                                <div style="width: 10%;"></div>
+                                            </div>
+
+                                            <!--___LOOPING INFO_____-->
+                                            <div class="INFO_dtails">
+                                                <div class="div_dtails" style="display: flex;margin-top:5px;" *ngFor="let cs of arr_details; index as indexes">
+                                                    <div class="inputDetails">
+                                                        <input type="text" (input)="updateArr_fill(0, indexes, $event)" class="form-control forminput_details" />
+                                                    </div>
+                                                    <div class="inputDetails">
+                                                        <input type="text" (input)="updateArr_fill(1, indexes, $event)" class="form-control forminput_details" />
+                                                    </div>
+                                                    <div class="inputDetails">
+                                                        <input type="text" (input)="updateArr_fill(2, indexes, $event)" 
+                                                            [ngClass]="['form-control', 'forminput_details', 'forminput_details_'+indexes]" />
+                                                    </div>
+                                                    <div style="width:10%;">
+                                                        <img  *ngIf="(countD-2) == indexes" src="/assets/icon/x_details.png" class="img-fluid img_xDetails" (click)="ex_GDetails(indexes)" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--____FOOTER ADD MORE GUEST____-->
+                                            <div *ngIf="countD < token_convert.personsCount">
+                                                <span class="paAddGuest" (click)="addGuest()">+ add more guest</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="errAppointment[5][1]">
+                                <span class="paError">{{errAppointment[5][0]}}</span>
+                            </div>
+                        </div>
+
+
+                        <!--__________SELECTION PAYMENT METHOD_________-->
+                        <div style="padding:20px;border:2px solid rgba(0, 128, 0, 0.507);border-radius:15px;">
+
+                            <!--____HEADER____-->
+                            <div style="display: flex;align-items: center;margin-bottom:15px;">
+                                <img src="/assets/icon/secure_green.png" class="img-fluid" style="width:30px;height:25px;cursor: pointer;" />
+                                <span class="paMethodPay">Select a payment method</span>
+                            </div>  
+
+                            <!--____GCASH_____-->
+                            <div class="gcashPaypal_divParent" (click)="select_bttnPayment('gcash')">
+                                <!--___HEADER___-->
+                                <div style="display: flex;">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    <div class="paPeyments" style="display: flex;align-items: center;">
+                                        <img src="/assets/image/gcash.png" class="img-fluid" style="max-width:20px;height:20px;" />
+                                        <label class="form-check-label" for="flexRadioDefault1" style="margin-left:5px;">
+                                            Gcash payment
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!--___BODY____-->
+                                <div *ngIf="condition_paymentMethod === 'gcash'" style="margin-top: 15px;padding-bottom: 15px;">
+
+                                    <p class="paTitlehM">Gcash payment method</p>
+                                    <span>Scan the QR code to make a pay or send a money to this number to make a pay.</span>
+
+                                    <div style="display: flex;margin-top:15px;">
+
+                                        <!--___QR CODE and Send money___-->
+                                        <div style="width:50%;padding:0px 10px 0px 0px;">
+                                            <div>
+                                                <label class="labels">Send money:</label>
+                                                <input type="text" class="form-control forminput" value="09186677538" style="letter-spacing: 1px;" disabled/>
+                                            </div>
+
+                                            <div style="margin-top:10px;">
+                                                <label class="labels" style="margin-bottom:10px;">QR code:</label>
+                                                <img src="/assets/image/gcash_qr.jpg" class="img-fluid" style="border-radius:10px;" />
+                                            </div>
+                                        </div>
+
+                                        <!--____IMG ADD____-->
+                                        <div style="width:50%;padding:0px 0px 0px 10px;">
+                                            <!-- __ADD IMAGE SECTION__ -->
+                                            <div class="imageAddDiv">
+                                                <span class="paImageS">Image Section:</span>
+                                                <p class="paLMes">Upload your gcash transaction here.</p>
+
+                                                <!-- __IMG ADD__ -->
+                                                <div class="divForAdded" style="margin-top:15px;">
+
+                                                    <!--__ADD__-->
+                                                    <div class="addImageR" style="background:#DDE1FA;cursor: pointer;">
+                                                        <div style="height:100%;cursor:pointer;display:flex;align-items: center;justify-content: center;position: relative;">
+                                                            
+                                                            <input type="file" style="height:100%;border:1px solid black;cursor:pointer;position: absolute;opacity: 0.0;" 
+                                                              accept="image/png, image/jpeg" (change)="selectImage($event)" multiple/>
+
+                                                            <div>
+                                                                <p class="paUpload" style="cursor:pointer;">Upload image</p>
+                                                                <div style="display: flex;justify-content: center;">
+                                                                    <img src="/assets/icon/addImage.png" class="img-fluid" type="file" style="height:45px;"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--__Added Image__ -->
+                                                    <div *ngFor="let data of arr_img_transaction; index as indexes" class="addImageR">
+                                                        <div class="addChildIR">
+                                                            <!-- delete image -->
+                                                            <div class="disImageDelete">
+                                                                <div class="deleteImage">
+                                                                    <div class="imgD">
+                                                                        <!--(click)="displayImage(indexes)"-->
+                                                                        <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;"  />
+                                                                    </div>
+                                                                    <div class="deleteD">
+                                                                        <img src="/assets/icon/trash_white.png" (click)="deleteImage(data)" class="img-fluid" style="height:25px;" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <img [src]="data" class="img-fluid" style="height:100%;" />
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!--____PAYPAL_____-->
+                            <div class="gcashPaypal_divParent" (click)="select_bttnPayment('paypal')" style="margin-top:10px;">
+                                <!--___HEADER___-->
+                                <div style="display: flex;">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                    <div class="paPeyments" style="display: flex;align-items: center;">
+                                        <img src="/assets/image/paypal.png" class="img-fluid" style="max-width:20px;height:20px;" />
+                                        <label class="form-check-label" for="flexRadioDefault2" style="margin-left:5px;">
+                                            Paypal / Debit or credit card payment
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!--____BODY____-->
+                                <div *ngIf="condition_paymentMethod === 'paypal'" 
+                                    style="margin-top:20px;">
+                                    <div #paypalbuttons></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--_____BUTTON MAKE A REQUEST OR RESERVE______-->
+                        <div *ngIf="condition_paymentMethod === 'gcash'" style="margin-top:20px;display: grid;place-items: center;">
+                            <button class="btn btn-primary btn_BTS" (click)="makeA_reqest()">MAKE A REQUEST</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--_______PAYMENT DETAILS_________-->
+                <div class="col-lg-4 col-12 col-12" style="padding:0px 0px 0px 10px;">
+                    <div class="details_payment">   
+                        <p class="paReservationS">Reservation Summary</p>
+
+                        <div style="display: flex;min-height:80px;">
+                            <img [src]="data_room.img_first" class="img-fluid" style="max-width:90px;min-height:100%;border-radius:5px;" />
+                            <div style="margin-left:5px;padding:5px;">
+                                <p class="paTitleSum">{{data_room.nameRoom}}</p>
+                                <span style="font-family:inter_regular;font-size:14px;">Quezon City, Manhattan Garden</span>
+                            </div>
+                        </div>
+
+                        <div class="dateCheckInOut">
+                            <span><span style="font-family: inter_bold;">{{day_count_reservation}} nights: </span> 
+                            <span style="font-family: inter_medium;">{{day_checkInOut_convert}}</span></span>
+                        </div>
+
+                        <div class="details_inPay">
+                            <p class="paDPs">Details payment summary</p>
+
+                            <div style="display: flex;justify-content: space-between;font-size:14px;">
+                                <span style="font-family: inter_semibold;">Price:</span>
+                                <span style="font-family: inter_regular;">php {{data_room.defaultPrice}}</span>
+                            </div>
+
+                            <div style="display: flex;justify-content: space-between;font-size:14px;">
+                                <span style="font-family: inter_semibold;">{{token_convert.personsCount}} persons total:</span>
+                                <span style="font-family: inter_regular;">php {{person_total}}</span>
+                            </div>
+
+                            <div style="display: flex;justify-content: space-between;font-size:14px;">
+                                <span style="font-family: inter_semibold">Total price per day:</span>
+                                <span style="font-family: inter_regular;">php {{total_price_perDay}}</span>
+                            </div>
+                        </div>
+
+                        <div class="total_inPay">
+                            <span style="font-family: inter_semibold">Total</span>
+                            <div style="display: flex;align-items: flex-end;">
+                                <span style="font-family: inter_medium;font-size:15px;margin-right:3px;position: relative;top:-4px;">php</span>
+                                <span style="font-family: inter_regular;font-size:23px;">{{total_price}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--_______PAYMENT DETAILS_______-->
+        <div *ngIf="!condition_paymentSection" class="container" style="max-width:1230px;padding:15px 0px 15px 0px;">
+            <div class="details_payment">
+                <!--___HEADER____-->
+                <div *ngIf="identify_PM === 'gcash'" style="margin-bottom:15px;">
+                    <p class="paNote">Please Note:</p>
+                    <span>By using gcash as payment, you need to wait to accept your reservation request. To look into your request just go to your account setting.</span>
+                </div>
+                
+                <p class="paReD">Your reservation details:</p>
+
+                <!--_________BODY_____________-->
+                <div>
+                    <!-- __IMAGE SECTION__ -->
+                    <div *ngIf="identify_PM === 'gcash'" class="imageAddDiv">
+                        <span class="paImageS">Image Section:</span>
+                        <p class="paLMes">Your provided image transaction.</p>
+
+                        <!-- __IMG__ -->
+                        <div class="divForAdded" style="margin-top:15px;">
+
+                            <!--____No image transaction but accepted____-->
+                            <div *ngIf="arr_img_transaction.length == 0">
+                                <p class="paLMes">No provided image.</p>
+                            </div>
+
+                            <!--___Already added image____-->
+                            <div class="addImageR" *ngFor="let data of arr_img_transaction">
+                                <div class="addChildIR">
+                                    <div class="disImageDelete">
+                                        <div class="deleteImage">
+                                            <div class="imgD">
+                                                <!--(click)="displayImage(indexes)"-->
+                                                <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <img [src]="data" class="img-fluid" style="height:100%;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- __INFORMATION OF RESERVATION__ -->
+                    <div style="margin-bottom:15px;">
+                        <p *ngIf="identify_PM === 'gcash'" class="paRInfoT">Information of reservation:</p>
+
+                        <div class="row" style="padding:0%;margin-top:5px;">
+
+                            <!--__filled information__-->
+                            <div class="col-6">
+                                <div style="margin-top:10px;">
+                                    
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="labels">First name:</label>
+                                            <input type="labels_T"  [value]="formGroup_payment.value.first_name" class="form-control forminputs" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="labels">Last name:</label>
+                                            <input type="labels_T" [value]="formGroup_payment.value.last_name" class="form-control forminputs" />
+                                        </div>
+                                        <div class="col-12" style="margin-top:10px;">
+                                            <label class="labels_T">Email:</label>
+                                            <input type="text" [value]="formGroup_payment.value.email" class="form-control forminputs" />
+                                        </div>
+                                        <div class="col-12" style="margin-top:10px;">
+                                            <label class="labels_T">Contact number:</label>
+                                            <input type="text" [value]="formGroup_payment.value.contact_number" class="form-control forminputs" />
+                                        </div>
+                                        <div class="col-12" style="margin-top:10px;">
+                                            <p class="paRInfoT">Guest info:</p>
+                                            <span *ngIf="arr_details.length == 0" >No guest info filled up.</span>
+
+                                            <table *ngIf="textarea_details.split('\n')[0].length != 0" class="table">
+                                                <thead>
+                                                  <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Full name</th>
+                                                    <th scope="col">Contact-number</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <tr *ngFor="let guestInfo of textarea_details.split('\n'); index as indexes">
+                                                    <th scope="row">{{(indexes+1)}}</th>
+                                                    <td>{{guestInfo.split(',')[0]}}</td>
+                                                    <td>{{guestInfo.split(',')[1]}}</td>
+                                                  </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                            
+                            <!--__details of reservation including "confirmation date"__-->
+                            <div class="col-6">
+                                <div class="divDetails">
+
+                                    <div style="display: flex;justify-content: center;">
+
+                                        <!--____Check in____-->
+                                        <div class="divCheckInOut" style="margin-right:20px;">
+                                            <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK IN</p>
+                                            <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(arr_data_savingInfo[1], [1])}}</p>
+                                            <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                                {{dateCheckOutCheckIn(arr_data_savingInfo[1], [0,2])}}
+                                            </p>
+                                        </div>
+
+                                        <!--____Check out____-->
+                                        <div class="divCheckInOut">
+                                            <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK OUT</p>
+                                            <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(arr_data_savingInfo[2], [1])}}</p>
+                                            <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                                {{dateCheckOutCheckIn(arr_data_savingInfo[2], [0,2])}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!--___DETAILS___-->
+                                    <div style="margin-top:20px;">
+                                        <div class="pdetails">Details</div>
+
+                                        <div *ngIf="identify_PM === 'gcash'" class="paDetailsMiddle">
+                                            <span style="font-family: inter_medium !important;">Confirmation date</span>
+                                            <span>'no-date'</span>
+                                        </div>
+
+                                        <div class="paDetailsMiddle">
+                                            <span style="font-family: inter_medium !important;">
+                                                {{identify_PM === 'paypal' ? "Transaction paid date":'Transaction date'}}</span>
+                                            <span>{{arr_data_savingInfo[12]}}</span>
+                                        </div>
+
+                                        <div class="paDetailsMiddle">
+                                            <span style="font-family: inter_medium !important;">Price:</span>
+                                            <span>php {{data_room.defaultPrice}}</span>
+                                        </div>
+
+                                        <div class="paDetailsMiddle">
+                                            <span style="font-family: inter_medium !important;">{{token_convert.personsCount}} persons total:</span>
+                                            <span>php {{arr_data_savingInfo[4]}}</span>
+                                        </div>
+
+                                        <div class="paDetailsMiddle">
+                                            <span style="font-family: inter_medium !important;">Total price per day:</span>
+                                            <span>php {{arr_data_savingInfo[5]}}</span>
+                                        </div>
+
+
+
+                                        <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                                            <span>Total</span>
+                                            <span>php {{arr_data_savingInfo[6]}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--____Expired_____-->
+    <div *ngIf="this.condition_expiredNot === 'true'">expired</div>
+</div>

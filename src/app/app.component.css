@@ -125,6 +125,72 @@
     max-width:30px;
     height:30px;
     cursor: pointer;
+    position: relative;
+}
+
+.paPositionNumb_noti{
+    font-family: inter_bold;
+    font-size:13px;
+    margin:0%;
+    border-radius: 5px;
+    background: gold;
+    padding: 3px 5px 3px 5px;
+    position: absolute;
+    top:-10px;left:-10px;
+}
+
+.div_notiParent{
+    width:420px;
+    min-height:350px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.242);
+    border-radius: 10px;
+    overflow: hidden;
+    position: absolute;
+    top:40px;left:-390px;
+}
+
+.divNotiParent{
+    min-height:100px;
+    border:2px solid #F1F1F1;
+    background:white;
+    padding:15px;
+}
+
+.new{
+    padding:3px 10px 3px 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background:#F63030;
+    color:white;
+    font-family: inter_medium;
+    font-size:13px;
+}
+
+.nameHeader{
+    font-family: inter_semibold;
+}
+
+
+.paMessage{
+    font-family: inter_regular;
+    font-size:14px;
+    color:#4b4949;
+    margin:0%;
+}
+
+.paDate{
+    font-family: inter_medium;
+    font-size:13px;
+    color:#4b4949;
+}
+
+.seeAllNotification{
+    font-family: inter_medium;
+    font-size:15px;
+    color:#0063A8;
+    margin:0%;
+    cursor:pointer;
 }
 
 .contactusfooter{
@@ -178,6 +244,51 @@
 
 .divformrow{
     margin-top:15px;
+}
+
+.paAllGuest{
+    font-family: inter_medium;
+    font-size:14px;
+}
+
+.parentGD{
+    margin-top:15px;
+    padding:15px 15px 15px 15px;
+    background:#F2F3F6;
+    border-radius:10px;
+}
+
+.patiGuest{
+    font-family: inter_bold;
+    font-size:14px;
+    margin:0px 0px 3px 0px;
+}
+
+.inputDetails{
+    width:30%;
+    padding-right:10px;
+}
+
+.forminput_details{
+    height:35px;
+    border-radius: 5px;
+    padding:10px;
+    font-size:14px;
+    font-family: inter_regular;
+}
+
+.img_xDetails{
+    height:15px;
+    cursor: pointer;
+    opacity: 0.9;
+    border-radius: 2px;
+}
+
+.paAddGuest{
+    font-family: inter_regular;
+    font-size:13px;
+    color:blue;
+    cursor: pointer;
 }
 
 .forminputtextarea{
@@ -653,6 +764,7 @@
     font-size:20px;
     text-align: center;
     margin-bottom:20px;
+    color:#0063A8;
 }
 
 .successBttn{

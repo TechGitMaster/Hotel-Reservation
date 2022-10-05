@@ -10,7 +10,7 @@ function columns(name_column){
     const schema_data = {
         IDS: { type: String, required: true },
         usermail_id: { type: String, required: false },
-        fullname: { type: String, required: true },
+        fullname: { type: String, required: false },
         email: { type: String, required: false },
         reserved_email: { type: String, required: false },
         numGuest: { type: String, required: false },
@@ -21,7 +21,10 @@ function columns(name_column){
         favorite: { type: Boolean, required: true },
         acceptedNot: { type: String, required: false },
         appointmentNot: { type: String, required: true },
-        folderName: { type: String, required: true }
+        folderName: { type: String, required: true },
+        guest_member: { type: String, required: false },
+        transaction_ID: { type: String, required: false },
+        deleteNot: { type: String, required: false }
     };  
 
     if(name_column === 'admin_inbox'){
@@ -40,7 +43,10 @@ function columns(name_column){
             acceptedNot: { type: String, required: false },
             appointmentNot: { type: String, required: false },
             newNot: { type: Boolean, required: true },
-            folderName: { type: String, required: true }
+            folderName: { type: String, required: true },
+            guest_member: { type: String, required: false },
+            transaction_ID: { type: String, required: false },
+            deleteNot: { type: String, required: false }
         }, { timestamps: true });
     }else{
         schema_column = new Schema(schema_data, { timestamps: true });

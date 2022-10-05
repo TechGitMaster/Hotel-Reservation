@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MainServiceService } from './main_serivce/main-service.service';
 import { register, login, googleDataUser, timeDate } from './objects';
 import { HostListener } from '@angular/core';
-
+import { notification_user } from './objects';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +17,17 @@ import { HostListener } from '@angular/core';
 export class AppComponent implements OnInit, AfterViewInit{
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
-    location.reload();
+    this.condition_admin_user = false;
+    this.condition_header = true;
+    this.condition_router_outlet = false;
+    
+    setTimeout(() => {
+      location.reload();
+    }, 100);
   }
+
+
+  condition_router_outlet: boolean = true;
 
   subs!: Subscription;
   condition_admin_user!: boolean;
@@ -48,7 +57,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   errArrForgotPassword!: Array<Array<any>>;
   showSuccessfully_request!: boolean;
   handle_fullname!: string;
-
+  handle_email!: string;
 
   month_names: Array<string> = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 
   'Dec');
@@ -91,6 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.notification_icon = "assets/icon/bell.png";
     this.menubar_icon = "/assets/icon/menu.png";
     this.handle_fullname = '';
+    this.handle_email = '';
 
     this.count_0day = 0;
     this.timeAvailable = new Array<any>();
@@ -118,7 +128,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     //'kylevelarde374@gmail.com'
     //'kyleAdmin375@gmail.com'
     this.formGroup_login = this.formBuilder.group({
-      email: ['kylevelarde374@gmail.com'],
+      email: ['kyleAdmin375@gmail.com'],
       password: ['YF9ac466i1AwQwkb@']
     });
 
@@ -149,7 +159,6 @@ export class AppComponent implements OnInit, AfterViewInit{
       verifyPassword: ['']
     });
 
-
     //checking if the link is contact-us.. then hide "set appointment"________________________
     this.condition_appointment = false;
     this.condition_footer = false;
@@ -163,10 +172,9 @@ export class AppComponent implements OnInit, AfterViewInit{
           this.condition_appointment = true;
           this.condition_footer = true;
           this.condition_header = true;
-        }   
+        }
       }
     });
-
 
     this.checkingAdminUser();
   }
@@ -175,18 +183,160 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
 
+
+
+
+  //Notification checking______________________________________________________________________________________________________________
+  subs_notification!: Subscription;
+  nums: number = 0;
+  notifi_numberCon: boolean = false;
+  handle_notifi_numb: string = '';
+
+  countAll_noti = 0;
+  clicked_noti: boolean = false;
+  arr_notification: Array<notification_user> = new Array<notification_user>();
+  loading_message: string = '';
+  notification_checking(): void{
+    if(this.subs_notification != null) this.subs_notification.unsubscribe();
+
+    this.subs_notification = this.service.listen().subscribe((res) => {
+      if(res === this.handle_email){
+        this.getNotification_checking(true);
+      }
+    });
+  }
+
+  getNotification_checking(condition: boolean): void{
+    //Checking________
+    if(condition){
+      var subs = this.service.getNotification_clicked(this.handle_email).subscribe((ress) => {
+        subs.unsubscribe();
+
+        if(ress.response === 'success'){
+          if(!this.clicked_noti){
+            this.notifi_numberCon = true;
+            this.handle_notifi_numb = ress.count < 10 ? `0${ress.count}`: `${ress.count}`;
+          }else{
+            this.loading_message = 'Loading...';
+            this.arr_notification = new Array<notification_user>();
+            subs = this.service.change_clickedNoti(this.handle_email).subscribe(() => {
+              subs.unsubscribe();
+              this.getNotification_checking(false);
+            }, (err) => {
+              subs.unsubscribe();
+              location.reload();
+            });
+          }
+        } 
+
+      }, (err) => {
+        subs.unsubscribe();
+        location.reload();
+      });
+    }else{
+
+      //get notification__________________________________________
+      var subs = this.service.getNotification(0, 3).subscribe((ress) => {
+        subs.unsubscribe();
+
+        if(ress.response === 'success'){
+          this.countAll_noti = ress.count;
+          this.arr_notification = ress.data;
+        }else{
+          this.loading_message = 'Empty Notification.';
+        }
+
+      }, (err) => {
+        subs.unsubscribe();
+        location.reload();
+      });
+    }
+  }
+
+  //Notification icon click bttn________________________________________________________
+  notiClick(): void{  
+    if(!this.clicked_noti){
+      this.clicked_noti = true;
+      this.loading_message = 'Loading...';
+      this.arr_notification = new Array<notification_user>();
+      this.notifi_numberCon = false;
+
+
+      var subs = this.service.change_clickedNoti(this.handle_email).subscribe(() => {
+        subs.unsubscribe();
+        this.getNotification_checking(false);
+      }, (err) => {
+        subs.unsubscribe();
+        location.reload();
+      });
+    }else{
+      this.clicked_noti = false;
+    }
+  }
+
+  //checking the date and also if it's new___________________________________
+  checking(condition: boolean, dates: string): string{
+
+    let str = '';
+
+    let date = new Date();
+    let handle_date = dates.split(',')[1].split(' ');
+
+    if(handle_date[0] === this.month_names[date.getMonth()] && handle_date[1] === ''+date.getDate() &&
+      handle_date[2] === ''+date.getFullYear()){
+        str = (condition ? 'new': dates.split(',')[0]);
+    }else{
+      str = (condition ? '': dates);
+    }
+
+    return str;
+  }
+
+  //Delete bttn notificaition____________________________________________________________
+  deletes(numb: number): void{
+    var subs = this.service.deleteNotication(this.arr_notification[numb]._id).subscribe((result) => {
+      subs.unsubscribe();
+
+      this.loading_message = 'Loading...';
+      this.arr_notification = new Array<notification_user>();
+      this.getNotification_checking(false);
+
+    }, (err) => {
+      subs.unsubscribe();
+      location.reload();
+    });
+  }
+
+
+  //_____________________________________________________________________________________________________________________________
+
+
+
+
+
+
   //The subscribe still running but it will only stop once the EventEmitter is emitting__________________________________
   //not-found.components will give the EventEmitter a data_____________________________
   //Successfully send request will show when the EventEmitter activate______________________________
   subsEventEmitter!: Subscription;
   subsSuccessShow!: Subscription;
   subsComponent!: Subscription;
+  subsNotexpired!: Subscription;
+  con_expired: boolean = false;
   callWaiting():void{
 
-    
+    //When the token is not expired or expired in payment____________________________________________________
+    this.subsNotexpired = this.service.notexpired_Payment.subscribe((res) => {
+      this.unsubscribe_Event();
+      this.con_expired = true;
+      this.condition_admin_user = res;
+      this.callWaiting();
+    });
+
+    //When it's unkown link and token expired in payment__________________________________________
     this.subsEventEmitter = this.service.dataSTR.subscribe(() => {
-      this.subsEventEmitter.unsubscribe();
-      this.subsSuccessShow.unsubscribe();
+      this.unsubscribe_Event();
+
       this.condition_appointment = true;
       this.callWaiting();
     });
@@ -194,8 +344,7 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     //Appointment and Inquery success send_________________________________________
     this.subsSuccessShow = this.service.showSuccess.subscribe(() => {
-      this.subsSuccessShow.unsubscribe();
-      this.subsEventEmitter.unsubscribe();
+      this.unsubscribe_Event();
 
       this.showSuccessfully_request = true;
 
@@ -204,6 +353,8 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     //When the user click the component from "Account settings"______________________
     this.subsComponent = this.service.menubarComponent.subscribe((result) => {
+      this.unsubscribe_Event();
+
       this.condition_header = false;
 
       if(result !== 'contact-us'){
@@ -216,6 +367,13 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.callWaiting();
     });
 
+  }
+
+  unsubscribe_Event(): void{
+    this.subsSuccessShow.unsubscribe();
+    this.subsEventEmitter.unsubscribe();
+    this.subsComponent.unsubscribe();
+    this.subsNotexpired.unsubscribe();
   }
 
   //Checking if admin or normal_user _____________________________________________________________________
@@ -237,28 +395,30 @@ export class AppComponent implements OnInit, AfterViewInit{
           }else{
             //normal-user ____________________
             //home page____________________
-
             this.handle_fullname = result.fullname;
+            this.handle_email = result.data.email;
 
             this.condition_login = true;
-            this.condition_admin_user = true;
+            if(!this.con_expired)this.condition_admin_user = true;
+            this.getNotification_checking(true);
+            this.notification_checking();
             this.availableDate();
           }
         }else{
           this.cookieservice.deleteAll('/');
-          this.condition_admin_user = true;
+          if(!this.con_expired)this.condition_admin_user = true;
           this.availableDate();
         }
       }, (err) => {
         
         this.subs.unsubscribe();
         this.cookieservice.deleteAll('/');
-        this.condition_admin_user = true;
+        if(!this.con_expired)this.condition_admin_user = true;
         this.availableDate();
       });
     }else{
       this.cookieservice.deleteAll('/');
-      this.condition_admin_user = true;
+      if(!this.con_expired) this.condition_admin_user = true;
       this.availableDate();
     }
   }
@@ -412,6 +572,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   //Selected navigation_____________________________________________________________
   funcClickable(condition: string): void{
     this.condition_menu = false;
+    this.clicked_noti = false;
     if(condition !== '' && condition !== ' '){
       this.clicked_handle = condition;
 
@@ -425,7 +586,12 @@ export class AppComponent implements OnInit, AfterViewInit{
         this.condition_header = false;
       }
 
+      this.condition_router_outlet = true;
       this.router.navigate([`/mc/${condition}`]);
+      //this.router.navigateByUrl(`/mc/${condition}`, {skipLocationChange: true}).then(() => {
+      //  this.router.navigate([`/mc/${condition}`]);
+      //});
+      
     }
   }
 
@@ -642,15 +808,15 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   //Set Appointment button______________________________________________
-  errAppointment: Array<Array<any>> = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false]);
+  errAppointment: Array<Array<any>> = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
   submitAppointment(): void{
-    this.errAppointment = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false]);
+    this.errAppointment = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
 
     if(this.checkingAInputField()){
       if(this.finalAppointment_date[0] !== ''){
 
         let dateArrival = `${this.finalAppointment_date[0]} ${this.finalAppointment_date[1]},${this.day_year_month_selected[1]} ${this.day_year_month_selected[0]} ${this.day_year_month_selected[2]}`;
-        this.subs = this.service.sendAppointment(this.formGroup_setAppointment, dateArrival, this.date_converting(), 'appointment').subscribe((res) => {
+        this.subs = this.service.sendAppointment(this.formGroup_setAppointment, dateArrival, this.date_converting(), 'appointment', this.textarea_details, this.transaction_ID()).subscribe((res) => {
           this.subs.unsubscribe();
           this.showSuccessfully_request = true;
 
@@ -668,6 +834,9 @@ export class AppComponent implements OnInit, AfterViewInit{
           this.finalAppointment_date = new Array<string>("", "am");
           this.day_year_month_selected = new Array<string>("", "", "");
           this.day_year_month_selected[0] = "0";
+
+          this.numGuest_func();
+
         }, (err) => {
           this.subs.unsubscribe();
           location.reload();
@@ -701,6 +870,93 @@ export class AppComponent implements OnInit, AfterViewInit{
     return `${converted_hours2}:${converted_minutes} ${amPm},${arr_months[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
   }
 
+  //Transaction ID maker and information________________________________________________________
+  transaction_ID(): any{
+
+    //Details guest______________________________________________________________
+    
+    const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let transaction_id = '#';
+
+    //Letter random________________________________
+    for(let count = 0;count < 5;count++){
+      transaction_id += alphabet[Math.floor(Math.random() * alphabet.length)];
+
+      if(count+1 == 5){
+        //Number random______________________________
+        for(let count2 = 0;count2 < 4;count2++){
+          transaction_id += `${Math.floor((Math.random() * 9))}`;
+
+          if(count2 == 3){
+            return transaction_id;
+          }
+        }
+      }
+    }
+  }
+
+  //ADD GUEST______________________________________________________________________________________
+
+  //Guest details check bttn_______________________________________________________________
+  cond_check: boolean = false;
+  arr_details!: Array<any>;
+  countD: number = 1;
+  countGuest!: number;
+  textarea_details: string = '';
+  GDetails_check(): void{
+    this.textarea_details = '';
+    this.countGuest = parseInt(this.formGroup_setAppointment.value.numberguest);    
+    this.arr_details = new Array<any>();
+    if(!this.cond_check){
+      this.cond_check = true;
+      for(this.countD = 1;this.countD < this.countGuest;this.countD++){
+        this.arr_details.push([ '', '', '' ]);
+      }
+    }else{
+      this.cond_check = false;
+      this.countD = 1;
+    }
+  }
+
+  ex_GDetails(numb: number): void{
+    let INFO_dtails = document.querySelectorAll('.INFO_dtails > div');
+    INFO_dtails.item(numb).remove();
+    this.arr_details.splice(numb);
+    this.countD -= 1;
+
+    if(this.countD == 1){
+      let doc = <HTMLInputElement> document.querySelector('#flexCheckChecked');
+      doc.checked = false;
+      this.cond_check = false;
+    }
+  } 
+
+  addGuest(): void{
+    this.arr_details.push([ '', '', '' ]);
+    this.countD += 1;
+  }
+
+  updateArr_fill(numb_child: number, numb_parent: number, event: any): void{
+
+    if(numb_child == 2){
+      let doc = <HTMLInputElement>document.querySelector(`.forminput_details_${numb_parent}`);
+      doc.value = doc.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+    }
+
+    this.arr_details[numb_parent][numb_child] = event.target.value;
+  }
+
+  //_________________________________________________________________________________________________
+
+
+  //Selection guest count func__________________________________________
+  numGuest_func(): void{
+    let doc = <HTMLInputElement>document.querySelector('.checkGuest');
+    doc.checked = false;
+    this.cond_check = false;
+    this.countD = 1;
+    this.textarea_details = '';
+  }
 
   //Checking appointment input field_______________________________________________
   checkingAInputField(): boolean{
@@ -708,19 +964,38 @@ export class AppComponent implements OnInit, AfterViewInit{
     if(this.formGroup_setAppointment.value.fullname !== '' && this.formGroup_setAppointment.value.fullname !== ' '){
       if((/[@]/).test(this.formGroup_setAppointment.value.email) && (/[.]/).test(this.formGroup_setAppointment.value.email)){
         if((/^\d+$/).test(this.formGroup_setAppointment.value.numberguest) && this.formGroup_setAppointment.value.numberguest.length > 0){
-          if(!(/^\d+$/).test(this.formGroup_setAppointment.value.contactnumber) || this.formGroup_setAppointment.value.contactnumber.length == 0
-          || this.formGroup_setAppointment.value.contactnumber === ' '){
-            if(this.formGroup_setAppointment.value.contactnumber.length == 0 || this.formGroup_setAppointment.value.contactnumber === ' '){
-              this.errAppointment[3] = ['!Empty input field.', true];
-              condition = false;
-            }else{
-              this.errAppointment[3] = ['!Only numbers need.', true];
-              condition = false;
+
+          let condition_GuestHave = true;
+          if(this.countD > 1) {
+            for(let count = 0;count < this.arr_details.length;count++){
+              if(this.arr_details[count][0] === '' || this.arr_details[count][1] === '' || this.arr_details[count][2] === ''){
+                this.errAppointment[5][0] = "!Check the input field on guest names.";
+                this.errAppointment[5][1] = true;
+                condition = false;   
+                condition_GuestHave = false;
+              }else{
+                this.textarea_details += 
+                  `${this.arr_details[count][0]+' '+this.arr_details[count][1]},${this.arr_details[count][2]}${count != this.arr_details.length-1 ? '\n':''}`
+              }
             }
           }
+
+          if(condition_GuestHave){
+            if(!(/^\d+$/).test(this.formGroup_setAppointment.value.contactnumber) || this.formGroup_setAppointment.value.contactnumber.length == 0
+            || this.formGroup_setAppointment.value.contactnumber === ' '){
+              if(this.formGroup_setAppointment.value.contactnumber.length == 0 || this.formGroup_setAppointment.value.contactnumber === ' '){
+                this.errAppointment[3] = ['!Empty input field.', true];
+                condition = false;
+              }else{
+                this.errAppointment[3] = ['!Only numbers need.', true];
+                condition = false;
+              }
+            }
+          }
+
         }else{
           if(this.formGroup_setAppointment.value.numberguest.length == 0){
-            this.errAppointment[2] = ['!Empty input field.', true];
+            this.errAppointment[2] = ['!Select how many guest.', true];
             condition = false;
           }else{
             this.errAppointment[2] = ['!Only numbers need.', true];

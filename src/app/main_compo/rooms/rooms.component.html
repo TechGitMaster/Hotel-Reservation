@@ -2,10 +2,61 @@
     <div class="container-fluid header">
         <div class="container-fluid titlediv">
             <p class="titletxt">Manhattan Garden City</p>
-            <div style="display:flex;justify-content: center;">
-                <p class="titleinfo">
-                    Book your stay and enjoy the view at the most affordable rates
-                </p>
+            <p class="titleinfo">
+                Book your stay and enjoy the view at the most affordable rates
+            </p>
+
+            <!--____MAKE A RESERVATION____-->
+            <p class="paMakeReservation">MAKE A RESERVATION</p>
+            <div style="display: flex;justify-content: center;">
+                <div class="container reservationDiv">
+                    <div class="row" style="display: flex;justify-content: center;">
+                        <div class="divMakeReservation">
+                            <select class="selectS select1">
+                                <option selected>{{checkIn_mess}}</option>
+                            </select>
+                            <input type="date" (change)="checkIn($event)" class="dates" [min]="minCheckIn" />
+                        </div>
+
+                        <div class="divMakeReservation">
+                            <select class="selectS">
+                                <option selected>{{checkOut_mess}}</option>
+                            </select>
+                            <input type="date" (change)="checkOut($event)" class="dates" [min]="minCheckOut" />
+                        </div>
+
+                        <div class="divMakeReservation">
+                            <select class="selectS" (change)="persons($event)">
+                                <option selected>Person</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+
+                        <div class="divMakeReservation">
+                            <select class="selectS" (change)="roomName($event)">
+                                <option selected>{{txt_availableNot}}</option>
+                                <option *ngFor="let data of roomName_arr; index as indexes">
+                                    <span>
+                                        {{data[1]}}
+                                    </span>
+                                </option>
+                            </select>
+                        </div>
+
+                        <div style="max-width: 130px;padding: 0%;">
+                            <button class="btn btn-primary btnReserve" (click)="reserveBttn()">Reserve</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -59,12 +110,12 @@
 
                                 <div>
                                     <button *ngIf="json_Data.typeRoom" class="btnsreserveAppointment btn btn-primary"
-                                        [ngStyle]="{'width':'70%', 'background': json_Data.confirmNot ? '#FFD700':'', 
-                                                    'cursor':json_Data.confirmNot ? 'auto':'pointer'}" (click)="reserve(j_index)">
-                                            {{!json_Data.confirmNot ? 'Reserve Now':'Reserved'}}</button>
+                                        [ngStyle]="{'width':'70%', 'background': json_Data.confirmNot === 'true' ? '#FFD700':'', 
+                                                    'cursor':json_Data.confirmNot === 'true' ? 'auto':'pointer'}" (click)="scrollUp()">
+                                            {{json_Data.confirmNot === 'false' ? 'Reserve Now':'Reserved'}}</button>
                                 </div>
 
-                                <div><button *ngIf="!json_Data.confirmNot" 
+                                <div><button *ngIf="json_Data.confirmNot === 'false'" 
                                     class="btnsreserveAppointment btn btn-primary" style="width:70%;">Set Appointment</button>
                                 </div>
                             </div>
@@ -89,12 +140,12 @@
 
                                         <div>
                                             <button *ngIf="json_Data.typeRoom" class="btnsreserveAppointment btn btn-primary"
-                                                [ngStyle]="{'width':'70%', 'background': json_Data.confirmNot ? '#FFD700':'', 
-                                                            'cursor':json_Data.confirmNot ? 'auto':'pointer'}" (click)="reserve(j_index)">
-                                                    {{!json_Data.confirmNot ? 'Reserve Now':'Reserved'}}</button>
+                                                [ngStyle]="{'width':'70%', 'background': json_Data.confirmNot === 'true' ? '#FFD700':'', 
+                                                            'cursor':json_Data.confirmNot === 'true' ? 'auto':'pointer'}" (click)="scrollUp()">
+                                                    {{json_Data.confirmNot === 'false' ? 'Reserve Now':'Reserved'}}</button>
                                         </div>
         
-                                        <div><button *ngIf="!json_Data.confirmNot" 
+                                        <div><button *ngIf="json_Data.confirmNot === 'false'" 
                                             class="btnsreserveAppointment btn btn-primary" style="width:70%;">Set Appointment</button>
                                         </div>
                                     </div>

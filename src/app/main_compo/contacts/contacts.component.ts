@@ -53,7 +53,7 @@ export class ContactsComponent implements OnInit {
       if((this.formGroup.value.email !== '' && this.formGroup.value.email !== ' ') && 
       (/[@]/).test(this.formGroup.value.email) && (/[.]/).test(this.formGroup.value.email)){
         if(this.formGroup.value.letusknown.length > 0 && this.formGroup.value.letusknown !== ' '){
-          this.subs = this.service.sendAppointment(this.formGroup, '', this.date_converting(), 'inquery').subscribe((res) => {
+          this.subs = this.service.sendAppointment(this.formGroup, '', this.date_converting(), 'inquery', '', '').subscribe((res) => {
             this.formGroup = this.formBuild.group({
               fullname: [''],
               email: [''],

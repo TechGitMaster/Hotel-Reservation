@@ -14,12 +14,17 @@ const reservation_column = rooms_db('admin_user_reservation');
 const rooms_column = rooms_db('admin_rooms');
 
 
+const logReg_column = require('../databases/logReg_column');
+const data_reg = logReg_column('registered_accounts');
 
+const notification_db = require('../databases/notification_column');
+const notification_col = notification_db('user_notification');
+const notification_click_col = notification_db('user_notification_click');
 
 //Save reservation request made by user___________________________________________________
 router.post('/saveReservation', middleware_user, async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
-        last_name, phone_number, email, image_transaction, transaction_date, paymentMethod} = req.body.data;
+        last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member} = req.body.data;
     const { token } = req;  
     var _id = mongoose.Types.ObjectId();
 
@@ -36,65 +41,78 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                         condition = false;
                     }
                 }
+
+                //Checking if room is already reserved____________________________________________________________________
+
                 
                 if(condition){
         
                     const roomdata = await rooms_column.findOne({ _id: room_id });
                     let room_img = roomdata.imgArr[0];
                     let room_name = roomdata.nameRoom;
+
+                    if(roomdata.confirmNot !== 'true'){
+                        new reservation_column({
+                            room_id: room_id,
+                            email_id: token.email,
+                
+                            img_room: room_img,
+                            name_room: room_name,
+                            
+                            defaultPrice: roomdata.defaultPrice,
+                            paymentMethod: paymentMethod,
+                            transaction_id: transcation_id,
             
-                    new reservation_column({
-                        room_id: room_id,
-                        email_id: token.email,
-            
-                        img_room: room_img,
-                        name_room: room_name,
-                        
-                        defaultPrice: roomdata.defaultPrice,
-                        paymentMethod: paymentMethod,
-        
-                        checkin_date: checkin_date,
-                        checkout_date:  checkout_date,
-                        acquired_persons: acquired_persons,
-                        persons_price: persons_price,
-                        total_day_price: total_day_price,
-                        total_price: total_price,
-                        first_name: first_name,
-                        last_name: last_name,
-                        phone_number: phone_number,
-                        email: email,
-                        image_transaction: image_transaction,
-                        confirmation_date: '',
-                        transaction_date: transaction_date,
-                        
-                        confirmNot: 'new',
-            
-                        delete_admin: 'false',
-                        delete_user: 'false'
-                    }).save().then(() => {
-            
-                        //Send mail to admin______________________________________________________________
-                        new inboxes_column({
-                            _id: _id,
-                            fullname: first_name+" "+last_name,
+                            checkin_date: checkin_date,
+                            checkout_date:  checkout_date,
+                            acquired_persons: acquired_persons,
+                            persons_price: persons_price,
+                            total_day_price: total_day_price,
+                            total_price: total_price,
+                            first_name: first_name,
+                            last_name: last_name,
+                            phone_number: phone_number,
                             email: email,
-                            reserved_email: 'Bot message',
-                            numGuest: '',
-                            contact_num: '',
-                            message: 'New reservation request. Must check it out on "Reservations component".',
-                            dateArrival: '',
-                            timeDate: transaction_date,
-                            favorite: false,
-                            acceptedNot: 'new',
-                            appointmentNot: 'reservation',
-                            newNot: true,
-                            folderName: 'inbox'
+                            image_transaction: image_transaction,
+                            confirmation_date: '',
+                            transaction_date: transaction_date,
+                            
+                            guest_member: guest_member,
+    
+                            confirmNot: 'new',
+                
+                            delete_admin: 'false',
+                            delete_user: 'false'
                         }).save().then(() => {
-                            res.json({ response: 'success' });
+                
+                            //Send mail to admin______________________________________________________________
+                            new inboxes_column({
+                                _id: _id,
+                                usermail_id: '',
+                                fullname: first_name+" "+last_name,
+                                email: email,
+                                reserved_email: 'Bot message',
+                                numGuest: '',
+                                contact_num: '',
+                                message: `New reservation request. Transaction ID: ${transcation_id}.`,
+                                dateArrival: '',
+                                timeDate: transaction_date,
+                                favorite: false,
+                                acceptedNot: 'new',
+                                appointmentNot: 'reservation',
+                                newNot: true,
+                                folderName: 'inbox',
+                                guest_member: '',
+                                transaction_ID: ''
+                            }).save().then(() => {
+                                res.json({ response: 'success' });
+                            });
                         });
-                    });
+                    }else{
+                        res.json({ 'response': 'have' });
+                    }
                 }else{
-                    res.json({ 'response': 'have' });
+                    res.json({ 'response': 'you_already' });
                 }
         
             }else{
@@ -121,6 +139,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 
                 defaultPrice: roomdata.defaultPrice,
                 paymentMethod: paymentMethod,
+                transaction_id: transcation_id,
 
                 checkin_date: checkin_date,
                 checkout_date:  checkout_date,
@@ -136,6 +155,8 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 confirmation_date: transaction_date,
                 transaction_date: transaction_date,
                 
+                guest_member: guest_member,
+
                 confirmNot: 'true',
 
                 delete_admin: 'false',
@@ -145,6 +166,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 //Update the room already reserved_______________________________________________________
                 rooms_column.updateOne({ _id: room_id }, { $set: {
                     paymentMethod: paymentMethod,
+                    transaction_id: transcation_id,
                     account_id: (token == null ? '': token.email),
                     checkin_date: checkin_date,
                     checkout_date:  checkout_date,
@@ -160,24 +182,28 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                     transaction_date: transaction_date,
                     confirmation_date: transaction_date,
         
+                    guest_member: guest_member,
                     confirmNot: 'true'
                 } }).then(() => {
                     //Send mail to admin______________________________________________________________
                     new inboxes_column({
                         _id: _id,
+                        usermail_id: '',
                         fullname: first_name+" "+last_name,
                         email: email,
                         reserved_email: 'Bot message',
                         numGuest: '',
                         contact_num: '',
-                        message: `The room already have paid by the user. To see the details, check it to "Reservation component".`,
+                        message: `The room already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`,
                         dateArrival: '',
                         timeDate: transaction_date,
                         favorite: false,
                         acceptedNot: 'new',
                         appointmentNot: 'reservation',
                         newNot: true,
-                        folderName: 'inbox'
+                        folderName: 'inbox',
+                        guest_member: '',
+                        transaction_ID: ''
                     }).save().then(() => {
                         res.json({ response: 'success' });
                     });
@@ -222,7 +248,7 @@ function middleware_user(req, res, next){
 
 
 //Get the "admin_user_reservation" data________________________________________________________________
-router.post('/getReservation', middleware_admin, async (req, res) => {
+router.post('/getReservation', middleware_user, async (req, res) => {
     const { skip, limit, radioCondition, searchingNot, searchString } = req.body;
 
     let count = null;
@@ -234,24 +260,37 @@ router.post('/getReservation', middleware_admin, async (req, res) => {
     if(!searchingNot){
         switch(radioCondition){
             case 'all':
-                count = await reservation_column.find({ delete_admin: 'false' }).count();
-                data = await reservation_column.find({ delete_admin: 'false' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
-                message = 'No reservation request right now.';
+                count = await reservation_column.find({ delete_admin: 'false', confirmNot: 'new' }).count();
+                data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'new'  })
+                    .sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                    
+                message = 'No pending reservation request for now.';
             break;
             case 'accepted':
-                count = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}] }).count();
-                data = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}] }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                count = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true'}] }).count();
+                data = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true'}] })
+                    .sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+
                 message = 'No accepted reservation ever recorded.';
             break;
             case 'declined':
                 count = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false' }).count();
-                data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false' })
+                    .sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+
                 message = 'No declined reservation ever recorded.';
+            break;
+            case 'canceled':
+                count = await reservation_column.find({ delete_admin: 'false', confirmNot: 'true false' }).count();
+                data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'true false' })
+                    .sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                
+                message = 'No canceled reservation ever recorded.';
             break;
             case 'trash':
                 count = await reservation_column.find({ delete_admin: 'tempoDelete' }).count();
                 data = await reservation_column.find({ delete_admin: 'tempoDelete' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
-                message = 'No delete reservation ever recorded.';
+                message = 'No deleted reservation ever recorded.';
             break;
         }
     }
@@ -260,18 +299,22 @@ router.post('/getReservation', middleware_admin, async (req, res) => {
     if(searchingNot){
         switch(radioCondition){
             case 'all':
-                count = await reservation_column.find({ delete_admin: 'false', $text: { $search: searchString  } }).count();
-                data = await reservation_column.find({ delete_admin: 'false', $text: { $search: searchString  }}).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+                count = await reservation_column.find({ delete_admin: 'false', confirmNot: 'new' , $text: { $search: searchString  } }).count();
+                data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'new', $text: { $search: searchString  }}).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
             break;
             case 'accepted':
-                count = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}], 
+                count = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true'}], 
                     $text: { $search: searchString  } }).count();
-                data = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true false'}, {confirmNot: 'true'}], 
+                data = await reservation_column.find({ delete_admin: 'false', $or: [{confirmNot: 'true'}], 
                     $text: { $search: searchString  } }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
             break;
             case 'declined':
                 count = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false', $text: { $search: searchString  } }).count();
                 data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'false', $text: { $search: searchString  } }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+            break;
+            case 'canceled':
+                count = await reservation_column.find({ delete_admin: 'false', confirmNot: 'true false', $text: { $search: searchString  } }).count();
+                data = await reservation_column.find({ delete_admin: 'false', confirmNot: 'true false', $text: { $search: searchString  } }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
             break;
             case 'trash':
                 count = await reservation_column.find({ delete_admin: 'tempoDelete', $text: { $search: searchString  } }).count();
@@ -291,10 +334,13 @@ router.post('/getReservation', middleware_admin, async (req, res) => {
 //Accept and decline reservation request______________________________________________________________
 router.post('/A-D_Request', middleware_admin, async (req, res) => {
     const { id, room_id, email_id, confirmation_date, condition } = req.body;
-    
+
+    let data_admin = await data_reg.findOne({ email: req.token.email });
+
+    const data = await reservation_column.findOne({ _id: id, room_id: room_id, email_id: email_id });
+
     if(condition){
         const checking = await rooms_column.findOne({ _id: room_id});
-        const data = await reservation_column.findOne({ _id: id, room_id: room_id, email_id: email_id });
         if(checking.confirmNot === 'false' && checking.delete_room === 'false'){
             reservation_column.updateOne({ _id: id, room_id: room_id, email_id: email_id }, { $set: {
                 confirmation_date: confirmation_date,
@@ -302,6 +348,8 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
             } }).then(() => {
                 rooms_column.updateOne({ _id: room_id }, { $set: {
                     paymentMethod: data.paymentMethod,
+                    transaction_id: data.transaction_id,
+
                     account_id: email_id,
                     checkin_date: data.checkin_date,
                     checkout_date: data.checkout_date,
@@ -316,11 +364,31 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
                     image_transaction: data.image_transaction,
                     transaction_date: data.transaction_date,
                     confirmation_date: confirmation_date,
-    
+
+                    guest_member: data.guest_member,
                     confirmNot: 'true'
                 } }).then(() => {
+
                     //send email to user that the admin accept the request__________________________________________
-                    res.json({ response: 'success' });
+                    new notification_col({
+                        email: email_id,
+                        name: data_admin.fullName,
+                        message: `Your reservation request has been accepted by the admin. Transaction ID: ${data.transaction_id}`,
+                        date: confirmation_date,
+                        deleteNot: 'new'
+                    }).save().then(async () => {
+                        
+                        let data_check = await notification_click_col.findOne({ email: email_id });
+                        let numbers = data_check.number+1;
+
+                        notification_click_col.updateOne({ email: email_id },
+                            { $set: { number: numbers, clicked: true } }).then(() => {
+
+                            //send mail to the user_______________________________________
+                            res.json({ response: 'success'});
+                        });
+                    }); 
+
                 });
     
             });   
@@ -332,13 +400,133 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
             confirmation_date: confirmation_date,
             confirmNot: 'false'
         } }).then(() => {
+
             //send email to user that the admin decline the request__________________________________________
-            res.json({ response: 'success' });
+            new notification_col({
+                email: email_id,
+                name: data_admin.fullName,
+                message: `Your reservation request has been declined by the admin. Transaction ID: ${data.transaction_id}`,
+                date: confirmation_date,
+                deleteNot: 'new'
+            }).save().then(async () => {
+                
+                let data_check = await notification_click_col.findOne({ email: email_id });
+                let numbers = data_check.number+1;
+
+                notification_click_col.updateOne({ email: email_id },
+                    { $set: { number: numbers, clicked: true } }).then(() => {
+
+                    //send mail to the user_______________________________________
+                    res.json({ response: 'success'});
+                });
+            }); 
+
         });
     }
 
 });
 
+
+//Canceling the reservation request____________________________________________________________
+router.post('/cancelReservation', middleware_user, async (req, res) => {
+    const { id, email_id, email, room_id, date, userNot, first_name, last_name } = req.body;
+    let data_admin = await data_reg.findOne({ email: req.token.email });
+    var _id = mongoose.Types.ObjectId();
+
+    const data = await reservation_column.findOne({ _id: id, room_id: room_id, email_id: email_id });
+
+    reservation_column.updateOne({ _id: id, email_id: email_id, room_id: room_id }, { $set: { confirmNot: 'true false' } }).then(() => {
+
+        if(!userNot){
+            rooms_column.updateOne({ _id: room_id, account_id: email_id }, { $set: {
+
+                paymentMethod: '',
+                account_id: '',
+                checkin_date: '',
+                checkout_date: '',
+                acquired_persons: '',
+                persons_price: '',
+                total_day_price: '',
+                total_price: '',
+                first_name: '',
+                last_name: '',
+                phone_number: '',
+                email: '',
+                image_transaction: [],
+                transaction_date: '',
+                confirmation_date: '',
+        
+                confirmNot: 'false'
+    
+            } }).then(() => {
+                    //Send email and notication to user_________________________________________________________________
+                    new notification_col({
+                        email: email_id,
+                        name: data_admin.fullName,
+                        message: `Your reservation request has been canceled by the admin. Transaction ID: ${data.transaction_id}`,
+                        date: date,
+                        deleteNot: 'new'
+                    }).save().then(async () => {
+                        
+                        let data_check = await notification_click_col.findOne({ email: email_id });
+                        let numbers = data_check.number+1;
+    
+                        notification_click_col.updateOne({ email: email_id },
+                            { $set: { number: numbers, clicked: true } }).then(() => {
+    
+                            //send mail to the user_______________________________________
+                            res.json({ response: 'success'});
+                        });
+                    });
+            });
+        }else{
+            rooms_column.updateOne({ _id: room_id, account_id: email_id }, { $set: {
+
+                paymentMethod: '',
+                account_id: '',
+                checkin_date: '',
+                checkout_date: '',
+                acquired_persons: '',
+                persons_price: '',
+                total_day_price: '',
+                total_price: '',
+                first_name: '',
+                last_name: '',
+                phone_number: '',
+                email: '',
+                image_transaction: [],
+                transaction_date: '',
+                confirmation_date: '',
+        
+                confirmNot: 'false'
+    
+            } }).then(() => {
+                //Send mail to admin______________________________________________________________
+                new inboxes_column({
+                    _id: _id,
+                    usermail_id: '',
+                    fullname: first_name+" "+last_name,
+                    email: email,
+                    reserved_email: 'Bot message',
+                    numGuest: '',
+                    contact_num: '',
+                    message: `The user is cancel the reservation. Transaction ID: ${data.transaction_id}`,
+                    dateArrival: '',
+                    timeDate: date,
+                    favorite: false,
+                    acceptedNot: 'new',
+                    appointmentNot: 'cancel_reserv',
+                    newNot: true,
+                    folderName: 'inbox',
+                    guest_member: '',
+                    transaction_ID: ''
+                }).save().then(() => {
+                    res.json({ response: 'success' });
+                }); 
+            });
+        }
+    });
+});
 
 
 //retrieve Reservation________________________________________________________________
@@ -412,7 +600,14 @@ router.post('/deleteReservation', middleware_user, async (req, res) => {
              });
 
         }else{
-            res.json({ response: 'delete', img_arr: data.image_transaction });
+            
+            if(data.image_transaction.length == 0){
+                reservation_column.deleteOne({ _id: id, room_id: room_id, email_id: email_id }).then(() => {
+                    res.json({ response: 'delete', img_arr: []});
+                });
+            }else{
+                res.json({ response: 'delete', img_arr: data.image_transaction });
+            }
         }
     }
 
@@ -428,40 +623,6 @@ router.post('/deleteReservation_final', (req, res) => {
 });
 
 
-//Canceling the reservation request____________________________________________________________
-router.post('/cancelReservation', middleware_user, async (req, res) => {
-    const { id, email_id, room_id } = req.body;
-    reservation_column.updateOne({ _id: id, email_id: email_id, room_id: room_id }, { $set: { confirmNot: 'true false' } }).then(() => {
-        rooms_column.updateOne({ _id: room_id, account_id: email_id }, { $set: {
-
-            paymentMethod: '',
-            account_id: '',
-            checkin_date: '',
-            checkout_date: '',
-            acquired_persons: '',
-            persons_price: '',
-            total_day_price: '',
-            total_price: '',
-            first_name: '',
-            last_name: '',
-            phone_number: '',
-            email: '',
-            image_transaction: [],
-            transaction_date: '',
-            confirmation_date: '',
-    
-            confirmNot: 'false'
-
-        } }).then(() => {
-
-            //Send email and notication to user_________________________________________________________________
-            res.json({ response: 'success' });
-
-        });
-    });
-});
-
-
 
 
 
@@ -471,7 +632,7 @@ router.post('/cancelReservation', middleware_user, async (req, res) => {
 
 //TEMPORARY________________________________________________________________________
 router.get('/temporary', (req, res) => {
-    rooms_column.updateOne({ _id: "630f47884480b80261a68636" }, { $set: {
+    rooms_column.updateOne({ _id: "6336f34f6cf85bd07368da9c" }, { $set: {
         paymentMethod: "",
         account_id: "",
         checkin_date: "",
@@ -497,10 +658,10 @@ router.get('/temporary', (req, res) => {
 
 
 router.get('/asdasd', (req, res) => {
-    reservation_column.updateOne({ _id: "631978942d5e311118a8aa29", room_id: "630f47884480b80261a68636", email_id: "royvelarde0910@gmail.com" }, 
+    reservation_column.updateOne({ _id: "6326d7d96cc926c55887003f", room_id: "6328213725ead403fd2ab39f", email_id: "kylevelarde374@gmail.com" }, 
     { $set: { 
-        image_transaction: [["https://res.cloudinary.com/dutfzeatp/image/upload/v1662199109/andrew-haimerl-andrewnef-ZGKu75Ewnwo-unsplash_ggkklp.jpg",
-                            "andrew-haimerl-andrewnef-ZGKu75Ewnwo-unsplash_ggkklp"]]
+        image_transaction: [["https://res.cloudinary.com/dutfzeatp/image/upload/v1663492751/andrew-haimerl-andrewnef-ZGKu75Ewnwo-unsplash_efg1ll.jpg",
+                            "andrew-haimerl-andrewnef-ZGKu75Ewnwo-unsplash_efg1ll"]]
      } }).then(() => {
         res.json({ response: 'success' });
     });

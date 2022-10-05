@@ -1,7 +1,7 @@
 .header{
     background:url('/assets/image/463342.png') no-repeat center bottom fixed;
     background-size:cover;
-    min-height:550px;
+    min-height:650px;
     padding:0px;
     display: flex;
     align-items: flex-end;
@@ -22,12 +22,27 @@
 }
 
 .titleinfo{
-    width:40%;
     font-family: inter_medium;
     font-size:20px;
     color:#DAD6D6;
     text-align: center;
+    margin:0px 0px 10px 0px;
+}
+
+.paMakeReservation{
     margin:0px;
+    font-family: inria_serif_bold;
+    font-size:30px;
+    color:gold;
+    margin:0px 0px 10px 0px;
+    text-align: center;
+}
+
+.reservationDiv{
+    max-width: 1020px;
+    background:white;
+    border-radius:10px;
+    padding:20px;
 }
 
 .roomstxt{
@@ -113,4 +128,41 @@
     background:#FFD700;
     border:none;
     color:black;
+}
+
+.divMakeReservation{
+    max-width: 200px;
+    padding:10px 10px 10px 10px;
+    background:#EFF1F5;
+    margin-right:10px;
+    position: relative;
+}
+
+.btnReserve{
+    width:100%;
+    height:100%;
+    border-radius: 10px;
+    background:gold;
+    color:black;
+    border:none;
+    font-family: inter_semibold;
+    font-size:15px;
+}
+
+.selectS{
+    width:100%;
+    background: none;
+    border:none;
+    padding:10px 10px 10px 0px;
+}
+
+.dates{
+    width:100%;
+    height:100%;
+    padding:0%;
+    margin: 0%;
+    border: none;
+    opacity: 0;
+    position: absolute;
+    left:0%;
 }

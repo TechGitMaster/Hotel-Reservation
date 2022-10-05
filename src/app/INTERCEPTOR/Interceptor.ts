@@ -17,8 +17,10 @@ export class Interceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
     req = req.clone({
-        setHeaders: { 'Accept': 'application/json' ,
-         'Authorization': `Bearer ${this.cookieService.get('token')}` },
+        setHeaders: { 
+          'Accept': 'application/json' ,
+          'Authorization': `Bearer ${this.cookieService.get('token')}`
+        },
         withCredentials: true
     });
 

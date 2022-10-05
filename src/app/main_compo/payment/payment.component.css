@@ -1,0 +1,629 @@
+.headerPayment{
+    max-width:1230px;
+    min-height:100px;
+    padding:10px 0px 10px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fixedDiv{
+    width:100%;
+    height:100vh;
+    background:rgba(0, 0, 0, 0.245);
+    z-index:5;
+    overflow-y: scroll;
+    position:fixed;
+}
+
+.divProgress{
+    width:350px;
+    min-height:240px;
+    padding:20px;
+    background:rgb(255, 255, 255);
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
+    display: grid;
+    place-items:center;
+}
+
+.numberProgress{
+    width:100%;
+    display: grid;
+    place-items: center;
+}
+
+.progressStart{
+    position: relative;
+    height: 125px;
+    max-width: 125px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    border-left-color: #5cb85c;
+    animation: rotate 0.9s linear infinite;
+    display: grid;
+    place-items: center;
+}
+
+.progressStop{
+    position: relative;
+    height: 125px;
+    max-width: 125px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    border-left-color: #5cb85c;
+    animation: ends 0.8s linear;
+    -webkit-animation-fill-mode: forwards; /* Chrome 16+, Safari 4+ */
+    -moz-animation-fill-mode: forwards;    /* FF 5+ */
+    -o-animation-fill-mode: forwards;      /* Not implemented yet */
+    -ms-animation-fill-mode: forwards;     /* IE 10+ */
+    animation-fill-mode: forwards;         /* When the spec is finished */
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+@keyframes ends{
+    50%{
+        border-left-color: #e89726;
+        border-top-color: #e89726;
+    }
+    75%{
+        border-left-color: #e89726;
+        border-top-color: #e89726;
+        border-right-color: #e89726;
+    }
+    100%{
+        border-top-color: #e89726;
+        border-left-color: #e89726;
+        border-bottom-color: #e89726;
+        border-right-color: #e89726;
+    }
+}
+
+@keyframes rotate {
+    50%{
+      border-left-color: #9b59b6;
+    }
+    75%{
+      border-left-color: #e67e22;
+    }
+    100%{
+      transform: rotate(360deg);
+    }
+}
+
+.checkDiv{
+    height: 100%;
+    background: white;
+}
+
+.check-icon:after{
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 28px;
+    transform: scaleX(-1) rotate(135deg);
+    height: 56px;
+    width: 28px;
+    border-top: 5px solid #5cb85c;
+    border-right: 5px solid #5cb85c;
+    transform-origin: left top;
+    animation: check-icon 0.8s ease;
+}
+
+@keyframes check-icon {
+    0%{
+      height: 0;
+      width: 0;
+      opacity: 1;
+    }
+    20%{
+      height: 0;
+      width: 28px;
+      opacity: 1;
+    }
+    40%{
+      height: 56px;
+      width: 28px;
+      opacity: 1;
+    }
+    100%{
+      height: 56px;
+      width: 28px;
+      opacity: 1;
+    }
+}
+
+.paMessLoading{
+    font-family: inter_regular;
+    font-size:14px;
+    text-align: center;
+    margin:0%;
+}
+
+.btnfinishUpload{
+    background:#FFD700;
+    border-radius:10px;
+    font-family: inter_medium;
+    font-size:14px;
+    width:100px;
+    color:black;
+    border:none;
+    margin-top:10px;
+}
+
+.containerloginSignup{
+    height:100vh;
+    background:rgba(0, 0, 0, 0.5);
+    z-index:3;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+}
+
+.divSuccesss{
+    max-width:400px;
+    background:white;
+    border-radius:10px;
+    padding:30px;
+}
+
+.paSuccess{
+    margin-top:-5px;
+    font-family: inter_bold;
+    font-size:20px;
+    text-align: center;
+    margin-bottom:20px;
+    color:#0063A8;
+}
+
+.successBttn{
+    width:100%;
+    border-radius:20px;
+    font-size:17px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+}
+
+
+.paPaymentSect{
+    font-family: inria_serif_bold;
+    font-size:32px;
+    color:white;
+}
+
+.headerFooter{
+    padding:0px;
+    max-width:1230px;
+    padding:10px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.stepNumber{
+    width:30px;
+    border-radius:5px;
+    font-family: inter_regular;
+    font-size:15px;
+    display: grid;
+    place-items: center;
+}
+
+.paBack{
+    font-family: inter_medium;
+    font-size:15px;
+    margin-left:6px;
+}
+
+.details_payment{
+    min-height: 100px;
+    background:white;
+    border-radius:10px;
+    border:2px solid #F1F1F1;
+    padding:30px 20px 30px 20px;
+}
+
+.paReservationS{
+    font-family: inter_medium;
+    font-size:20px;
+    margin: 0px 0px 15px 0px;
+}
+
+.paTitleSum{
+    font-family: inter_semibold;
+    font-size:14px;
+    margin:0%;
+}
+
+.dateCheckInOut{
+    margin:10px 0px 10px 0px;
+    font-size:14px;
+}
+
+.details_inPay{
+    background:#F2F3F6;
+    border-radius:5px;
+    border: 1px solid rgb(247, 178, 178);
+    padding:7px 10px 7px 10px;
+}
+
+.paDPs{
+    font-family: inter_regular;
+    font-size: 15px;
+    margin:0px 0px 10px 0px;
+}
+
+.total_inPay{
+    background:#EAE7DF;
+    border-radius:5px;
+    padding:7px 10px 7px 10px;
+    margin-top:10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.labels{
+    font-family: inter_bold;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.paEnterD{
+    font-family: inter_medium;
+    font-size:23px;
+    margin:0px 0px 10px 0px;
+}
+
+.forminput{
+    height:35px;
+    border-radius: 5px;
+    padding:10px;
+    font-size:14px;
+    font-family: inter_regular;
+}
+
+.forminput_details{
+    height:35px;
+    border-radius: 5px;
+    padding:10px;
+    font-size:14px;
+    font-family: inter_regular;
+}
+
+.paAllGuest{
+    font-family: inter_medium;
+    font-size:14px;
+}
+
+.parentGD{
+    margin-top:15px;
+    padding:15px 15px 15px 15px;
+    background:#F2F3F6;
+    border-radius:10px;
+}
+
+.patiGuest{
+    font-family: inter_bold;
+    font-size:14px;
+    margin:0px 0px 3px 0px;
+}
+
+.inputDetails{
+    width:30%;
+    padding-right:10px;
+}
+
+.img_xDetails{
+    height:15px;
+    cursor: pointer;
+    opacity: 0.9;
+    border-radius: 2px;
+}
+
+.paAddGuest{
+    font-family: inter_regular;
+    font-size:13px;
+    color:blue;
+    cursor: pointer;
+}
+
+.paMethodPay{
+    font-family: inter_medium;
+    font-size:20px;
+    margin-left:5px;
+}
+
+.gcashPaypal_divParent{
+    border-radius:5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.255);
+    padding:15px;
+}
+
+.paPeyments{
+    font-family: inter_regular;
+    margin-left:8px;
+}
+
+.paTitlehM{
+    font-family: inter_medium;
+    font-size:17px;
+    margin:0%;
+}
+
+.btn_BTS{
+    font-family: inter_medium;
+    font-size:16px;
+    border-radius:10px;
+    padding:15px;
+    background:gold;
+    color:black;
+    border:none;
+}
+
+.imageAddDiv{
+    padding:15px;
+    border: 3px solid #F1F1F1;
+    margin-bottom:10px;
+}
+
+.paImageS{
+    font-family: inter_semibold;
+    font-size:18px;
+}
+
+.paLMes{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0%;
+}
+
+.divForAdded{
+    max-height:300px;
+    overflow: auto;
+}
+
+.addImageR{
+    width:136px;
+    height:120px;
+    border-radius:5px;
+    overflow:hidden;
+    display: inline-block;
+    margin-right:10px;
+    margin-top:5px;
+    background:black;
+}
+
+.addChildIR{
+    display: flex;
+    justify-content: center;
+    height:100%;
+    position: relative;
+}
+
+.paUpload{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0px 0px 10px 0px;
+    text-align: center;
+}
+
+.disImageDelete{
+    display: none;
+}
+
+.addImageR:hover > .addChildIR > .disImageDelete{
+    display: block;
+}
+
+.deleteImage{
+    height:100%;
+    width:100%;
+    background:rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;left:0px;
+}
+
+.imgD{
+    margin-right:10px;
+    border-radius:10px;
+    padding:5px;
+    background:#18e318;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.deleteD{
+    border-radius:10px;
+    padding:5px;
+    background:#DC3545;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.paRInfoT{
+    font-family:inter_semibold;
+    font-size:19px;
+    margin:20px 0px 0px 0px;
+}
+
+.labels_T{
+    font-family: inter_medium;
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.textareaGuestI{
+    font-family: inter_regular;
+    font-size:15px;
+    border:none;
+    resize: none;
+    width:100%;
+    color:black;
+}
+
+.forminputs{
+    height:35px;
+    border-radius: 10px;
+    padding:10px;
+    font-size:15px;
+    font-family: inter_regular;
+    background:rgb(246, 246, 246);
+}
+
+.divDetails{
+    min-height:100px;
+    background:#493D3D;
+    border-radius:10px;
+    padding:20px;
+}
+
+.divCheckInOut{
+    max-width: 170px;
+    border-radius:10px;
+    border:1px solid #FFD700;
+    padding:20px;
+}
+
+.paCheckINOut{
+    margin:0%;
+    text-align: center;
+    font-size:14px;
+}
+
+.paNumbCheckInOut{
+    margin:0%;
+    text-align: center;
+    font-family: inter_regular;
+    font-size:30px;
+    color:white;
+}
+
+.pdetails{
+    padding:10px;
+    font-family: inter_semibold;
+    font-size:17px;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
+.paDetailsMiddle{
+    display: flex;
+    justify-content: space-between;
+    color:white;
+    font-family: inter_regular;
+    padding:5px 10px 2px 10px;
+    font-size:14px;
+}
+
+.divForAdded{
+    max-height:300px;
+    overflow: auto;
+}
+
+.addImageR{
+    width:126px;
+    height:110px;
+    border-radius:5px;
+    overflow:hidden;
+    display: inline-block;
+    margin-right:10px;
+    margin-top:5px;
+    background:black;
+}
+
+.paUpload{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0px 0px 10px 0px;
+    text-align: center;
+}
+
+.disImageDelete{
+    display: none;
+}
+
+.addImageR:hover > .addChildIR > .disImageDelete{
+    display: block;
+}
+
+.addChildIR{
+    display: flex;
+    justify-content: center;
+    height:100%;
+    position: relative;
+}
+
+.deleteImage{
+    height:100%;
+    width:100%;
+    background:rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;left:0px;
+}
+
+.imgD{
+    margin-right:10px;
+    border-radius:10px;
+    padding:5px;
+    background:#18e318;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.deleteD{
+    border-radius:10px;
+    padding:5px;
+    background:#DC3545;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
+}
+
+.paNote{
+    font-family: inter_semibold;
+    font-size:18px;
+    margin-bottom:0px;
+}
+
+.paReD{
+    font-family: inter_semibold;
+    font-size:18px;
+    margin-bottom:5px;
+}
+
+.imageAddDiv{
+    padding:15px;
+    border: 3px solid #F1F1F1;
+    margin-bottom:10px;
+}
+
+.paImageS{
+    font-family: inter_semibold;
+    font-size:18px;
+}

@@ -18,7 +18,7 @@ export class UserComponent implements OnInit {
   condition_menu: boolean = false;
   arrHandle: Array<any> = new Array<any>();
   conditionFixDiv: boolean = false;
-  
+  condition_component: number = 1;
 
   formGroup_newPassword!: FormGroup;
   errArrPassword!: Array<Array<any>>;
@@ -47,6 +47,12 @@ export class UserComponent implements OnInit {
     });
   }
 
+  //Back emit call.. Yes or No_______________________________________________
+  yesNO(condition: boolean): void{
+    this.conditionFixDiv = false;
+    this.service.emitCallBack(new Array<any>(condition));
+  }
+
 
 
   //Burger navigation______________________________________________________
@@ -62,7 +68,6 @@ export class UserComponent implements OnInit {
 
 
   //Navigation click bttns_________________________________________________
-  condition_component: number = 0;
   navigation(numb: number): void{
     this.condition_component = numb;
   }

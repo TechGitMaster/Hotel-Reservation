@@ -115,8 +115,8 @@
                                 <p *ngIf="object_roomSelected.image_transaction.length == 0" class="paNoone" style="margin:0%;">No provided image.</p>
                                 <!-- __IMAGES CREATE__ -->
                                 <div *ngFor="let url of object_roomSelected.image_transaction; index as indexes"  class="addImageR">
-                                    <div class="addImageR">
-                                        <img [src]="url[0]" class="img-fluid" style="width:100%;height:100%;" />
+                                    <div class="addImageRTS">
+                                        <img [src]="url[0]" class="img-fluid" style="height:100%;" />
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +126,19 @@
                         
                         <!-- __INFORMATION OF RESERVATION__ -->
                         <div style="margin-bottom:15px;">
-                            <p class="paRInfoT">Information of reservation:</p>
+
+                            <div style="margin:10px 0px 5px 0px;">
+                                <div>
+                                    <label class="labels" style="font-weight: bold;font-size: 16px;">Transaction ID:</label>
+                                    <span style="margin-left:5px;font-size: 17px;">{{object_roomSelected.transaction_id}}</span>
+                                </div>
+                                <div>
+                                    <label class="labels" style="font-weight: bold;font-size: 16px;">Payment Method:</label>
+                                    <span style="margin-left:5px;font-size: 17px;">{{(object_roomSelected.paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</span>
+                                </div>
+                            </div>
+
+                            <p class="paRInfoT">Information:</p>
 
                             <div class="row" style="padding:0%;margin-top:5px;">
 
@@ -151,9 +163,26 @@
                                                 <label class="labels">Contact number:</label>
                                                 <input type="text" [value]="object_roomSelected.phone_number" class="form-control forminputs" />
                                             </div>
-                                            <div class="col-12" style="margin-top:10px;">
-                                                <label class="labels" style="font-weight: bold;">Payment Method:</label>
-                                                <span style="margin-left:5px;">{{object_roomSelected.paymentMethod}}</span>
+                                            <div class="col-12" style="margin-top:15px;">
+                                                <p class="paHeaderapp" style="font-family: inter_bold;">Guest info:</p>
+                                                <span *ngIf="object_roomSelected.guest_member.split('\n')[0].length == 0" >No guest info filled up.</span>
+
+                                                <table *ngIf="object_roomSelected.guest_member.split('\n')[0].length != 0" class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Full name</th>
+                                                        <th scope="col">Contact-number</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr *ngFor="let guestInfo of object_roomSelected.guest_member.split('\n'); index as indexes">
+                                                        <th scope="row">{{(indexes+1)}}</th>
+                                                        <td>{{guestInfo.split(',')[0]}}</td>
+                                                        <td>{{guestInfo.split(',')[1]}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>  
@@ -269,7 +298,7 @@
 
                         <!-- __Added Image__ -->
                         <div *ngFor="let url of arr_image_tempo; index as indexes"  class="addImageR">
-                            <div [ngClass]="['addImageR']">
+                            <div class="addImageRTS">
                                 <!-- delete image -->
                                 <div *ngIf="condition_to_image_click !== 'see'" class="disImageDelete">
                                     <div class="deleteImage">
@@ -281,7 +310,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <img [src]="url" class="img-fluid" style="width:100%;height:100%;" />
+                                <img [src]="url" class="img-fluid" style="height:100%;" />
                             </div>
                         </div>
 
@@ -291,7 +320,7 @@
 
 
 
-                <!-- __ADD INFORMATION IMAGE__ -->
+                <!-- __ADD INFORMATION__ -->
                 <div style="margin-bottom:15px;">
                     <p class="paRInfoT">Information of room:</p>
                     <span class="paMeInfoT" style="margin:0px 0px 15px 0px;">Type the correct information of the room.</span>

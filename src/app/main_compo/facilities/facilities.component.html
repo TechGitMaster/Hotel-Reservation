@@ -1,1 +1,48 @@
-<p>facilities works!</p>
+<div class="container-fluid" style="min-height:800px;background: #493B3B;">
+    
+
+    <div class="container divFacilities">
+        <div class="row">
+            <div class="col-6">
+                <p class="paFacilities">Facilities</p>
+                <span class="paInfoF">Taking this last opportunity to buy your dream room on Manhattan Heights Hotel. Also you can actually enjoy the facilities of the Hotel. The Gym, Playground and Swimming pool and many more.</span>
+
+                <div class="gallery">
+                    <div *ngFor="let image of Image_Facilities" [style.gridRow]="image.row" [style.gridCol]="image.col" class="image">
+                        <img [src]="image.url" class="imgs"  />
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="col-6 colGalFacilities">
+                <div class="row" style="width: 100%;">
+                    <div lcass="col-12">
+                        <p class="paFacilitiesG">Gym</p>
+
+                        <div class="divScroll">
+                            <img *ngFor="let image of Image_Gym" [src]="image" class="img-fuid img_Gym" />
+                        </div>
+                    </div>
+
+                    <div lcass="col-12" style="margin-top:15px;">
+                        <p class="paFacilitiesG">Playground</p>
+
+                        <div class="divScroll">
+                            <img *ngFor="let image of Image_Ground" [src]="image" class="img-fuid img_Gym" />
+                        </div>
+                    </div>
+
+                    <div lcass="col-12" style="margin-top:15px;">
+                        <p class="paFacilitiesG">Swimming Pool</p>
+
+                        <div class="divScroll">
+                            <img *ngFor="let image of Image_Pool" [src]="image" class="img-fuid img_Gym" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

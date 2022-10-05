@@ -15,7 +15,7 @@
                       <div class="form-check" style="margin-right:10px;">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="clickRadio('all')" checked>
                             <label class="form-check-label" for="flexRadioDefault1">
-                              All
+                              Pending
                             </label>
                         </div>
                         <div class="form-check" style="margin-right:10px;">
@@ -29,6 +29,12 @@
                             <label class="form-check-label" for="flexRadioDefault3">
                               Declined
                             </label>
+                        </div>
+                        <div class="form-check" style="margin-right:10px;">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('canceled')">
+                          <label class="form-check-label" for="flexRadioDefault3">
+                            Canceled
+                          </label>
                         </div>
                         <div class="form-check" style="margin-right:10px;">
                           <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('trash')">
@@ -54,8 +60,7 @@
                         <th scope="col">Image</th>
                         <th scope="col">Room name</th>
                         <th scope="col">Full name</th>
-                        <th scope="col">check-in</th>
-                        <th scope="col">check-out</th>
+                        <th scope="col">Transaction ID</th>
                         <th scope="col">Transaction date</th>
                         <th scope="col">Pay method</th>
                         <th scope="col">Action</th>
@@ -79,15 +84,14 @@
                         </th>
                         <td>{{data.name_room}}</td>
                         <td>{{ data.first_name }} {{ data.last_name }}</td>
-                        <td>{{ data.checkin_date }}</td>
-                        <td>{{ data.checkout_date }}</td>
+                        <td>{{ data.transaction_id }}</td>
                         <td>{{ data.transaction_date }}</td>
-                        <td>{{ data.paymentMethod }}</td>
+                        <td>{{ (data.paymentMethod === 'payment1' ? 'Gcash':'Paypal') }}</td>
                         <td>
                             <div style="display: flex;justify-content: center;">
                                 <div style="display: flex;" *ngIf="data.confirmNot === 'new' && str_radioCondition === 'all'">
-                                  <button class="btn btn-success btnActionNew" style="width:50%;" (click)="accept_Decline(indexes, true)" >Accept</button>
-                                  <button class="btn btn-danger btnActionNew" style="width:50%;" (click)="accept_Decline(indexes, false)">Decline</button>
+                                  <button class="btn btn-success btnNew" style="width:50%;" (click)="accept_Decline(indexes, true)" >Accept</button>
+                                  <button class="btn btn-danger btnNew" style="width:50%;" (click)="accept_Decline(indexes, false)">Decline</button>
                                 </div>
 
                                 <div style="display: flex;" *ngIf="data.confirmNot === 'new' && str_radioCondition === 'trash'">
@@ -95,18 +99,6 @@
                                   <button class="btn btn-danger btnActionNew" style="width:50%;" disabled>Decline</button>
                                 </div>
 
-                                <button *ngIf="(data.confirmNot === 'true' || data.confirmNot === 'true false') && (str_radioCondition === 'all' || str_radioCondition === 'trash')" 
-                                    class="btn btn-success btnActionNew" style="width:60%;">Accepted</button>
-
-                                <button *ngIf="data.confirmNot === 'true false' && (str_radioCondition === 'all' || str_radioCondition === 'trash')" 
-                                    class="btn btn-primary btnActionNew" style="width:60%;">Canceled</button>
-
-                                <button *ngIf="data.confirmNot === 'false' && (str_radioCondition === 'all' || str_radioCondition === 'trash')" 
-                                    class="btn btn-danger btnActionNew" style="width:60%;">Declined</button>
-
-
-                                <button *ngIf="data.confirmNot === 'true false' && (str_radioCondition === 'accepted')"
-                                    class="btn btn-primary btnActionNew" style="width:60%;">Canceled</button>  
                                 
                                 <button *ngIf="str_radioCondition !== 'trash'" class="btn btn-primary btnAction" (click)="info_tempo(indexes)" 
                                 [ngStyle]="{'width':str_radioCondition === 'trash' ? '32%':'90%'}">Info</button>   

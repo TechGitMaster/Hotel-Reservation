@@ -25,11 +25,45 @@
                             </div>
     
                             <div *ngIf="condition_login" style="display: flex;align-items: center;position:relative;left:-20px;">
-                                <div class="iconNoti">
+                                <div class="iconNoti" (click)="notiClick()">
                                     <img [src]="notification_icon" class="img-fluid" />
+
+                                    <p *ngIf="notifi_numberCon" class="paPositionNumb_noti">{{handle_notifi_numb}}</p>
                                 </div>
                                 <div>
                                     <p class="email">{{handle_fullname}}</p>
+                                </div>
+
+                                <!--_________NOTIFICATION____________-->
+                                <div *ngIf="clicked_noti" class="div_notiParent">
+                                    <div *ngIf="arr_notification.length == 0" style="height:350px;display: grid;place-items: center;">
+                                        <p>{{loading_message}}</p>
+                                    </div>
+
+                                    <div *ngFor="let data of arr_notification; index as indexes" class="divNotiParent">
+                
+                                        <!--___HEADER NOTIFI___-->
+                                        <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">    
+                                            <!--____New and Name_____-->
+                                            <div style="display: flex;align-items: center;">
+                                                <div *ngIf="checking(true, data.date) === 'new'" class="new">new</div>
+                                                <span class="nameHeader" style="font-size:16px;">{{ data.name }}</span>
+                                            </div>
+                        
+                                            <!--____X button_____-->
+                                            <div class="nameHeader" style="cursor: pointer;font-size:19px;" (click)="deletes(indexes)">X</div>
+                                        </div>
+                        
+                                        <!--_____MIDDLE MESSAGE____-->
+                                        <p class="paMessage">{{data.message}}</p>
+                        
+                                        <!--_____FOOTER DATE_____-->
+                                        <span class="paDate">{{checking(false, data.date)}}</span>
+                                    </div>
+
+                                    <div *ngIf="countAll_noti >= 3" style="padding:20px;display: flex;justify-content: center;">
+                                        <p class="seeAllNotification" (click)="funcClickable('user-account')">See all notifications</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -60,13 +94,13 @@
                         <div class="navclickable" (click)="funcClickable('home')"><span style="cursor: pointer;">Home</span></div>
                     </div>
                     <div class="divborder1">
-                        <div class="navclickable" (click)="funcClickable('Facilities')"><span style="cursor: pointer;">Facilities</span></div>
+                        <div class="navclickable" (click)="funcClickable('facilities')"><span style="cursor: pointer;">Facilities</span></div>
                     </div>
                     <div class="divborder1">
                         <div class="navclickable" (click)="funcClickable('rooms')"><span style="cursor: pointer;">Rooms</span></div>
                     </div>
                     <div class="divborder1">
-                        <div class="navclickable" (click)="funcClickable('About')"><span style="cursor: pointer;">About</span></div>
+                        <div class="navclickable" (click)="funcClickable('about')"><span style="cursor: pointer;">About</span></div>
                     </div>
                     <div class="divborder1">
                         <div class="navclickable" (click)="funcClickable('contact-us')"><span style="cursor: pointer;">Contact Us</span></div>
@@ -338,7 +372,7 @@
 
 
 <!--______________________Router outlets______________________-->
-<router-outlet></router-outlet>
+<router-outlet *ngIf="condition_router_outlet"></router-outlet>
 
 
 <!--______________________APPOINTMENT PAGE______________________-->
@@ -382,9 +416,82 @@
     
                             <div class="col-12 divformrow">
                                 <label class="labels">Number of Guest</label>
-                                <input type="text" formControlName="numberguest" class="form-control guestNum forminput" (input)="funcOnlyNumber(false)"/>
+                                <select (change)="numGuest_func()"  class="form-select formselectAppointment" formControlName="numberguest">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
                                 <div *ngIf="errAppointment[2][1]">
                                     <span class="paError">{{errAppointment[2][0]}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12 divformrow">
+                                <!--_________CHECK BOX__________-->
+                                <div>
+                                    <div>
+                                        <input class="form-check-input checkGuest" type="checkbox" value="" id="flexCheckChecked" (click)="GDetails_check()"
+                                            style="margin-right:8px;position: relative;top:1px;">
+
+                                        <label class="form-check-label paAllGuest" for="flexCheckChecked">
+                                            I want to add all guest names.
+                                        </label>
+                                    </div>
+
+                                    <!--___GUEST DETAILS___-->
+                                    <div *ngIf="countD != 1" class="parentGD">
+                                        <div>
+                                            <div style="width:100%;padding:0px 10px 0px 10px;">
+                                                <!--{{data_room.nameRoom}}-->
+                                                <p class="patiGuest">Add the Inforamtion of guests</p>
+
+                                                <!--____TABLE_____-->
+                                                <div style="width:100%;">
+                                                    <!--___HEADER___-->
+                                                    <div style="display: flex;">
+                                                        <div style="width:30%;font-weight: bold;font-size:13px">First name</div>
+                                                        <div style="width:30%;font-weight: bold;font-size:13px">Last name</div>
+                                                        <div style="width:30%;font-weight: bold;font-size:13px;">Contact number</div>
+                                                        <div style="width: 10%;"></div>
+                                                    </div>
+
+                                                    <!--___LOOPING INFO_____-->
+                                                    <div class="INFO_dtails">
+                                                        <div class="div_dtails" style="display: flex;margin-top:5px;" *ngFor="let cs of arr_details; index as indexes">
+                                                            <div class="inputDetails">
+                                                                <input type="text" (input)="updateArr_fill(0, indexes, $event)" class="form-control forminput_details" />
+                                                            </div>
+                                                            <div class="inputDetails">
+                                                                <input type="text" (input)="updateArr_fill(1, indexes, $event)" class="form-control forminput_details" />
+                                                            </div>
+                                                            <div class="inputDetails">
+                                                                <input type="text" (input)="updateArr_fill(2, indexes, $event)" 
+                                                                    [ngClass]="['form-control', 'forminput_details', 'forminput_details_'+indexes]" />
+                                                            </div>
+                                                            <div style="width:10%;">
+                                                                <img  *ngIf="(countD-2) == indexes" src="/assets/icon/x_details.png" class="img-fluid img_xDetails" (click)="ex_GDetails(indexes)" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--____FOOTER ADD MORE GUEST____-->
+                                                    <div *ngIf="countD < countGuest">
+                                                        <span class="paAddGuest" (click)="addGuest()">+ add more guest</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="errAppointment[5][1]">
+                                        <span class="paError">{{errAppointment[5][0]}}</span>
+                                    </div>
                                 </div>
                             </div>
     

@@ -6,6 +6,7 @@ import { ReservationComponent } from '../ad-compo/reservation/reservation.compon
 import { RoomsComponent } from '../ad-compo/rooms/rooms.component';
 import { SchedulesComponent } from '../ad-compo/schedules/schedules.component';
 import { AdminComponent } from '../admin/admin.component';
+import { AppointmentComponent } from '../ad-compo/appointment/appointment.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/ad/admin/inbox-mail', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
     { path: 'schedules', component: SchedulesComponent },
     { path: 'rooms', component: RoomsComponent },
     { path: 'reservations', component: ReservationComponent}, 
+    { path: 'appointments', component: AppointmentComponent },
     { path: 'account', component: AccountComponent }
   ] }
 ];

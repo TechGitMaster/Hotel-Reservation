@@ -240,7 +240,31 @@ export class SchedulesComponent implements OnInit {
     }
   }
   
+  
+  //Get date converted____________________________________________________________________________________________
+  date_converting(): string{
+    let date = new Date();
+
+    //Hours_________________________________________
+    let hours = date.getHours()
+    let converted_hours = (hours < 13 ? hours: (hours-12));
+    let converted_hours2 = ( new String(converted_hours).split('').length == 1 ? `0${converted_hours}`:converted_hours);
+
+    //AM-PM__________________________________________
+    let amPm = (hours < 12 ? 'am':'pm');
+
+    //Minutes___________________________________________
+    let minutes = date.getMinutes();
+    let converted_minutes = (minutes >= 10 ? minutes:`0${minutes}`);
+
+    //month______________________________________________
+    let arr_months = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+
+    return `${converted_hours2}:${converted_minutes} ${amPm},${arr_months[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
+  }
+
   deleleFunc(args: any): void{
+    console.log(args);
     let obs = args.data as any;
     this.service.openCall(new Array<any>("chooseSchedMoveTrash_cancel"));
 
@@ -250,9 +274,14 @@ export class SchedulesComponent implements OnInit {
         if(res[1]){
           this.goForCalendarAppointment = this.goForCalendarAppointment.filter((obj) => { return obj.id !== obs['id'] });
 
-          this.subsDeleteEvent = this.service.cancelTrashEvent(obs['id'], res[2]).subscribe(() => {
+          this.subsDeleteEvent = this.service.cancelTrashEvent(obs['id'], res[2], this.date_converting()).subscribe((ress) => {
             this.subsDeleteEvent.unsubscribe();
+
+            //Emit socket_____________________
+            if(!res[2]) this.service.emit_socket_notification(ress.email);
+
             this.eventSettings = { dataSource: this.goForCalendarAppointment, allowEditing: false, allowAdding: false }; 
+
           },(error) => 
           {
             this.subs.unsubscribe();

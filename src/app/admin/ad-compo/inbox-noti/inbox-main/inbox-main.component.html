@@ -1,76 +1,106 @@
-<div class="container-fluid" style="padding:30px 20px 5px 20px;">
-    <div class="row">
 
-
-        <!--_____________SELECTION COMPONENTS_____________________-->
-        <div class="col-2">            
-
-            <!--__________________FOLDERS__________________-->
-            <div>
-                <p class="pfolders">Folders</p>
-
-                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 0 ? 'backgrondDiv':'']" (click)="funcSelected(0)">
-                    <div class="divIconInboxes">
-                        <img src="/assets/icon/mail_received_admin.png" class="img-fluid" style="height:25px;"  />
-                    </div>
-                    <div style="width:79%;display: flex;align-items: center;">
-                        <span class="sNameCompo">Inbox</span>
-                    </div>
-                </div>
-
-                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 1 ? 'backgrondDiv':'']" (click)="funcSelected(1)">
-                    <div class="divIconInboxes">
-                        <img src="/assets/icon/favo_mail_admin.png" class="img-fluid" style="height:25px;"  />
-                    </div>
-                    <div style="width:79%;display: flex;align-items: center;">
-                        <span class="sNameCompo">Favorites</span>
-                    </div>
-                </div>
-
-                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 2 ? 'backgrondDiv':'']" (click)="funcSelected(2)">
-                    <div class="divIconInboxes">
-                        <img src="/assets/icon/accept_admin.png" class="img-fluid" style="height:25px;"  />
-                    </div>
-                    <div style="width:79%;display: flex;align-items: center;">
-                        <span class="sNameCompo">Accepted appointment</span>
-                    </div>
-                </div>
-
-
-                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 3 ? 'backgrondDiv':'']" (click)="funcSelected(3)">
-                    <div class="divIconInboxes">
-                        <img src="/assets/icon/decline_admin.png" class="img-fluid" style="height:25px;"  />
-                    </div>
-                    <div style="width:79%;display: flex;align-items: center;">
-                        <span class="sNameCompo">Declined appointment</span>
-                    </div>
-                </div>
-
-                <div class="div_clickables_compo" [ngClass]="['div_clickables_compo', num_selectionCondition == 4 ? 'backgrondDiv':'']" (click)="funcSelected(4)">
-                    <div class="divIconInboxes">
-                        <img src="/assets/icon/trash_admin.png" class="img-fluid" style="height:25px;"  />
-                    </div>
-                    <div style="width:79%;display: flex;align-items: center;">
-                        <span class="sNameCompo">Trash</span>
-                    </div>
-                </div>
-            </div>
-
+<div class="container-fluid" style="padding:0px 5px 5px 5px;background:white;min-height:100%;">
+    <div style="padding:15px;min-height:100px;background:#FCFBFB;">
+        <div style="position: relative;top:10px;">
+            <p class="paDashboard">Dashboard</p>
         </div>
 
+        <div class="row">
+            <div class="col-3" style="padding:0px 8px 0px 8px;">
+                <div class="divRowRc">
+                    <p class="paDash">User account</p>
+                    <p class="paDashCount">{{this.arr_dasboard[0]}}</p>
 
-        <!--____________________COMPONENTS APP________________________-->
-        <div class="col-10">
-            <p class="pInbox">{{arr_named[num_selectionCondition]}}</p>
-            <div class="line"></div>
+                    <img src="/assets/icon/Polygon1.png" style="z-index:1;height:40px;position: absolute;right:120px;bottom:5px;" />
+                    <div class="styleDashboard" style="background:#FF005C;"></div>
+                </div>
+            </div>
+            <div class="col-3" style="padding:0px 8px 0px 8px;">
+                <div class="divRowRc">
+                    <p class="paDash">Pending Appointment</p>
+                    <p class="paDashCount">{{this.arr_dasboard[1]}}</p>
 
-            <div>
-                <app-inbox *ngIf="num_selectionCondition == 0"></app-inbox>
-                <app-favorites *ngIf="num_selectionCondition == 1"></app-favorites>
-                <app-accept *ngIf="num_selectionCondition == 2"></app-accept>
-                <app-decline *ngIf="num_selectionCondition == 3"></app-decline>
-                <app-trash *ngIf="num_selectionCondition == 4"></app-trash>
+                    <img src="/assets/icon/Polygon2.png" style="z-index:1;height:40px;position: absolute;right:100px;bottom:35px;" />
+                    <div class="styleDashboard" style="background:#0063A8;"></div>
+                </div>
+            </div>
+            <div class="col-3" style="padding:0px 8px 0px 8px;">
+                <div class="divRowRc">
+                    <p class="paDash">Schedule Today</p>
+                    <p class="paDashCount">{{this.arr_dasboard[2]}}</p>
+
+                    <img src="/assets/icon/Polygon3.png" style="z-index:1;height:35px;position: absolute;right:70px;bottom:50px;" />
+                    <div class="styleDashboard" style="background:#493D3D;"></div>
+                </div>
+            </div>
+            <div class="col-3" style="padding:0px 8px 0px 8px;">
+                <div class="divRowRc">
+                    <p class="paDash">Pending Reservation</p>
+                    <p class="paDashCount">{{this.arr_dasboard[3]}}</p>
+
+                    <img src="/assets/icon/Polygon4.png" style="z-index:1;height:40px;position: absolute;right:20px;bottom:55px;" />
+                    <div class="styleDashboard" style="background:#8DB6C3;"></div>
+                </div>
             </div>
         </div>
     </div>
+
+    
+    <div class="container-fluid" style="margin-top:10px;">
+        <div class="row">
+    
+    
+            <!--_____________SELECTION COMPONENTS_____________________-->
+            <div class="col-2">            
+    
+                <!--__________________FOLDERS__________________-->
+                <div>
+                    <p class="pfolders">Folders</p>
+    
+                    <div [ngClass]="['div_clickables_compo', num_selectionCondition == 0 ? 'backgrondDiv':'']" (click)="funcSelected(0)">
+                        <div class="divIconInboxes">
+                            <img src="/assets/icon/mail_received_admin.png" class="img-fluid" style="height:25px;"  />
+                        </div>
+                        <div style="width:79%;display: flex;align-items: center;">
+                            <span class="sNameCompo">Inbox</span>
+                        </div>
+                    </div>
+    
+                    <div [ngClass]="['div_clickables_compo', num_selectionCondition == 1 ? 'backgrondDiv':'']" (click)="funcSelected(1)">
+                        <div class="divIconInboxes">
+                            <img src="/assets/icon/favo_mail_admin.png" class="img-fluid" style="height:25px;"  />
+                        </div>
+                        <div style="width:79%;display: flex;align-items: center;">
+                            <span class="sNameCompo">Favorites</span>
+                        </div>
+                    </div>
+    
+                    <div class="div_clickables_compo" [ngClass]="['div_clickables_compo', num_selectionCondition == 2 ? 'backgrondDiv':'']" (click)="funcSelected(2)">
+                        <div class="divIconInboxes">
+                            <img src="/assets/icon/trash_admin.png" class="img-fluid" style="height:25px;"  />
+                        </div>
+                        <div style="width:79%;display: flex;align-items: center;">
+                            <span class="sNameCompo">Trash</span>
+                        </div>
+                    </div>
+    
+                    
+                </div>
+    
+            </div>
+    
+    
+            <!--____________________COMPONENTS APP________________________-->
+            <div class="col-10">
+                <p class="pInbox">{{arr_named[num_selectionCondition]}}</p>
+                <div class="line"></div>
+    
+                <div>
+                    <app-inbox *ngIf="num_selectionCondition == 0"></app-inbox>
+                    <app-favorites *ngIf="num_selectionCondition == 1"></app-favorites>
+                    <app-trash *ngIf="num_selectionCondition == 2"></app-trash>
+                </div>
+            </div>
+        </div>
+    </div>    
 </div>

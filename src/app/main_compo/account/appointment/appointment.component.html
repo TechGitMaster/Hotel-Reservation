@@ -1,1 +1,179 @@
-<p>appointment works!</p>
+<div class="container-fluid" style="padding:20px;">
+    <!--____HEADER_____-->
+    <div style="margin-bottom: 20px;">
+        <p class="paAppo">Appointment</p>
+        <span>All your appointment request. Check everything upon your appointment.</span>
+    </div>
+
+    <!--__________Appointment all__________________-->
+    <div *ngIf="!selected_condition">
+
+        <!--___HEADER SELECTION and Arrow_____-->
+        <div style="display: flex;justify-content: space-between;margin-bottom: 15px;">
+
+            <!--__SELECTION__-->
+            <div style="display: flex;">
+                <div class="form-check" style="margin-right:10px;">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="clickRadio('pending')" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Pending
+                    </label>
+                </div>
+                <div class="form-check" style="margin-right:10px;">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="clickRadio('accepted')">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      Accepted
+                    </label>
+                </div>
+                <div class="form-check" style="margin-right:10px;">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('declined')">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                      Declined
+                    </label>
+                </div>
+                <div class="form-check" style="margin-right:10px;">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" (click)="clickRadio('canceled')">
+                  <label class="form-check-label" for="flexRadioDefault4">
+                    Canceled
+                  </label>
+                </div>
+            </div>
+
+            <!--__Arrow left and right__-->
+            <div style="display: flex;align-items: center;">
+
+                <!--___Count of mail____-->
+                <div style="margin-right:20px;">
+                    <span class="pNumbs">{{count_for5}}-5 of {{count}}</span>
+                </div>
+
+
+                <!--___LEFT and RIGHT clicks_____-->
+                <div class="row leftRight">
+                    <div class="col-6 left" (click)="left()">
+                        <span><</span>
+                    </div>
+                    <div class="col-6 right" (click)="right()">
+                        <span>></span>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+
+
+        <!--________CREATE DIV APPOINTMENT______________-->
+        <div>
+
+            <p *ngIf="arr_data.length == 0" style="text-align: center;">
+                {{loadingMessage}}
+            </p>
+
+            <div *ngFor="let data of arr_data; index as indexes" class="divAppParent">
+                
+                <!--___HEADER NOTIFI___-->
+                <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">    
+                    <!--____New and Name_____-->
+                    <span class="nameHeader">{{nomalizeSelected}}</span>
+
+                    <!--____X button or date_____-->
+                    <div *ngIf="radioName === 'pending'" class="paDate">{{checking(false, data.timeDate)}}</div>
+                    <div *ngIf="radioName !== 'pending'" class="xDateBttn" (click)="movetoTrash(indexes)">X</div>
+                </div>
+
+                <p class="paMessage">Transaction ID: {{data.transaction_ID}}</p>
+
+                <!--_____MIDDLE MESSAGE____-->
+                <p class="paMessage">{{data.message}}</p>
+
+                <!--_____FOOTER DATE_____-->
+                <div style="display: flex;justify-content: space-between;">
+                    
+                    <!--____PENDING_____-->
+                    <div *ngIf="radioName === 'pending'" style="width:100%;display: flex;justify-content: space-between;margin-top:5px;">
+                        <p class="details_cancel" (click)="cancelRequest(indexes)">Cancel request</p>
+                        <p class="details_cancel" (click)="click_details(indexes)">See details</p>
+                    </div>
+
+                    <!--____ACCEPTED____-->
+                    <div *ngIf="radioName === 'accepted'" style="width:100%;display: flex;justify-content: space-between;margin-top:5px;">
+                        <div style="display: flex;">
+                            <p class="details_cancel" (click)="cancelRequest(indexes)">Cancel request</p>
+                            <p class="details_cancel" style="margin-left:15px;" (click)="click_details(indexes)">See details</p>
+                        </div>
+
+                        <div class="paDate">{{checking(false, data.timeDate)}}</div>
+                    </div>
+
+                    <!--____Declined and Canceled____-->
+                    <div *ngIf="radioName === 'declined' || radioName === 'canceled'" style="width:100%;display: flex;justify-content: space-between;margin-top:5px;">
+                        <p class="details_cancel" (click)="click_details(indexes)">See details</p>
+                        <div class="paDate">{{checking(false, data.timeDate)}}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--________SELECTED DIV_________-->
+    <div *ngIf="selected_condition" class="selectedID">
+
+        <!--_______HEADER________-->
+        <div style="display: flex;justify-content:space-between;margin-bottom: 20px;">
+            <div style="display: flex;">
+                <div>
+                    <img src="/assets/icon/arrow_back.png" class="img-fluid" style="height:20px;cursor: pointer;" (click)="clickBack_selected()" />
+                </div>
+                <div class="paNameSelected">{{nomalizeSelected}}</div>
+            </div>
+            <div *ngIf="radioName !== 'pending'" class="xDateBttn" (click)="movetoTrash(arr_selected_data[1])">X</div>
+        </div>
+
+        <!--______BODY_______-->
+        <div style="padding:0px 15px 0px 15px;">
+            
+            <p class="paDateSelected">{{arr_selected_data[0].timeDate}}</p>
+
+            <div style="margin:0px 0px 20px 0px;">
+                <p class="details" style="margin-bottom:10px;">Transaction ID: {{arr_selected_data[0].transaction_ID}}</p>
+
+                <p class="headerInfos">Information: </p>
+                <p class="details">Full name: {{arr_selected_data[0].fullname}}</p>
+                <p class="details">Email: {{arr_selected_data[0].reserved_email}}</p>
+                <p class="details">Number of Guest: {{arr_selected_data[0].numGuest}}</p>
+                <p class="details">Contact number: {{arr_selected_data[0].contact_num}}</p>
+                <p class="details">Date arrival: {{arr_selected_data[0].dateArrival}}</p>
+            </div>
+
+            <div style="margin:0px 0px 25px 0px;">
+                <p class="headerInfos">Guest info: </p>
+                <span *ngIf="this.arr_selected_data[0].guest_member.split('\n')[0].length == 0" >No guest info filled up.</span>
+
+                <table *ngIf="this.arr_selected_data[0].guest_member.split('\n')[0].length != 0" class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Full name</th>
+                        <th scope="col">Contact-number</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let guestInfo of this.arr_selected_data[0].guest_member.split('\n'); index as indexes">
+                        <th scope="row">{{(indexes+1)}}</th>
+                        <td>{{guestInfo.split(',')[0]}}</td>
+                        <td>{{guestInfo.split(',')[1]}}</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="headerInfos">Message: </p>
+            <p class="details" style="margin:0px 0px 20px 0px;">{{arr_selected_data[0].message}}</p>
+
+            <span *ngIf="radioName === 'pending' || radioName === 'accepted'" class="details_cancel" 
+            (click)="cancelRequest(arr_selected_data[1])">Cancel request</span>
+        </div>
+    </div>
+
+</div>

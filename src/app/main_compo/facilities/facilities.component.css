@@ -1,0 +1,84 @@
+.divFacilities{
+    padding-top:150px;
+    padding-bottom:40px;
+}
+
+.paFacilities{
+    font-family: inria_serif_bold;
+    font-size:50px;
+    color:white;
+    margin:0%;
+}
+
+.paInfoF{
+    font-family: inter_regular;
+    font-size:17px;
+    color:white;
+    margin-top:10px;
+}
+
+.gallery{
+    margin-top:15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 2fr 1fr 2fr;
+    width: 100%;
+}
+
+.image{
+    margin-right: 0.5em;
+    margin-bottom: 1rem;
+    margin-left: 0.5rem;    
+    
+    overflow: hidden;
+    position: relative;
+    left:-10px;
+    cursor: pointer;
+}
+
+.imgs{
+    width: 100%;
+    height:100%;
+    object-fit: cover;
+    border-radius:10px;
+}
+
+.colGalFacilities{
+    display: flex;
+    align-items: center;
+}
+
+.paFacilitiesG{
+    font-family: inter_regular;
+    font-size:25px;
+    color:white;
+    margin-bottom:5px;
+}
+
+.divScroll{
+    width: 100%;
+    overflow-x: scroll;
+    display: flex;
+    border-radius: 10px;
+    padding-bottom:10px;
+}
+
+.img_Gym{
+    height:220px;
+    margin-right:10px;
+    border-radius: 10px;
+}
+
+
+@media (max-width: 576px){
+    .image{
+        margin-right: 0.25em;
+        margin-bottom: 0.5rem;
+        margin-left: 0.25rem;   
+        
+        overflow: hidden;
+        position: relative;
+        left:-10px;
+        cursor: pointer;
+    }   
+}

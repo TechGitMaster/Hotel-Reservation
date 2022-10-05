@@ -16,6 +16,7 @@ module.exports = (name_column) => {
                 imgArr: { type: Array, required: false  },
 
                 paymentMethod: { type: String, required: false },
+                transaction_id: { type: String, required: false },
 
                 account_id: { type: String, required: false },
                 checkin_date: { type: String, required: false },
@@ -32,6 +33,8 @@ module.exports = (name_column) => {
                 transaction_date: { type: String, required: false },
                 confirmation_date: { type: String, required: false },
 
+                guest_member: { type: String, required: false },
+
                 confirmNot: { type: String, required: false },
                 delete_room: { type: String, required: true }
             }, { timestamps: true });
@@ -46,6 +49,7 @@ module.exports = (name_column) => {
 
                 defaultPrice: { type: String, required: false  },
                 paymentMethod: { type: String, required: false },
+                transaction_id: { type: String, required: false },
 
                 checkin_date: { type: String, required: true },
                 checkout_date: { type: String, required: true },
@@ -61,8 +65,10 @@ module.exports = (name_column) => {
                 confirmation_date: { type: String, required: false },
                 transaction_date: { type: String, required: true },
 
+                guest_member: { type: String, required: false },
+                
                 confirmNot: { type: String, required: true },
-
+                
                 delete_admin: { type: String, required: false },
                 delete_user: { type: String, required: false }
             }, { timestamps: true });

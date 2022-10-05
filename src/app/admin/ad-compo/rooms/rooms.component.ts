@@ -193,7 +193,7 @@ export class RoomsComponent implements OnInit {
 
       for await(let file of event.target.files){
 
-        if(file.size <= 500000){
+        if(file.size <= 800000){
 
           let reader = new FileReader();
           reader.readAsDataURL(file);

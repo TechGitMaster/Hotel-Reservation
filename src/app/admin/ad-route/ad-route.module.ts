@@ -4,9 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AdRouteRoutingModule } from './ad-route-routing.module';
 import { AdminComponent } from '../admin/admin.component';
 import { AdServiceService } from '../ad-service.service';
-import { AcceptComponent } from '../ad-compo/inbox-noti/accept/accept.component';
 import { AccountComponent } from '../ad-compo/account/account.component';
-import { DeclineComponent } from '../ad-compo/inbox-noti/decline/decline.component';
 import { FavoritesComponent } from '../ad-compo/inbox-noti/favorites/favorites.component';
 import { InboxComponent } from '../ad-compo/inbox-noti/inbox/inbox.component';
 import { RoomsComponent } from '../ad-compo/rooms/rooms.component';
@@ -21,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ScheduleAllModule, View } from '@syncfusion/ej2-angular-schedule';
 import { DayService, WeekService, WorkWeekService, MonthService, MonthAgendaService} from '@syncfusion/ej2-angular-schedule';
 import { ReservationComponent } from '../ad-compo/reservation/reservation.component';
+import { AppointmentComponent } from '../ad-compo/appointment/appointment.component';
 
 @NgModule({
   declarations: [
@@ -30,11 +29,10 @@ import { ReservationComponent } from '../ad-compo/reservation/reservation.compon
     AccountComponent,
     InboxComponent,
     FavoritesComponent,
-    AcceptComponent,
-    DeclineComponent,
     TrashComponent,
     InboxMainComponent,
-    ReservationComponent
+    ReservationComponent,
+    AppointmentComponent
   ],
   imports: [
     CommonModule,

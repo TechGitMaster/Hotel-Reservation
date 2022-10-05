@@ -10,8 +10,7 @@ module.exports = (condition) => {
     switch(name_db_column){
         case "user_pending_mail":
 
-            column = new Schema({
-                
+            column = new Schema({  
                 fullname: { type: String, required: false },
                 email: { type: String, required: false },
                 reserved_email: { type: String, required: false },
@@ -21,7 +20,10 @@ module.exports = (condition) => {
                 dateArrival: { type: String, required: false },
                 timeDate: { type: String, required: true },
                 acceptedNot: { type: String, required: false },
-                newNot: { type: Boolean, required: true }
+                newNot: { type: Boolean, required: true },
+                deleteNot: { type: Boolean, required: true },
+                guest_member: { type: String, required: false },
+                transaction_ID: { type: String, required: false }
             }, { timestamps: true });
 
         break;

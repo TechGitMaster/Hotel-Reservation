@@ -3,9 +3,9 @@
     <!--_____________________EMIT CALL___________________________-->
     <div class="fixedDiv" *ngIf="conditionFixDiv">
 
-        <div style="display: flex;align-items: center;height:100%;">
-            <!--___________________THIS IS FOR CHANGE PASSWORD______________________-->
-            <div *ngIf="arrHandle[0] === 'ChangePassAdmin'" class="container chPass">
+        <!--___________________THIS IS FOR CHANGE PASSWORD______________________-->
+        <div *ngIf="arrHandle[0] === 'ChangePassAdmin'" style="display: flex;align-items: center;height:100%;">
+            <div class="container chPass">
                 <p class="paX" (click)="conditionFixDiv = false">X</p>
                 <p class="paForgotPass">Change Password</p>
 
@@ -35,6 +35,56 @@
                         <p class="paSuccessChange">Successfully changing your password!</p>
                     </div>
                     <button class="btn btn-primary passwordChange" (click)="conditionFixDiv = false">Close</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!--_____YES OR NO_______-->
+        <div *ngIf="arrHandle[0] === 'yesNo'" style="display: flex;justify-content: center;align-items: center;height:100%;">
+            <div class="havePopup">
+                <div class="container boxHS">
+                    <div style="display: flex;justify-content: space-between;margin-bottom: 20px;">
+                        <div class="paCancel">
+                            <span>{{arrHandle[1]}}</span>
+                        </div>
+                    </div>
+    
+                    <div class="paMe">{{arrHandle[2]}}</div>
+                    
+                    <div>
+                        <div style="max-width:120px;float: right;display: flex;">
+                            <div class="paYes" (click)="yesNO(true)">YES</div>
+                            <div class="paNo" (click)="yesNO(false)">NO</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--_________________THIS IS LOADING PROGRESS__________________-->
+        <div *ngIf="arrHandle[0] === 'progress'"  style="display: flex;justify-content: center;align-items: center;height:100%;">
+            <div (click)="$event.stopPropagation()" class="divProgress">
+                <div class="container" style="padding:0%;position: relative;">
+                    <div>
+                        <!--___Percent text___-->
+                        <div class="numberProgress" [ngStyle]="{'position': 'absolute', 
+                        'top': arrHandle[1] == 100 ? '24%':'29%'}">{{arrHandle[1]}}%</div>
+                        <!--___Progress animation___-->
+                        <label [ngClass]="['container', arrHandle[1] == 100 ? 'progressStop': 'progressStart']">
+                            <div class="container checkDiv" [ngStyle]="{'display': arrHandle[1] != 100 ? 'none': 'block'}">
+                                <div class="container check-icon"></div>
+                            </div>
+                        </label>
+                    </div>
+    
+                    <div style="margin-top:20px;">
+                        <p class="paMessLoading" *ngIf="arrHandle[1] != 100">{{arrHandle[2]}}</p>
+                        <p class="paMessLoading" *ngIf="arrHandle[1] == 100">{{arrHandle[2]}}</p>
+                        <div style="display: flex;justify-content: center;" *ngIf="arrHandle[1] == 100">
+                            <button class="btn btn-primary btnfinishUpload" (click)="conditionFixDiv=false">Finish</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -151,7 +201,7 @@
                             <img src="/assets/icon/archive.png" class="img-fluid" style="max-height: 28px;" />
                         </div>
                         
-                        <span class="paNavigation">Archive</span>
+                        <span class="paNavigation">Archives</span>
                     </div>
 
                     <div class="selection" [ngStyle]="{'background': condition_component == 4 ? '#FEE2BB': ''}" (click)="navigation(4)">

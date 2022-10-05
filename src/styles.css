@@ -38,6 +38,11 @@
 /* ________________________Font from ttf extension_________________________ */
 
 @font-face {
+    font-family: inter_light;
+    src: url(/assets/Inter-Light.ttf);
+}
+
+@font-face {
     font-family: inter_regular;
     src: url(/assets/Inter-Regular.ttf);
 }
