@@ -18,7 +18,7 @@ export class MainServiceService {
 
   socket!: any;
   constructor(private http: HttpClient) {
-    this.socket = io('ws://localhost:8080');
+    this.socket = io('https://abpadilla.herokuapp.com', { transports: ["websocket"] });
 
     this.listen();
    }
