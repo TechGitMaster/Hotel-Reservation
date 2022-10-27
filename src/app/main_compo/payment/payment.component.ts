@@ -270,8 +270,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     if(condition){
       this.subs = this.service.deleting_sessionAfter(this.token).subscribe(() => {
         this.subs.unsubscribe();
-        //https://abpadilla.herokuapp.com/mc/home
-        window.location.href = 'http://localhost:4200/mc/home';
+        //'https://abpadilla.herokuapp.com/mc/home';
+        //'http://localhost:4200/mc/home';
+        window.location.href = 'https://abpadilla.herokuapp.com/mc/home';
       });
     }
   }

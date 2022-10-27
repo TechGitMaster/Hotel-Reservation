@@ -32,13 +32,13 @@ var server = require('http').createServer(app);
 
 
 //Socket io______________________________________________________
-/*const io = require('socket.io')(server, { transports: ["websocket"] });*/
-const io = require('socket.io')(server, {
+const io = require('socket.io')(server, { transports: ["websocket"] });
+/*const io = require('socket.io')(server, {
 	serveClient: true,
         cors: {
             origins: ['//localhost:4200']
         }
-});
+});*/
 
 io.on('connect' || 'connection' ,(soc) => {
 
