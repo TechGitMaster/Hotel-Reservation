@@ -5,36 +5,49 @@
 
 .paAbout{
     font-family: inria_serif_bold;
-    font-size:50px;
     color:white;
     margin:0%;
 }
 
+.paAbout-font{
+    font-size:50px;
+}
+
 .paInfoA{
-    width:60%;
     font-family: inter_regular;
-    font-size:17px;
     color:white;
     margin-top:5px;
 }
 
+
+.paInfoA-d{
+    width:60%;
+    font-size:17px;
+}
+
 .paServices{
     font-family: inter_semibold;
-    font-size:25px;
     letter-spacing: 1px;
     color:white;
+}
+
+.paServices-font{
+    font-size:25px;
     margin-bottom: 30px;
 }
 
 .paInfoFs{
     font-family: inter_regular;
-    font-size:18px;
     margin-bottom:15px;
     color:white;
 }
 
+.paInfoFs-font{
+    font-size:18px;
+}
+
 .imgG{
-    background:url('/assets/image/463342.png') no-repeat center;
+    background:url('/assets/image/localAtt.jpg') no-repeat center;
     width:90%;
     min-height:600px;
     border-radius:5px;
@@ -54,10 +67,13 @@
 
 .paTeam{
     font-family: inria_serif_bold;
-    font-size:40px;
     color:white;
     text-align: center;
     margin-bottom: 40px;
+}
+
+.paTeam-font{
+    font-size:40px;
 }
 
 .cardV{
@@ -68,7 +84,6 @@
 
 .paNames{
     font-family: inter_semibold;
-    font-size:20px;
     color:white;
     text-align: center;
     margin:10px 0px 0px 0px;
@@ -76,7 +91,225 @@
 
 .paSe{
     font-family: inter_light;
-    font-size:19px;
     color:#FFEEEE;
     text-align: center;
+}
+
+.paNames-font{
+    font-size:20px;
+}
+
+.paSe-font{
+    font-size:19px;
+}
+
+.imgHight1{
+    min-height:500px;
+}
+
+.marginRow{
+    margin-top:70px;
+}
+
+.infosMargintops{
+    margin-top:40px;padding-left:20px;
+}
+
+.infosMargintopss{
+    margin-top:40px;
+}
+
+.leftIsus{
+    padding-left:20px;
+}
+
+.imgHight11{
+    display: none;
+    height:200px;
+}
+
+.marginOuRteam{
+    margin-top:80px;
+}
+
+/*992px for middle col-lg*/
+@media (max-width:992px){
+    .divAbout{
+        min-width:100%;
+        padding-top:150px;
+        padding-bottom:80px;
+    }
+
+    .paInfoA-d{
+        width:90%;
+        font-size:16px;
+    }
+
+    .paAbout-font{
+        font-size:40px;
+    }
+
+    .paInfoFs-font{
+        font-size:17px;
+    }
+
+    .imgHight1{
+        height:100%;
+    }
+
+    .message{
+        width:69%;
+        font-family: inter_light;
+        font-size:23px;
+        letter-spacing: 5px;
+        padding:50px 20px 50px 20px;
+        background:gold;
+        position: absolute;
+        top:180px;
+    }
+
+    .imgTeam{
+        height: 120px;
+    }
+
+    .paNames-font{
+        font-size:18px;
+    }
+    
+    .paSe-font{
+        font-size:17px;
+    }
+}
+
+/*768px for small col-sm*/
+@media (max-width: 775px){
+    .divAbout{
+        min-width:100%;
+        padding-top:110px;
+        padding-bottom:80px;
+    }
+    
+    .marginRow{
+        margin-top:30px;
+    }
+
+    .infosMargintops{
+        margin-top:20px;padding-left:0px;
+    }
+
+    .paServices-font{
+        font-size:23px;
+        margin-bottom: 20px;
+    }
+
+    .message{
+        width:69%;
+        font-family: inter_light;
+        font-size:20px;
+        letter-spacing: 5px;
+        padding:50px 20px 50px 20px;
+        background:gold;
+        position: absolute;
+        right:0px;top:250px;
+    }
+    
+    .imgG{
+        display: none;
+        position: relative;
+    }
+
+    .leftIsus{
+        padding-left:0px;
+        margin-top:10px;
+    }
+    
+    .infosMargintopss{
+        margin-top:10px;
+    }
+
+    .imgHight11{
+        height:100%;
+        display: block;
+    }
+
+    .paTeam-font{
+        font-size:35px;
+    }
+
+    .marginOuRteam{
+        margin-top:50px;
+    }
+}
+
+@media (max-width: 706px){
+    .message{
+        width:100%;
+        font-family: inter_light;
+        font-size:18px;
+        letter-spacing: 5px;
+        padding:30px 20px 30px 20px;
+        background:gold;
+        position: relative;
+        right:0px;top:5px;
+    }
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .imgHight1{
+        min-height:200px;
+    }
+
+    .paAbout-font{
+        font-size:30px;
+    }
+
+    .paInfoA-d{
+        width:100%;
+        font-size:15px;
+    }
+
+    .paServices-font{
+        font-size:19px;
+        margin-bottom: 20px;
+    }
+
+    .paInfoFs-font{
+        font-size:15px;
+    }
+
+    .message{
+        width:100%;
+        font-family: inter_light;
+        font-size:15px;
+        letter-spacing: 5px;
+        padding:30px 20px 30px 20px;
+        background:gold;
+        position: relative;
+        right:0px;top:5px;
+    }
+
+    .cardV{
+        width:140px;
+        display: inline-block;
+        margin-right:40px;
+        position: relative;
+        left:20px;
+    }
+
+    .paTeam-font{
+        font-size:35px;
+    }
+
+    .imgTeam{
+        height: 100px;
+    }
+
+    .paNames-font{
+        font-size:15px;
+    }
+    
+    .paSe-font{
+        font-size:14px;
+    }
 }

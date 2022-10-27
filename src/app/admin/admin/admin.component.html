@@ -1,5 +1,29 @@
 <div class="container-fluid headerss">
 
+    <!--_________LOGOUT YES OR NO_____________-->
+    <div *ngIf="logoutCondition" class="fixedDiv">
+        <div class="container" style="min-height:100%;display: flex;justify-content: center;align-items: center;">
+            <div class="havePopup">
+                <div class="container boxHS">
+                    <div style="display: flex;justify-content: space-between;margin-bottom: 20px;">
+                        <div class="paCancel">
+                            <span>Log out</span>
+                        </div>
+                    </div>
+    
+                    <div class="paMe">Are you sure you want to log out?</div>
+                    
+                    <div>
+                        <div style="max-width:120px;float: right;display: flex;">
+                            <div class="paYes" (click)="yesNoLogout(true)">YES</div>
+                            <div class="paNo" (click)="yesNoLogout(false)">NO</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--______Call FIXED schedule and account settings_____-->
     <div class="fixedDiv" *ngIf="conditionFixDiv" (click)="funcErase()">
         <div class="container" style="min-height:100%;display: flex;justify-content: center;align-items: center;" (click)="$event.stopPropagation()">
@@ -11,7 +35,7 @@
                     <span class="paCancel">Choose Event</span>
 
                     <div class="cancelDeleteEvents" (click)="cancelDelete(false)">Cancel Event</div>
-                    <div class="cancelDeleteEvents" (click)="moveToTrash()">Move to trash</div>
+                    <div class="cancelDeleteEvents" (click)="moveToTrash()">Move to Archive</div>
                 </div>
             </div>
 
@@ -102,8 +126,6 @@
         </div>
     </div>
 
-
-
     <!--_____________POPUP FIRST BEFORE TO "Move trash" OR CANCEL THE RESERVATION_______________-->
     <div *ngIf="boolean_reservation" class="popupInfoReser" (click)="boolean_reservation = false;">
         <div class="container havePopup">
@@ -128,8 +150,9 @@
 
     <!--______Call FIXED ROOMS and RESERVATION_____-->
     <div class="fixedDiv" *ngIf="conditionFixDiv2" (click)="funcCloseReseroom(false)">
+        <img src="/assets/icon/watermark.png" class="img-fluid imgwatermark" />
 
-        <div class="container" style="min-height:100%;padding:10px;display:flex;justify-content: center;align-items: center;">    
+        <div [ngClass]="['container', (printing_condition ? 'consReservation':'')]" style="min-height:100%;padding:10px;display:flex;justify-content: center;align-items: center;">    
             
             <!--_________________THIS IS LOADING PROGRESS__________________-->
             <div *ngIf="arrHandle[0] === 'progress'" (click)="$event.stopPropagation()" class="divProgress">
@@ -177,7 +200,7 @@
 
             
             <!--___________________THIS IS FOR SHOWING THE RESERVATION INFORMATION_______________________-->
-            <div *ngIf="arrHandle[0] === 'reservation_info'" class="divReservation" (click)="$event.stopPropagation()">
+            <div *ngIf="arrHandle[0] === 'reservation_info'" id="printingD" class="divReservation" (click)="$event.stopPropagation()">
                 
                 <div style="display: flex;justify-content: space-between;">
                     <span class="paX2" (click)="funcCloseReseroom(false)">X</span>
@@ -187,12 +210,16 @@
                 <div style="margin-top:10px;">
                     <span><span class="paRoomname">Room name: </span><span style="font-family: inter_regular;">{{arrHandle[1].name_room}}</span></span>
                     <div style="margin-top:5px;">
-                        <label class="paPayment">Payment Method:</label>
-                        <span style="margin-left:5px;font-family: inter_regular;">{{(arrHandle[1].paymentMethod === 'payment1' ? 'Gcash':'Paypal')}}</span>
+                        <label class="paPayment">Type of room:</label>
+                        <span style="margin-left:5px;font-family: inter_regular;">{{arrHandle[1].typeRoom2}}</span>
                     </div>
                     <div style="margin-top:5px;">
                         <label class="paPayment">Transaction ID:</label>
                         <span style="margin-left:5px;font-family: inter_regular;">{{(arrHandle[1].transaction_id)}}</span>
+                    </div>
+                    <div style="margin-top:5px;">
+                        <label class="paPayment">Payment Method:</label>
+                        <span style="margin-left:5px;font-family: inter_regular;">{{(arrHandle[1].paymentMethod === 'payment1' ? 'Gcash':'Paypal')}}</span>
                     </div>
                 </div>
 
@@ -207,6 +234,13 @@
                         <!-- __IMAGES CREATE__ -->
                         <div *ngFor="let url of arrHandle[1].image_transaction; index as indexes"  class="addImageR">
                             <div class="addImageRTS">
+                                <div class="disImageDelete">
+                                    <div class="deleteImage">
+                                        <div class="imgD">
+                                            <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;" (click)="displayImage(url[0], 'fromAdmin')" />
+                                        </div>
+                                    </div>
+                                </div>
                                 <img [src]="url[0]" class="img-fluid" style="height:100%;" />
                             </div>
                         </div>
@@ -214,7 +248,7 @@
                 </div>
 
                 <!-- __INFORMATION OF RESERVATION__ -->
-                <div style="margin-bottom:15px;">
+                <div style="margin-bottom:25px;">
                     <p class="paRInfoT">Information:</p>
 
                     <div class="row" style="padding:0%;margin-top:5px;">
@@ -260,6 +294,10 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+
+                                    <div class="col-12" *ngIf="!printing_condition" style="margin-top:20px;display: flex;justify-content: center;">
+                                        <button class="btn btn-primary print" (click)="printing()">Print details</button>
                                     </div>
                                 </div>
                             </div>  
@@ -331,9 +369,9 @@
                     </div>
                 </div>
 
-                <div>
+                <div *ngIf="!printing_condition">
                     <div *ngIf="arrHandle[1].delete_admin === 'false'" style="display:flex;justify-content: center;">
-                        <button class="btn btn-danger" style="width:25%;" (click)="funcDelete_reservation(false)">Move to trash</button>
+                        <button class="btn btn-danger" style="width:25%;" (click)="funcDelete_reservation(false)">Move to Archive</button>
 
                         <!--<button *ngIf="arrHandle[1].confirmNot === 'true' && arrHandle[1].paymentMethod==='payment1'" 
                         class="btn btn-primary" style="margin-left:10px;width:25%;" 
@@ -341,7 +379,7 @@
                     </div>
 
                     <div *ngIf="arrHandle[1].delete_admin === 'tempoDelete'" style="display:flex;justify-content: center;">
-                        <button class="btn btn-danger" style="width:25%;" (click)="funcDelete_reservation(true)">Delete permanent</button>
+                        <button class="btn btn-danger" style="width:25%;" (click)="funcDelete_reservation(true)">Delete permanently</button>
 
                         <button  class="btn btn-primary" style="margin-left:10px;width:25%;" (click)="funcCancel_Reservation(false)">Retrieve request</button>
                     </div>
@@ -349,15 +387,6 @@
             </div>
 
         </div>
-    </div>
-
-    <!--____________Call see image_______________-->
-    <div class="imageDivSee" *ngIf="conditionFixDiv2 && conditionSeeImage" (click)="closeImage()">
-        <div style="height:100%;padding:10px 0px 30px 20px;">
-            <div style="height:100%;" (click)="$event.stopPropagation()">
-                <span class="paX3" (click)="closeImage()">X</span>
-            </div>
-        </div>  
     </div>
 
     <!--____________Call appointment information show_______________-->
@@ -411,22 +440,113 @@
 
                         <button class="btn btn-danger" style="width:30%;" 
                             *ngIf="arrHandle[0].acceptedNot !== 'true' && arrHandle[0].deleteNot !== 'true'"
-                            (click)="funcDelete_reservation(false)">Move to trash</button>
+                            (click)="funcDelete_reservation(false)">Move to Archive</button>
 
                         <!--__From accept__-->
                         <div *ngIf="arrHandle[0].acceptedNot === 'true' && arrHandle[0].deleteNot !== 'true'"  style="width:100%;display: flex;justify-content: center;">
-                            <button class="btn btn-danger" style="width:30%;" (click)="funcDelete_reservation(false)">Move to trash</button>
+                            <button class="btn btn-danger" style="width:30%;" (click)="funcDelete_reservation(false)">Move to Archive</button>
                             <button  class="btn btn-primary" style="margin-left:10px;width:30%;" (click)="funcCancel_Reservation(true)">Cancel request</button>
                         </div>
 
                         <!--__From Trash__-->
                         <div *ngIf="arrHandle[0].deleteNot === 'true'" style="width:100%;display: flex;justify-content: center;">
-                            <button class="btn btn-danger" style="width:30%;" (click)="funcDelete_reservation(true)">Delete permanent</button>
+                            <button class="btn btn-danger" style="width:30%;" (click)="funcDelete_reservation(true)">Delete permanently</button>
                             <button  class="btn btn-primary" style="margin-left:10px;width:30%;" (click)="funcCancel_Reservation(false)">Retrieve request</button>
                         </div>
                     </div>
                 </div> 
             </div>
+        </div>
+    </div>
+
+    <!--____________Call add admin information show_______________-->
+    <div class="fixedDiv" *ngIf="conditionFixDiv4">
+        
+        <div *ngIf="condition_signup_clicked" style="width:100%;height:100%;display: flex;align-items: center;z-index:10;background:rgba(0, 0, 0, 0.326);position: absolute;">
+            <!--___________________THIS IS FOR POP-UP changing Password______________________-->
+            <div class="container divSuccesschangePass">
+                <div class="container-fluid">
+                    <div style="display: flex;justify-content: center;">
+                        <p class="paSuccessChange">Successfully created admin!</p>
+                    </div>
+                    <button class="btn btn-primary passwordChange" (click)="condition_signup_clicked=false">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="height:100%;display: flex;align-items: center;position: relative;">
+            <!--________SIGN UP__________-->
+            <div class="container signUpdiv" (click)="$event.stopPropagation()">
+                <p class="paX paX-font" (click)="funcSignIn('false')">X</p>
+                <p class="paLoginSignup paLoginSignup-font">Add admin</p>
+
+                <!--___Fill up___-->
+                <div class="divFillSign">
+                    <form [formGroup]="formGroup_signup">
+                        <div class="row">
+                            <div class="col-6 padCol6">
+                                <input type="text" formControlName="firstname" placeholder="First name" class="form-control forminputReg forminputReg-font" />
+                                <div *ngIf="errorSignupArr[0][1]">
+                                    <span class="paError">{{errorSignupArr[0][0]}}</span>
+                                </div>
+                            </div>
+                            <div class="col-6 padCol6">
+                                <input type="text" formControlName="lastname" placeholder="Last name" class="form-control forminputReg forminputReg-font" />
+                                <div *ngIf="errorSignupArr[1][1]">
+                                    <span class="paError">{{errorSignupArr[1][0]}}</span>
+                                </div>
+                            </div>
+            
+                            <div class="col-12 margCol12">
+                                <input type="text" formControlName="contactnumber" placeholder="Contact number" class="form-control forminputReg forminputReg-font" />
+                                <div *ngIf="errorSignupArr[2][1]">
+                                    <span class="paError">{{errorSignupArr[2][0]}}</span>
+                                </div>
+                            </div>
+            
+                            <div class="col-lg-6 col-12 padCol6">
+                                <input type="text" formControlName="email" placeholder="Email" class="form-control forminputReg forminputReg-font" />
+                                <div *ngIf="errorSignupArr[3][1]">
+                                    <span class="paError">{{errorSignupArr[3][0]}}</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12 padCol6">
+                                <input type="password" formControlName="password" placeholder="Password" class="form-control forminputReg forminputReg-font" />
+                                <div *ngIf="errorSignupArr[4][1]">
+                                    <span class="paError">{{errorSignupArr[4][0]}}</span>
+                                </div>
+                            </div>
+            
+                            <p class="paGenderAccount">Gender:</p>
+            
+                            <div class="col-12 margCol12">
+                                <select class="form-select formselect">
+                                    <option selected>Select your Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                                <div *ngIf="errorSignupArr[5][1]">
+                                    <span class="paError">{{errorSignupArr[5][0]}}</span>
+                                </div>
+                            </div>
+                        
+
+                            <button class="btn btn-primary signUpbttn signUpbttn-font" (click)="FuncsignUp()">Sign up</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--_____________Call see image selected____________________-->
+    <div class="divFix" *ngIf="img_selected.length > 0 && conditionFixDiv2 && conditionSeeImage">
+        <div style="position: absolute;right: 10px;top:10px;">
+            <img src="/assets/icon/x_Image.png" class="img-fluid" style="height:35px;cursor: pointer;" (click)="closeImage()"/>
+        </div>
+        <div class="container" style="padding:0%;">
+            <img [src]="img_selected" class="img-fluid" style="height: 50%;" />
         </div>
     </div>
 
@@ -512,7 +632,7 @@
                 </div>
 
 
-                <div [ngClass]="['div_clickables_compo', num_selectionCondition == 6 ? 'backgrondDiv':'']" (click)="funcSelected(6)">
+                <div [ngClass]="['div_clickables_compo']">
                     <div style="width:25%;">
                         <img src="/assets/icon/logout_admin.png" class="img-fluid" style="height:30px;"  />
                     </div>

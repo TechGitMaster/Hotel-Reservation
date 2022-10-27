@@ -15,6 +15,18 @@
     position:fixed;
 }
 
+
+.divFix{
+    width:100%;
+    height:100vh;
+    background:#1F1F1F;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left:0%; top:0%;
+}
+
 .imageDivSee{
     width:100%;
     height:100vh;
@@ -38,6 +50,7 @@
     padding-top:10px;
     cursor: pointer;
 }
+
 
 .paX2{
     font-family: inter_bold;
@@ -493,6 +506,10 @@
     padding:20px;
 }
 
+.consReservation{
+    min-width: 100%;
+}
+
 .paRInfoT{
     font-family:inter_semibold;
     font-size:18px;
@@ -560,7 +577,7 @@
 }
 
 .paRoomname, .paPayment{
-    font-family: inter_semibold;
+    font-family: inter_medium;
     font-size:17px;
 }
 
@@ -610,6 +627,47 @@
 }
 
 
+.imgD{
+    margin-right:10px;
+    border-radius:10px;
+    padding:5px;
+    background:#18e318;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.deleteD{
+    border-radius:10px;
+    padding:5px;
+    background:#DC3545;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+
+.deleteImage{
+    width:100%;
+    height:100%;
+    background:rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;left:0px;
+}
+
+.disImageDelete{
+    display: none;
+}
+
+.addImageR:hover > .addImageRTS > .disImageDelete{
+    display: block;
+}
+
+
 .contain_appointment{
     min-height:100%;
     padding:10px;
@@ -656,3 +714,112 @@
     margin:0px;
 }
 
+.signUpdiv{
+    max-width:600px;
+    background:#FCFBFB;
+    border-radius:10px;
+    padding-bottom:60px;
+}
+
+.paLoginSignup{
+    margin-top:-5px;
+    font-family: inter_bold;
+    text-align: center;
+    color:#0063A8;
+    font-size:30px;
+}
+
+.divFillSign{
+    padding-left: 46px;
+    padding-right: 46px;
+    margin-top:30px;
+}
+
+.padCol6{
+    padding:0px 5px 0px 5px;
+    margin-bottom:15px;
+}
+
+.paGenderAccount{
+    margin:0px 0px 15px 0px;
+    padding:0px 5px 0px 5px;
+    font-family: inter_medium;
+    font-size:18px;
+}
+
+.margCol12{
+    padding:0px 5px 0px 5px;
+    margin-bottom: 15px;
+}
+
+.formselect{
+    padding:10px 5px 10px 5px;
+    border:2px solid black;
+    border-radius:10px;
+}
+
+.paGenderAccount{
+    margin:0px 0px 15px 0px;
+    padding:0px 5px 0px 5px;
+    font-family: inter_medium;
+    font-size:18px;
+}
+
+.fontadminNot{
+    font-size:17px;
+}
+
+
+.signUpbttn, .passwordChange{
+    width:100%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+    font-size:18px;
+}
+
+
+.print{
+    width:60%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+    font-size:15px;
+}
+
+
+.imgwatermark{
+    min-height:100%;min-width:100%;position: absolute;
+    display: none;
+}
+
+@page { size: auto;  margin: 0mm; }
+
+@media print{
+    body *:not(#printingD):not(#printingD *){
+        visibility: hidden;
+    }
+
+    #printingD{
+        height: 100%;
+        position: absolute;
+        top:0;left:0;
+    }
+
+    .imgwatermark{
+        z-index:10;
+        min-height:100%;min-width:100%;position: absolute;
+        display: block;
+        opacity: 0.1;
+    }
+}

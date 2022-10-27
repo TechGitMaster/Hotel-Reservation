@@ -1,3 +1,14 @@
+.divFix{
+    width:100%;
+    height:100vh;
+    background:#1F1F1F;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left:0%; top:0%;
+}
+
 .naviclicked{
     height:100vh;
     padding:0px;
@@ -11,9 +22,12 @@
 .conX{
     color:white;
     font-family: inter_bold;
-    font-size:30px;
     margin-bottom:40px;
     cursor: pointer;
+}
+
+.conX-font{
+    font-size:30px;
 }
 
 .divLogoCorner{
@@ -37,8 +51,11 @@
     padding-left:20px;
     padding-right:20px;
     color:rgb(255, 255, 255);
-    font-size:30px;
     letter-spacing: 2px;
+}
+
+.navclickable-font{
+    font-size:30px;
 }
 
 .fixedDiv{
@@ -46,15 +63,17 @@
     height:100vh;
     background:rgba(0, 0, 0, 0.245);
     z-index:5;
-    overflow-y: scroll;
     position:fixed;
 }
 
 .paX{
     font-family: inter_bold;
-    font-size:20px; 
     padding-top:10px;
     cursor: pointer;
+}
+
+.paX-font{
+    font-size:20px; 
 }
 
 .chPass{
@@ -67,10 +86,13 @@
 .paForgotPass{
     margin-top:-5px;
     font-family: inter_bold;
-    font-size:23px;
     text-align: center;
     color:#0063A8;
     margin-bottom:15px;
+}
+
+.paForgotPass-font{
+    font-size:23px;
 }
 
 .forminputReg{
@@ -78,6 +100,9 @@
     border:none;
     border:2px solid black;
     padding: 10px 15px 10px 15px;
+}
+
+.forminputReg-font{
     font-size:17px;
 }
 
@@ -90,7 +115,6 @@
 .passwordChange{
     width:100%;
     border-radius:20px;
-    font-size:16px;
     font-family: inter_medium;
     background:#FFD700;
     text-align: center;
@@ -98,6 +122,10 @@
     color:black;
     padding: 10px 0px 10px 0px;
     margin-top:10px;
+}
+
+.passwordChange-font{
+    font-size:16px;
 }
 
 .divSuccesschangePass{
@@ -129,19 +157,25 @@
 
 .paAcc{
     font-family: inter_bold;
-    font-size:32px;
     color:#0063A8;
     margin:0%;
 }
 
+.paAcc-font{
+    font-size:32px;
+}
+
 .paAccInfo{
     font-family: inter_regular;
+}
+
+.paAccInfo-font{
     font-size:18px;
 }
 
 
 .compo_selection{
-    max-width: 280px;
+    width: 300px;
     background:white;
     border-right:4px solid #F1F1F1;
     padding:20px;
@@ -165,6 +199,7 @@
     font-family: inter_medium;
     font-size:17px;
     margin:0px 0px 0px 10px;
+    display: block;
 }
 
 
@@ -179,6 +214,10 @@
     padding:13px;
     color:black;
     margin-top: 15px;
+}
+
+.bttn_logout-none{
+    display: block;
 }
 
 .havePopup{
@@ -373,9 +412,21 @@
     margin-top:10px;
 }
 
+.imgBurger{
+    height: 40px;cursor: pointer;
+}
+
+.logo{
+    height: 100px;
+}
+
+.bttnL{
+    display: none;
+}
 
 /* ________________________@MEDIA DESIGN_________________________ */
 
+/*992px for middle col-lg*/
 @media (max-width:992px){
     .divLogoCorner{
         display: block;
@@ -383,5 +434,89 @@
 
     .logomenu{
         display:none;
+    }
+
+}
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .imgBurger{
+        max-height:30px;
+        cursor: pointer;
+    }
+
+    .logo{
+        height: 70px;
+    }
+
+    .conX-font{
+        font-size:26px;
+    }
+
+    .navclickable-font{
+        font-size:25px; 
+    }
+
+    .paAcc-font{
+        font-size:25px;
+    }
+
+    .paAccInfo-font{
+        font-size:15px;
+    }
+    
+    .paNavigation{
+        display: none;
+    }
+    
+    .bttnL{
+        display: block;
+    }
+    
+    .compo_selection{
+        width: 65px;
+        background:white;
+        border-right:4px solid #F1F1F1;
+        padding:10px;
+    }
+
+    .bttn_logout-none{
+        display: none;
+    }
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .paAcc-font{
+        font-size:20px;
+    }
+
+    .paAccInfo-font{
+        font-size:14px;
+    }
+
+    .compo_selection{
+        min-width: 60px;
+        display: block;
+        background:white;
+        border-right:4px solid #F1F1F1;
+        padding:5px;
+    }
+
+
+    .paX-font{
+        font-size:18px; 
+    }    
+
+    .paForgotPass-font{
+        font-size:20px;
+    }
+
+    .forminputReg-font{
+        font-size:15px;
+    }
+
+    .passwordChange-font{
+        font-size:14px;
     }
 }

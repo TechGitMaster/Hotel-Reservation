@@ -13,6 +13,7 @@ module.exports = (name_column) => {
                 goodPersons: { type: String, required: false  },
                 pricePersons: { type: String, required: false  },
                 typeRoom: { type: Boolean, required: true  },
+                typeRoom2: { type: String, required: true },
                 imgArr: { type: Array, required: false  },
 
                 paymentMethod: { type: String, required: false },
@@ -46,6 +47,7 @@ module.exports = (name_column) => {
 
                 img_room: { type: Array, required: true },
                 name_room: { type: String, required: true },
+                typeRoom2: { type: String, required: true },
 
                 defaultPrice: { type: String, required: false  },
                 paymentMethod: { type: String, required: false },

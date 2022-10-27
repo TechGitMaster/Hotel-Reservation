@@ -1,43 +1,52 @@
 <div class="container-fluid" style="min-height:800px;background: #493B3B;">
     
+    <!--_______________Image Selected_____________________-->
+    <div class="divFix" *ngIf="img_selected.length > 0">
+        <div style="position: absolute;right: 10px;top:10px;">
+            <img src="/assets/icon/x_Image.png" class="img-fluid" style="height:35px;cursor: pointer;" (click)="this.img_selected=''"/>
+        </div>
+        <div class="container" style="padding:0%;">
+            <img [src]="img_selected" class="img-fluid" style="height: 50%;" />
+        </div>
+    </div>
 
     <div class="container divFacilities">
         <div class="row">
-            <div class="col-6">
-                <p class="paFacilities">Facilities</p>
-                <span class="paInfoF">Taking this last opportunity to buy your dream room on Manhattan Heights Hotel. Also you can actually enjoy the facilities of the Hotel. The Gym, Playground and Swimming pool and many more.</span>
+            <div class="col-lg-6 col-12">
+                <p class="paFacilities paFacilities-font">Facilities</p>
+                <span class="paInfoF paInfoF-font">Taking this last opportunity to buy your dream room on Manhattan Heights Hotel. Also you can actually enjoy the facilities of the Hotel. The Gym, Game room and Swimming pool and many more.</span>
 
                 <div class="gallery">
-                    <div *ngFor="let image of Image_Facilities" [style.gridRow]="image.row" [style.gridCol]="image.col" class="image">
-                        <img [src]="image.url" class="imgs"  />
+                    <div *ngFor="let image of Image_Facilities; index as indexes" [style.gridRow]="image.row" [style.gridCol]="image.col" class="image">
+                        <img [src]="image.url" class="imgs" (click)="selected_img(indexes)" />
                     </div>
                 </div>
                 
 
             </div>
-            <div class="col-6 colGalFacilities">
-                <div class="row" style="width: 100%;">
-                    <div lcass="col-12">
-                        <p class="paFacilitiesG">Gym</p>
+            <div class="col-lg-6 col-12 colGalFacilities">
+                <div class="row" style="min-width: 100%;">
+                    <div class="col-12">
+                        <p class="paFacilitiesG paFacilitiesG-font">Gym</p>
 
                         <div class="divScroll">
-                            <img *ngFor="let image of Image_Gym" [src]="image" class="img-fuid img_Gym" />
+                            <ng-image-slider [lazyLoading]="true" [infinite]="true" [autoSlide]="5" [imageSize]="{ width:'50%', height:'230px' }" [images]="Image_Gym" #nav style="width: 100%;"></ng-image-slider>
                         </div>
                     </div>
 
                     <div lcass="col-12" style="margin-top:15px;">
-                        <p class="paFacilitiesG">Playground</p>
+                        <p class="paFacilitiesG paFacilitiesG-font">Game room</p>
 
                         <div class="divScroll">
-                            <img *ngFor="let image of Image_Ground" [src]="image" class="img-fuid img_Gym" />
+                            <ng-image-slider [lazyLoading]="true" [infinite]="true" [autoSlide]="5" [imageSize]="{ width:'50%', height:'230px' }" [images]="Image_Ground" #nav style="width: 100%;"></ng-image-slider>
                         </div>
                     </div>
 
                     <div lcass="col-12" style="margin-top:15px;">
-                        <p class="paFacilitiesG">Swimming Pool</p>
+                        <p class="paFacilitiesG paFacilitiesG-font">Swimming Pool</p>
 
                         <div class="divScroll">
-                            <img *ngFor="let image of Image_Pool" [src]="image" class="img-fuid img_Gym" />
+                            <ng-image-slider [lazyLoading]="true" [infinite]="true" [autoSlide]="5" [imageSize]="{ width:'50%', height:'230px' }" [images]="Image_Pool" #nav style="width: 100%;"></ng-image-slider>
                         </div>
                     </div>
                 </div>

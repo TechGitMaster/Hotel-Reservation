@@ -1,8 +1,11 @@
 .paAppo{
     font-family: inter_bold;
-    font-size:25px;
     margin: 0%;
     color:#493B3B;
+}
+
+.paAppo-font{
+    font-size:25px;
 }
 
 .pNumbs{
@@ -63,18 +66,23 @@
 
 .nameHeader{
     font-family: inter_semibold;
-    font-size:16px;
     color:#3D3A3A;
 }
 
+.nameHeader-font{
+    font-size:16px;
+}
 
 .paMessage{
     max-height:50px;
     overflow: hidden;
     font-family: inter_regular;
-    font-size:16px;
     color:#4b4949;
     margin:0px 0px 5px 0px;
+}
+
+.paMessage-font{
+    font-size:16px;
 }
 
 .paDate{
@@ -85,18 +93,24 @@
 
 .xDateBttn{
     font-family: inter_semibold;
-    font-size:19px;
     cursor: pointer;
     color:black;
 }
 
+.xDateBttn-font{
+    font-size:19px;
+}
+
 .details_cancel{
     font-family: inter_regular;
-    font-size:15px;
     color:#0063A8;
     margin:0%;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.details_cancel-font{
+    font-size:15px;
 }
 
 .selectedID{
@@ -106,9 +120,12 @@
 
 .paNameSelected{
     font-family: inter_semibold;
-    font-size:18px;
     margin-left:15px;
     color:#3D3A3A;
+}
+
+.paNameSelected-font{
+    font-size:18px;
 }
 
 .paDateSelected{
@@ -126,25 +143,34 @@
 
 .btnUpdateImage{
     font-family: inter_semibold;
-    font-size:15px;
-    background:#FFD700;
+    background: none;
+    border:2px solid black;
     color:black;
     padding:10px 30px 10px 30px;
     margin-right:15px;
-    border:none;
     border-radius:10px;
+}
+
+.btnUpdateImage-width{
+    font-size:15px;
 }
 
 .btnCancelRequest{
     font-family: inter_semibold;
-    font-size:15px;
     padding:10px 30px 10px 30px;
     border-radius:10px;
 }
 
+.btnCancelRequest-width{
+    font-size:15px;
+}
+
 .pa_header_body{
-    font-size: 17px;
     margin:0px 0px 5px 0px;
+}
+
+.pa_header_body-font{
+    font-size: 16px;
 }
 
 .imageAddDiv{
@@ -235,8 +261,11 @@
 
 .paRInfoT{
     font-family:inter_semibold;
-    font-size:19px;
     margin:20px 0px 0px 0px;
+}
+
+.paRInfoT-font{
+    font-size:19px;
 }
 
 .labels{
@@ -249,9 +278,12 @@
     height:35px;
     border-radius: 10px;
     padding:10px;
-    font-size:15px;
     font-family: inter_regular;
     background:rgb(246, 246, 246);
+}
+
+.forminputs-font{
+    font-size:15px;
 }
 
 .divDetails{
@@ -278,18 +310,25 @@
     margin:0%;
     text-align: center;
     font-family: inter_regular;
-    font-size:30px;
     color:white;
+}
+
+.paNumbCheckInOut-font{
+    font-size:30px;
 }
 
 .pdetails{
     padding:10px;
     font-family: inter_semibold;
-    font-size:17px;
     border-top:1px solid #9D9D9D;
     border-bottom:1px solid #9D9D9D;
     color:white;
 }
+
+.pdetails-font{
+    font-size:17px;
+}
+
 
 .paDetailsMiddle{
     display: flex;
@@ -297,5 +336,209 @@
     color:white;
     font-family: inter_regular;
     padding:5px 10px 2px 10px;
+}
+
+.paDetailsMiddle-font{
     font-size:14px;
+}
+
+.print{
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+}
+
+.print-width{
+    width:50%;
+    font-size:15px;
+}
+
+
+.selectionD{
+    display: flex;
+}
+
+.selectionMT{
+    display: none;
+}
+
+.mess{
+    font-size:16px;
+}
+
+.backArrow{
+    height:20px;
+}
+
+.bttnbttnb{
+    display: flex;justify-content: center;
+}
+
+.imgwatermark{
+    min-height:100%;min-width:100%;position: absolute;
+    display: none;
+}
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+@page { size: auto;  margin: 0mm; }
+
+@media print{
+    body *:not(#printingD):not(#printingD *){
+        visibility: hidden;
+    }
+
+    #printingD{
+        height: 100%;
+        position: absolute;
+        top:0;left:0;
+    }
+
+    .imgwatermark{
+        z-index:10;
+        min-height:100%;min-width:100%;position: absolute;
+        display: block;
+        opacity: 0.1;
+    }
+}
+
+/*992px for middle col-lg*/
+@media (max-width:992px){}
+
+@media (max-width:838px){
+    .selectionD{
+        display: none;
+    }
+
+    .selectionMT{
+        display: block;
+    }
+}
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .paAppo-font{
+        font-size:20px;
+    }
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .paAppo-font{
+        font-size:17px;
+    }
+
+    .mess{
+        font-size:13px;
+    }
+
+    .pNumbs{
+        font-family: inter_medium;
+        font-size:13px;
+    }
+
+    .leftRight{
+        width:75px;
+        height:27px;
+        border-radius:5px;
+        margin-right:2px;
+        border:1px solid #c7cace;
+    }
+
+    .nameHeader-font{
+        font-size:15px;
+    }
+
+    .paDate{
+        font-family: inter_medium;
+        font-size:12px;
+        color:#4b4949;
+    }
+
+    .details_cancel-font{
+        font-size:13px;
+    }
+
+    .backArrow{
+        height:15px;
+    }
+
+    .paNameSelected-font, .paRInfoT-font{
+        font-size:16px;
+    }
+
+    .xDateBttn-font{
+        font-size:15px;
+    }
+
+    .paImageS{
+        font-family: inter_semibold;
+        font-size:16px;
+    }
+
+    .paLMes{
+        font-family: inter_regular;
+        font-size:13px;
+        margin:0%;
+    }
+
+    .addImageR{
+        width:106px;
+        height:90px;
+        border-radius:5px;
+        overflow:hidden;
+        display: inline-block;
+        margin-right:10px;
+        margin-top:5px;
+        background:black;
+    }
+
+    .paUpload{
+        font-family: inter_regular;
+        font-size:12px;
+        margin:0px 0px 10px 0px;
+        text-align: center;
+    }
+    
+    .paCheckINOut{
+        margin:0%;
+        text-align: center;
+        font-size:10px;
+    }
+
+    .paNumbCheckInOut-font{
+        font-size:20px;
+    }
+
+    .paDetailsMiddle-font{
+        font-size:12px;
+    }
+
+    .forminputs-font{
+        font-size:13px;
+    }
+
+    .print-width{
+        width:100%;
+        font-size:14px;
+    }
+
+    .btnUpdateImage-width, .btnCancelRequest-width{
+        width:100%;
+        font-size:14px;  
+        margin-bottom: 10px;
+    }
+    
+    .bttnbttnb{
+        display: block;
+    }
+
+    .loading, .font-f, .paMessage-font, .paDateSelected-font, .pa_header_body-font, .dgDs, .pdetails-font{
+        font-size:14px;
+    }
 }

@@ -18,6 +18,7 @@ import { AdGuardGuard } from './guard/adG/ad-guard.guard';
 import { McGuardGuard } from './guard/mcG/mc-guard.guard';
 import { NotFoundComponent } from './notFound/not-found.component';
 
+
 import * as firebase from 'firebase/app';
 firebase.initializeApp(environment.firebase);
 

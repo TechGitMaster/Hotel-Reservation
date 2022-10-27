@@ -11,9 +11,6 @@ const accepted_timeDate = db_column('accepted_MailTime');
 
 const db_column_inboxes = require('../databases/inboxes_column');
 const inbox_col = db_column_inboxes('admin_inbox');
-const favo_col = db_column_inboxes('admin_favorite');
-const accept_col = db_column_inboxes('admin_accepted');
-const trash_col = db_column_inboxes('admin_trash');
 const inboxes_column_user = require('../databases/inboxes_user_column')('user_pending_mail');
 
 const logReg_column = require('../databases/logReg_column');
@@ -23,7 +20,14 @@ const notification_db = require('../databases/notification_column');
 const notification_col = notification_db('user_notification');
 const notification_click_col = notification_db('user_notification_click');
 
-const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'October', 'Nov', 'Dec'];
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.USER_MAIL,
+        pass: process.env.PASSWORD_MAIL
+    }
+});
 
 
 //This is for getting Current Appointment Schedule____________________________________________
@@ -137,7 +141,7 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
         //const data_for_timedate = await inbox_col.findOne({ _id: data.IDS });
 
 
-        calendar_sched_col.deleteOne({ _id: id }).then(() => {
+        calendar_sched_col.deleteOne({ $or:[ { _id: data.id }, { IDS: data.id }] }).then(() => {
     
             accepted_timeDate.deleteOne({ IDS: data.IDS }).then(() => {
     
@@ -149,7 +153,7 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
                             new notification_col({
                                 email: data.email,
                                 name: data_admin.fullName,
-                                message: 'Your appointment has been canceled by the admin.',
+                                message: 'Your appointment has been canceled by the admin. Transaction ID: '+data.transaction_ID,
                                 date: date,
                                 deleteNot: 'new'
                             }).save().then(async () => {
@@ -161,14 +165,14 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
                                     { $set: { number: numbers, clicked: true } }).then(() => {
 
                                     //send mail to the user_______________________________________
-                                    res.json({ response: 'success', email: data.email});
+                                    sendEmail(res, data.transaction_ID, data.reserved_email, data.email)
                                 });
                             }); 
 
                         });
                     }else{
                         //Send mail to user that the admin canceled the appointment_______________________________________________
-                        res.json({ response: 'success' });
+                        sendEmail(res, '', data.reserved_email, '')
                     }
                 });
     
@@ -183,6 +187,27 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
     }
 
 });
+
+
+
+//send email to user__________________________________________________________
+function sendEmail(res, transaction_ID, reserved_email, email){
+
+    const message = `Your Appointment request is cancelled by the admin. ${transaction_ID !== '' ? 'Transaction ID: '+transaction_ID:''}`
+
+    transporter.sendMail({
+        from: process.env.USER_MAIL,
+        to: reserved_email,
+        subject: 'Appointment message',
+        text: message
+    }, (err, info) => {});
+
+    if(email !== ''){
+        res.json({ response: 'success', email: email});
+    }else{
+        res.json({ response: 'success'});
+    }
+}
 
 
 //This is to get the accepted Appointment and get the hours and minutes_______________________________________________

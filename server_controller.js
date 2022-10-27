@@ -12,6 +12,7 @@ app.use('/', require('./nodejs/user/appointment'));
 app.use('/', require('./nodejs/user/reservation'));
 app.use('/', require('./nodejs/user/archive'));
 app.use('/', require('./nodejs/user/payment'));
+app.use('/', require('./nodejs/admin/appointment_void'));
 
 
 

@@ -84,6 +84,15 @@ export class ArchiveComponent implements OnInit {
 
 
   //Click radio bttn__________________________________________________________________________
+  chnageR(event: any): void{
+    var nomalizeSelected = event.target.value.charAt(0).toLowerCase() + event.target.value.slice(1);
+    if(nomalizeSelected === 'notification' || nomalizeSelected === 'appointment' || nomalizeSelected === 'reservation'){
+      this.clickRadio(nomalizeSelected);
+    }else{
+      this.clickRadio('notification');
+    }
+  }
+
   clickRadio(name: string): void{
     this.radioName = name;
     this.nomalizeSelected = this.radioName.charAt(0).toUpperCase() + this.radioName.slice(1);

@@ -1,8 +1,8 @@
 <div clas="container-fluid header">
     <div style="padding:20px 30px 20px 30px">
-        <p class="paReservation">Reservation request</p>
+        <p class="paReservation">Reservation</p>
         <div style="display: flex;justify-content: center;">
-            <p class="paMeReser">Reservation component means to see all the request reservation of the user on every rooms available.</p>
+            <p class="paMeReser">Reservation component means to see all the reservation of the user on every rooms available.</p>
         </div>
 
         <div style="margin-top:40px;">
@@ -39,7 +39,7 @@
                         <div class="form-check" style="margin-right:10px;">
                           <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('trash')">
                           <label class="form-check-label" for="flexRadioDefault3">
-                            Trash
+                            Archive
                           </label>
                       </div>
                     </div>
@@ -57,8 +57,8 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                       <tr>
-                        <th scope="col">Image</th>
                         <th scope="col">Room name</th>
+                        <th scope="col">Type of room</th>
                         <th scope="col">Full name</th>
                         <th scope="col">Transaction ID</th>
                         <th scope="col">Transaction date</th>
@@ -77,12 +77,8 @@
 
                       <!--____MAKING REQUEST____-->
                       <tr *ngFor="let data of dataReservationSelected; index as indexes">
-                        <th>
-                          <div style="display: grid;place-items: center;">
-                            <img [src]="data.img_room[0]" class="img-fluid" style="max-height:80px;" />
-                          </div>
-                        </th>
-                        <td>{{data.name_room}}</td>
+                        <th>{{data.name_room}}</th>
+                        <td>{{data.typeRoom2}}</td>
                         <td>{{ data.first_name }} {{ data.last_name }}</td>
                         <td>{{ data.transaction_id }}</td>
                         <td>{{ data.transaction_date }}</td>
@@ -103,7 +99,7 @@
                                 <button *ngIf="str_radioCondition !== 'trash'" class="btn btn-primary btnAction" (click)="info_tempo(indexes)" 
                                 [ngStyle]="{'width':str_radioCondition === 'trash' ? '32%':'90%'}">Info</button>   
                                 <button *ngIf="str_radioCondition === 'trash'" class="btn btn-primary btnAction" (click)="info(indexes)" 
-                                [ngStyle]="{'width':str_radioCondition === 'trash' ? '32%':'90%'}">Info</button>
+                                [ngStyle]="{'width':str_radioCondition === 'trash' ? '90%':'90%'}">Info</button>
                             </div>
 
                         </td>

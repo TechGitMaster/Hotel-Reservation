@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const router = express.Router();
 
@@ -17,6 +18,15 @@ const notification_click_col = notification_db('user_notification_click');
 const inboxes_column_user = require('../databases/inboxes_user_column')('user_pending_mail');
 
 const middleware = require('./authorization');
+
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.USER_MAIL,
+        pass: process.env.PASSWORD_MAIL
+    }
+});
 
 
 //Get Accept, Decline Data mails router___________________________________________________________________________
@@ -84,7 +94,7 @@ router.post('/getAppointment', middleware, async (req, res) => {
             case 'trash':
                 count = await inbox_col.find({ appointmentNot: 'appointment', deleteNot: 'true' }).count();
                 data = await inbox_col.find({ appointmentNot: 'appointment', deleteNot: 'true' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
-                message = 'No deleted appointment ever recorded.';
+                message = 'Empty archive appointment.';
             break;
         }
     }
@@ -154,6 +164,7 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                     message: data.message,
                     timeDate: data.dateArrival,
                     date: schedDate[1],
+                    transaction_ID: data.transaction_ID,
                     appointmentNot: data.appointmentNot,
                     delete_admin: false
                 }).save().then(() => {
@@ -171,7 +182,7 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                                 new notification_col({
                                     email: data.email,
                                     name: data_admin.fullName,
-                                    message: 'Your appointment has been accepted by the admin.',
+                                    message: 'Your appointment has been accepted by the admin. Transaction ID: '+data.transaction_ID,
                                     date: date,
                                     deleteNot: 'new'
                                 }).save().then(async () => {
@@ -183,14 +194,14 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                                         { $set: { number: numbers, clicked: true } }).then(() => {
 
                                         //send mail to the user_______________________________________
-                                        res.json({ response: 'success'});
+                                        sendEmail(res, data.transaction_ID, 'accepted', data.reserved_email)
                                     });
                                 }); 
 
                             });
                         }else{
                             //send email to the user_____________________________________
-                            res.json({ response: 'success' });
+                            sendEmail(res, '', 'accepted', data.reserved_email)
                         }
                     });
                 });
@@ -207,7 +218,7 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                     new notification_col({
                         email: data.email,
                         name: data_admin.fullName,
-                        message: 'Your appointment has been declined by the admin.',
+                        message: 'Your appointment has been declined by the admin. Transaction ID: '+data.transaction_ID,
                         date: date,
                         deleteNot: 'new'
                     }).save().then(async () => {
@@ -219,19 +230,35 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                             { $set: { number: numbers, clicked: true } }).then(() => {
 
                             //send mail to the user_______________________________________
-                            res.json({ response: 'success'});
+                            sendEmail(res, data.transaction_ID, 'declined', data.reserved_email)
                         });
                     }); 
 
                 });    
             }else{
                 //send email to the user_____________________________________
-                res.json({ response: 'success' });
+                sendEmail(res, '', 'declined', data.reserved_email)
             }
         }
     });
 
 });
+
+
+//send email to user__________________________________________________________
+function sendEmail(res, transaction_ID, condition, email){
+
+    const message = `Your Appointment request is ${condition} by the admin. ${transaction_ID !== '' ? 'Transaction ID: '+transaction_ID:''}`
+
+    transporter.sendMail({
+        from: process.env.USER_MAIL,
+        to: email,
+        subject: 'Appointment message',
+        text: message
+    }, (err, info) => {});
+
+    res.json({ response: 'success' });
+}
 
 
 router.post('/moveTotrash_appointment', middleware, (req, res) => {

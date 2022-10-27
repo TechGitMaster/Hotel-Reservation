@@ -27,6 +27,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   }
 
   protected token!: string;
+  img_selected: string = '';
   token_convert!: any;
   condition_expiredNot!: string;
   condition_paymentSection!: boolean;
@@ -47,6 +48,13 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
   errAppointment!: Array<any>;
   formGroup_payment!: FormGroup;
+
+  cond_check: boolean = true;
+  arr_details: Array<any> = new Array<any>();
+  countD: number = 1;
+  boolean_close: boolean = false;
+  arrHandle: Array<any> = new Array<any>('');
+
   ngOnInit(): void {
     this.errAppointment = new Array<any>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
     this.formGroup_payment = this.formGroup.group({
@@ -91,7 +99,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
               this.condition_expiredNot = 'false';
               this.data_room = res.data;
   
-              
 
               //Total persons________________________________
               this.person_total = this.total_persons();
@@ -108,6 +115,11 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
               //Checking availability___________________________________
               this.checking_roomAvailability();
+
+              //Information of number people______________________________________________________
+              for(this.countD = 1;this.countD < this.token_convert.personsCount;this.countD++){
+                      this.arr_details.push([ '', '', '' ]);
+              }
 
               //Converting the total price from PHP to USD_______________________________________
               /*this.subs = this.httpClient.get(`https://api.apilayer.com/exchangerates_data/convert?to=USD&from=PHP&amount=${this.total_price}`,
@@ -132,6 +144,10 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
   }
 
+  //SELECTED IMAGE___________________________________________________________
+  selected_img(numb: number): void{
+    this.img_selected = this.arr_img_transaction[numb];
+  }
 
   //Bttn of select payment methods "Gcash or paypal"________________________________________________________
   paypals: any = null;
@@ -228,7 +244,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                 }
               },
               onCancel: () => {
-                this.subs_paypal.unsubscribe();
+                if(this.subs_paypal != null) this.subs_paypal.unsubscribe();
               }
             });
             this.paypals.render(this.paypalElement.nativeElement);
@@ -241,10 +257,23 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
   //Home page bttn click___________________________________________________________________________
   goHome(): void{
-    this.subs = this.service.deleting_sessionAfter(this.token).subscribe(() => {
-      this.subs.unsubscribe();
-      window.location.href = 'http://localhost:4200/mc/home';
-    });
+    if(this.condition_paymentSection){
+      this.arrHandle = new Array<any>('exiting', 'Cancel transaction', 'Are you sure you want to cancel the transaction?');
+    }else{
+      this.yesNO(true);
+    }
+  }
+
+  //Yes or No For back home_______________________________________________
+  yesNO(condition: boolean): void{
+    this.arrHandle = new Array<any>();
+    if(condition){
+      this.subs = this.service.deleting_sessionAfter(this.token).subscribe(() => {
+        this.subs.unsubscribe();
+        //https://abpadilla.herokuapp.com/mc/home
+        window.location.href = 'http://localhost:4200/mc/home';
+      });
+    }
   }
 
   //Convert checkIn and out_______________________________________________________________________
@@ -283,9 +312,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   //ADD GUEST______________________________________________________________________________________
 
   //Guest details check bttn_______________________________________________________________
-  cond_check: boolean = false;
-  arr_details: Array<any> = new Array<any>();
-  countD: number = 1;
   GDetails_check(): void{
     this.arr_details = new Array<any>();
     if(!this.cond_check){
@@ -392,7 +418,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   }
 
   //Bttn make a request bttn when using "Gcash"____________________________________________________________________________
-  arrHandle: Array<any> = new Array<any>('');
   makeA_reqest(): void{
     this.subs = this.service.checking_user().subscribe((res1) => {
       this.subs.unsubscribe();
@@ -601,5 +626,14 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       str = splits[numbArr[0]]+' '+splits[numbArr[1]];
     }
     return str;
+  }
+
+  conditionPrint: boolean = true;
+  printing(): void{
+    this.conditionPrint = false;
+    setTimeout(() => {
+      window.print();
+      this.conditionPrint = true;
+    }, 200)
   }
 }

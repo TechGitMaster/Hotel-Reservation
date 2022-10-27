@@ -124,7 +124,7 @@ export class SchedulesComponent implements OnInit {
         this.message = 'success';
         this.data_AppointmentDeleted = ress.data;
       }else{
-        this.message = 'No deleted schedule ever recorded.';
+        this.message = 'Empty archive schedule.';
       }
 
     }, (err) => {
@@ -198,11 +198,11 @@ export class SchedulesComponent implements OnInit {
           let hours = parseInt(timeArr[0]);
           let minutes = parseInt(timeArr[1]);
 
-          //Add to array object________________________________________
+          //Add to array object schedule________________________________________
           this.goForCalendarAppointment.push(
             { 
               id: this.data_schedAppointment[count]._id,
-              Subject: "Appointment",
+              Subject: "Transaction ID: "+this.data_schedAppointment[count].transaction_ID,
               Description: `<span>Full name: ${this.data_schedAppointment[count].fullname}</span><br/>
                             <span>Email: ${this.data_schedAppointment[count].reserved_email}</span><br/>
                             <span>Number of guest: ${this.data_schedAppointment[count].numGuest}</span><br/>

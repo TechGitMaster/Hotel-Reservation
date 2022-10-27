@@ -23,11 +23,13 @@ export class RoomsComponent implements OnInit {
   header_txt!: Array<string>;
 
   clickedRadio_TypeRoom!: boolean;
+  clickedRadio_typeRoom2!: string;
   arr_image_tempo!: Array<string>;
   arr_image_blob!: Array<Blob>;
   arr_imageFinal!: Array<Array<string>>;
   arr_deletedImage!:  Array<string>;
   formGroup!: FormGroup;
+  formService!: FormGroup;
   conditionErr!: Array<any>;
   countShownumb_images!: number;
   countNumb_images!: number;
@@ -49,6 +51,7 @@ export class RoomsComponent implements OnInit {
     this.deleteRoom_condition = false;
     this.header_txt = new Array<string>("Add new Room", "In this section you can now add rooms any time you wanted. By hitting the submit button it will automatically posted in your room section");
     this.clickedRadio_TypeRoom = false;
+    this.clickedRadio_typeRoom2 = 'Studio';
     this.object_roomSelected = null;
     this.getAllRoomsF = new Array<room>();
     this.arr_image_tempo = new Array<string>();
@@ -71,7 +74,6 @@ export class RoomsComponent implements OnInit {
       pricePersons: ['']
     });
 
-
     //Get all rooms_____________________________________________________________
     this.getAllRooms();
   }
@@ -92,13 +94,15 @@ export class RoomsComponent implements OnInit {
     this.condition_ClickedseeReserved = !this.condition_ClickedseeReserved ? true:false;
   }
 
+  serviceSelectedCall: string = 'All';
+  roomSelectedCall: string = 'All';
   //Get all rooms______________________________________________________________________
   getAllRooms(): void{
     this.countRoom = '0';
     this.condition_ClickedseeAllRoom = false;
     this.messageForRooms = "Loading...";
     this.getRooms = new Array<room>();
-    this.subsgetRoom = this.service.getRoom(false).subscribe((res) => {
+    this.subsgetRoom = this.service.getRoom(false, this.serviceSelectedCall, this.roomSelectedCall).subscribe((res) => {
       this.subsgetRoom.unsubscribe();
 
       if(res.response === 'success'){
@@ -120,15 +124,74 @@ export class RoomsComponent implements OnInit {
     });
   }
 
+  changeService(event: any): void{
+    if(event.target.value === 'All' || event.target.value === 'Rental' || event.target.value === 'Staycation'){
+      this.serviceSelectedCall = event.target.value;
+    }else{
+      this.serviceSelectedCall = 'All';
+    }
+    this.recallRoomsSee();
+  }
+
+  changeRoom(event: any): void{
+    if(event.target.value === 'All' || event.target.value === 'Studio' || event.target.value === '1bedroom' || event.target.value === '2bedroom'){
+      this.roomSelectedCall = event.target.value;
+    }else{
+      this.roomSelectedCall = 'All';
+    }
+    this.recallRoomsSee();
+  }
+
+  recallRoomsSee(): void{
+    this.messageForRooms = "Loading...";
+    this.getAllRoomsF = new Array<room>();
+
+    if(!this.tellCondition_seeNot){
+      setTimeout(() => {
+        this.subsgetRoom = this.service.getRoom(true, this.serviceSelectedCall, this.roomSelectedCall).subscribe((res) => {
+          this.subsgetRoom.unsubscribe();
+    
+          if(res.response === 'success'){
+            this.getAllRoomsF = res.data;
+          }else{
+            this.messageForRooms = "No rooms available.";
+          }
+    
+        }, (err) => {
+          this.subsgetRoom.unsubscribe();
+          location.reload();
+        });      
+      }, 500);
+    }else{
+      setTimeout(() => {
+        this.subsgetRoom = this.service.getDeleted_room(this.serviceSelectedCall, this.roomSelectedCall).subscribe((res) => {
+          this.subsgetRoom.unsubscribe();
+    
+          if(res.response === 'success'){
+            this.getAllRoomsF = res.data;
+          }else{
+            this.messageForRooms = "Empty archive rooms.";
+          }
+    
+        }, (err) => {
+          this.subsgetRoom.unsubscribe();
+          location.reload();
+        });      
+      }, 500);
+    } 
+  }
+
   roomNot_allDeleted: boolean = false;
+  tellCondition_seeNot: boolean = false;
   getAllRoomsFromAll(){
+    this.tellCondition_seeNot = false;
     this.change_addRoom();
     this.roomNot_allDeleted = false;
     this.condition_ClickedseeAllRoom = true;
     this.messageForRooms = "Loading...";
     this.getAllRoomsF = new Array<room>();
     setTimeout(() => {
-      this.subsgetRoom = this.service.getRoom(true).subscribe((res) => {
+      this.subsgetRoom = this.service.getRoom(true, this.serviceSelectedCall, this.roomSelectedCall).subscribe((res) => {
         this.subsgetRoom.unsubscribe();
   
         if(res.response === 'success'){
@@ -145,6 +208,7 @@ export class RoomsComponent implements OnInit {
   }
 
   getAllDeletedRoom(): void{
+    this.tellCondition_seeNot = true;
     if(!this.roomNot_allDeleted){
       this.change_addRoom();
     }
@@ -153,13 +217,13 @@ export class RoomsComponent implements OnInit {
     this.messageForRooms = "Loading...";
     this.getAllRoomsF = new Array<room>();
     setTimeout(() => {
-      this.subsgetRoom = this.service.getDeleted_room().subscribe((res) => {
+      this.subsgetRoom = this.service.getDeleted_room(this.serviceSelectedCall, this.roomSelectedCall).subscribe((res) => {
         this.subsgetRoom.unsubscribe();
   
         if(res.response === 'success'){
           this.getAllRoomsF = res.data;
         }else{
-          this.messageForRooms = "No deleted rooms.";
+          this.messageForRooms = "Empty archive rooms.";
         }
   
       }, (err) => {
@@ -174,6 +238,10 @@ export class RoomsComponent implements OnInit {
     if(this.object_roomSelected == null){
       this.clickedRadio_TypeRoom = condition;
     }
+  }
+
+  clickRadio_room(roomType: string): void{
+    this.clickedRadio_typeRoom2 = roomType; 
   }
 
 
@@ -250,8 +318,8 @@ export class RoomsComponent implements OnInit {
   }
 
   //This is for displaying image_____________________________________________________________________
-  displayImage(index: number): void{
-    this.service.emitCall(new Array<any>("seeImage", index, this.arr_image_tempo));
+  displayImage(url: string): void{
+    this.service.emitCall(new Array<any>("seeImage", url));
   }
 
   //This is for uploading the image "1 by 1" to cloudinary and return the url of that image_____________________________________________________
@@ -294,7 +362,7 @@ export class RoomsComponent implements OnInit {
   //Create new room to database________________________________________________________________________________
   createNewRoom(): void{
     
-    this.service.createNew_room(this.formGroup, this.clickedRadio_TypeRoom, this.arr_imageFinal).subscribe((result) => {
+    this.service.createNew_room(this.formGroup, this.clickedRadio_TypeRoom, this.clickedRadio_typeRoom2, this.arr_imageFinal).subscribe((result) => {
       this.subs.unsubscribe();
 
       this.formGroup = this.formBuilder.group({
@@ -326,14 +394,14 @@ export class RoomsComponent implements OnInit {
 
 
   //This is create room bttn______________________________________________________________________
-  async createRoom(){
+  createRoom(): void{
     this.countNumb_images = 0;
     this.countNumb_deleteAndBlob = 0;
 
     if(this.arr_image_tempo.length > 0 && this.arr_image_tempo.length >= 5){
       
       //Success. This area gonna proceed to upload informations of room in database________________________________________________
-      let condition = await this.validationInput();
+      let condition = this.validationInput();
       if(condition){
         //Upload image to cloudinary_________________
         this.uploadImages();
@@ -478,6 +546,9 @@ export class RoomsComponent implements OnInit {
 
     let radio1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
     let radio2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
+    let radio3 = <HTMLInputElement>document.querySelector('#flexRadioDefault3');
+    let radio4 = <HTMLInputElement>document.querySelector('#flexRadioDefault4');
+    let radio5 = <HTMLInputElement>document.querySelector('#flexRadioDefault5');
 
     this.header_txt = new Array<string>("Deleted Room", "In this section you can now see the details of deleted room.");
                                                       
@@ -491,6 +562,7 @@ export class RoomsComponent implements OnInit {
     });
 
 
+    //For type of service_____________________________________________________
     this.clickedRadio_TypeRoom = this.object_roomSelected.typeRoom;
     if(!this.clickedRadio_TypeRoom){
       radio1.checked = true;
@@ -500,8 +572,20 @@ export class RoomsComponent implements OnInit {
       radio2.checked = true;
     }
 
+    //For type of room__________________________________________________________
+    radio3.disabled = false;
+    radio4.disabled = false;
+    radio5.disabled = false;
+    this.clickedRadio_typeRoom2 = this.object_roomSelected.typeRoom2;
+    if(this.clickedRadio_typeRoom2 === 'Studio')  radio3.checked = true;
+    if(this.clickedRadio_typeRoom2 === '1bedroom')  radio4.checked = true;
+    if(this.clickedRadio_typeRoom2 === '2bedroom')  radio5.checked = true;
+
     radio1.disabled = true;
     radio2.disabled = true;
+    radio3.disabled = true;
+    radio4.disabled = true;
+    radio5.disabled = true;
 
     //Images of room_______________________________________________________________________________________________
     for await (let img of this.object_roomSelected.imgArr){
@@ -528,6 +612,9 @@ export class RoomsComponent implements OnInit {
 
     let radio1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
     let radio2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
+    let radio3 = <HTMLInputElement>document.querySelector('#flexRadioDefault3');
+    let radio4 = <HTMLInputElement>document.querySelector('#flexRadioDefault4');
+    let radio5 = <HTMLInputElement>document.querySelector('#flexRadioDefault5');
 
     this.header_txt = new Array<string>("Edit Room", "In this section you can now edit the selected room. Be careful on what data you going to change on this section.");
 
@@ -541,6 +628,7 @@ export class RoomsComponent implements OnInit {
     });
 
 
+    //For type of service_____________________________________________________
     this.clickedRadio_TypeRoom = this.object_roomSelected.typeRoom;
     if(!this.clickedRadio_TypeRoom){
       radio1.checked = true;
@@ -550,8 +638,20 @@ export class RoomsComponent implements OnInit {
       radio2.checked = true;
     }
 
+    //For type of room__________________________________________________________
+    radio3.disabled = false;
+    radio4.disabled = false;
+    radio5.disabled = false;
+    this.clickedRadio_typeRoom2 = this.object_roomSelected.typeRoom2;
+    if(this.clickedRadio_typeRoom2 === 'Studio')  radio3.checked = true;
+    if(this.clickedRadio_typeRoom2 === '1bedroom')  radio4.checked = true;
+    if(this.clickedRadio_typeRoom2 === '2bedroom')  radio5.checked = true;
+
     radio1.disabled = true;
     radio2.disabled = true;
+    radio3.disabled = true;
+    radio4.disabled = true;
+    radio5.disabled = true;
 
     //Images of room_______________________________________________________________________________________________
     for(let img of this.object_roomSelected.imgArr){
@@ -571,6 +671,7 @@ export class RoomsComponent implements OnInit {
     this.deleteRoom_condition = false;
     this.object_roomSelected = null;
     this.clickedRadio_TypeRoom = false;
+    this.clickedRadio_typeRoom2 = 'Studio';
     this.arr_image_tempo = new Array<string>();
     this.arr_image_blob = new Array<Blob>();
     this.arr_deletedImage = new Array<string>();
@@ -579,11 +680,21 @@ export class RoomsComponent implements OnInit {
 
     let radio1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
     let radio2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
+    let radio3 = <HTMLInputElement>document.querySelector('#flexRadioDefault3');
+    let radio4 = <HTMLInputElement>document.querySelector('#flexRadioDefault4');
+    let radio5 = <HTMLInputElement>document.querySelector('#flexRadioDefault5');
+
     radio1.checked = true;
     radio2.checked = false;
+    radio3.checked = true;
+    radio4.checked = false;
+    radio5.checked = false;
 
     radio1.disabled = false;
     radio2.disabled = false;
+    radio3.disabled = false;
+    radio4.disabled = false;
+    radio5.disabled = false;
 
     this.header_txt = new Array<string>("Add new Room", "In this section you can now add rooms any time you wanted. By hitting the submit button it will automatically posted in your room section");
 

@@ -21,7 +21,7 @@
 
             <!-- __ROOMS__ -->
             <div style="display: flex;justify-content: center;margin-bottom: 10px;">
-                <button class="btn btn-danger btnSeeD" (click)="getAllDeletedRoom()">See deleted rooms</button>
+                <button class="btn btn-danger btnSeeD" (click)="getAllDeletedRoom()">Archive rooms</button>
             </div>
             <div *ngIf="getRooms.length > 0" style="display: flex;justify-content: center;">
                 <button class="btn btn-primary btnSeeA" (click)="getAllRoomsFromAll()">See all rooms</button>
@@ -39,7 +39,8 @@
                     <img [src]="data.imgArr[0][0]" style="width:100%;height:200px;" />
                     <div style="padding:15px;">
                         <p class="titleRoom">{{data.nameRoom}}</p>
-                        <span class="typeRoomCreated">{{ roomType(data.typeRoom) }}</span>
+                        <p class="typeRoomCreated">{{ roomType(data.typeRoom) }}</p>
+                        <span class="typeRoomCreated">{{ data.typeRoom2 }} type</span>
                     </div>
                     
                     <!--__reserved by none__-->
@@ -105,6 +106,17 @@
 
                     <div *ngIf="object_roomSelected.confirmNot === 'true'" style="margin-top:10px;">
 
+                        <div style="margin:10px 0px 5px 0px;">
+                            <div>
+                                <label class="labels" style="font-weight: bold;font-size: 16px;">Transaction ID:</label>
+                                <span style="margin-left:5px;font-size: 17px;">{{object_roomSelected.transaction_id}}</span>
+                            </div>
+                            <div>
+                                <label class="labels" style="font-weight: bold;font-size: 16px;">Payment Method:</label>
+                                <span style="margin-left:5px;font-size: 17px;">{{(object_roomSelected.paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</span>
+                            </div>
+                        </div>
+                        
                         <!-- __IMG TRANSACTION__ -->
                         <div *ngIf="object_roomSelected.paymentMethod !== 'payment2'" class="imageAddDiv">
                             <p class="paImageS" style="margin:0%;">Image transactions:</p>
@@ -116,6 +128,13 @@
                                 <!-- __IMAGES CREATE__ -->
                                 <div *ngFor="let url of object_roomSelected.image_transaction; index as indexes"  class="addImageR">
                                     <div class="addImageRTS">
+                                        <div class="disImageDelete">
+                                            <div class="deleteImage">
+                                                <div class="imgD">
+                                                    <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;" (click)="displayImage(url[0])" />
+                                                </div>
+                                            </div>
+                                        </div>
                                         <img [src]="url[0]" class="img-fluid" style="height:100%;" />
                                     </div>
                                 </div>
@@ -126,17 +145,6 @@
                         
                         <!-- __INFORMATION OF RESERVATION__ -->
                         <div style="margin-bottom:15px;">
-
-                            <div style="margin:10px 0px 5px 0px;">
-                                <div>
-                                    <label class="labels" style="font-weight: bold;font-size: 16px;">Transaction ID:</label>
-                                    <span style="margin-left:5px;font-size: 17px;">{{object_roomSelected.transaction_id}}</span>
-                                </div>
-                                <div>
-                                    <label class="labels" style="font-weight: bold;font-size: 16px;">Payment Method:</label>
-                                    <span style="margin-left:5px;font-size: 17px;">{{(object_roomSelected.paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</span>
-                                </div>
-                            </div>
 
                             <p class="paRInfoT">Information:</p>
 
@@ -303,7 +311,7 @@
                                 <div *ngIf="condition_to_image_click !== 'see'" class="disImageDelete">
                                     <div class="deleteImage">
                                         <div class="imgD">
-                                            <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;" (click)="displayImage(indexes)" />
+                                            <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;" (click)="displayImage(url)" />
                                         </div>
                                         <div class="deleteD">
                                             <img src="/assets/icon/trash_white.png" class="img-fluid" style="height:25px;" (click)="deleteImage(url, indexes)" />
@@ -337,8 +345,8 @@
                                 </div>
                             </div>
 
-                            <div class="fieldA" style="max-width:200px;">
-                                <label class="labels">Type of room:</label>
+                            <div class="fieldA" style="max-width:200px;padding-right:10px;border-right:2px solid rgb(33, 33, 34);">
+                                <label class="labels">Type of service:</label>
                                 <div style="display: flex;margin-top:7px;">
 
                                     <div class="form-check" style="margin-right:10px;"> 
@@ -347,18 +355,50 @@
                                         <label class="form-check-label" for="flexRadioDefault1">
                                             Rental
                                         </label>
-                                </div>
+                                    </div>
         
-                                <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                        (click)="clickRadio(true)">
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                            Staycation
-                                        </label>
-                                </div>    
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                                            (click)="clickRadio(true)">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                Staycation
+                                            </label>
+                                    </div> 
                                 </div>                          
                             </div>
+                            
+                            <div class="fieldA">
+                                <label class="labels">Type of room:</label>
+                                <div style="display: flex;margin-top:7px;">
+
+                                    <div class="form-check" style="margin-right:10px;"> 
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault3" 
+                                        (click)="clickRadio_room('Studio')" checked>
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                            Studio
+                                        </label>
+                                    </div>
+        
+                                    <div class="form-check" style="margin-right:10px;">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault4"
+                                            (click)="clickRadio_room('1bedroom')">
+                                            <label class="form-check-label" for="flexRadioDefault4">
+                                               1bedroom
+                                            </label>
+                                    </div>  
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault5"
+                                        (click)="clickRadio_room('2bedroom')">
+                                        <label class="form-check-label" for="flexRadioDefault5">
+                                           2bedroom
+                                        </label>
+                                    </div>  
+                                </div>    
+                            </div>
                         </div>
+
+
 
                         <p class="paAddtionInfo">Additional information:</p>
                         <textarea (input)="nameAndInfo()" class="form-control textareas" formControlName="addInfo"></textarea>
@@ -417,7 +457,7 @@
                         <button *ngIf="changingRoom_condition" class="btn btn-primary btnSaveDetails" style="color:black;background:#FFD700;" 
                         (click)="changeDetails()">Change details</button>
 
-                        <button class="btn btn-danger btnDelete" style="color:white;" (click)="moveRoom_Trash()">Move to trash</button>
+                        <button class="btn btn-danger btnDelete" style="color:white;" (click)="moveRoom_Trash()">Move to archive</button>
                     </div>
 
 
@@ -442,22 +482,45 @@
         <!-- __HEADER__ -->
         <div style="position: relative;">
             <img src="/assets/icon/arrow_back.png" class="img-fluid imgSeeAllRooms" (click)="backBttnss()" />
-            <p class="paSeeRoomsAll">{{!roomNot_allDeleted ? 'All the Room':'All deleted Room'}}</p>
+            <p class="paSeeRoomsAll">{{!roomNot_allDeleted ? 'All Rooms':'Archive Room'}}</p>
         </div>
         <div style="display: flex;justify-content: center;">
             <p class="painfoTitleMe" style="width:60%;margin:5px 0px 0px 0px;">
                 {{  !roomNot_allDeleted ?
                     'In this section you can now see all the rooms you created. feel free to click the edit button if you want edit the details of the room.':
-                    'In this section you can now see all the deleted room. If you want to retrieve or delete permanently the room just click the buttons.'
+                    'In this section you can now see the archive rooms. If you want to retrieve or delete permanently the room just click the buttons.'
                 }}</p>
         </div>  
 
-        <!-- __No Rooms__ -->
-        <div *ngIf="getAllRoomsF.length == 0">
-            <p class="noRooms" style="margin-top:30px;">{{messageForRooms}}</p>
+        <!--______Action______-->
+        <div style="margin-top:20px;display: flex;">
+            <div>
+                <p style="margin:0px 0px 5px 0px;">Type of service:</p>
+                <select (change)="changeService($event)" class="form-select" aria-label="Default select example">
+                    <option selected>All</option>
+                    <option>Rental</option>
+                    <option>Staycation</option>
+                  </select>                  
+            </div>
+
+            <div style="margin-left:10px;">
+                <p style="margin:0px 0px 5px 0px;">Type of room:</p>
+                <select (change)="changeRoom($event)" class="form-select" aria-label="Default select example">
+                    <option selected>All</option>
+                    <option>Studio</option>
+                    <option>1bedroom</option>
+                    <option>2bedroom</option>
+                  </select>                  
+            </div>
         </div>
 
-        <div class="row" style="margin-top:20px;display: flex;justify-content: center;">
+        <!-- __No Rooms__ -->
+        <div *ngIf="getAllRoomsF.length == 0">
+            <p class="noRooms" style="margin-top:20px;">{{messageForRooms}}</p>
+        </div>
+
+        <!--___ROOM____-->
+        <div class="row" style="margin-top:10px;">
             
             <!--__Room1 section__-->
             <div *ngFor="let data of getAllRoomsF; index as indexes" [ngClass]="[  
@@ -465,7 +528,8 @@
                 <img [src]="data.imgArr[0][0]" style="width:100%;height:200px;" />
                 <div style="padding:15px;">
                     <p class="titleRoom">{{data.nameRoom}}</p>
-                    <span class="typeRoomCreated">{{ roomType(data.typeRoom) }}</span>
+                    <p class="typeRoomCreated">{{ roomType(data.typeRoom) }}</p>
+                    <span class="typeRoomCreated">{{ data.typeRoom2 }} type</span>
                 </div>
                 
                 <!--__reserved by none__-->

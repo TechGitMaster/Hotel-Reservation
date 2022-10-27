@@ -17,6 +17,15 @@ const inboxes_column_user = require('../databases/inboxes_user_column')('user_pe
 const admin_calendarsched = require('../databases/sched_column')('admin_calendarsched');
 const admin_user_reservation = require('../databases/rooms_column')('admin_user_reservation');
 
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.USER_MAIL,
+        pass: process.env.PASSWORD_MAIL
+    }
+});
+
 //Saving appointment and contact us more mail_____________________________________
 router.get('/inboxSaving_user', middleware_user, (req, res) => {
     const email = req.condition ? req.email: '';
@@ -25,60 +34,8 @@ router.get('/inboxSaving_user', middleware_user, (req, res) => {
     var _id = mongoose.Types.ObjectId();
 
     if(email !== ''){
-        new inboxes_column_user({
-            fullname: req.query.fullname,
-            email: email,
-            reserved_email: req.query.reserved_email,
-            numGuest: req.query.numGuest,
-            contact_num: req.query.contact_num,
-            message: req.query.message,
-            dateArrival: req.query.dateArrival,
-            timeDate: req.query.timeDate,
-            acceptedNot: 'new',
-            newNot: true,
-            deleteNot: false,
-            guest_member: req.query.guest_member,
-            transaction_ID: req.query.transaction_ID
-        }).save().then(async (data) => {
-            inbox_col_save(req, res, arr_tem, _id, data._id, email);
-        });
-    }else{
-        inbox_col_save(req, res, arr_tem, _id, '', email);
-    }
-
-});
-
-async function inbox_col_save(req, res, arr_tem, _id, data, email){
-    for await(let tell of arr_tem){
-        if(tell === 'appointments_message'){
-
-            await new inbox_col({
-                _id: _id,
-                usermail_id: '',
-                fullname: req.query.fullname,
-                email: email === '' ? req.query.reserved_email: email,
-                reserved_email: 'Bot message',
-                numGuest: '',
-                contact_num: '',
-                message: `New appointment request. Transaction ID: ${req.query.transaction_ID}.`,
-                dateArrival: '',
-                timeDate: req.query.timeDate,
-                favorite: false,
-                acceptedNot: 'new',
-                appointmentNot: tell,
-                newNot: true,
-                folderName: 'inbox',
-                deleteNot: 'false'
-            }).save().then(() => {
-                res.json({ response: 'success' });
-            });
-
-        }else{
-            var _ids = mongoose.Types.ObjectId();
-
-            await new inbox_col({
-                _id: _ids,
-                usermail_id: data,
+        if(arr_tem[0] !== 'inquery'){
+            new inboxes_column_user({
                 fullname: req.query.fullname,
                 email: email,
                 reserved_email: req.query.reserved_email,
@@ -87,17 +44,118 @@ async function inbox_col_save(req, res, arr_tem, _id, data, email){
                 message: req.query.message,
                 dateArrival: req.query.dateArrival,
                 timeDate: req.query.timeDate,
-                favorite: false,
                 acceptedNot: 'new',
-                appointmentNot: tell,
                 newNot: true,
-                folderName: 'inbox',
+                deleteNot: false,
                 guest_member: req.query.guest_member,
-                transaction_ID: req.query.transaction_ID,
-                deleteNot: 'false'
-            }).save();
+                transaction_ID: req.query.transaction_ID
+            }).save().then(async (data) => {
+                inbox_col_save(req, res, arr_tem, _id, data._id, email);
+            });
+        }else{
+            inbox_col_save(req, res, arr_tem, _id, '', email);
         }
+    }else{
+        inbox_col_save(req, res, arr_tem, _id, '', email);
     }
+
+});
+
+async function inbox_col_save(req, res, arr_tem, _id, data, email){
+    if(arr_tem[0] !== 'inquery'){
+        //For appointment____________________________________________
+        for await(let tell of arr_tem){
+            if(tell === 'appointments_message'){
+    
+                await new inbox_col({
+                    _id: _id,
+                    usermail_id: '',
+                    fullname: req.query.fullname,
+                    email: email === '' ? req.query.reserved_email: email,
+                    reserved_email: 'Bot message',
+                    numGuest: '',
+                    contact_num: '',
+                    message: `New appointment request. Transaction ID: ${req.query.transaction_ID}.`,
+                    dateArrival: '',
+                    timeDate: req.query.timeDate,
+                    favorite: false,
+                    acceptedNot: 'new',
+                    appointmentNot: tell,
+                    newNot: true,
+                    folderName: 'inbox',
+                    deleteNot: 'false'
+                }).save().then(() => {
+                    sendEmail(res, req.query.transaction_ID, 'Appointment', email === '' ? req.query.reserved_email: email)
+                });
+    
+            }else{
+                var _ids = mongoose.Types.ObjectId();
+    
+                await new inbox_col({
+                    _id: _ids,
+                    usermail_id: data,
+                    fullname: req.query.fullname,
+                    email: email,
+                    reserved_email: req.query.reserved_email,
+                    numGuest: req.query.numGuest,
+                    contact_num: req.query.contact_num,
+                    message: req.query.message,
+                    dateArrival: req.query.dateArrival,
+                    timeDate: req.query.timeDate,
+                    favorite: false,
+                    acceptedNot: 'new',
+                    appointmentNot: tell,
+                    newNot: true,
+                    folderName: 'inbox',
+                    guest_member: req.query.guest_member,
+                    transaction_ID: req.query.transaction_ID,
+                    deleteNot: 'false'
+                }).save();
+            }
+        }
+    }else{
+        //For inquery___________________________________________________
+        var _ids = mongoose.Types.ObjectId();
+    
+        await new inbox_col({
+            _id: _ids,
+            usermail_id: data,
+            fullname: req.query.fullname,
+            email: email,
+            reserved_email: req.query.reserved_email,
+            numGuest: req.query.numGuest,
+            contact_num: req.query.contact_num,
+            message: req.query.message,
+            dateArrival: req.query.dateArrival,
+            timeDate: req.query.timeDate,
+            favorite: false,
+            acceptedNot: 'new',
+            appointmentNot: arr_tem[0],
+            newNot: true,
+            folderName: 'inbox',
+            guest_member: req.query.guest_member,
+            transaction_ID: req.query.transaction_ID,
+            deleteNot: 'false'
+        }).save().then(() =>{
+            sendEmail(res, '', 'Inquery', req.query.reserved_email)
+        });
+    }
+}
+
+
+//send email to user__________________________________________________________
+function sendEmail(res, transaction_ID, condition, email){
+
+    const message = `New ${condition} request. ${ condition !== 'Inquery' ? `Transaction ID: ${transaction_ID}`:''}`
+
+    transporter.sendMail({
+        from: email,
+        to: 'abpadillamail@gmail.com',
+        subject: `${condition} request`,
+        text: message
+    }, (err, info) => {});
+
+    res.json({ response: 'success' });
 }
 
 
@@ -140,7 +198,7 @@ function middleware_user(req, res, next){
 router.post('/getCountsDashboard', middleware_admin, async (req, res) => {
     const { date } = req.body;
 
-    const login_log = await data_login.find().count();
+    const login_log = await data_login.find({ admin: "not-admin" }).count();
     const appointment_log = await inbox_col.find({ acceptedNot: 'new', appointmentNot: 'appointment', deleteNot: 'false' }).count();
     const calendarsched_log = await admin_calendarsched.find({ date: date }).count();
     const reservation_log = await admin_user_reservation.find({ delete_admin: 'false', confirmNot: 'new' }).count();

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
@@ -21,6 +22,17 @@ const notification_db = require('../databases/notification_column');
 const notification_col = notification_db('user_notification');
 const notification_click_col = notification_db('user_notification_click');
 
+
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.USER_MAIL,
+        pass: process.env.PASSWORD_MAIL
+    }
+});
+
+
 //Save reservation request made by user___________________________________________________
 router.post('/saveReservation', middleware_user, async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
@@ -43,8 +55,6 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 }
 
                 //Checking if room is already reserved____________________________________________________________________
-
-                
                 if(condition){
         
                     const roomdata = await rooms_column.findOne({ _id: room_id });
@@ -58,6 +68,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 
                             img_room: room_img,
                             name_room: room_name,
+                            typeRoom2: roomdata.typeRoom2,
                             
                             defaultPrice: roomdata.defaultPrice,
                             paymentMethod: paymentMethod,
@@ -105,7 +116,18 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                                 guest_member: '',
                                 transaction_ID: ''
                             }).save().then(() => {
-                                res.json({ response: 'success' });
+
+                                //Send gmail to admin________________________________________________________
+                                const message = `New reservation request. Transaction ID: ${transcation_id}.`;
+                                transporter.sendMail({
+                                    from: email,
+                                    to: process.env.USER_MAIL,
+                                    subject: 'Reservation request',
+                                    text: message
+                                }, (err, info) => {});
+
+                                res.json({ response: 'success'});
+
                             });
                         });
                     }else{
@@ -136,6 +158,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
 
                 img_room: room_img,
                 name_room: room_name,
+                typeRoom2: roomdata.typeRoom2,
                 
                 defaultPrice: roomdata.defaultPrice,
                 paymentMethod: paymentMethod,
@@ -205,7 +228,18 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                         guest_member: '',
                         transaction_ID: ''
                     }).save().then(() => {
-                        res.json({ response: 'success' });
+                        
+                        //Send gmail to admin________________________________________________________
+                        const message = `The room already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`;
+                        transporter.sendMail({
+                            from: email,
+                            to: process.env.USER_MAIL,
+                            subject: 'Paid staycation room',
+                            text: message
+                        }, (err, info) => {});
+
+                        res.json({ response: 'success'});
+
                     });
                 });
             });
@@ -290,7 +324,7 @@ router.post('/getReservation', middleware_user, async (req, res) => {
             case 'trash':
                 count = await reservation_column.find({ delete_admin: 'tempoDelete' }).count();
                 data = await reservation_column.find({ delete_admin: 'tempoDelete' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
-                message = 'No deleted reservation ever recorded.';
+                message = 'Empty archive reservation.';
             break;
         }
     }
@@ -385,7 +419,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
                             { $set: { number: numbers, clicked: true } }).then(() => {
 
                             //send mail to the user_______________________________________
-                            res.json({ response: 'success'});
+                            sendEmail(res, data.transaction_id, 'accepted', data.email)
                         });
                     }); 
 
@@ -417,7 +451,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
                     { $set: { number: numbers, clicked: true } }).then(() => {
 
                     //send mail to the user_______________________________________
-                    res.json({ response: 'success'});
+                    sendEmail(res, data.transaction_id, 'declined', data.email)
                 });
             }); 
 
@@ -425,6 +459,22 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
     }
 
 });
+
+//send email to user__________________________________________________________
+function sendEmail(res, transaction_ID, condition, email){
+
+    const message = `Your reservation request is ${condition} by the admin. Transaction ID: ${transaction_ID}.`
+
+    transporter.sendMail({
+        from: process.env.USER_MAIL,
+        to: email,
+        subject: 'Reservation message',
+        text: message
+    }, (err, info) => {});
+
+    res.json({ response: 'success'});
+
+}
 
 
 //Canceling the reservation request____________________________________________________________
@@ -521,13 +571,22 @@ router.post('/cancelReservation', middleware_user, async (req, res) => {
                     guest_member: '',
                     transaction_ID: ''
                 }).save().then(() => {
-                    res.json({ response: 'success' });
+
+                    //Send gmail to admin________________________________________________________
+                    const message = `The user is cancel the reservation. Transaction ID: ${data.transaction_id}`;
+                    transporter.sendMail({
+                        from: email,
+                        to: process.env.USER_MAIL,
+                        subject: 'Reservation message',
+                        text: message
+                    }, (err, info) => {});
+
+                    res.json({ response: 'success'});
                 }); 
             });
         }
     });
 });
-
 
 //retrieve Reservation________________________________________________________________
 router.post('/retrieve_Reservation', middleware_user, async (req, res) => {
@@ -632,7 +691,7 @@ router.post('/deleteReservation_final', (req, res) => {
 
 //TEMPORARY________________________________________________________________________
 router.get('/temporary', (req, res) => {
-    rooms_column.updateOne({ _id: "6336f34f6cf85bd07368da9c" }, { $set: {
+    rooms_column.updateOne({ _id: "6356155740436850705fda1f" }, { $set: {
         paymentMethod: "",
         account_id: "",
         checkin_date: "",
@@ -651,7 +710,6 @@ router.get('/temporary', (req, res) => {
 
         confirmNot: 'false'
     } }).then(() => {
-        //send email to user that the admin accept the request__________________________________________
         res.json({ response: 'success' });
     });
 });

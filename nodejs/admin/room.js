@@ -57,7 +57,7 @@ router.post('/uploadImage', async (req, res) => {
 //Create new Room____________________________________________________________________________________
 router.post('/createNewRoom', (req, res) => {
 
-    const { nameRoom, addInfo, defaultPrice, goodPersons, pricePersons, typeRoom, imgArr } = req.body;
+    const { nameRoom, addInfo, defaultPrice, goodPersons, pricePersons, typeRoom, typeRoom2, imgArr } = req.body;
     new rooms_column({
         nameRoom: nameRoom,
         addInfo: addInfo,
@@ -65,6 +65,7 @@ router.post('/createNewRoom', (req, res) => {
         goodPersons: goodPersons,
         pricePersons: pricePersons,
         typeRoom: typeRoom,
+        typeRoom2: typeRoom2,
         imgArr: imgArr,
 
         paymentMethod: '',
@@ -98,13 +99,26 @@ router.post('/createNewRoom', (req, res) => {
 //Getting room_____________________________________________________________________________________
 router.post('/getRooms', middleware_admin, async (req, res) => {
 
-    const { condition } = req.body;
+    const { condition, serviceSelectedCall, roomSelectedCall } = req.body;
     let datas = [];
-    let tempo = await rooms_column.count({ delete_room: 'false'});
+    let tempo = null;
 
     if(condition){
-        datas = await rooms_column.find({ delete_room: 'false'}).sort({ createdAt: 'descending' });
+        if(serviceSelectedCall === 'All' && roomSelectedCall === 'All'){
+            tempo = await rooms_column.count({ delete_room: 'false'});
+            datas = await rooms_column.find({ delete_room: 'false'}).sort({ createdAt: 'descending' });   
+        }else if(serviceSelectedCall === 'All'){
+            tempo = await rooms_column.count({ delete_room: 'false', typeRoom2: roomSelectedCall});
+            datas = await rooms_column.find({ delete_room: 'false', typeRoom2: roomSelectedCall}).sort({ createdAt: 'descending' });
+        }else if(roomSelectedCall === 'All'){
+            tempo = await rooms_column.count({ delete_room: 'false', typeRoom: ( serviceSelectedCall === 'Rental' ? false: true )});
+            datas = await rooms_column.find({ delete_room: 'false', typeRoom: ( serviceSelectedCall === 'Rental' ? false: true )}).sort({ createdAt: 'descending' });
+        }else{
+            tempo = await rooms_column.count({ delete_room: 'false', typeRoom: ( serviceSelectedCall === 'Rental' ? false: true ), typeRoom2: roomSelectedCall, });
+            datas = await rooms_column.find({ delete_room: 'false', typeRoom: ( serviceSelectedCall === 'Rental' ? false: true ), typeRoom2: roomSelectedCall, }).sort({ createdAt: 'descending' });   
+        }
     }else{
+        tempo = await rooms_column.count({ delete_room: 'false'});
         if(tempo < 2){
             datas = await rooms_column.find({ delete_room: 'false'}).sort({ createdAt: 'descending' }).skip(0).limit(2);
         }else{
@@ -122,9 +136,22 @@ router.post('/getRooms', middleware_admin, async (req, res) => {
 
 //Getting deleted room________________________________________________________________________________________
 router.post('/getdeleteRoom', middleware_admin, async (req, res) => {
-    const data = await rooms_column.find({ delete_room: 'true' }).sort({ createdAt: 'descending' });
-    if(data.length > 0){
-        res.json({ response: 'success', data: data });
+    const { serviceSelectedCall, roomSelectedCall } = req.body;
+
+    let datas = null;
+
+    if(serviceSelectedCall === 'All' && roomSelectedCall === 'All'){
+        datas = await rooms_column.find({ delete_room: 'true'}).sort({ createdAt: 'descending' });   
+    }else if(serviceSelectedCall === 'All'){
+        datas = await rooms_column.find({ delete_room: 'true', typeRoom2: roomSelectedCall}).sort({ createdAt: 'descending' });
+    }else if(roomSelectedCall === 'All'){
+        datas = await rooms_column.find({ delete_room: 'true', typeRoom: ( serviceSelectedCall === 'Rental' ? false: true )}).sort({ createdAt: 'descending' });
+    }else{
+        datas = await rooms_column.find({ delete_room: 'true', typeRoom: ( serviceSelectedCall === 'Rental' ? false: true ), typeRoom2: roomSelectedCall }).sort({ createdAt: 'descending' });   
+    }
+
+    if(datas.length > 0){
+        res.json({ response: 'success', data: datas });
     }else{
         res.json({ response: 'not-have' });
     }
@@ -147,11 +174,25 @@ router.get('/getRoomLanding', async (req, res) => {
 });
 
 //Getting all rooms to show to landing page______________________________________________________________
-router.get('/getRoomAll', async (req, res) => {
-    const data = await rooms_column.find({ delete_room: 'false'}, { _id: 1, nameRoom: 1, addInfo: 1, defaultPrice: 1, goodPersons: 1, pricePersons: 1,
-        typeRoom: 1, imgArr: 1, confirmNot: 1});
-    if(data.length > 0){
-        res.json({ response: 'success', data: data });
+router.post('/getRoomAll', async (req, res) => {
+    const { serviceSelectedCall, roomSelectedCall } = req.body;
+    const jsData = { _id: 1, nameRoom: 1, addInfo: 1, defaultPrice: 1, goodPersons: 1, pricePersons: 1, typeRoom: 1, typeRoom2: 1, imgArr: 1, confirmNot: 1};
+
+    let datas = null;
+    let rooms_DataF = await rooms_column.find({ delete_room: 'false'}, jsData).sort({ createdAt: 'descending' });  
+
+    if(serviceSelectedCall === 'All' && roomSelectedCall === 'All'){
+        datas = await rooms_column.find({ delete_room: 'false'}, jsData).sort({ createdAt: 'descending' });   
+    }else if(serviceSelectedCall === 'All'){
+        datas = await rooms_column.find({ delete_room: 'false', typeRoom2: roomSelectedCall}, jsData).sort({ createdAt: 'descending' });
+    }else if(roomSelectedCall === 'All'){
+        datas = await rooms_column.find({ delete_room: 'false', typeRoom: ( serviceSelectedCall === 'Rental' ? false: true )}, jsData).sort({ createdAt: 'descending' });
+    }else{
+        datas = await rooms_column.find({ delete_room: 'false', typeRoom: ( serviceSelectedCall === 'Rental' ? false: true ), typeRoom2: roomSelectedCall}, jsData).sort({ createdAt: 'descending' });   
+    }
+
+    if(datas.length > 0 || rooms_DataF.length > 0){
+        res.json({ response: 'success', data: datas, rooms_DataF: rooms_DataF });
     }else{
         res.json({ response: 'no-data' }); 
     }

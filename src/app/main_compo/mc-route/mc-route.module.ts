@@ -18,6 +18,8 @@ import { ArchiveComponent } from '../account/archive/archive.component';
 import { DetailsComponent } from '../account/details/details.component';
 import { PaymentComponent } from '../payment/payment.component';
 
+import { NgImageSliderModule } from 'ng-image-slider';
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -33,10 +35,11 @@ import { PaymentComponent } from '../payment/payment.component';
     DetailsComponent,
     PaymentComponent
   ],
-  imports: [
+  imports: [ 
     CommonModule,
     McRouteRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgImageSliderModule
   ],
   providers: [ McGuardGuard ]
 })

@@ -50,6 +50,7 @@ export interface schedAppointment{
     message: string,
     timeDate: string,
     date: string,
+    transaction_ID: string,
     appointmentNot: boolean
 }
 
@@ -81,6 +82,7 @@ export interface room{
     goodPersons: string,
     pricePersons: string,
     typeRoom: boolean,
+    typeRoom2: string,
     imgArr: Array<Array<string>>,
 
     account_id: string,
@@ -107,6 +109,7 @@ export interface reservation{
 
     img_room: Array<string>,
     name_room: string,
+    typeRoom2: string,
 
     defaultPrice: string,
     paymentMethod: string,
@@ -138,6 +141,7 @@ export interface getRoomsLandpage{
     goodPersons: string,
     pricePersons: string,
     typeRoom: boolean,
+    typeRoom2: string,
     imgArr: Array<Array<string>>,
     confirmNot: string,
     Left_Or_Right: string

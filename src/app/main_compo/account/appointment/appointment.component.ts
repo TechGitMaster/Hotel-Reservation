@@ -85,6 +85,15 @@ export class AppointmentComponent implements OnInit {
 
 
   //Click radio bttn__________________________________________________________________________
+  chnageR(event: any): void{
+    var nomalizeSelected = event.target.value.charAt(0).toLowerCase() + event.target.value.slice(1);
+    if(nomalizeSelected === 'pending' || nomalizeSelected === 'accepted' || nomalizeSelected === 'declined' || nomalizeSelected === 'canceled'){
+      this.clickRadio(nomalizeSelected);
+    }else{
+      this.clickRadio('pending');
+    }
+  }
+
   clickRadio(name: string): void{
     this.radioName = name;
     this.nomalizeSelected = this.radioName.charAt(0).toUpperCase() + this.radioName.slice(1);
@@ -141,7 +150,7 @@ export class AppointmentComponent implements OnInit {
       this.subs.unsubscribe();      
       if(result[0]){
         this.subs = this.service.cancelAppointment(this.arr_data[numb]._id, this.arr_data[numb].fullname, this.arr_data[numb].reserved_email,
-          this.date_converting()).subscribe((res) => { 
+          this.date_converting(), this.arr_data[0].transaction_ID).subscribe((res) => { 
             this.subs.unsubscribe();
 
             this.selected_condition = false;

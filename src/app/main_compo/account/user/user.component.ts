@@ -18,10 +18,12 @@ export class UserComponent implements OnInit {
   condition_menu: boolean = false;
   arrHandle: Array<any> = new Array<any>();
   conditionFixDiv: boolean = false;
-  condition_component: number = 1;
+  condition_component: number = 0;
 
   formGroup_newPassword!: FormGroup;
   errArrPassword!: Array<Array<any>>;
+  logoutCondition: boolean = false;
+  img_selected: string = '';
 
   ngOnInit(): void {
     this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""]);
@@ -36,12 +38,24 @@ export class UserComponent implements OnInit {
 
   //Getting call______________________________________________________________
   emitSubs!: Subscription;
+  emit_selectedImage!: Subscription;
   gettingCall(): void{
     this.emitSubs = this.service.emitSending.subscribe((result) => {
       this.emitSubs.unsubscribe();
+      this.emit_selectedImage.unsubscribe();
 
       this.conditionFixDiv = true;
       this.arrHandle = result;
+
+      this.gettingCall();
+    });
+
+    this.emit_selectedImage = this.service.selected_image.subscribe((data: any) => {
+      this.emitSubs.unsubscribe();
+      this.emit_selectedImage.unsubscribe();
+
+      this.img_selected = data;
+
 
       this.gettingCall();
     });
@@ -50,7 +64,17 @@ export class UserComponent implements OnInit {
   //Back emit call.. Yes or No_______________________________________________
   yesNO(condition: boolean): void{
     this.conditionFixDiv = false;
-    this.service.emitCallBack(new Array<any>(condition));
+    if(!this.logoutCondition){
+      this.service.emitCallBack(new Array<any>(condition));
+    }else{
+      if(condition){
+        this.cookieservice.deleteAll('/');
+        location.reload();
+      }else{
+        this.logoutCondition = false;
+        this.arrHandle = new Array<any>();
+      }
+    }
   }
 
 
@@ -74,8 +98,9 @@ export class UserComponent implements OnInit {
 
   //Logout_______________________________________________________________
   logout(): void{
-    this.cookieservice.deleteAll('/');
-    location.reload();
+    this.logoutCondition = true;
+    this.arrHandle = new Array<any>('yesNo', 'Logout', 'Are you sure you want to logout?');
+    this.conditionFixDiv = true;
   }
 
 

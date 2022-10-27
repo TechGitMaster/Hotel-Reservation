@@ -93,6 +93,7 @@ export class ReservationComponent implements OnInit {
         }
 
         this.dataReservationSelected = this.dataReservationAll[this.selectedNumbArr];
+        console.log(this.dataReservationSelected[0]);
 
       }else{
         this.strLoadingNothing = result.response;

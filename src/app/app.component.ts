@@ -58,6 +58,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   showSuccessfully_request!: boolean;
   handle_fullname!: string;
   handle_email!: string;
+  typeOfAccount_close: boolean = false;
 
   month_names: Array<string> = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 
   'Dec');
@@ -86,6 +87,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     private formBuilder: FormBuilder, private service: MainServiceService){} 
 
   ngOnInit(){
+    this.service.voided_appointment();
     this.showSuccessfully_request = false;
     this.condition_admin_user = false;
     this.condition_menu = false;
@@ -101,6 +103,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.menubar_icon = "/assets/icon/menu.png";
     this.handle_fullname = '';
     this.handle_email = '';
+
 
     this.count_0day = 0;
     this.timeAvailable = new Array<any>();
@@ -146,7 +149,8 @@ export class AppComponent implements OnInit, AfterViewInit{
       email: [''],
       numberguest: [''],
       contactnumber: [''],
-      letusknown: ['']
+      letusknown: [''],
+      time: ['']
     });
 
     this.formGroup_forgotPassword = this.formBuilder.group({
@@ -443,108 +447,109 @@ export class AppComponent implements OnInit, AfterViewInit{
   //Get not available time______________________________________________________________________
   availableTime(condition: boolean): void{
     this.timeAvailable = new Array<any>();
-
-    let doc = <HTMLSelectElement>document.querySelector('.ds_DF');
-    doc.selectedIndex = 0;
-    let doc2 = <HTMLSelectElement>document.querySelector('.ds_APM');
-    doc2.selectedIndex = condition ? 0:1;
-
-    this.finalAppointment_date = new Array<string>("", "am");
-    this.finalAppointment_date[1] = condition ? 'am':'pm';
-
-    this.array_time_available = new Array<any>();
-
-    this.subs = this.service.gettingTime(`${this.day_year_month_selected[1]} ${this.day_year_month_selected[0]} ${this.day_year_month_selected[2]}`).subscribe(async (result) => {
-    
-      this.subs.unsubscribe();
-      if(result.response === 'success'){
-        let time_tempos = new Array<any>();
-        if(condition){
-
-          //AM checking not available__________________________________________________
-          for await(let time of this.timeDate.AM){
-            let cond = true;
-
-            for await(let data of result.data){
-              let split = data.timeDate.split(',');
-              let split2 = split[0].split(' ');
-              if(split2[1] === 'am'){
-                if(time === data.time){
-                  cond = false;
-                  time_tempos.push([time, false]);
-                  break;
+    setTimeout(() => {
+      let doc = <HTMLSelectElement>document.querySelector('.ds_DF');
+      doc.selectedIndex = 0;
+      let doc2 = <HTMLSelectElement>document.querySelector('.ds_APM');
+      doc2.selectedIndex = condition ? 0:1;
+  
+      this.finalAppointment_date = new Array<string>("", "am");
+      this.finalAppointment_date[1] = condition ? 'am':'pm';
+  
+      this.array_time_available = new Array<any>();
+  
+      this.subs = this.service.gettingTime(`${this.day_year_month_selected[1]} ${this.day_year_month_selected[0]} ${this.day_year_month_selected[2]}`).subscribe(async (result) => {
+      
+        this.subs.unsubscribe();
+        if(result.response === 'success'){
+          let time_tempos = new Array<any>();
+          if(condition){
+  
+            //AM checking not available__________________________________________________
+            for await(let time of this.timeDate.AM){
+              let cond = true;
+  
+              for await(let data of result.data){
+                let split = data.timeDate.split(',');
+                let split2 = split[0].split(' ');
+                if(split2[1] === 'am'){
+                  if(time === data.time){
+                    cond = false;
+                    time_tempos.push([time, false]);
+                    break;
+                  }
                 }
               }
-            }
-
-            if(cond){
-              time_tempos.push([time, true]);
-            }
-          }
-
-          this.timeAvailable = time_tempos;
-        }else{
-
-
-          //PM checking not available____________________________________________________
-          
-          for await(let time of this.timeDate.PM){
-            let cond = true;
-
-            for await(let data of result.data){
-              let split = data.timeDate.split(',');
-              let split2 = split[0].split(' ');
-              if(split2[1] === 'pm'){
-                if(time === data.time){
-                  cond = false;
-                  time_tempos.push([time, false]);
-                  break;
-                }
+  
+              if(cond){
+                time_tempos.push([time, true]);
               }
             }
-
-            if(cond){
-              time_tempos.push([time, true]);
+  
+            this.timeAvailable = time_tempos;
+          }else{
+  
+  
+            //PM checking not available____________________________________________________
+            
+            for await(let time of this.timeDate.PM){
+              let cond = true;
+  
+              for await(let data of result.data){
+                let split = data.timeDate.split(',');
+                let split2 = split[0].split(' ');
+                if(split2[1] === 'pm'){
+                  if(time === data.time){
+                    cond = false;
+                    time_tempos.push([time, false]);
+                    break;
+                  }
+                }
+              }
+  
+              if(cond){
+                time_tempos.push([time, true]);
+              }
             }
-          }
-
-          //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
-          let arr_tempo = new Array<any>();
-          for await(let data of time_tempos){
-            let arr_time = data[0].split(':');
-            let date_num = parseInt(arr_time[0]);
-            if(date_num > 12){
-              arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, data[1]]);
-            }else{
-              arr_tempo.push([data[0], data[1]]);
+  
+            //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
+            let arr_tempo = new Array<any>();
+            for await(let data of time_tempos){
+              let arr_time = data[0].split(':');
+              let date_num = parseInt(arr_time[0]);
+              if(date_num > 12){
+                arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, data[1]]);
+              }else{
+                arr_tempo.push([data[0], data[1]]);
+              }
             }
-          }
-          this.timeAvailable = arr_tempo;
-
-        }
-      }else{
-        if(condition){
-          //AM________________________
-          for await(let data of this.timeDate.AM){
-            this.timeAvailable.push([data, true]);
+            this.timeAvailable = arr_tempo;
+  
           }
         }else{
-          //PM_______________________
-          //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
-          let arr_tempo = new Array<any>();
-          for await(let data of this.timeDate.PM){
-            let arr_time = data.split(':');
-            let date_num = parseInt(arr_time[0]);
-            if(date_num > 12){
-              arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, true]);
-            }else{
-              arr_tempo.push([data, true]);
+          if(condition){
+            //AM________________________
+            for await(let data of this.timeDate.AM){
+              this.timeAvailable.push([data, true]);
             }
+          }else{
+            //PM_______________________
+            //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
+            let arr_tempo = new Array<any>();
+            for await(let data of this.timeDate.PM){
+              let arr_time = data.split(':');
+              let date_num = parseInt(arr_time[0]);
+              if(date_num > 12){
+                arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, true]);
+              }else{
+                arr_tempo.push([data, true]);
+              }
+            }
+            this.timeAvailable = arr_tempo;
           }
-          this.timeAvailable = arr_tempo;
         }
-      }
-    });
+      });
+    }, 200);
   }
 
   //AM and PM click_______________________________________________________________
@@ -558,8 +563,12 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   //Click time____________________________________________________________________________
-  timeClick(numb: number): void{
-    this.finalAppointment_date[0] = this.finalAppointment_date[1] === 'am' ? this.timeDate.AM[numb]: this.timeDate.PM[numb];
+  timeClick(): void{
+    let AM = this.timeDate.AM.filter((time) => { return time == this.formGroup_setAppointment.value.time});
+    let PM = this.timeDate.PM.filter((time) => { return time == this.formGroup_setAppointment.value.time});
+    if(AM.length == 1 || PM.length == 1){
+      this.finalAppointment_date[0] = this.finalAppointment_date[1] === 'am' ? AM[0]: PM[0];
+    }
   }
 
 
@@ -802,7 +811,7 @@ export class AppComponent implements OnInit, AfterViewInit{
 
       this.subs.unsubscribe();
       
-      this.condition_clicked_signup = 'false';
+      this.condition_login_signup_clicked = "successCreated";
 
     }, (err) => console.log(err));
   }
@@ -843,7 +852,7 @@ export class AppComponent implements OnInit, AfterViewInit{
         });
 
       }else{
-        this.errAppointment[4] = ['!Please select time.', true];
+        this.errAppointment[4] = ['!Please select a time.', true];
       }
     }
   }
@@ -898,11 +907,12 @@ export class AppComponent implements OnInit, AfterViewInit{
   //ADD GUEST______________________________________________________________________________________
 
   //Guest details check bttn_______________________________________________________________
-  cond_check: boolean = false;
+  cond_check: boolean = true;
   arr_details!: Array<any>;
   countD: number = 1;
   countGuest!: number;
   textarea_details: string = '';
+  boolean_close: boolean = false;
   GDetails_check(): void{
     this.textarea_details = '';
     this.countGuest = parseInt(this.formGroup_setAppointment.value.numberguest);    
@@ -951,11 +961,17 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   //Selection guest count func__________________________________________
   numGuest_func(): void{
-    let doc = <HTMLInputElement>document.querySelector('.checkGuest');
-    doc.checked = false;
-    this.cond_check = false;
+    //let doc = <HTMLInputElement>document.querySelector('.checkGuest');
+    //doc.checked = false;
+    //this.cond_check = false;
     this.countD = 1;
     this.textarea_details = '';
+
+    this.countGuest = parseInt(this.formGroup_setAppointment.value.numberguest);    
+    this.arr_details = new Array<any>();
+    for(this.countD = 1;this.countD < this.countGuest;this.countD++){
+      this.arr_details.push([ '', '', '' ]);
+    }
   }
 
   //Checking appointment input field_______________________________________________

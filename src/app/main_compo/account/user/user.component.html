@@ -1,29 +1,39 @@
 <div style="min-height:100vh;background:#F2F3F6;padding: 0%;">
 
+    <!--_______________Image Selected_____________________-->
+    <div class="divFix" *ngIf="img_selected.length > 0">
+        <div style="position: absolute;right: 10px;top:10px;">
+            <img src="/assets/icon/x_Image.png" class="img-fluid" style="height:35px;cursor: pointer;" (click)="this.img_selected=''"/>
+        </div>
+        <div class="container" style="padding:0%;">
+            <img [src]="img_selected" class="img-fluid" style="height: 50%;" />
+        </div>
+    </div>
+    
     <!--_____________________EMIT CALL___________________________-->
     <div class="fixedDiv" *ngIf="conditionFixDiv">
 
         <!--___________________THIS IS FOR CHANGE PASSWORD______________________-->
-        <div *ngIf="arrHandle[0] === 'ChangePassAdmin'" style="display: flex;align-items: center;height:100%;">
+        <div *ngIf="arrHandle[0] === 'ChangePassAdmin'" style="padding:10px;display: flex;align-items: center;height:100%;">
             <div class="container chPass">
-                <p class="paX" (click)="conditionFixDiv = false">X</p>
-                <p class="paForgotPass">Change Password</p>
+                <p class="paX paX-font" (click)="conditionFixDiv = false">X</p>
+                <p class="paForgotPass paForgotPass-font">Change Password</p>
 
                 <div [formGroup]="formGroup_newPassword"  style="padding:0px 20px 10px 20px;margin-top:30px;">
                     <div style="margin-bottom:20px;">
-                        <input type="password" formControlName="currentPass" placeholder="Enter your current password" class="form-control forminputReg" />
+                        <input type="password" formControlName="currentPass" placeholder="Enter your current password" class="form-control forminputReg forminputReg-font" />
                         <div *ngIf="errArrPassword[0][0]">
                             <span class="paError">{{errArrPassword[0][1]}}</span>
                         </div>
                     </div>
                     <div style="margin-bottom:10px;">
-                        <input type="password" formControlName="newPass" placeholder="Enter your new password" class="form-control forminputReg" />
+                        <input type="password" formControlName="newPass" placeholder="Enter your new password" class="form-control forminputReg forminputReg-font" />
                         <div *ngIf="errArrPassword[1][0]">
                             <span class="paError">{{errArrPassword[1][1]}}</span>
                         </div>
                     </div>
 
-                    <button class="btn btn-primary passwordChange" (click)="changePassword()">Change</button>
+                    <button class="btn btn-primary passwordChange passwordChange-font" (click)="changePassword()">Change</button>
                 </div>
             </div>
 
@@ -96,7 +106,7 @@
     <div class="container-fluid naviclicked" *ngIf="condition_menu">
         <div class="container-fluid">
             <div class="container" style="display:flex;justify-content: space-between;">
-                <div class="conX" (click)="condition_menu = false">
+                <div class="conX conX-font" (click)="condition_menu = false">
                     <span>x</span>
                 </div>
                 <div class="divLogoCorner">
@@ -107,23 +117,23 @@
                 <div class="row">
                     <div class="col-lg-6 col-12">
                         <div class="divborder1">
-                            <div class="navclickable" (click)="burger_navigation('home')"><span style="cursor: pointer;">Home</span></div>
+                            <div class="navclickable navclickable-font" (click)="burger_navigation('home')"><span style="cursor: pointer;">Home</span></div>
                         </div>
                         <div class="divborder1">
-                            <div class="navclickable" (click)="burger_navigation('Facilities')"><span style="cursor: pointer;">Facilities</span></div>
+                            <div class="navclickable navclickable-font" (click)="burger_navigation('Facilities')"><span style="cursor: pointer;">Facilities</span></div>
                         </div>
                         <div class="divborder1">
-                            <div class="navclickable" (click)="burger_navigation('rooms')"><span style="cursor: pointer;">Rooms</span></div>
+                            <div class="navclickable navclickable-font" (click)="burger_navigation('rooms')"><span style="cursor: pointer;">Rooms</span></div>
                         </div>
                         <div class="divborder1">
-                            <div class="navclickable" (click)="burger_navigation('About')"><span style="cursor: pointer;">About</span></div>
+                            <div class="navclickable navclickable-font" (click)="burger_navigation('About')"><span style="cursor: pointer;">About</span></div>
                         </div>
                         <div class="divborder1">
-                            <div class="navclickable" (click)="burger_navigation('contact-us')"><span style="cursor: pointer;">Contact Us</span></div>
+                            <div class="navclickable navclickable-font" (click)="burger_navigation('contact-us')"><span style="cursor: pointer;">Contact Us</span></div>
                         </div>
 
                         <div class="divborder1">
-                            <div class="navclickable" (click)="condition_menu = false"><span style="cursor: pointer;">Your Account</span></div>
+                            <div class="navclickable navclickable-font" (click)="condition_menu = false"><span style="cursor: pointer;">Your Account</span></div>
                         </div>
                     </div>
 
@@ -148,11 +158,11 @@
 
             <!--___Menu bar___-->
             <div style="display: flex;align-items: center;">
-                <img src="/assets/icon/menu1.png" class="img-fluid" style="height: 40px;cursor: pointer;" (click)="condition_menu = true"/>
+                <img src="/assets/icon/menu1.png" class="img-fluid imgBurger" (click)="condition_menu = true"/>
             </div>
 
             <!--___Logo___-->
-            <img src="/assets/logo/logo.png" class="img-fluid" style="height: 100px;" />
+            <img src="/assets/logo/logo.png" class="img-fluid logo" />
         </div>
 
 
@@ -160,8 +170,8 @@
         <div style="padding-bottom: 40px;">
             <!--_____child header info______-->
             <div style="margin-bottom: 30px;">
-                <p class="paAcc">Account Setting</p>
-                <span class="paAccInfo">See all the information, transaction of your account.</span>
+                <p class="paAcc paAcc-font">Account Setting</p>
+                <span class="paAccInfo paAccInfo-font">See all the information, transaction of your account.</span>
             </div>
 
             <!--___SELECTION AND COMPONENT___-->
@@ -169,11 +179,11 @@
 
 
                 <!--________SELECTION__________-->
-                <div class="container compo_selection">
+                <div class="compo_selection">
 
                     <div class="selection" [ngStyle]="{'background': condition_component == 0 ? '#FEE2BB': ''}" (click)="navigation(0)">
                         <div style="display: flex;align-items: center;">
-                            <img src="/assets/icon/inbox_admin.png" class="img-fluid" style="max-height: 18px;" />
+                            <img src="/assets/icon/inbox_admin.png" class="img-fluid" style="height: 18px;" />
                         </div>
                         
                         <span class="paNavigation">Notification</span>
@@ -182,7 +192,7 @@
 
                     <div class="selection" [ngStyle]="{'background': condition_component == 1 ? '#FEE2BB': ''}" (click)="navigation(1)">
                         <div style="display: flex;align-items: center;">
-                            <img src="/assets/icon/appointment.png" class="img-fluid" style="max-height: 28px;" />
+                            <img src="/assets/icon/appointment.png" class="img-fluid" style="height: 28px;" />
                         </div>
                         
                         <span class="paNavigation">Appointment</span>
@@ -190,7 +200,7 @@
 
                     <div class="selection" [ngStyle]="{'background': condition_component == 2 ? '#FEE2BB': ''}" (click)="navigation(2)">
                         <div style="display: flex;align-items: center;">
-                            <img src="/assets/icon/reservation.png" class="img-fluid" style="max-height: 30px;" />
+                            <img src="/assets/icon/reservation.png" class="img-fluid" style="height: 30px;" />
                         </div>
                         
                         <span class="paNavigation">Reservation</span>
@@ -198,7 +208,7 @@
 
                     <div class="selection" [ngStyle]="{'background': condition_component == 3 ? '#FEE2BB': ''}" (click)="navigation(3)">
                         <div style="display: flex;align-items: center;">
-                            <img src="/assets/icon/archive.png" class="img-fluid" style="max-height: 28px;" />
+                            <img src="/assets/icon/archive.png" class="img-fluid" style="height: 28px;" />
                         </div>
                         
                         <span class="paNavigation">Archives</span>
@@ -206,20 +216,25 @@
 
                     <div class="selection" [ngStyle]="{'background': condition_component == 4 ? '#FEE2BB': ''}" (click)="navigation(4)">
                         <div style="display: flex;align-items: center;">
-                            <img src="/assets/icon/account_admin.png" class="img-fluid" style="max-height: 28px;" />
+                            <img src="/assets/icon/account_admin.png" class="img-fluid" style="height: 28px;" />
                         </div>
                         
                         <span class="paNavigation">Account details</span>
                     </div>
 
+                    <div class="selection bttnL" (click)="logout()">
+                        <div style="display: flex;align-items: center;">
+                            <img src="/assets/icon/logout.png" class="img-fluid" style="height: 28px;" />
+                        </div>
+                    </div>
 
-                    <button class="btn btn-primary bttn_logout" (click)="logout()">Logout</button>
+                    <button class="btn btn-primary bttn_logout bttn_logout-none" (click)="logout()">Logout</button>
 
                 </div>
 
 
                 <!--__________COMPONENT__________-->
-                <div class="container routers" style="padding:0%;">
+                <div class="routers" style="width:100%;padding:0%;">
                     <app-notification *ngIf="condition_component == 0"></app-notification>
                     <app-appointment *ngIf="condition_component == 1"></app-appointment>
                     <app-reservation *ngIf="condition_component == 2"></app-reservation>

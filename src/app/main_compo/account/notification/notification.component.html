@@ -2,8 +2,8 @@
     
     <!--____HEADER_____-->
     <div style="margin-bottom: 20px;">
-        <p class="paNoti">Notification</p>
-        <span>All your transaction message from the broker.</span>
+        <p class="paNoti paNoti-font">Notification</p>
+        <span class="mess">All your transaction message from the broker.</span>
     </div>
 
     
@@ -37,7 +37,7 @@
         <!--________CREATE DIV NOTIFICATION______________-->
         <div>
 
-            <p *ngIf="arr_Notification.length == 0" style="text-align: center;">
+            <p class="loading" *ngIf="arr_Notification.length == 0" style="text-align: center;">
                 {{loadingMessage}}
             </p>
 

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const middleware = require('./authorization');
@@ -12,9 +13,16 @@ const accepted_timeDate = db_column('accepted_MailTime');
 
 const db_column_inboxes = require('../databases/inboxes_column');
 const inbox_col = db_column_inboxes('admin_inbox');
-const favo_col = db_column_inboxes('admin_favorite');
-const accept_col = db_column_inboxes('admin_accepted');
-const trash_col = db_column_inboxes('admin_trash');
+
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.USER_MAIL,
+        pass: process.env.PASSWORD_MAIL
+    }
+});
+
 
 //Get appointment____________________________________________________________
 router.post('/getAppointments_user', middleware, async (req, res) => {
@@ -60,39 +68,33 @@ router.post('/getAppointments_user', middleware, async (req, res) => {
 
 //Cancel appointment________________________________________________________
 router.post('/cancelAppointment', middleware, async (req, res) => {
-    const { _id, fullname, email, date } = req.body;
+    const { _id, fullname, email, date, transaction_ID } = req.body;
 
     var id = mongoose.Types.ObjectId();
 
     calendar_sched_col.deleteOne({ usermail_id: _id }).then(() => {
         accepted_timeDate.deleteOne({ usermail_id: _id }).then(() => {
             inbox_col.updateOne({ usermail_id: _id }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                favo_col.updateOne({ usermail_id: _id }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                    accept_col.updateOne({ usermail_id: _id }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                        trash_col.updateOne({ usermail_id: _id }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                            appointment_col.updateOne({ _id: _id }, { $set: { acceptedNot: 'true false' } }).then(() => {
-                                //Send mail to admin______________________________________________________________
-                                new inbox_col({
-                                    _id: id,
-                                    usermail_id: '',
-                                    fullname: fullname,
-                                    email: email,
-                                    reserved_email: 'Bot message',
-                                    numGuest: '',
-                                    contact_num: '',
-                                    message: 'The user is cancel the appointment.',
-                                    dateArrival: '',
-                                    timeDate: date,
-                                    favorite: false,
-                                    acceptedNot: 'new',
-                                    appointmentNot: 'cancel_app',
-                                    newNot: true,
-                                    folderName: 'inbox'
-                                }).save().then(() => {
-                                    res.json({ response: 'success' });
-                                });
-                            });
-                        });
+                appointment_col.updateOne({ _id: _id }, { $set: { acceptedNot: 'true false' } }).then(() => {
+                    //Send mail to admin______________________________________________________________
+                    new inbox_col({
+                        _id: id,
+                        usermail_id: '',
+                        fullname: fullname,
+                        email: email,
+                        reserved_email: 'Bot message',
+                        numGuest: '',
+                        contact_num: '',
+                        message: 'The user is cancel the appointment. Transaction ID: '+transaction_ID,
+                        dateArrival: '',
+                        timeDate: date,
+                        favorite: false,
+                        acceptedNot: 'new',
+                        appointmentNot: 'cancel_app',
+                        newNot: true,
+                        folderName: 'inbox'
+                    }).save().then(() => {
+                        sendEmail(res, transaction_ID, email)
                     });
                 });
             });
@@ -100,6 +102,22 @@ router.post('/cancelAppointment', middleware, async (req, res) => {
     });
 
 });
+
+
+
+//send email to user__________________________________________________________
+function sendEmail(res, transaction_ID, email){
+    const message = `The Appointment request is cancelled by the user. Transaction ID: ${transaction_ID}`
+
+    transporter.sendMail({
+        from: email,
+        to: 'abpadillamail@gmail.com',
+        subject: 'Appointment message',
+        text: message
+    }, (err, info) => {});
+
+    res.json({ response: 'success'});
+}
 
 
 //Move to trash_______________________________________________________________________________________________________________

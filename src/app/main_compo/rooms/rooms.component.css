@@ -1,7 +1,7 @@
 .header{
-    background:url('/assets/image/463342.png') no-repeat center bottom fixed;
+    background:url('/assets/image/room_hotel21.jpg') no-repeat center bottom fixed;
     background-size:cover;
-    min-height:650px;
+    min-height:750px;
     padding:0px;
     display: flex;
     align-items: flex-end;
@@ -15,31 +15,40 @@
 
 .titletxt{
     font-family: inria_serif_bold;
-    font-size:40px;
     text-align: center;
     color:#F6F6F6;
     margin:0px;
 }
 
+.titletxt-font{
+    font-size:40px;
+}
+
 .titleinfo{
     font-family: inter_medium;
-    font-size:20px;
     color:#DAD6D6;
     text-align: center;
     margin:0px 0px 10px 0px;
 }
 
+.titleinfo-font{
+    font-size:20px;
+}
+
 .paMakeReservation{
     margin:0px;
     font-family: inria_serif_bold;
-    font-size:30px;
     color:gold;
     margin:0px 0px 10px 0px;
     text-align: center;
 }
 
+.paMakeReservation-font{
+    font-size:30px;
+}
+
 .reservationDiv{
-    max-width: 1020px;
+    max-width: 900px;
     background:white;
     border-radius:10px;
     padding:20px;
@@ -47,22 +56,23 @@
 
 .roomstxt{
     font-family: inria_serif_bold;
-    font-size: 55px;
     color:#493B3B;
     margin:0%;
+}
+
+.roomstxt-font{
+    font-size: 55px;
 }
 
 .roomsinfo{
-    width:50%;
     font-family: inter_regular;
-    font-size: 18px;
     color:#493B3B;
     margin:0%;
 }
 
-.inforooms{
-    display: flex;
-    align-items: center;
+.roomsinfo-font{
+    width:50%;
+    font-size: 18px;
 }
 
 .textareas{
@@ -78,17 +88,25 @@
 
 .titleroom{
     font-family: inter_regular;
-    font-size: 33px;
     color: black;
+}
+
+.titleroom-font{
+    font-size: 30px;
+}
+
+.titleroomtxt-font{
+    font-size: 16px;
 }
 
 .titleroomtxt{
     font-family: inter_regular;
-    font-size: 16px;
     color: #2E3137;
 }
 
 .inforooms{
+    display: flex;
+    align-items: center;
     font-family: inter_regular;
     font-size: 16px;
     color: #2E3137;
@@ -96,51 +114,63 @@
 }
 
 .btnsreserveAppointment{
+    width: 70%;
     border:1px solid #2E3137;
     background:none;
     font-family: inter_regular;
-    font-size: 18px;
     color: black;
     padding:10px 30px 10px 30px;
     margin-top:15px;
 }
 
+
 .paNoAva{
-    margin:0px 0px 10px 0px;
     font-family: inter_bold;
     color:black;
+}
+
+.paNoAva-font{
+    margin:0px 0px 10px 0px;
     font-size:25px;
 }
 
+
 .paNoAvaInfo{
-    margin: 0px 0px 30px 0px;
     font-family: inter_regular;
-    font-size:20px;
     color:black;
     max-width: 90%;
+}
+
+.paNoAvaInfo-font{
+    margin: 0px 0px 30px 0px;
+    font-size:20px;
 }
 
 .bttnContacts{
     width:70%;
     border-radius:20px;
-    font-size:18px;
     font-family: inter_regular;
     background:#FFD700;
     border:none;
     color:black;
 }
 
+.bttnContacts-font{
+    font-size:18px;
+}
+
 .divMakeReservation{
     max-width: 200px;
-    padding:10px 10px 10px 10px;
+    padding:10px;
     background:#EFF1F5;
-    margin-right:10px;
+    margin:5px 10px 5px 0px;
     position: relative;
 }
 
 .btnReserve{
     width:100%;
     height:100%;
+    padding:20px;
     border-radius: 10px;
     background:gold;
     color:black;
@@ -165,4 +195,245 @@
     opacity: 0;
     position: absolute;
     left:0%;
+}
+
+.container-noRoom{
+    padding:50px 50px 20px 50px;
+}
+
+.container-Room{
+    margin-top:60px;
+}
+
+.contain-IfoRoom{
+    width:100%;
+    padding:0px 20px 0px 30px;
+}
+
+.containOurRoomsA{
+    padding:60px 0px 30px 0px;
+}
+
+/*992px for middle col-lg*/
+@media (max-width:992px){
+    .header{
+        background:url('/assets/image/room_hotel21.jpg') no-repeat center bottom fixed;
+        background-size:cover;
+        min-height:750px;
+        padding:0px;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .titletxt-font{
+        font-size:35px;
+    }
+
+    .titleinfo-font{
+        font-size:18px;
+    }
+
+    .paMakeReservation-font{
+        font-size:28px;
+    }
+
+    .roomstxt-font{
+        font-size: 50px;
+    }
+
+    .roomsinfo-font{
+        width:90%;
+        font-size: 16px;
+    }
+
+    .container-Room{
+        margin-top:50px;
+    }
+
+    .contain-IfoRoom{
+        width:100%;
+        padding:0%;
+    }
+
+    .titleroom-font{
+        font-size: 28px;
+    }
+    
+    .titleroomtxt-font{
+        font-size: 16px;
+    }
+    
+    .btnsreserveAppointment{
+        min-width: 100%;
+        border:1px solid #2E3137;
+        background:none;
+        font-family: inter_regular;
+        color: black;
+        padding:10px 30px 10px 30px;
+        margin-top:15px;
+    }
+}
+
+
+/*768px for small col-sm*/
+@media (max-width: 775px){
+    .header{
+        background:url('/assets/image/room_hotel21.jpg') no-repeat center bottom fixed;
+        background-size:cover;
+        min-height:850px;
+        padding:0px;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .titletxt-font{
+        font-size:30px;
+    }
+
+    .titleinfo-font{
+        font-size:16px;
+    }
+
+    .paMakeReservation-font{
+        font-size:23px;
+    }
+
+    .divMakeReservation{
+        max-width: 150px;
+        padding:5px;
+        background:#EFF1F5;
+        margin:5px 10px 5px 0px;
+        position: relative;
+    }
+
+    .selectS{
+        width:100%;
+        background: none;
+        border:none;
+        padding:10px 10px 10px 0px;
+        font-size:15px;
+    }
+
+    .roomstxt-font{
+        font-size: 40px;
+    }
+
+    .containOurRoomsA{
+        padding:30px 0px 30px 0px;
+    }
+
+    .roomsinfo-font{
+        width:90%;
+        font-size: 15px;
+    }
+
+    .paNoAva-font{
+        margin:0px 0px 5px 0px;
+        font-size:22px;
+    }
+
+    .paNoAvaInfo-font{
+        margin: 0px 0px 25px 0px;
+        font-size:17px;
+    }
+
+    .bttnContacts-font{
+        font-size:17px;
+    }
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+
+    .header{
+        background:url('/assets/image/room_hotel21.jpg') no-repeat center bottom fixed;
+        background-size:cover;
+        min-height:750px;
+        padding:0px;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .titletxt-font{
+        font-size:25px;
+    }
+
+    .titleinfo-font{
+        font-size:15px;
+    }
+
+    .paMakeReservation-font{
+        font-size:20px;
+    }
+
+    .divMakeReservation{
+        max-width: 130px;
+        padding:5px;
+        background:#EFF1F5;
+        margin:5px 10px 5px 0px;
+        position: relative;
+    }
+
+    .selectS{
+        width:100%;
+        background: none;
+        border:none;
+        padding:10px 10px 10px 0px;
+        font-size:15px;
+    }
+
+    
+    .btnReserve{
+        width:100%;
+        height:100%;
+        padding:10px;
+        border-radius: 10px;
+        background:gold;
+        color:black;
+        border:none;
+        font-family: inter_semibold;
+        font-size:14px;
+    }
+
+    .roomstxt-font{
+        font-size: 30px;
+    }
+
+    .containOurRoomsA{
+        padding:20px 0px 30px 0px;
+    }
+
+    .titleroom-font{
+        font-size: 22px;
+    }
+    
+    .titleroomtxt-font{
+        font-size: 15px;
+    }
+
+    .textareas{
+        width:100%;
+        height:130px;
+        resize: none;
+        border:none;
+        font-size:15px;
+    }
+
+    .container-noRoom{
+        padding:50px 20px 50px 20px;
+    }
+
+    .paNoAva-font{
+        margin:0px 0px 5px 0px;
+        font-size:20px;
+    }
+
+    .paNoAvaInfo-font{
+        margin: 0px 0px 20px 0px;
+        font-size:17px;
+    }
+
+    .bttnContacts-font{
+        font-size:15px;
+    }
 }

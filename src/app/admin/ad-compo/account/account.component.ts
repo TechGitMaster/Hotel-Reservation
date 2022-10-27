@@ -46,4 +46,8 @@ export class AccountComponent implements OnInit {
   changePass(): void{
     this.service.openCall(new Array<any>("ChangePassAdmin"));
   }
+
+  addAccount(): void{
+    this.service.account_emitter();
+  }
 }

@@ -85,6 +85,14 @@ export class ReservationComponent implements OnInit {
 
 
   //Click radio bttn__________________________________________________________________________
+  chnageR(event: any): void{
+    var nomalizeSelected = event.target.value.charAt(0).toLowerCase() + event.target.value.slice(1);
+    if(nomalizeSelected === 'pending' || nomalizeSelected === 'accepted' || nomalizeSelected === 'declined' || nomalizeSelected === 'canceled'){
+      this.clickRadio(nomalizeSelected);
+    }else{
+      this.clickRadio('pending');
+    }
+  }
   clickRadio(name: string): void{
     this.radioName = name;
     this.nomalizeSelected = this.radioName.charAt(0).toUpperCase() + this.radioName.slice(1);
@@ -178,6 +186,7 @@ export class ReservationComponent implements OnInit {
   clickBack_selected(): void{
     if(this.condition_delete){
       this.selected_condition = false;
+      this.condition_ShowUpdate = false;
       setTimeout(() => {
         let rad1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
         let rad2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
@@ -311,4 +320,19 @@ export class ReservationComponent implements OnInit {
     }
   }
   
+  //________PRINTING___________
+  printing_condition: boolean = false;
+  printing(): void{
+    this.printing_condition = true;
+    setTimeout(() => {
+      window.print();
+      this.printing_condition = false;
+    }, 200);
+  }
+
+  //________IMG SELECTED__________
+  img_selected(image: string): void{
+    this.service.emit_selectedImage(image);
+  }
+
 }

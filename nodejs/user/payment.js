@@ -145,7 +145,7 @@ router.post('/getRoom_payment', async (req, res) => {
 
     if(data.confirmNot === 'false'){
         res.json({ response: 'success', data: {nameRoom: data.nameRoom, img_first: data.imgArr[0][0],
-            defaultPrice: data.defaultPrice, goodPersons: data.goodPersons, pricePersons: data.pricePersons }});
+            defaultPrice: data.defaultPrice, goodPersons: data.goodPersons, pricePersons: data.pricePersons, typeRoom2: data.typeRoom2 }});
     }else{
         res.json({ response: 'already' });
     }

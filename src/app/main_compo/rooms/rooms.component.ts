@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { MainServiceService } from 'src/app/main_serivce/main-service.service';
 import { getRoomsLandpage } from '../../objects';
+import { NgImageSliderComponent } from 'ng-image-slider';
 
 @Component({
   selector: 'app-rooms',
@@ -29,27 +30,78 @@ export class RoomsComponent implements OnInit {
 
   txt_availableNot!: string;
   roomName_arr!: Array<any>;
+
+  imageObject: Array<object> = [{
+    image: '/assets/image/roomsample.png',
+    thumbImage: '/assets/image/roomsample.png',
+  },
+  {
+    image: '/assets/image/roomsample.png',
+    thumbImage: '/assets/image/roomsample.png',
+  },
+];
+
   ngOnInit(): void {
+    this.getRooms();
+  }
+
+
+
+  //SECLECTION ______________________________________________________________________________________________
+  serviceSelectedCall: string = 'All';
+  roomSelectedCall: string = 'All';
+  changeService(event: any): void{
+    if(event.target.value === 'All' || event.target.value === 'Rental' || event.target.value === 'Staycation'){
+      this.serviceSelectedCall = event.target.value;
+    }else{
+      this.serviceSelectedCall = 'All';
+    }
+    this.getRooms();
+  }
+
+  changeRoom(event: any): void{
+    if(event.target.value === 'All' || event.target.value === 'Studio' || event.target.value === '1bedroom' || event.target.value === '2bedroom'){
+      this.roomSelectedCall = event.target.value;
+    }else{
+      this.roomSelectedCall = 'All';
+    }
+    this.getRooms();
+  }
+
+
+
+  //GET THE ROOMS________________________________________________________________________________________________________
+  getRooms(): void{
     this.checkIn_mess = 'Check in';
     this.checkOut_mess = 'Check out';
     this.persons_count = -1;
     this.room_selected = '';
     this.txt_availableNot = 'Select room';
 
+    let doc = <HTMLSelectElement>document.querySelector('.selectSS');
+    doc.value = 'Person';
+
     this.final_converted_data = new Array<getRoomsLandpage>();
     this.condition_have_room = false;
     this.roomName_arr = new Array<any>();
 
     //GET ALL ROOM___________________________________________________________
-    this.subs = this.service.getAllRoom().subscribe(async (result) => {
+    this.subs = this.service.getAllRoom(this.serviceSelectedCall, this.roomSelectedCall).subscribe(async (result) => {
       this.subs.unsubscribe();
       this.condition_have_room = true;
         if(result.response === 'success'){
 
           let condition = false;
-          for await(let data of result.data){
 
-            if(data.confirmNot === 'false') this.roomName_arr.push([data._id, data.nameRoom]);
+          //Room_________________________________________________
+          for await(let data of result.data){
+            let arr_img = new Array<object>();
+            for await(let imgI of data.imgArr){
+              arr_img.push( {
+                image: imgI[0],
+                thumbImage: imgI[0],
+              });
+            }
 
             let objs = {
               _id: data._id,
@@ -59,7 +111,8 @@ export class RoomsComponent implements OnInit {
               goodPersons: data.goodPersons,
               pricePersons: data.pricePersons,
               typeRoom: data.typeRoom,
-              imgArr: data.imgArr,
+              typeRoom2: data.typeRoom2,
+              imgArr: arr_img,
               confirmNot: data.confirmNot,
               Left_Or_Right: !condition ? 'right':'left'
             } as getRoomsLandpage;
@@ -68,7 +121,14 @@ export class RoomsComponent implements OnInit {
             this.final_converted_data.push(objs);
           }   
 
+          //Room name_________________________________________________________
+          for await(let data of result.rooms_DataF){
+            if(data.confirmNot === 'false' && data.typeRoom) this.roomName_arr.push([data._id, data.nameRoom]);
+          }
+
           this.txt_availableNot = this.roomName_arr.length > 0 ? 'Select room':'No Available room';
+        }else{
+          this.txt_availableNot = "No Available room"   
         }
     }); 
 
@@ -78,9 +138,11 @@ export class RoomsComponent implements OnInit {
     let day = (this.date.getDate()) < 10 ? `0${(this.date.getDate())}`:(this.date.getDate());
     this.minCheckIn = `${this.date.getFullYear()}-${month}-${day}`;
     this.minCheckOut = '';
-
-
   }
+
+  asd(num: number): void{
+  }
+
 
   //Check-in bttn______________________________________________
   checkIn(event: any): void{
@@ -209,4 +271,5 @@ export class RoomsComponent implements OnInit {
       this.router.navigate(['/mc/contact-us']);
     }, 350);
   }
+
 }

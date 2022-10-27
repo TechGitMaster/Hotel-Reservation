@@ -171,7 +171,8 @@ export class FavoritesComponent implements OnInit {
       this.arr_selectedMail = new Array<any>(data.reserved_email !== 'Bot message' ? email: data.reserved_email, 
       `${date}, ${time}`, String(data.favorite), (data.appointmentNot === 'appointments_message' ? 'Appointment':
       (data.appointmentNot === 'inquery' ? 'Inquery Message': data.appointmentNot === 'reservation' ? 'Reservation':
-      data.appointmentNot === 'cancel_app' ? 'Cancel appointment': 'Cancel reservation')), 
+      data.appointmentNot === 'cancel_app' ? 'Cancel appointment': 
+      data.appointmentNot === 'void_app' ? 'Void appointment': 'Cancel reservation')), 
       data.fullname, (data.reserved_email === 'Bot message' ? email: data.reserved_email), 
       data.numGuest, data.contact_num, data.message, number, data.dateArrival);
 

@@ -18,18 +18,28 @@
     margin:0%;
 }
 
+.paInfo-font{
+    font-size:24px;
+}
+
 .paMess{
     font-family: inter_regular;
-    font-size:15px;
     color:rgb(47, 46, 46);
     margin:0px 0px 30px 0px;
 }
 
+.paMess-font{
+    font-size:15px;
+}
+
+
 .divIn{
     padding:10px;
     border-bottom: 1px solid rgb(202, 197, 197);
-    font-size:16px;
+}
 
+.divIn-font{
+    font-size:16px;
 }
 
 .cPass{
@@ -39,5 +49,45 @@
     border:none;
     font-family: inter_regular;
     padding:8px 20px 8px 20px;
+}
+
+.cPass-font{
     font-size: 14px;
+}
+
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+/*992px for middle col-lg*/
+@media (max-width:992px){}
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .paInfo-font{
+        font-size:20px;
+    }
+    
+    .paMess-font{
+        font-size:13px;
+    }
+
+    .divIn-font{
+        font-size:15px;
+    }
+}
+
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .paInfo-font{
+        font-size:17px;
+    }
+
+    .divIn-font{
+        font-size:14px;
+    }
+
+    .cPass-font{
+        font-size: 13px;
+    }
 }
