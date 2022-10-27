@@ -16,7 +16,7 @@
     "@angular-devkit/schematics": "^12.2.16",
     "@angular/animations": "~13.2.0",
     "@angular/cli": "^12.2.16",
-    "@angular/common": "~13.2.7",
+    "@angular/common": "~13.2.0",
     "@angular/compiler": "~13.2.0",
     "@angular/compiler-cli": "~13.2.0",
     "@angular/core": "~13.2.0",
@@ -67,7 +67,7 @@
   },
   "engines": {
     "node": "16.17.0",
-    "npm": "8.15.0"
+    "npm": "8.19.2"
   },
   "//this is when error occured": "autoprefixer: Replace color-adjust to print-color-adjust. The color-adjust shorthand is currently deprecated.",
   "overrides": {
