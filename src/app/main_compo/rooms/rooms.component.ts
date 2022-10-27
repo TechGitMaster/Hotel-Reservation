@@ -4,7 +4,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { MainServiceService } from 'src/app/main_serivce/main-service.service';
 import { getRoomsLandpage } from '../../objects';
-import { NgImageSliderComponent } from 'ng-image-slider';
 
 @Component({
   selector: 'app-rooms',
