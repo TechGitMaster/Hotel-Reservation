@@ -74,17 +74,20 @@
 
 .divScroll{
     width: 100%;
-    display: flex;
     border-radius: 10px;
     padding-bottom:10px;
 }
 
-.img_Gym{
-    height:220px;
+.divImg{
+    margin-left:10px;
     margin-right:10px;
-    border-radius: 10px;
+    margin-top:5px;
+    margin-bottom:5px;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:-1px 1px 5px black;
+    cursor:pointer;
 }
-
 
 
 /* ________________________@MEDIA DESIGN_________________________ */

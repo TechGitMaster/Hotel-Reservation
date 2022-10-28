@@ -142,7 +142,7 @@ export interface getRoomsLandpage{
     pricePersons: string,
     typeRoom: boolean,
     typeRoom2: string,
-    imgArr: Array<Array<string>>,
+    imgArr: any,
     confirmNot: string,
     Left_Or_Right: string
 }

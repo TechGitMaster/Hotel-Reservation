@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { MainServiceService } from 'src/app/main_serivce/main-service.service';
 import { getRoomsLandpage } from '../../objects';
+import { OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-rooms',
@@ -30,15 +31,39 @@ export class RoomsComponent implements OnInit {
   txt_availableNot!: string;
   roomName_arr!: Array<any>;
 
-  imageObject: Array<object> = [{
-    image: '/assets/image/roomsample.png',
-    thumbImage: '/assets/image/roomsample.png',
-  },
-  {
-    image: '/assets/image/roomsample.png',
-    thumbImage: '/assets/image/roomsample.png',
-  },
-];
+  customOptions: OwlOptions = {
+    loop: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    dots: true,
+    navSpeed: 1000,
+    autoplay: true,
+    autoplaySpeed: 1000,
+    autoplayTimeout: 5000,
+    autoplayMouseleaveTimeout: 5000,
+    autoplayHoverPause: true,
+    navText: ['', ''],
+    center: false,
+    lazyLoad: true,
+    slideBy: 'page',
+    autoHeight: true,
+    responsive: {
+      0: {
+        items: 1
+      },
+      400: {
+        items: 1
+      },
+      740: {
+        items: 1
+      },
+      940: {
+        items: 1
+      }
+    },
+    nav: false
+  };
 
   ngOnInit(): void {
     this.getRooms();
@@ -68,6 +93,22 @@ export class RoomsComponent implements OnInit {
   }
 
 
+  img_selected: string = '';
+  condition_move: boolean = false;
+  condition_down: boolean = false;
+  mouseDown(): void{
+    this.condition_down = true;
+  }
+  mouseMove(): void{
+    if(this.condition_down) this.condition_move = true;
+  }
+  selectedImage(parent_num: number, child_num: number): void{
+    if(!this.condition_move) {
+      this.img_selected = this.final_converted_data[parent_num].imgArr[child_num].image;
+    }
+    this.condition_move = false;
+    this.condition_down = false;
+  }
 
   //GET THE ROOMS________________________________________________________________________________________________________
   getRooms(): void{
@@ -94,9 +135,12 @@ export class RoomsComponent implements OnInit {
 
           //Room_________________________________________________
           for await(let data of result.data){
-            let arr_img = new Array<object>();
+            let arr_img = new Array<any>();
+            let count_num = 0;
             for await(let imgI of data.imgArr){
+              count_num += 1;
               arr_img.push( {
+                id: ''+count_num,
                 image: imgI[0],
                 thumbImage: imgI[0],
               });

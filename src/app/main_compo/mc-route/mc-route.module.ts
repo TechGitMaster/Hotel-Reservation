@@ -17,6 +17,8 @@ import { ReservationComponent } from '../account/reservation/reservation.compone
 import { ArchiveComponent } from '../account/archive/archive.component';
 import { DetailsComponent } from '../account/details/details.component';
 import { PaymentComponent } from '../payment/payment.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { PaymentComponent } from '../payment/payment.component';
   imports: [ 
     CommonModule,
     McRouteRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CarouselModule
   ],
   providers: [ McGuardGuard ]
 })

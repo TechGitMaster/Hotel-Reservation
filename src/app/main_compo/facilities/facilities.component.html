@@ -30,23 +30,41 @@
                         <p class="paFacilitiesG paFacilitiesG-font">Gym</p>
 
                         <div class="divScroll">
-                            <!--<ng-image-slider [lazyLoading]="true" [infinite]="true" [autoSlide]="5" [imageSize]="{ width:'50%', height:'230px' }" [images]="Image_Gym" #nav style="width: 100%;"></ng-image-slider>-->
+                            <owl-carousel-o [options]="customOptions">
+                                <ng-template carouselSlide *ngFor="let slide of Image_Gym; index as indexes" [id]="slide.id">
+                                    <div class="divImg" style="background: black;" (mousedown)="mouseDown()" (mousemove)="mouseMove()" (mouseup)="selectedImage(indexes, 1)">
+                                        <img [id]="slide.id" [src]="slide.image" class="img-fluid">
+                                    </div>
+                                </ng-template>
+                            </owl-carousel-o>
                         </div>
                     </div>
 
-                    <div lcass="col-12" style="margin-top:15px;">
+                    <div lcass="col-12">
                         <p class="paFacilitiesG paFacilitiesG-font">Game room</p>
 
                         <div class="divScroll">
-                            <!--<ng-image-slider [lazyLoading]="true" [infinite]="true" [autoSlide]="5" [imageSize]="{ width:'50%', height:'230px' }" [images]="Image_Ground" #nav style="width: 100%;"></ng-image-slider>-->
+                            <owl-carousel-o [options]="customOptions">
+                                <ng-template carouselSlide *ngFor="let slide of Image_Ground; index as indexes" [id]="slide.id">
+                                    <div class="divImg" style="background: black;" (mousedown)="mouseDown()" (mousemove)="mouseMove()" (mouseup)="selectedImage(indexes, 2)">
+                                        <img [id]="slide.id" [src]="slide.image" class="img-fluid">
+                                    </div>
+                                </ng-template>
+                            </owl-carousel-o>
                         </div>
                     </div>
 
-                    <div lcass="col-12" style="margin-top:15px;">
+                    <div lcass="col-12" >
                         <p class="paFacilitiesG paFacilitiesG-font">Swimming Pool</p>
 
                         <div class="divScroll">
-                          <!--  <ng-image-slider [lazyLoading]="true" [infinite]="true" [autoSlide]="5" [imageSize]="{ width:'50%', height:'230px' }" [images]="Image_Pool" #nav style="width: 100%;"></ng-image-slider>-->
+                            <owl-carousel-o [options]="customOptions">
+                                <ng-template carouselSlide *ngFor="let slide of Image_Pool; index as indexes" [id]="slide.id">
+                                    <div class="divImg" style="background: black;" (mousedown)="mouseDown()" (mousemove)="mouseMove()" (mouseup)="selectedImage(indexes, 3)">
+                                        <img [id]="slide.id" [src]="slide.image" class="img-fluid">
+                                    </div>
+                                </ng-template>
+                            </owl-carousel-o>
                         </div>
                     </div>
                 </div>
