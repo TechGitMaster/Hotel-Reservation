@@ -74,6 +74,7 @@ router.post('/updateReservation', (req, res) => {
 //Get the "admin_user_reservation" data________________________________________________________________
 router.post('/getReservation_user', middleware_user, async (req, res) => {
     const { skip, limit, radioCondition } = req.body;
+    const { email } = req.token;
 
     let count = null;
     
@@ -82,36 +83,36 @@ router.post('/getReservation_user', middleware_user, async (req, res) => {
 
     switch(radioCondition){
         case 'all':
-            count = await reservation_column.find({ delete_user: 'false', confirmNot: 'new' }).count();
-            data = await reservation_column.find({ delete_user: 'false', confirmNot: 'new'  })
+            count = await reservation_column.find({ email_id: email, delete_user: 'false', confirmNot: 'new' }).count();
+            data = await reservation_column.find({ email_id: email, delete_user: 'false', confirmNot: 'new'  })
                 .sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
                 
             message = 'No pending reservation request for now.';
         break;
         case 'accepted':
-            count = await reservation_column.find({ delete_user: 'false', $or: [{confirmNot: 'true'}] }).count();
-            data = await reservation_column.find({ delete_user: 'false', $or: [{confirmNot: 'true'}] })
+            count = await reservation_column.find({ email_id: email, delete_user: 'false', $or: [{confirmNot: 'true'}] }).count();
+            data = await reservation_column.find({ email_id: email, delete_user: 'false', $or: [{confirmNot: 'true'}] })
                 .sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
 
             message = 'No accepted reservation ever recorded.';
         break;
         case 'declined':
-            count = await reservation_column.find({ delete_user: 'false', confirmNot: 'false' }).count();
-            data = await reservation_column.find({ delete_user: 'false', confirmNot: 'false' })
+            count = await reservation_column.find({ email_id: email, delete_user: 'false', confirmNot: 'false' }).count();
+            data = await reservation_column.find({ email_id: email, delete_user: 'false', confirmNot: 'false' })
                 .sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
 
             message = 'No declined reservation ever recorded.';
         break;
         case 'canceled':
-            count = await reservation_column.find({ delete_user: 'false', confirmNot: 'true false' }).count();
-            data = await reservation_column.find({ delete_user: 'false', confirmNot: 'true false' })
+            count = await reservation_column.find({ email_id: email, delete_user: 'false', confirmNot: 'true false' }).count();
+            data = await reservation_column.find({ email_id: email, delete_user: 'false', confirmNot: 'true false' })
                 .sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
             
             message = 'No canceled reservation ever recorded.';
         break;
         case 'trash':
-            count = await reservation_column.find({ delete_user: 'tempoDelete' }).count();
-            data = await reservation_column.find({ delete_user: 'tempoDelete' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
+            count = await reservation_column.find({ email_id: email, delete_user: 'tempoDelete' }).count();
+            data = await reservation_column.find({ email_id: email, delete_user: 'tempoDelete' }).sort( { createdAt: 'descending' } ).skip(skip).limit(limit);
             message = 'No deleted reservation ever recorded.';
         break;
     }

@@ -132,7 +132,7 @@
 
 
 <!--______________________Login, Singup and Forgot password______________________-->
-<div class="container-fluid containerloginSignup" (click)="funcSignIn('false')" *ngIf="condition_clicked_signup === 'true'">
+<div class="container-fluid containerloginSignup" *ngIf="condition_clicked_signup === 'true'">
 
     <!--________LOG IN__________-->
     <div *ngIf="condition_login_signup_clicked === 'login'" class="logindiv" (click)="$event.stopPropagation()">
@@ -255,7 +255,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary passwordChange" (click)="changePassword()">{{changingTXT}}</button>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="changePassword()">{{changingTXT}}</button>
         </div>
     </div>
 
@@ -265,7 +265,7 @@
     <div *ngIf="condition_login_signup_clicked === 'successChange'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
         <div>
             <p class="paSuccessChange paSuccessChange-font">Successfully changing your password!</p>
-            <button class="btn btn-primary passwordChange" (click)="successChange()">Close</button>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="successChange()">Close</button>
         </div>
     </div>
 
@@ -274,7 +274,23 @@
     <div *ngIf="condition_login_signup_clicked === 'successCreated'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
         <div>
             <p class="paSuccessChange paSuccessChange-font">Successfully created Account!</p>
-            <button class="btn btn-primary passwordChange" (click)="condition_clicked_signup = 'false'">Close</button>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="funcSignIn('true')">Close</button>
+        </div>
+    </div>
+
+    <!--________Sorry to keep you waiting for payment login________-->
+    <div *ngIf="condition_login_signup_clicked === 'sorryToKeepWaiting'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
+        <div>
+            <p class="paSuccessChange paSuccessChange-font">Continue your reservation. Sorry to keep you waiting.</p>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="funcSignIn('false')">Close</button>
+        </div>
+    </div>
+
+    <!--________Admin condition if login fromn payment________-->
+    <div *ngIf="condition_login_signup_clicked === 'loginFromadmin'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
+        <div>
+            <p class="paSuccessChange paSuccessChange-font">Leave at payment section first before login for admin!</p>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="funcSignIn('false')">Close</button>
         </div>
     </div>
 

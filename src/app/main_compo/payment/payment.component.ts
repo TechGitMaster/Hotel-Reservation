@@ -32,15 +32,17 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   condition_expiredNot!: string;
   condition_paymentSection!: boolean;
   condition_paymentMethod!: string;
+  condition_alertAfterpayment: boolean = false;
   subs!: Subscription;
 
   data_room!: any;
   day_count_reservation!: number;
   day_checkInOut_convert!: string;
-  person_total!: number;
-  total_price_perDay!: number;
-  total_price!: number;
+  person_total!: any;
+  total_price_perDay!: any;
+  total_price!: any;
   textarea_details!: string;
+  price_room!: any;
   
   arr_img_transaction: Array<string> = new Array<string>();
   arr_blob_transaction: Array<any> = new Array<any>();
@@ -105,8 +107,11 @@ export class PaymentComponent implements OnInit, AfterViewInit {
               //Total price perday_________________________________
               this.total_price_perDay = Math.floor(this.data_room.defaultPrice * this.day_count_reservation);
               //Total price___________________________________
-              this.total_price = (parseInt(this.data_room.defaultPrice) + this.person_total) + this.total_price_perDay;
-
+              this.total_price = ((parseInt(this.data_room.defaultPrice) + this.person_total) + this.total_price_perDay).toFixed(2);
+              
+              this.price_room = ''+this.data_room.defaultPrice+'.00';
+              this.person_total = this.person_total.toFixed(2);
+              this.total_price_perDay = this.total_price_perDay.toFixed(2);
               this.arr_data_savingInfo[0] = this.token_convert.room_sh;
               this.arr_data_savingInfo[3] = this.token_convert.personsCount;
               this.arr_data_savingInfo[4] = this.person_total;
@@ -236,6 +241,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                         //Show payment details for downloading payments____________________________________ 
                         this.subs.unsubscribe();
                         this.condition_paymentSection = false;
+                        this.condition_alertAfterpayment = true;
                       });
                     });
                   }
@@ -275,6 +281,12 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         window.location.href = 'https://abpadilla.herokuapp.com/mc/home';
       });
     }
+  }
+
+  //Login bttn_____________________________________________________________
+  loginBttn(): void{
+    this.arrHandle[0] = '';
+    this.service.emit_loginFrompayment();
   }
 
   //Convert checkIn and out_______________________________________________________________________
@@ -492,6 +504,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
           //Show payment details for downloading payments____________________________________  
           this.subs.unsubscribe();
           this.condition_paymentSection = false; 
+          this.condition_alertAfterpayment = true;
         });
 
       }else{

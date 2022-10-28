@@ -254,7 +254,7 @@
                     <div class="row" style="padding:0%;margin-top:5px;">
 
                         <!--__filled information__-->
-                        <div class="col-6">
+                        <div [ngClass]="[!printing_condition ? 'col-6':'col-12']">
                             <div style="margin-top:10px;">
                                 
                                 <div class="row">
@@ -304,7 +304,7 @@
                         </div>
                         
                         <!--__details of reservation including "confirmation date"__-->
-                        <div class="col-6">
+                        <div [ngClass]="[!printing_condition ? 'col-6':'col-12']">
                             <div class="divDetails">
 
                                 <div style="display: flex;justify-content: center;">
@@ -356,7 +356,7 @@
 
                                     <div class="paDetailsMiddle">
                                         <span style="font-family: inter_medium !important;">Price</span>
-                                        <span>{{arrHandle[1].defaultPrice}}</span>
+                                        <span>{{arrHandle[1].defaultPrice}}.00</span>
                                     </div>
 
                                     <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">

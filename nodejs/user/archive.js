@@ -22,6 +22,7 @@ cloudinary.config({
 //Get data of notification, appointment and reservation_____________________________________________________________
 router.post('/get_dataArchive', middleware, async (req, res) => {
     const { skip, limit, radioCondition } = req.body;
+    const { email } = req.token;
 
     let count = 0;
     let data = [];
@@ -29,20 +30,20 @@ router.post('/get_dataArchive', middleware, async (req, res) => {
 
     switch(radioCondition){
         case "notification":
-            count = await notification_col.find({ deleteNot: 'delete' }).count();
-            data = await notification_col.find({ deleteNot: 'delete' }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+            count = await notification_col.find({ email_id: email, deleteNot: 'delete' }).count();
+            data = await notification_col.find({ email_id: email, deleteNot: 'delete' }).sort({ createdAt: -1 }).skip(skip).limit(limit);
             message = 'No deleted notification recorded.';
         break;
         
         case "appointment":
-            count = await appointment_col.find({ deleteNot: true }).count();
-            data = await appointment_col.find({ deleteNot: true }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+            count = await appointment_col.find({email_id: email,  deleteNot: true }).count();
+            data = await appointment_col.find({ email_id: email, deleteNot: true }).sort({ createdAt: -1 }).skip(skip).limit(limit);
             message = 'No deleted appointment request recorded.';
         break;
 
         case "reservation":
-            count = await reservation_column.find({ delete_user: 'tempoDelete' }).count();
-            data = await reservation_column.find({ delete_user: 'tempoDelete' }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+            count = await reservation_column.find({ email_id: email, delete_user: 'tempoDelete' }).count();
+            data = await reservation_column.find({ email_id: email, delete_user: 'tempoDelete' }).sort({ createdAt: -1 }).skip(skip).limit(limit);
             message = 'No deleted reservation request recorded.';
         break;
     }

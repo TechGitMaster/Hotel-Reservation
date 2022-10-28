@@ -682,7 +682,7 @@
     margin-top:5px;
 }
 
-.signUpbttn-font, .passwordChange{
+.signUpbttn-font, .passwordChange-font{
     font-size:18px;
 }
 
@@ -812,7 +812,7 @@
 }
 
 .paSuccessChange-font{
-    font-size:25px;
+    font-size:22px;
 }
 
 .divSuccesschangePass{
@@ -1166,11 +1166,11 @@
     }
 
     .paSuccessChange-font, .paSuccess-font{
-        font-size:18px;
+        font-size:17px;
     }
 
     .paForgot-font, .padontHave-font, .paCreate-font, .forminputLog-font, .paGoogle-font, .btnsubmitbttm-font, .loginbttn-font,
-    .forminputReg-font, .fontadminNot, .signUpbttn-font, .passwordChange, .btn-getOTP-font, .successBttn-font{
+    .forminputReg-font, .fontadminNot, .signUpbttn-font, .passwordChange-font, .btn-getOTP-font, .successBttn-font{
         font-size:15px;
     }
 }

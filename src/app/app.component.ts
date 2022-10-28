@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import {  NavigationEnd, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -59,6 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   handle_fullname!: string;
   handle_email!: string;
   typeOfAccount_close: boolean = false;
+  condition_fromPaymentLogin: boolean = false;
 
   month_names: Array<string> = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 
   'Dec');
@@ -319,13 +320,14 @@ export class AppComponent implements OnInit, AfterViewInit{
 
 
 
-  //The subscribe still running but it will only stop once the EventEmitter is emitting__________________________________
+  //The subscribe still running but it will only stop once the EventEmitter is emitting and start again__________________________________
   //not-found.components will give the EventEmitter a data_____________________________
   //Successfully send request will show when the EventEmitter activate______________________________
   subsEventEmitter!: Subscription;
   subsSuccessShow!: Subscription;
   subsComponent!: Subscription;
   subsNotexpired!: Subscription;
+  subsFromPayment!: Subscription;
   con_expired: boolean = false;
   callWaiting():void{
 
@@ -371,9 +373,21 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.callWaiting();
     });
 
+
+    //This is to login the user when from payment__________________________________
+    this.subsFromPayment = this.service.login_from_payment.subscribe(() => {
+      this.unsubscribe_Event();
+
+      this.condition_fromPaymentLogin = true;
+      this.funcSignIn('true');
+
+      this.callWaiting();
+    });
+
   }
 
   unsubscribe_Event(): void{
+    this.subsFromPayment.unsubscribe();
     this.subsSuccessShow.unsubscribe();
     this.subsEventEmitter.unsubscribe();
     this.subsComponent.unsubscribe();
@@ -615,7 +629,16 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
     ['email', false], ['password', false], ['gender', false], ['admin password', false]);
 
-    this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
+    this.formGroup_signup = this.formBuilder.group({
+      firstname:[''],
+      lastname:[''],
+      contactnumber:[''],
+      email:[''],
+      password:[''],
+      adminPassword: ['']
+    });
+    
+    this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);  
   }
 
   //Create One button__________________________________________________
@@ -639,16 +662,26 @@ export class AppComponent implements OnInit, AfterViewInit{
         if(result.response !== 'no-data' && result.response !== 'wrong-password'){
           var expiredDate = new Date();
           expiredDate.setDate( expiredDate.getDate() + 1 );
-          this.cookieservice.set('token', result.tokens, { expires: expiredDate, path: '/', sameSite: 'Strict'});
 
           //if not admin refresh the browser________________________________________________
           if(result.adminNot === 'admin') {
-            this.condition_admin_user = false;
-            this.condition_clicked_signup = 'false';
-
-            this.router.navigate(['/ad/admin']);
+            if(!this.condition_fromPaymentLogin){
+              this.cookieservice.set('token', result.tokens, { expires: expiredDate, path: '/', sameSite: 'Strict'});
+              this.condition_admin_user = false;
+              this.condition_clicked_signup = 'false';
+  
+              location.reload();
+              //this.router.navigate(['/ad/admin']);
+            }else{
+              this.condition_login_signup_clicked = 'loginFromadmin';
+            }
           }else {
-            location.reload();
+            this.cookieservice.set('token', result.tokens, { expires: expiredDate, path: '/', sameSite: 'Strict'});
+            if(!this.condition_fromPaymentLogin) {
+              location.reload();
+            }else{
+              this.condition_login_signup_clicked = 'sorryToKeepWaiting';
+            }
           };
 
         }else if(result.response === 'wrong-password'){
@@ -710,7 +743,11 @@ export class AppComponent implements OnInit, AfterViewInit{
                 this.subs.unsubscribe();
                 this.cookieservice.set('token', datas.tokens, { expires: expiredDate, path: '/', sameSite: 'Strict'});
                 //refresh browser________________________________________________
-                location.reload();
+                if(!this.condition_fromPaymentLogin) {
+                  location.reload();
+                }else{
+                  this.funcSignIn('false');
+                }
               });
             }else{
 
@@ -719,7 +756,11 @@ export class AppComponent implements OnInit, AfterViewInit{
                 this.subs.unsubscribe();
                 this.cookieservice.set('token', datas.tokens, { expires: expiredDate, path: '/', sameSite: 'Strict'});
                 //refresh browser________________________________________________
-                location.reload();
+                if(!this.condition_fromPaymentLogin) {
+                  location.reload();
+                }else{
+                  this.funcSignIn('false');
+                }
               });
             }
           });

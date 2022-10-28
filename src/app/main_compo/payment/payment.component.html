@@ -37,6 +37,18 @@
         </div>
     </div>
 
+    <!--________Alert for the user after payment________-->
+    <div class="fixedDiv" *ngIf="condition_alertAfterpayment">
+        <div class="container" style="height:100%;display: flex;align-items: center;justify-content: center;">
+            <div class="divSuccesschangePass" (click)="$event.stopPropagation()">
+                <div>
+                    <p class="paSuccessChange paSuccessChange-font">The session is expired. If you leave the page or refresh it you can't go back again. </p>
+                    <button class="btn btn-primary passwordChange passwordChange-font" (click)="condition_alertAfterpayment=false">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--_____________________POSITION FIXED LOADING PROGRESS___________________________-->
     <div class="fixedDiv" *ngIf="arrHandle[0] === 'progress'">
 
@@ -71,8 +83,9 @@
     <!--_______________________Show login first____________________________-->
     <div class="container-fluid containerloginSignup" *ngIf="arrHandle[0] === 'showing'" (click)="arrHandle[0] = ''">
         <div class="container divSuccesss" (click)="$event.stopPropagation()">
-            <p class="paSuccess">Login first before using gcash as payment method!</p>
-            <button class="btn btn-primary successBttn" (click)="arrHandle[0] = ''">Close</button>
+            <p class="paSuccess paSuccess-font">Login first before using gcash as payment method!</p>
+            <button class="btn btn-primary loginBttn successBttn-font" (click)="loginBttn()">Login</button>
+            <button class="btn btn-primary successBttn successBttn-font" (click)="arrHandle[0] = ''">Close</button>
         </div>
     </div>
 
@@ -373,7 +386,7 @@
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
                                 <span style="font-family: inter_semibold;">Price:</span>
-                                <span style="font-family: inter_regular;">php {{data_room.defaultPrice}}</span>
+                                <span style="font-family: inter_regular;">php {{price_room}}</span>
                             </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
@@ -545,7 +558,7 @@
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
                                             <span style="font-family: inter_medium !important;">Price:</span>
-                                            <span>php {{data_room.defaultPrice}}</span>
+                                            <span>php {{price_room}}</span>
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">

@@ -288,7 +288,7 @@
 
 .divDetails{
     min-height:100px;
-    background:#493D3D;
+    background-color:#493D3D;
     border-radius:10px;
     padding:20px;
 }
@@ -404,6 +404,26 @@
         min-height:100%;min-width:100%;position: absolute;
         display: block;
         opacity: 0.1;
+    }
+
+    .divDetails{
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        min-height:100px;
+        background-color:#493D3D !important;
+        border-radius:10px;
+        padding:20px;
+    }
+
+    .forminputs{
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        height:35px;
+        border-radius: 10px;
+        padding:10px;
+        font-size:15px;
+        font-family: inter_regular;
+        background:rgb(246, 246, 246);
     }
 }
 

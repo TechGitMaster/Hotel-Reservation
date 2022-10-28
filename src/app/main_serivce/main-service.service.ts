@@ -50,6 +50,7 @@ export class MainServiceService {
   showSuccess: EventEmitter<string> = new EventEmitter<string>();
   menubarComponent: EventEmitter<string> = new EventEmitter<string>();
   selected_image: EventEmitter<string> = new EventEmitter<string>();
+  login_from_payment: EventEmitter<any> = new EventEmitter<any>();
 
   emitsNotFound(): void{
     this.dataSTR.emit('notFound');
@@ -69,6 +70,10 @@ export class MainServiceService {
 
   emit_selectedImage(image: string): void{
     this.selected_image.emit(image);
+  }
+
+  emit_loginFrompayment(): void{
+    this.login_from_payment.emit('login');
   }
 
   checkingToken(): Observable<any>{

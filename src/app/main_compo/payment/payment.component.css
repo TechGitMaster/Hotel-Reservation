@@ -16,6 +16,17 @@
     position:fixed;
 }
 
+.divSuccesschangePass{
+    width:500px;
+    max-height:250px;
+    padding:20px;
+    background:white;
+    border-radius:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .divFix{
     width:100%;
     height:100vh;
@@ -26,6 +37,35 @@
     position: fixed;
     left:0%; top:0%;
 }
+
+.paSuccessChange{
+    margin-top:-5px;
+    font-family: inter_bold;
+    text-align: center;
+    color:#0063A8;
+    margin-bottom:15px;
+}
+
+.paSuccessChange-font{
+    font-size:22px;
+}
+
+.passwordChange{
+    width:100%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+}
+
+.passwordChange-font{
+    font-size:18px;
+}
+
 
 
 .havePopup{
@@ -240,23 +280,41 @@
 .paSuccess{
     margin-top:-5px;
     font-family: inter_bold;
-    font-size:20px;
     text-align: center;
-    margin-bottom:20px;
+    margin-bottom:10px;
     color:#0063A8;
+}
+
+.paSuccess-font{
+    font-size:20px;
 }
 
 .successBttn{
     width:100%;
     border-radius:20px;
-    font-size:17px;
     font-family: inter_medium;
     background:#FFD700;
     text-align: center;
     border:none;
     color:black;
     padding: 10px 0px 10px 0px;
-    margin-top:5px;
+    margin-top:10px;
+}
+
+.loginBttn{
+    width:100%;
+    border-radius:20px;
+    font-family: inter_medium;
+    border:2px solid black;
+    text-align: center;
+    color:black;
+    background:none;
+    padding: 10px 0px 10px 0px;
+    margin-top:10px;
+}
+
+.successBttn-font{
+    font-size:17px;
 }
 
 
@@ -830,6 +888,26 @@
         display: block;
         opacity: 0.1;
     }
+
+    .divDetails{
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        min-height:100px;
+        background-color:#493D3D !important;
+        border-radius:10px;
+        padding:20px;
+    }
+
+    .forminputs{
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        height:35px;
+        border-radius: 10px;
+        padding:10px;
+        font-size:15px;
+        font-family: inter_regular;
+        background:rgb(246, 246, 246);
+    }
 }
 
 /*992px for middle col-lg*/
@@ -981,6 +1059,14 @@
     }
 
     .btn_BTS-font{
+        font-size:14px;
+    }
+
+    .paSuccessChange-font, .paSuccess-font{
+        font-size:17px;
+    }
+
+    .successBttn-font, .passwordChange-font{
         font-size:14px;
     }
 }
