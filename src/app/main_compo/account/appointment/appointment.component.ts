@@ -87,8 +87,8 @@ export class AppointmentComponent implements OnInit {
   //Click radio bttn__________________________________________________________________________
   chnageR(event: any): void{
     var nomalizeSelected = event.target.value.charAt(0).toLowerCase() + event.target.value.slice(1);
-    if(nomalizeSelected === 'pending' || nomalizeSelected === 'Confirmed' || nomalizeSelected === 'declined' || nomalizeSelected === 'canceled'){
-      if(nomalizeSelected === 'Confirmed') nomalizeSelected = 'Accepted';
+    if(nomalizeSelected === 'pending' || nomalizeSelected === 'confirmed' || nomalizeSelected === 'declined' || nomalizeSelected === 'canceled'){
+      if(nomalizeSelected === 'confirmed') nomalizeSelected = 'accepted';
       this.clickRadio(nomalizeSelected);
     }else{
       this.clickRadio('pending');

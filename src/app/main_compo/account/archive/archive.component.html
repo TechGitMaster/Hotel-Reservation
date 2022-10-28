@@ -68,7 +68,7 @@
         <!--___________CREATE DIV NOTIFICATION_______________-->
         <div *ngIf="radioName === 'notification'">
 
-            <p *ngIf="arr_data.length == 0" style="text-align: center;">
+            <p class="loading" *ngIf="arr_data.length == 0" style="text-align: center;">
                 {{loadingMessage}}
             </p>
 
@@ -103,7 +103,7 @@
         <!--___________CREATE DIV APPOINTMENT_______________-->
         <div *ngIf="radioName === 'appointment'">
 
-            <p *ngIf="arr_data.length == 0" style="text-align: center;">
+            <p class="loading" *ngIf="arr_data.length == 0" style="text-align: center;">
                 {{loadingMessage}}
             </p>
 
@@ -145,7 +145,7 @@
         <!--________CREATE DIV RESERVATION______________-->
         <div *ngIf="radioName === 'reservation'">
 
-            <p *ngIf="arr_data.length == 0" style="text-align: center;">
+            <p class="loading" *ngIf="arr_data.length == 0" style="text-align: center;">
                 {{loadingMessage}}
             </p>
 
