@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "abpadila": {
+      "hosting": {
+        "abpadilla": [
+          "abpadila"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "abpadila"
+  }
+}

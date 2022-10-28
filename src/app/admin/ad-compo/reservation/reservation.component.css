@@ -1,0 +1,91 @@
+.haeder{
+    display: flex;
+    justify-content: center;
+}
+
+.paReservation{
+    font-family: inter_bold;
+    font-size:23px;
+    text-align: center;
+    margin: 0%;
+}
+
+.paMeReser{
+    max-width: 50%;
+    font-family: inter_regular;
+    font-size:15px;
+    text-align: center;
+    margin: 0%;
+}
+
+.btnAction{
+    font-family: inter_regular;
+    font-size:14px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+.btnActionNew{
+    font-family: inter_regular;
+    font-size:14px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+.btnNew{
+    font-family: inter_regular;
+    font-size:14px;
+    margin-right: 5px;
+    text-align: center;
+    background:none;
+    border:2px solid black;
+    color:black;
+}
+
+.paShowing{
+    font-family: inter_regular;
+    font-size:14px;
+    color:#212529;
+}
+
+.paOl{
+    padding:10px;
+    font-family: inter_medium;
+    font-size:14px;
+    cursor: pointer;
+    border-right:1px solid #dee2e6;
+    display: grid;
+    place-items: center;
+}
+
+.paNothing{
+    font-family: inter_medium;
+    font-size:15px;
+    text-align: center;
+    margin:0%;
+    padding:20px;
+}
+
+.txtSearch{
+    font-family: inter_regular;
+    font-size:14px;
+    border:1px solid rgb(53, 53, 53);
+    margin-right:10px;
+}
+
+.btnclear{
+    background:#493B3B;
+    color:white;
+    font-family:inter_regular;
+    font-size:15px;
+    border:none;
+    margin-right:10px;
+}
+
+.btnSearch{
+    background:#FFD700;
+    color:black;
+    font-family: inter_regular;
+    font-size:16px;
+    border:none;
+}

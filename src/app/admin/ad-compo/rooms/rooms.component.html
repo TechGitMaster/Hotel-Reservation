@@ -1,0 +1,573 @@
+<div class="container-fluid" style="min-height:100%;padding:0%;display:flex;background:#F9FAFD;">
+
+    <!--__________________THIS IS created rooms, add new room and edit room DIV_________________________-->
+    <div *ngIf="!condition_ClickedseeAllRoom" style="width:100%;display:flex;">
+        <!--_______________CREATED ROOMS DIV___________________-->
+        <div class="container div_createdRooms">
+
+            <!-- __HEADER__ -->
+            <div style="display: flex;justify-content: space-between;position: relative">
+                <div></div>
+                <div class="header">
+                    <div style="margin-left:10px;">
+                        <span class="paCreatedRC">Created rooms</span>
+                    </div>
+                    <div style="margin-right:10px;">
+                        <span class="paCreatedRC">{{this.countRoom}}</span>
+                    </div>
+                </div>
+            </div>
+        
+
+            <!-- __ROOMS__ -->
+            <div style="display: flex;justify-content: center;margin-bottom: 10px;">
+                <button class="btn btn-danger btnSeeD" (click)="getAllDeletedRoom()">Archive rooms</button>
+            </div>
+            <div *ngIf="getRooms.length > 0" style="display: flex;justify-content: center;">
+                <button class="btn btn-primary btnSeeA" (click)="getAllRoomsFromAll()">See all rooms</button>
+            </div>
+
+            <div class="divRooms">
+
+                <!-- __No Rooms__ -->
+                <div *ngIf="getRooms.length == 0" >
+                    <p class="noRooms">{{messageForRooms}}</p>
+                </div>
+
+                <!--__Room1 section__-->
+                <div *ngFor="let data of getRooms; index as indexes" class="divRoomSection">
+                    <img [src]="data.imgArr[0][0]" style="width:100%;height:200px;" />
+                    <div style="padding:15px;">
+                        <p class="titleRoom">{{data.nameRoom}}</p>
+                        <p class="typeRoomCreated">{{ roomType(data.typeRoom) }}</p>
+                        <span class="typeRoomCreated">{{ data.typeRoom2 }} type</span>
+                    </div>
+                    
+                    <!--__reserved by none__-->
+                    <div *ngIf="data.confirmNot === 'false'" style="padding:15px;border:1px solid #F1F1F1;">
+                        <div *ngIf="data.typeRoom">
+                            <p class="paRe">Reserved by:</p>
+                            <span class="paNoreserved">No one right now.</span>
+                        </div>
+
+                        <div *ngIf="!data.typeRoom">
+                            <p class="paRe">Appointment only</p>
+                        </div>
+                    </div>
+
+
+                    <!--__reserved by someone__-->
+                    <div *ngIf="data.confirmNot === 'true'" style="padding:15px 15px 25px 15px;border:1px solid #F1F1F1;">
+                        <span class="paRe">Reserved by:</span>
+                        <p class="paInfo">Name: {{data.first_name}} {{data.last_name}}</p>
+                        <p class="paInfo">Contact number: {{ data.phone_number }}</p>
+                    </div>
+
+                    <!--__Button edit__-->
+                    <div style="padding:15px;">
+                        <button class="btn btn-primary btnEdit" (click)="editRoom(indexes)">Edit / See details</button>
+                    </div>
+                </div>
+                
+
+
+            </div>
+        </div>
+
+        <!--_______________MAKING ROOMS DIV AND EDIT ROOMS SECTION___________________-->
+        <div class="addRoomsDiv">
+
+            <!-- __HEADER__ -->
+            <div *ngIf="this.object_roomSelected != null">
+                <img src="/assets/icon/arrow_back.png" class="img-fluid" style="height:20px;cursor:pointer;" (click)="change_addRoom()" />
+            </div>
+            <div [ngStyle]="{'margin-top':this.object_roomSelected != null ? '-25px':'0px'}">
+                <p class="paAddTitle">{{header_txt[0]}}</p>
+                <div style="display: flex;justify-content: center;">
+                    <p class="painfoTitleMe" style="width:70%;">{{header_txt[1]}}</p>
+                </div>
+            </div>
+
+
+            <!-- ___RESERVED BY: Section___-->
+            <div *ngIf="object_roomSelected != null && object_roomSelected.typeRoom" class="sectionReservedBy">
+                <div style="display: flex;justify-content: space-between;">
+                        <span class="paReserved">Reserved By:</span>
+                    
+                    <div style="margin-right:10px;">
+                        <img src="/assets/icon/arrow_fill.png" [ngClass]="['img-fluid', !condition_ClickedseeReserved ? 'imgfillarrow': 'imgfillarrowrotate']" 
+                        (click)="clickedSeeReserved()"/>
+                    </div>
+                </div>
+
+                <div *ngIf="condition_ClickedseeReserved">
+                    <p *ngIf="object_roomSelected.confirmNot === 'false'" class="paNoone" style="margin:10px 0px 0px 10px;">
+                        {{condition_to_image_click !== 'see' ? 'No one right now.': 'No user reserve on this room.'}}</p>
+
+                    <div *ngIf="object_roomSelected.confirmNot === 'true'" style="margin-top:10px;">
+
+                        <div style="margin:10px 0px 5px 0px;">
+                            <div>
+                                <label class="labels" style="font-weight: bold;font-size: 16px;">Transaction ID:</label>
+                                <span style="margin-left:5px;font-size: 17px;">{{object_roomSelected.transaction_id}}</span>
+                            </div>
+                            <div>
+                                <label class="labels" style="font-weight: bold;font-size: 16px;">Payment Method:</label>
+                                <span style="margin-left:5px;font-size: 17px;">{{(object_roomSelected.paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- __IMG TRANSACTION__ -->
+                        <div *ngIf="object_roomSelected.paymentMethod !== 'payment2'" class="imageAddDiv">
+                            <p class="paImageS" style="margin:0%;">Image transactions:</p>
+                            <span class="paLMes">The provided payment image transaction of the user.</span>
+
+                            <!-- __IMG__ -->
+                            <div class="divForAdded" style="margin-top:15px;">
+                                <p *ngIf="object_roomSelected.image_transaction.length == 0" class="paNoone" style="margin:0%;">No provided image.</p>
+                                <!-- __IMAGES CREATE__ -->
+                                <div *ngFor="let url of object_roomSelected.image_transaction; index as indexes"  class="addImageR">
+                                    <div class="addImageRTS">
+                                        <div class="disImageDelete">
+                                            <div class="deleteImage">
+                                                <div class="imgD">
+                                                    <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;" (click)="displayImage(url[0])" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img [src]="url[0]" class="img-fluid" style="height:100%;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        
+                        <!-- __INFORMATION OF RESERVATION__ -->
+                        <div style="margin-bottom:15px;">
+
+                            <p class="paRInfoT">Information:</p>
+
+                            <div class="row" style="padding:0%;margin-top:5px;">
+
+                                <!--__filled information__-->
+                                <div class="col-6">
+                                    <div style="margin-top:10px;">
+                                        
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="labels">First name:</label>
+                                                <input type="text"  [value]="object_roomSelected.first_name" class="form-control forminputs" />
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="labels">Last name:</label>
+                                                <input type="text" [value]="object_roomSelected.last_name" class="form-control forminputs" />
+                                            </div>
+                                            <div class="col-12" style="margin-top:10px;">
+                                                <label class="labels">Email:</label>
+                                                <input type="text" [value]="object_roomSelected.email" class="form-control forminputs" />
+                                            </div>
+                                            <div class="col-12" style="margin-top:10px;">
+                                                <label class="labels">Contact number:</label>
+                                                <input type="text" [value]="object_roomSelected.phone_number" class="form-control forminputs" />
+                                            </div>
+                                            <div class="col-12" style="margin-top:15px;">
+                                                <p class="paHeaderapp" style="font-family: inter_bold;">Guest info:</p>
+                                                <span *ngIf="object_roomSelected.guest_member.split('\n')[0].length == 0" >No guest info filled up.</span>
+
+                                                <table *ngIf="object_roomSelected.guest_member.split('\n')[0].length != 0" class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Full name</th>
+                                                        <th scope="col">Contact-number</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr *ngFor="let guestInfo of object_roomSelected.guest_member.split('\n'); index as indexes">
+                                                        <th scope="row">{{(indexes+1)}}</th>
+                                                        <td>{{guestInfo.split(',')[0]}}</td>
+                                                        <td>{{guestInfo.split(',')[1]}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                                
+                                <!--__details of reservation including "confirmation date"__-->
+                                <div class="col-6">
+                                    <div class="divDetails">
+
+                                        <div style="display: flex;justify-content: center;">
+
+                                            <!--____Check in____-->
+                                            <div class="divCheckInOut" style="margin-right:20px;">
+                                                <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK IN</p>
+                                                <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(object_roomSelected.checkin_date, [1])}}</p>
+                                                <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                                    {{dateCheckOutCheckIn(object_roomSelected.checkin_date, [0,2])}}
+                                                </p>
+                                            </div>
+
+                                            <!--____Check out____-->
+                                            <div class="divCheckInOut">
+                                                <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK OUT</p>
+                                                <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(object_roomSelected.checkout_date, [1])}}</p>
+                                                <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                                    {{dateCheckOutCheckIn(object_roomSelected.checkout_date, [0,2])}}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!--___DETAILS___-->
+                                        <div style="margin-top:20px;">
+                                            <div class="pdetails">Details</div>
+
+                                            <div *ngIf="object_roomSelected.paymentMethod==='payment1'" class="paDetailsMiddle">
+                                                <span style="font-family: inter_medium !important;">Confirmation date</span>
+                                                <span>{{object_roomSelected.confirmation_date}}</span>
+                                            </div>
+
+                                            <div class="paDetailsMiddle">
+                                                <span style="font-family: inter_medium !important;">
+                                                    {{object_roomSelected.paymentMethod==='payment2' ? "Transaction paid date":'Transaction date'}}</span>
+                                                <span>{{object_roomSelected.transaction_date}}</span>
+                                            </div>
+
+                                            <div class="paDetailsMiddle">
+                                                <span style="font-family: inter_medium !important;">{{object_roomSelected.acquired_persons}} persons</span>
+                                                <span>{{object_roomSelected.persons_price}}</span>
+                                            </div>
+
+                                            <div class="paDetailsMiddle">
+                                                <span style="font-family: inter_medium !important;">Total price a day</span>
+                                                <span>{{object_roomSelected.total_day_price}}</span>
+                                            </div>
+
+                                            <div class="paDetailsMiddle">
+                                                <span style="font-family: inter_medium !important;">Price</span>
+                                                <span>{{object_roomSelected.defaultPrice}}.00</span>
+                                            </div>
+
+                                            <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                                                <span>Total</span>
+                                                <span>{{object_roomSelected.total_price}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ____IMAGE, INFORMATION AND PRICE SECTION____ -->
+            <div [formGroup]="formGroup" class="sectionAdd">
+
+                <!-- __ADD IMAGE SECTION__ -->
+                <div class="imageAddDiv">
+                    <div style="display: flex;justify-content: space-between;">
+                        <span class="paImageS">Image Section:</span>
+                        <span class="paImageC">{{countShownumb_images}}</span>
+                    </div>
+                    <span class="paLMes">
+                        {{  this.condition_to_image_click !== 'see' ?
+                            'The file size must to be less than 500kb and you must upload more than 5 images.':
+                            'All the image of this room.'
+                        }}
+                    </span>
+
+                    <!-- __IMG ADD__ -->
+                    <div class="divForAdded" style="margin-top:15px;">
+
+                        <!--__ADD__-->
+                        <div *ngIf="this.condition_to_image_click !== 'see'" class="addImageR" style="background:#DDE1FA;cursor: pointer;">
+                            <div style="height:100%;cursor:pointer;display:flex;align-items: center;justify-content: center;position: relative;">
+
+                                <input type="file" style="height:100%;border:1px solid black;cursor:pointer;position: absolute;opacity: 0.0;" 
+                                (change)="selectImage($event)" accept="image/png, image/jpeg" multiple/>
+
+                                <div>
+                                    <p class="paUpload" style="cursor:pointer;">Upload image</p>
+                                    <div style="display: flex;justify-content: center;">
+                                        <img src="/assets/icon/addImage.png" class="img-fluid" type="file" style="height:55px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- __Added Image__ -->
+                        <div *ngFor="let url of arr_image_tempo; index as indexes"  class="addImageR">
+                            <div class="addImageRTS">
+                                <!-- delete image -->
+                                <div *ngIf="condition_to_image_click !== 'see'" class="disImageDelete">
+                                    <div class="deleteImage">
+                                        <div class="imgD">
+                                            <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;" (click)="displayImage(url)" />
+                                        </div>
+                                        <div class="deleteD">
+                                            <img src="/assets/icon/trash_white.png" class="img-fluid" style="height:25px;" (click)="deleteImage(url, indexes)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <img [src]="url" class="img-fluid" style="height:100%;" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+                <!-- __ADD INFORMATION__ -->
+                <div style="margin-bottom:15px;">
+                    <p class="paRInfoT">Information of room:</p>
+                    <span class="paMeInfoT" style="margin:0px 0px 15px 0px;">Type the correct information of the room.</span>
+
+                    <div style="margin-top:10px;">
+
+                        <!--__type of room and name of room__-->
+                        <div style="display: flex;">
+                            <div class="fieldA" style="max-width:300px;">
+                                <label class="labels">Name of room:</label>
+                                <input type="text" formControlName="nameRoom" (input)="nameAndInfo()" class="form-control forminput" />
+                                <div *ngIf="conditionErr[0][1]">
+                                    <span class="paError">{{conditionErr[0][0]}}</span>
+                                </div>
+                            </div>
+
+                            <div class="fieldA" style="max-width:200px;padding-right:10px;border-right:2px solid rgb(33, 33, 34);">
+                                <label class="labels">Type of service:</label>
+                                <div style="display: flex;margin-top:7px;">
+
+                                    <div class="form-check" style="margin-right:10px;"> 
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" 
+                                        (click)="clickRadio(false)" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Rental
+                                        </label>
+                                    </div>
+        
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                                            (click)="clickRadio(true)">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                Staycation
+                                            </label>
+                                    </div> 
+                                </div>                          
+                            </div>
+                            
+                            <div class="fieldA">
+                                <label class="labels">Type of room:</label>
+                                <div style="display: flex;margin-top:7px;">
+
+                                    <div class="form-check" style="margin-right:10px;"> 
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault3" 
+                                        (click)="clickRadio_room('Studio')" checked>
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                            Studio
+                                        </label>
+                                    </div>
+        
+                                    <div class="form-check" style="margin-right:10px;">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault4"
+                                            (click)="clickRadio_room('1bedroom')">
+                                            <label class="form-check-label" for="flexRadioDefault4">
+                                               1bedroom
+                                            </label>
+                                    </div>  
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault5"
+                                        (click)="clickRadio_room('2bedroom')">
+                                        <label class="form-check-label" for="flexRadioDefault5">
+                                           2bedroom
+                                        </label>
+                                    </div>  
+                                </div>    
+                            </div>
+                        </div>
+
+
+
+                        <p class="paAddtionInfo">Additional information:</p>
+                        <textarea (input)="nameAndInfo()" class="form-control textareas" formControlName="addInfo"></textarea>
+                        <div *ngIf="conditionErr[1][1]">
+                            <span class="paError">{{conditionErr[1][0]}}</span>
+                        </div>
+                    </div>  
+                </div>
+
+
+                <!--_____This div is conditional. if admin select "staycation" this will be visible_______-->
+                <!-- __ROOM RATES__ -->
+                <div *ngIf="clickedRadio_TypeRoom" class="divPriceRate">
+                    <p class="paRate" style="margin:0px 0px 15px 0px;">Room rate:</p>
+
+                    <div style="display:flex;margin-bottom:10px;">
+                        <div class="fieldR">
+                            <label class="labels">Default price:</label>
+                            <div style="display:flex;">
+                                <input type="text" formControlName="defaultPrice" (input)="funcOnlynumber(0)" class="form-control forminput fs1" />
+                                <div class="equ">=</div>
+                            </div>
+                            <div *ngIf="conditionErr[2][1]">
+                                <span class="paError">{{conditionErr[2][0]}}</span>
+                            </div>
+                        </div>
+                        <div class="fieldR">
+                            <label class="labels">Good for persons:</label>
+                            <input type="text" formControlName="goodPersons" (input)="funcOnlynumber(1)" class="form-control forminput fs2" />
+                            <div *ngIf="conditionErr[3][1]">
+                                <span class="paError">{{conditionErr[3][0]}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fieldR">
+                        <label class="labels">Price per person:</label>
+                        <input type="text" formControlName="pricePersons" (input)="funcOnlynumber(2)" class="form-control forminput fs3" />
+                        <div *ngIf="conditionErr[4][1]">
+                            <span class="paError">{{conditionErr[4][0]}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!--_______________________________________________________________-->
+
+
+                <!--____CREATE ROOM BUTTON___-->
+                <div style="display:flex;justify-content: center;">
+
+                    <!--_____Create Room______-->
+                    <button *ngIf="object_roomSelected == null" class="btn btn-primary btnCreate" (click)="createRoom()">Create room</button>
+
+                    <!--_____Edit Room______-->
+                    <div *ngIf="object_roomSelected != null && condition_to_image_click !== 'see'" style="width:100%;display:flex;justify-content: center;">
+
+                        <button *ngIf="changingRoom_condition" class="btn btn-primary btnSaveDetails" style="color:black;background:#FFD700;" 
+                        (click)="changeDetails()">Change details</button>
+
+                        <button class="btn btn-danger btnDelete" style="color:white;" (click)="moveRoom_Trash()">Move to archive</button>
+                    </div>
+
+
+                    <div *ngIf="condition_to_image_click === 'see'" style="width:100%;display:flex;justify-content: center;">
+
+                        <button class="btn btn-danger btnDelete" style="color:white;" (click)="deleteRoom()">Delete permanent</button>
+                        <button class="btn btn-primary btnSaveDetails" (click)="retrieve_specific_room()">Retrieve</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!--__________________________THIS IS see all room DIV___________________________-->
+    <div *ngIf="condition_ClickedseeAllRoom" class="seeAllroomDiv">
+        <!-- __HEADER__ -->
+        <div style="position: relative;">
+            <img src="/assets/icon/arrow_back.png" class="img-fluid imgSeeAllRooms" (click)="backBttnss()" />
+            <p class="paSeeRoomsAll">{{!roomNot_allDeleted ? 'All Rooms':'Archive Room'}}</p>
+        </div>
+        <div style="display: flex;justify-content: center;">
+            <p class="painfoTitleMe" style="width:60%;margin:5px 0px 0px 0px;">
+                {{  !roomNot_allDeleted ?
+                    'In this section you can now see all the rooms you created. feel free to click the edit button if you want edit the details of the room.':
+                    'In this section you can now see the archive rooms. If you want to retrieve or delete permanently the room just click the buttons.'
+                }}</p>
+        </div>  
+
+        <!--______Action______-->
+        <div style="margin-top:20px;display: flex;">
+            <div>
+                <p style="margin:0px 0px 5px 0px;">Type of service:</p>
+                <select (change)="changeService($event)" class="form-select" aria-label="Default select example">
+                    <option selected>All</option>
+                    <option>Rental</option>
+                    <option>Staycation</option>
+                  </select>                  
+            </div>
+
+            <div style="margin-left:10px;">
+                <p style="margin:0px 0px 5px 0px;">Type of room:</p>
+                <select (change)="changeRoom($event)" class="form-select" aria-label="Default select example">
+                    <option selected>All</option>
+                    <option>Studio</option>
+                    <option>1bedroom</option>
+                    <option>2bedroom</option>
+                  </select>                  
+            </div>
+        </div>
+
+        <!-- __No Rooms__ -->
+        <div *ngIf="getAllRoomsF.length == 0">
+            <p class="noRooms" style="margin-top:20px;">{{messageForRooms}}</p>
+        </div>
+
+        <!--___ROOM____-->
+        <div class="row" style="margin-top:10px;">
+            
+            <!--__Room1 section__-->
+            <div *ngFor="let data of getAllRoomsF; index as indexes" [ngClass]="[  
+            !roomNot_allDeleted ?'divRoomSectionSee': 'divRoomSectionDeleted']">
+                <img [src]="data.imgArr[0][0]" style="width:100%;height:200px;" />
+                <div style="padding:15px;">
+                    <p class="titleRoom">{{data.nameRoom}}</p>
+                    <p class="typeRoomCreated">{{ roomType(data.typeRoom) }}</p>
+                    <span class="typeRoomCreated">{{ data.typeRoom2 }} type</span>
+                </div>
+                
+                <!--__reserved by none__-->
+                <div *ngIf="data.confirmNot === 'false'" style="padding:15px;border:1px solid #F1F1F1;">
+                    <div *ngIf="data.typeRoom">
+                        <p class="paRe">Reserved by:</p>
+                        <span class="paNoreserved">No one right now.</span>
+                    </div>
+
+                    <div *ngIf="!data.typeRoom">
+                        <p class="paRe">Appointment only</p>
+                    </div>
+                </div>
+
+
+                <!--__reserved by someone__-->
+                <div *ngIf="data.confirmNot === 'true'" style="padding:15px 15px 25px 15px;border:1px solid #F1F1F1;">
+                    <span class="paRe">Reserved by:</span>
+                    <p class="paInfo">Name: {{data.first_name}} {{data.last_name}}</p>
+                    <p class="paInfo">Contact number: {{ data.phone_number }}</p>
+                </div>
+
+                <!--__Button edit__-->
+                <div style="padding:15px;">
+                    <div *ngIf="!roomNot_allDeleted">
+                        <button class="btn btn-primary btnEdit" (click)="editRoomFromAll(indexes)">Edit</button>
+                    </div>
+
+                    <div *ngIf="roomNot_allDeleted">
+                        <div style="display: flex;margin-bottom: 7px;">
+                            <button class="btn btn-danger btnDeletePerma" (click)="deleteRoom_fromAll(indexes)">Delete permanent</button>
+                            <button class="btn btn-primary btnDeleteRetrieve" (click)="retrieve_room(indexes)">Retrieve</button>
+                        </div>
+                        <button class="btn btn-primary btnEdit" (click)="deleteRoomFromAll(indexes)">See details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,849 @@
+
+.headerss{
+    min-height:100vh;
+    background:#ADD8E6;
+    padding:0%;
+}
+
+
+.fixedDiv{
+    width:100%;
+    height:100vh;
+    background:rgba(0, 0, 0, 0.245);
+    z-index:5;
+    overflow-y: scroll;
+    position:fixed;
+}
+
+
+.divFix{
+    width:100%;
+    height:100vh;
+    background:#1F1F1F;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left:0%; top:0%;
+}
+
+.imageDivSee{
+    width:100%;
+    height:100vh;
+    background:black;
+    z-index:6;
+    position: fixed;
+}
+
+.divSetTime{
+    max-width:400px;
+    min-height:100px;
+    background:white;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
+    padding-bottom:30px;
+}
+
+
+.paX{
+    font-family: inter_bold;
+    font-size:20px; 
+    padding-top:10px;
+    cursor: pointer;
+}
+
+
+.paX2{
+    font-family: inter_bold;
+    font-size:25px; 
+    cursor: pointer;
+}
+
+.paX3{
+    font-family: inter_bold;
+    font-size:25px;
+    cursor: pointer;
+    color:white;
+}
+
+.paTime{
+    font-family: inter_bold;
+    font-size:21px;
+    margin:0%;
+    padding:0%;
+    text-align: center;
+    color:#0063A8;
+    margin:-30px 0px 30px 0px;
+}
+
+.paME{
+    font-family: inter_medium;
+    font-size:18px;
+    text-align: center;
+    margin:0%;
+}
+
+.paInter{
+    font-family: inter_regular;
+    font-size:14px;
+    text-align: center;
+    margin:0px 0px 20px 0px; 
+}
+
+.hours{
+    max-width:120px;
+    height:35px;
+    border: 1px solid black;
+}
+
+.paMinH{
+    text-align: center;
+    margin:8px 0px 0px 0px;
+    font-family: inter_medium;
+    font-size: 16px;
+}
+
+.pS{
+    font-size:20px;
+    font-weight: bold;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.btnSet{
+    background:#FFD700;
+    border-radius:10px;
+    font-family: inter_regular;
+    font-size:17px;
+    width:150px;
+    color:black;
+    border:none;
+}
+
+.img_icon{
+    width:100%;
+    height:340px;
+}
+
+.main{
+    min-height:100vh;
+    margin-top:-340px;
+    z-index:2;
+    display: flex;
+    position:relative;
+}
+
+.components{
+    max-width:250px;
+    background:white;
+}
+
+.routers{
+    width:100%;
+    padding:20px 15px 0px 15px;
+    overflow-x: scroll;
+    scrollbar-width: 1px !important;
+}
+
+.routers_through{
+    width:100%;
+    height:100%;
+    border-radius:10px 10px 0px 0px;
+    position: relative;
+    overflow-y:scroll;
+    scrollbar-width: 1px !important;
+}
+
+.routers_through::-webkit-scrollbar{
+    width: 1px !important;
+}
+
+.divHeader-compo{
+    display:flex;
+    justify-content: center;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.pName{
+    margin:0%;
+    font-family: inter_bold;
+    font-size:16px;
+    color:#493B3B;
+    text-align: center;
+}
+
+.pAdmin{
+    margin:5px 0px 0px 0px;
+    font-family: inter_medium;
+    font-size:15px;
+    color:#98969A;
+    text-align: center;
+}
+
+.divCompo-body{
+    padding:0px 15px 0px 15px;
+    
+}
+
+.pComponent{
+    margin:0%;
+    font-family: inter_bold;
+    font-size:16px;
+    color:#493B3B;
+    margin-bottom:15px;
+}
+
+.div_clickables_compo{
+    padding:10px 10px 10px 10px;
+    border-radius:10px;
+    display:flex;
+    cursor: pointer;
+    margin-bottom:5px;
+}
+
+.div_clickables_compo:hover{
+    background: #FEE2BB;
+}
+
+.backgrondDiv{
+    background:#FEE2BB;
+}
+
+.sNameCompo{
+    font-family: inter_medium;
+    font-size:16px;
+    color:#493B3B;
+}
+
+.havePopup{
+    max-width: 400px;
+    min-height:100px;
+    display: flex;
+    justify-content: center;
+}
+
+.boxHS{
+    max-width:350px;
+    min-height:130px;
+    background:white;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
+    padding:20px 20px 10px 20px;    
+}
+
+.cancelDeleteEvents{
+    padding:10px;
+    margin:10px 0px 10px 0px;
+    background:rgb(244, 244, 244);
+    cursor: pointer;
+}
+
+.cancelDeleteEvents:hover{
+    background:#FFD700;
+}
+
+.popupInfoReser{
+    width:100%;
+    height:100%;
+    background: rgba(0, 0, 0, 0.359);
+    display: grid;
+    place-items: center;
+    position: fixed;
+    z-index:10;
+}
+
+.paCancel{
+    font-family: inter_medium;
+    font-size:18px;
+}
+
+.paMe{
+    font-family: inter_regular;
+    font-size:13px;
+    line-height: 120%;
+    margin-bottom: 20px;
+}
+
+.paYes{
+    font-family: inter_bold;
+    padding:0px 20px 0px 20px;
+    margin-right:5px;
+    font-size:13px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.paYes:hover{
+    background:rgb(240, 215, 215);
+    color:rgb(237, 52, 52);
+}
+
+.paNo{
+    font-family: inter_bold;
+    padding:5px 20px 5px 20px;
+    font-size:13px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.paNo:hover{
+    background:rgb(240, 215, 215);
+    color:rgb(237, 52, 52);
+}
+
+.chPass{
+    max-width: 500px;
+    background:white;
+    border-radius:10px;
+    padding:0px 10px 10px 10px;
+}
+
+.paX{
+    margin:0px;
+    font-family: inter_bold;
+    font-size:25px;
+    padding-left:10px;
+    padding-top:15px;
+    cursor: pointer;
+}
+
+.paForgotPass{
+    margin-top:-5px;
+    font-family: inter_bold;
+    font-size:23px;
+    text-align: center;
+    color:#0063A8;
+    margin-bottom:15px;
+}
+
+.forminputReg{
+    border-radius: 10px;
+    border:none;
+    border:2px solid black;
+    padding: 10px 15px 10px 15px;
+    font-size:17px;
+}
+
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
+}
+
+
+.passwordChange{
+    width:100%;
+    border-radius:20px;
+    font-size:16px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:10px;
+}
+
+.divSuccesschangePass{
+    max-width:500px;
+    max-height:250px;
+    padding:30px 20px 30px 20px;
+    background:white;
+    border-radius:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paSuccessChange{
+    width: 80%;
+    margin:0px 0px 10px 0px;
+    font-family: inter_bold;
+    font-size:20px;
+    text-align: center;
+    color:#0063A8;
+}
+
+.divProgress{
+    width:350px;
+    min-height:240px;
+    padding:20px;
+    background:rgb(255, 255, 255);
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
+    display: grid;
+    place-items:center;
+}
+
+.numberProgress{
+    width:100%;
+    display: grid;
+    place-items: center;
+}
+
+.progressStart{
+    position: relative;
+    height: 125px;
+    max-width: 125px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    border-left-color: #5cb85c;
+    animation: rotate 0.9s linear infinite;
+    display: grid;
+    place-items: center;
+}
+
+.progressStop{
+    position: relative;
+    height: 125px;
+    max-width: 125px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    border-left-color: #5cb85c;
+    animation: ends 0.8s linear;
+    -webkit-animation-fill-mode: forwards; /* Chrome 16+, Safari 4+ */
+    -moz-animation-fill-mode: forwards;    /* FF 5+ */
+    -o-animation-fill-mode: forwards;      /* Not implemented yet */
+    -ms-animation-fill-mode: forwards;     /* IE 10+ */
+    animation-fill-mode: forwards;         /* When the spec is finished */
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+@keyframes ends{
+    50%{
+        border-left-color: #e89726;
+        border-top-color: #e89726;
+    }
+    75%{
+        border-left-color: #e89726;
+        border-top-color: #e89726;
+        border-right-color: #e89726;
+    }
+    100%{
+        border-top-color: #e89726;
+        border-left-color: #e89726;
+        border-bottom-color: #e89726;
+        border-right-color: #e89726;
+    }
+}
+
+@keyframes rotate {
+    50%{
+      border-left-color: #9b59b6;
+    }
+    75%{
+      border-left-color: #e67e22;
+    }
+    100%{
+      transform: rotate(360deg);
+    }
+}
+
+.checkDiv{
+    height: 100%;
+    background: white;
+}
+
+.check-icon:after{
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 28px;
+    transform: scaleX(-1) rotate(135deg);
+    height: 56px;
+    width: 28px;
+    border-top: 5px solid #5cb85c;
+    border-right: 5px solid #5cb85c;
+    transform-origin: left top;
+    animation: check-icon 0.8s ease;
+}
+
+@keyframes check-icon {
+    0%{
+      height: 0;
+      width: 0;
+      opacity: 1;
+    }
+    20%{
+      height: 0;
+      width: 28px;
+      opacity: 1;
+    }
+    40%{
+      height: 56px;
+      width: 28px;
+      opacity: 1;
+    }
+    100%{
+      height: 56px;
+      width: 28px;
+      opacity: 1;
+    }
+}
+
+.paMessLoading{
+    font-family: inter_regular;
+    font-size:14px;
+    text-align: center;
+    margin:0%;
+}
+
+.btnfinishUpload{
+    background:#FFD700;
+    border-radius:10px;
+    font-family: inter_medium;
+    font-size:14px;
+    width:100px;
+    color:black;
+    border:none;
+    margin-top:10px;
+}
+
+.divReservation{
+    background:white;
+    padding:20px;
+}
+
+.consReservation{
+    min-width: 100%;
+}
+
+.paRInfoT{
+    font-family:inter_semibold;
+    font-size:18px;
+    margin:20px 0px 0px 0px;
+}
+
+.labels{
+    font-family: inter_medium;
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.forminputs{
+    height:35px;
+    border-radius: 10px;
+    padding:10px;
+    font-size:15px;
+    font-family: inter_regular;
+    background:rgb(246, 246, 246);
+}
+
+.divDetails{
+    background:#493D3D;
+    border-radius:10px;
+    padding:20px;
+}
+
+.divCheckInOut{
+    max-width: 170px;
+    border-radius:10px;
+    border:1px solid #FFD700;
+    padding:20px;
+}
+
+.paCheckINOut{
+    margin:0%;
+    text-align: center;
+    font-size:14px;
+}
+
+.paNumbCheckInOut{
+    margin:0%;
+    text-align: center;
+    font-family: inter_regular;
+    font-size:30px;
+    color:white;
+}
+
+.pdetails{
+    padding:10px;
+    font-family: inter_semibold;
+    font-size:17px;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
+.paDetailsMiddle{
+    display: flex;
+    justify-content: space-between;
+    color:white;
+    font-family: inter_regular;
+    padding:5px 10px 2px 10px;
+    font-size:14px;
+}
+
+.paRoomname, .paPayment{
+    font-family: inter_medium;
+    font-size:17px;
+}
+
+.imageAddDiv{
+    padding:15px;
+    border: 3px solid #F1F1F1;
+    margin-top:15px;
+    margin-bottom:10px;
+}
+
+.paImageS{
+    font-family: inter_semibold;
+    font-size:18px;
+}
+
+.paLMes{
+    font-family: inter_regular;
+    font-size:14px;
+}
+
+.divForAdded{
+    max-height:300px;
+    overflow: auto;
+}
+
+.paNoone{
+    font-family: inter_regular;
+    font-size:15px;
+}
+
+.addImageR{
+    width:146px;
+    height:130px;
+    border-radius:5px;
+    overflow:hidden;
+    display: inline-block;
+    margin-right:10px;
+    margin-top:5px;
+    background:black;
+}
+
+.addImageRTS{
+    display: flex;
+    justify-content: center;
+    height:100%;
+    position: relative;
+}
+
+
+.imgD{
+    margin-right:10px;
+    border-radius:10px;
+    padding:5px;
+    background:#18e318;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.deleteD{
+    border-radius:10px;
+    padding:5px;
+    background:#DC3545;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+
+.deleteImage{
+    width:100%;
+    height:100%;
+    background:rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;left:0px;
+}
+
+.disImageDelete{
+    display: none;
+}
+
+.addImageR:hover > .addImageRTS > .disImageDelete{
+    display: block;
+}
+
+
+.contain_appointment{
+    min-height:100%;
+    padding:10px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info_appointment{
+    width:640px;
+    padding:20px;
+    background:white;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
+    position: relative;
+}
+
+.paXappointment{
+    font-family: inter_bold;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right:20px;top:20px;
+}
+
+.paHeaderapp{
+    font-size:17px;
+    margin:0px 0px 10px 0px;
+}
+
+.paHeaderHapp{
+    font-size:17px;
+    margin:0px 0px 3px 0px;
+}
+
+.paInfoApp{
+    font-family: inter_regular;
+    font-size:16px;
+    margin:0px;
+}
+
+.paMessage{
+    font-family: inter_regular;
+    font-size:16px;
+    margin:0px;
+}
+
+.signUpdiv{
+    max-width:600px;
+    background:#FCFBFB;
+    border-radius:10px;
+    padding-bottom:60px;
+}
+
+.paLoginSignup{
+    margin-top:-5px;
+    font-family: inter_bold;
+    text-align: center;
+    color:#0063A8;
+    font-size:30px;
+}
+
+.divFillSign{
+    padding-left: 46px;
+    padding-right: 46px;
+    margin-top:30px;
+}
+
+.padCol6{
+    padding:0px 5px 0px 5px;
+    margin-bottom:15px;
+}
+
+.paGenderAccount{
+    margin:0px 0px 15px 0px;
+    padding:0px 5px 0px 5px;
+    font-family: inter_medium;
+    font-size:18px;
+}
+
+.margCol12{
+    padding:0px 5px 0px 5px;
+    margin-bottom: 15px;
+}
+
+.formselect{
+    padding:10px 5px 10px 5px;
+    border:2px solid black;
+    border-radius:10px;
+}
+
+.paGenderAccount{
+    margin:0px 0px 15px 0px;
+    padding:0px 5px 0px 5px;
+    font-family: inter_medium;
+    font-size:18px;
+}
+
+.fontadminNot{
+    font-size:17px;
+}
+
+
+.signUpbttn, .passwordChange{
+    width:100%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+    font-size:18px;
+}
+
+
+.print{
+    width:60%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+    font-size:15px;
+}
+
+
+.imgwatermark{
+    min-height:100%;min-width:100%;position: absolute;
+    display: none;
+}
+
+@page { size: auto;  margin: 0mm; }
+
+@media print{
+
+    * { overflow: visible !important; }
+
+    body *:not(#printingD):not(#printingD *){
+        visibility: hidden;
+    }
+
+    #printingD{       
+        display: inline; 
+        height: 100%;
+        position: absolute;
+        top:0;left:0;
+    }
+
+    .imgwatermark{
+        z-index:10;
+        min-height:100%;min-width:100%;position: absolute;
+        display: block;
+        opacity: 0.1;
+    }
+
+    .divDetails{
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        min-height:100px;
+        background-color:#493D3D !important;
+        border-radius:10px;
+        padding:20px;
+    }
+
+    .forminputs{
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        height:35px;
+        border-radius: 10px;
+        padding:10px;
+        font-size:15px;
+        font-family: inter_regular;
+        background:rgb(246, 246, 246);
+    }
+}

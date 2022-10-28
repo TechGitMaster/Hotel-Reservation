@@ -1,0 +1,351 @@
+.paAppointSched{
+    font-family: inter_bold;
+    font-size:20px;
+    margin:0px;
+}
+
+.btnSeeD{
+    min-height:35px;
+    border:none;
+    border-radius:10px;
+    color:white;
+    padding:5px 10px 5px 10px;
+    font-size:15px;
+}
+
+.paDeleteNo{
+    text-align: center;
+    font-family: inter_medium;
+}
+
+.divDeleted{
+    background:white;
+    border:4px solid #F1F1F1;
+    border-radius:10px;
+    padding:10px;
+    max-width: 350px;
+    margin:0px 10px 10px 0px;
+}
+
+.paAppD{
+    font-family: inter_medium;
+    font-size:16px;
+}
+
+.imgSeeAllRooms{
+    height:20px;
+    cursor:pointer;
+    position: absolute;
+    top:10px;left:10px;
+}
+
+.paSeeRoomsAll{
+    text-align: center;
+    font-family: inter_semibold;
+    font-size:25px;
+    margin:0%;
+}
+
+.painfoTitleMe{
+    font-family: inter_regular;
+    font-size:15px;
+    text-align: center;
+}
+
+.paInfo{
+    font-family: inter_medium;
+    font-size:15px;
+    margin:0%;
+    position: relative;
+    top:15px;
+}
+
+.paMessage{
+    font-family: inter_regular;
+    font-size:15px;
+    margin:30px 0px 0px 0px;
+}
+
+
+.btnEdit{
+    border:none;
+    border-radius:20px;
+    background:#FFD700;
+    color:black;
+    font-family: inter_regular;
+    width:100%;
+    font-size:14px;
+}
+
+.btnDeletePerma{
+    border:none;
+    border-radius:10px;
+    width:49%;
+    font-size:14px;
+    margin-right: 5px;
+}
+
+.btnDeleteRetrieve{
+    border:none;
+    border-radius:10px;
+    width:49%;
+    font-size:14px;
+}
+
+:root {
+    --dark-body: #4d4c5a;
+    --dark-main: #141529;
+    --dark-second: #79788c;
+    --dark-hover: #323048;
+    --dark-text: #f8fbff;
+
+    --light-body: #f3f8fe;
+    --light-main: #fdfdfd;
+    --light-second: #c3c2c8;
+    --light-hover: #edf0f5;
+    --light-text: #151426;
+
+    --blue: #0000ff;
+    --white: #fff;
+
+    --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    --font-family: cursive;
+}
+
+
+.calendar {
+    min-height: 400px;
+    max-width: 100%;
+    border-radius: 30px;
+    padding:30px 0px 30px 0px;
+    background:rgb(255, 255, 255);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.152);
+    position: relative;
+    /* transform: scale(1.25); */
+}
+
+.light .calendar {
+    box-shadow: var(--shadow);
+}
+
+.calendar-body {
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+
+.calendar-week-day {
+    height: 50px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: 600;
+}
+
+.calendar-week-day div {
+    display: grid;
+    font-size:15px;
+    place-items: center;
+    color: var(--bg-second);
+}
+
+.calendar-days {
+    display: grid;
+    font-size:14px;
+    grid-template-columns: repeat(7, 1fr);
+    color: var(--color-txt);
+    
+}   
+
+.cols {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.calendar-days div span {
+    position: absolute;
+}
+
+
+.month-picker {
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inter_semibold;
+    font-size:21px;
+    padding-left:30px;
+}
+
+
+.year-picker {
+    min-width:20px;
+    display: flex;
+    align-items: center;
+    float:right;
+    font-family: inter_semibold;
+    font-size:21px;
+    margin-right:30px;
+}
+
+.year-change {
+    width:15px;
+}
+
+.prenext{
+    cursor: pointer;
+}
+
+.curr-date{
+    background:#FFD700;
+}
+
+
+.toggle {
+    display: flex;
+}
+
+.toggle span {
+    margin-right: 10px;
+    color: var(--color-txt);
+}
+
+.month-list {
+    position:relative;
+    background-color: var(--bg-main);
+}
+
+.colfdivmontjh{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.colmonth{
+    width:90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:25px;
+    cursor: pointer;
+}
+
+.colmonth2{
+    width:90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:25px;
+    background: rgb(213, 213, 213);
+    cursor: context-menu;
+}
+
+.colmonth:hover{
+    background:#ADD8E6;
+    border-radius:5px;
+}
+
+.paCalendar, .paAvail{
+    font-family: inter_bold;
+    font-size:18px;
+    color:#493B3B;
+}
+
+.laCheck{
+    font-family: inter_medium;
+    font-size:15px;
+}
+
+.checkBoxs{
+    width:18px;
+    height:18px;
+    margin-right:10px;
+    border:2px solid #6C6F70; 
+}
+
+.paNotAvail{
+    font-family: inter_regular;
+    font-size:15px;   
+}
+
+.boxNotAvail{
+    width:15px;
+    height:15px;
+    background:#FFD700;
+    margin-top:3px;
+    margin-right:5px;
+}
+
+.paDisable{
+    font-family: inter_regular;
+    font-size:15px;   
+}
+
+.boxDisable{
+    width:15px;
+    height:15px;
+    background:#D5D5D5;
+    margin-top:3px;
+    margin-right:5px;
+}
+
+.delete_div{
+    cursor: pointer;
+    background:#DC3545;
+    border-radius:10px;
+    padding:5px;
+}
+
+.morningDiv, .eveningDiv{
+    min-height:50px;
+    padding:20px;
+    border-radius:10px;
+    background:rgb(255, 255, 255);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.152);
+}
+
+.mM{
+    font-family: inter_bold;
+    font-size:15px;
+    color:#493B3B;
+    margin:0%;
+}
+
+.paAdd{
+    font-family: inter_bold;
+    font-size:15px;
+    color:#3F51B5;
+    cursor: pointer;
+    margin:0%;
+}
+
+.numbs{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:2px 0px 10px 0px;
+}
+
+.arrNumbDiv{
+    display: inline-block;
+    padding:5px 15px 5px 15px;
+    border-radius:5px;
+    border:2px solid #7f7a7a;
+    font-family: inter_regular;
+    font-size:14px;
+    margin:10px 10px 0px 0px;
+}
+
+.arrNumbO{
+    display: flex;
+    align-items: center;
+}
+
+.checkBoxsNumb{
+    width:17px;
+    height:17px;
+    margin:2px 10px 0px 0px;
+    border:2px solid #6C6F70; 
+    padding:0px;
+    cursor: pointer;
+}

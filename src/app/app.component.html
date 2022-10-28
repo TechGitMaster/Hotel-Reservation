@@ -1,35 +1,69 @@
 <!--______________________Navigation______________________-->
-<div class="container-fluid navigationforAll">
+<div *ngIf="condition_admin_user && !condition_header" class="container-fluid navigationforAll">
     <div class="container" style="max-width: 1360px;">
         <div class="row" style="margin:0%;">
-            <div class="col-4" style="display:flex;align-items: center;">
+            <div class="col-lg-4 col-6" style="display:flex;align-items: center;">
                 <div class="divmenuicon" (click)="clickedMenu(true)">
                     <img [src]="menubar_icon" class="img-fluid" />
                 </div>
             </div>
 
-            <div class="col-4" style="display: flex;justify-content: center;align-items: center;">
+            <div class="col-lg-4 col-6 colMiddleNavi">
                 <div class="divlogo">
                     <img src="/assets/logo/logo.png" class="img-fluid" />
                 </div>
             </div>
 
-            <div class="col-4">
+            <div class="col-lg-4 col-6 rightSidesNavi">
                 <div style="width:100%;height:100%;display:flex;align-items: center;">
                     <div style="width:100%;">
                         <div style="float:right;">
 
                             <!--______________________Condition login and sign in______________________-->
                             <div *ngIf="!condition_login">
-                                <button class="btn btn-primary btn_signin" (click)="funcSignIn(true)">Sign in</button>
+                                <button class="btn btn-primary btn_signin" (click)="funcSignIn('true')">Sign in</button>
                             </div>
     
                             <div *ngIf="condition_login" style="display: flex;align-items: center;position:relative;left:-20px;">
-                                <div class="iconNoti">
+                                <div class="iconNoti" (click)="notiClick()">
                                     <img [src]="notification_icon" class="img-fluid" />
+
+                                    <p *ngIf="notifi_numberCon" class="paPositionNumb_noti">{{handle_notifi_numb}}</p>
                                 </div>
                                 <div>
-                                    <span class="username">Kyle velarde..</span>
+                                    <p class="email">{{handle_fullname}}</p>
+                                </div>
+
+                                <!--_________NOTIFICATION____________-->
+                                <div *ngIf="clicked_noti" class="div_notiParent">
+                                    <div *ngIf="arr_notification.length == 0" style="height:350px;display: grid;place-items: center;">
+                                        <p>{{loading_message}}</p>
+                                    </div>
+
+                                    <div *ngFor="let data of arr_notification; index as indexes" class="divNotiParent">
+                
+                                        <!--___HEADER NOTIFI___-->
+                                        <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">    
+                                            <!--____New and Name_____-->
+                                            <div style="display: flex;align-items: center;">
+                                                <div *ngIf="checking(true, data.date) === 'new'" class="new">new</div>
+                                                <span class="nameHeader" style="font-size:16px;">{{ data.name }}</span>
+                                            </div>
+                        
+                                            <!--____X button_____-->
+                                            <div class="nameHeader" style="cursor: pointer;font-size:19px;" (click)="deletes(indexes)">X</div>
+                                        </div>
+                        
+                                        <!--_____MIDDLE MESSAGE____-->
+                                        <p class="paMessage">{{data.message}}</p>
+                        
+                                        <!--_____FOOTER DATE_____-->
+                                        <span class="paDate">{{checking(false, data.date)}}</span>
+                                    </div>
+
+                                    <div *ngIf="countAll_noti >= 3" style="padding:20px;display: flex;justify-content: center;">
+                                        <p class="seeAllNotification" (click)="funcClickable('user-account')">See all notifications</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -44,9 +78,9 @@
 
 <!--______________________Navigation clicked______________________-->
 <div class="container-fluid naviclicked" *ngIf="condition_menu">
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding:0%;">
         <div class="container" style="display:flex;justify-content: space-between;">
-            <div class="conX" (click)="clickedMenu(false)">
+            <div class="conX conX-font" (click)="clickedMenu(false)">
                 <span>x</span>
             </div>
             <div class="divLogoCorner">
@@ -57,35 +91,32 @@
             <div class="row">
                 <div class="col-lg-6 col-12">
                     <div class="divborder1">
-                        <div class="navclickable" (click)="funcClickable('home')"><span style="cursor: pointer;">Home</span></div>
+                        <div class="navclickable navclickable-font" (click)="funcClickable('home')"><span style="cursor: pointer;">Home</span></div>
                     </div>
                     <div class="divborder1">
-                        <div class="navclickable" (click)="funcClickable('Facilities')"><span style="cursor: pointer;">Facilities</span></div>
+                        <div class="navclickable navclickable-font" (click)="funcClickable('facilities')"><span style="cursor: pointer;">Facilities</span></div>
                     </div>
                     <div class="divborder1">
-                        <div class="navclickable" (click)="funcClickable('rooms')"><span style="cursor: pointer;">Rooms</span></div>
+                        <div class="navclickable navclickable-font" (click)="funcClickable('rooms')"><span style="cursor: pointer;">Rooms</span></div>
                     </div>
                     <div class="divborder1">
-                        <div class="navclickable" (click)="funcClickable('About')"><span style="cursor: pointer;">About</span></div>
+                        <div class="navclickable navclickable-font" (click)="funcClickable('about')"><span style="cursor: pointer;">About</span></div>
                     </div>
                     <div class="divborder1">
-                        <div class="navclickable" (click)="funcClickable('contact-us')"><span style="cursor: pointer;">Contact Us</span></div>
+                        <div class="navclickable navclickable-font" (click)="funcClickable('contact-us')"><span style="cursor: pointer;">Contact Us</span></div>
                     </div>
 
 
                     <!--______________________Condition login and sign in______________________-->
                     <div *ngIf="condition_login">
                         <div class="divborder1">
-                            <div class="navclickable" (click)="funcClickable('home')"><span style="cursor: pointer;">Notification</span></div>
-                        </div>
-                        <div class="divborder1">
-                            <div class="navclickable" (click)="funcClickable('home')"><span style="cursor: pointer;">Your Account</span></div>
+                            <div class="navclickable navclickable-font" (click)="funcClickable('user-account')"><span style="cursor: pointer;">Your Account</span></div>
                         </div>
                     </div>
 
                     <div *ngIf="!condition_login">
                         <div class="divborder1">
-                            <div class="navclickable" (click)="funcSignIn(true)"><span style="cursor: pointer;">Sign in</span></div>
+                            <div class="navclickable navclickable-font" (click)="funcSignIn('true')"><span style="cursor: pointer;">Sign in</span></div>
                         </div>
                     </div>
                 </div>
@@ -100,81 +131,213 @@
 </div>
 
 
-<!--______________________Login Singup______________________-->
-
-<div class="container-fluid containerloginSignup" *ngIf="condition_clicked_signup"  >
+<!--______________________Login, Singup and Forgot password______________________-->
+<div class="container-fluid containerloginSignup" *ngIf="condition_clicked_signup === 'true'">
 
     <!--________LOG IN__________-->
-    <div *ngIf="!condition_login_signup_clicked" class="logindiv">
-        <p class="paX" (click)="funcSignIn(false)">X</p>
-        <p class="paLoginSignup">Login</p>
+    <div *ngIf="condition_login_signup_clicked === 'login'" class="logindiv" (click)="$event.stopPropagation()">
+        <p class="paX paX-font" (click)="funcSignIn('false')">X</p>
+        <p class="paLoginSignup paLoginSignup-font">Login</p>
 
         <!--___Fill up___-->
         <div class="divFill">
-            <div class="divGoogle">
-                <div><img src="/assets/icon/google.png" class="img-fluid" style="max-height:25px;margin-right:10px;" /></div>
+            <div class="divGoogle divGoogle-height" (click)="signInWithGoogle()">
+                <div style="display: flex;align-items: center;"><img src="/assets/icon/google.png" class="img-fluid img_google" /></div>
                 <div><p class="paGoogle">Continue with Google</p></div>
             </div>
 
-            <p class="paOr">or</p>
+            <div style="display:flex;">
+                <div style="width:55%;display: flex;justify-content: center;align-items: center;">
+                    <div style="width:90%;height:2px;background:rgb(117, 112, 112);"></div>
+                </div>
+                <div style="width:10%;">
+                    <p class="paOr">or</p>
+                </div>
+                <div style="width:55%;display: flex;justify-content: center;align-items: center;">
+                    <div style="width:90%;height:2px;background:rgb(117, 112, 112);"></div>
+                </div>
+            </div>
             
             <form [formGroup]="formGroup_login">
                 <div>
-                    <input type="text" formControlName="username" placeholder="Username" class="form-control forminputLog" />
+                    <input type="text" formControlName="email" placeholder="Email" class="form-control forminputLog forminputLog-font" />
+                    <div *ngIf="errorLoginArr[0][1]">
+                        <span class="paError">{{errorLoginArr[0][0]}}</span>
+                    </div>
                 </div>
     
                 <div style="margin-top:15px;">
-                    <input type="password" formControlName="password" placeholder="Password" class="form-control forminputLog" />
+                    <input type="password" formControlName="password" placeholder="Password" class="form-control forminputLog forminputLog-font" />
+                    <div *ngIf="errorLoginArr[1][1]">
+                        <span class="paError">{{errorLoginArr[1][0]}}</span>
+                    </div>
                 </div>
             </form>
 
-            <button class="btn btn-primary loginbttn" (click)="loginbttn()">Log in</button>
+            <button class="btn btn-primary loginbttn loginbttn-font" (click)="loginbttn()">Log in</button>
         </div>
 
         <!--___Forgot and Create one___-->
         <div style="margin-top:20px;">
-            <p class="paForgot">Forgot password?</p>
-            <p style="text-align: center;margin:10px 0px 10px 0px;"><span class="padontHave">Don't have one? </span> 
-                <span class="paCreate" (click)="createOne()">Create one</span></p>
+            <p class="paForgot paForgot-font" (click)="createOneForgotLogin('forgotpassword');$event.stopPropagation()">Forgot password?</p>
+
+            <p style="text-align: center;margin:10px 0px 10px 0px;"><span class="padontHave padontHave-font">Don't have one? </span> 
+                <span class="paCreate paCreate-font" (click)="createOneForgotLogin('sign-up');$event.stopPropagation()">Create one</span></p>
         </div>
     </div>
 
 
 
+    <!--________FORGOT PASSWORD__________-->
+    <div *ngIf="condition_login_signup_clicked === 'forgotpassword'" class="forgotDiv" (click)="$event.stopPropagation()">
+
+        <p class="paX paX-font" (click)="funcSignIn('false')">X</p>
+        <p class="paForgotPass paForgotPass-font">Forgot Password</p>
+
+        <div style="padding:0px 20px 10px 20px;">
+            <p class="paNote paNote-font">Note:</p>
+            <ul class="ulBu">
+                <li>Get OTP code to procced.</li>
+                <li>You can see the code through your email.</li>
+            </ul>
+
+            <!--____________________GET OTP EMAIL______________________-->
+            <div [formGroup]="formGroup_forgotPassword">
+                <div class="row">
+                    <div class="col-lg-9 col-md-9 col-12 rowGetOTPTxt">
+                        <input type="text" formControlName="email" placeholder="Enter your email" class="form-control forminputReg forminputReg-font" />
+                        <div *ngIf="errArrForgotPassword[0][1]">
+                            <span class="paError">{{errArrForgotPassword[0][0]}}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-12 rowBttnOTPTxt">
+                        <button class="btn btn-primary btn-getOTP btn-getOTP-font" (click)="sendOTP()">{{sendOTTxt}}</button>
+                    </div>
+                </div>
+    
+                <div *ngIf="condition_OTP">
+                    <div style="width:100%;height:2px;background:#6D6871;margin:15px 0px 15px 0px;border-radius:10px;"></div>
+    
+                    <!--____________________Validate CODE______________________-->
+                    <div class="row">
+                        <div class="col-lg-9 col-md-9 col-12 rowGetOTPTxt">
+                            <input type="text" formControlName="verify" placeholder="Enter the code" class="form-control forminputReg forminputReg-font" />
+                            <div *ngIf="errArrForgotPassword[1][1]">
+                                <span class="paError">{{errArrForgotPassword[1][0]}}</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-12 rowBttnOTPTxt">
+                            <button class="btn btn-primary btn-getOTP btn-getOTP-font" (click)="verfiyOTP()">{{verifyTxt}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--________CHANGE PASSWORD__________-->
+    <div *ngIf="condition_login_signup_clicked === 'changePassword'" class="divchangePass" (click)="$event.stopPropagation()">
+        <p class="paX paX-font" (click)="funcSignIn('false')">X</p>
+        <p class="paForgotPass paForgotPass-font">Change Password</p>
+
+        <div [formGroup]="formGroup_newPassword"  style="padding:0px 20px 10px 20px;margin-top:30px;">
+            <div style="margin-bottom:20px;">
+                <input type="password" formControlName="newPassword" placeholder="Enter your new password" class="form-control forminputReg forminputReg-font" />
+                <div *ngIf="errArrForgotPassword[0][1]">
+                    <span class="paError">{{errArrForgotPassword[0][0]}}</span>
+                </div>
+            </div>
+            <div style="margin-bottom:10px;">
+                <input type="password" formControlName="verifyPassword" placeholder="Verify your new password" class="form-control forminputReg forminputReg-font" />
+                <div *ngIf="errArrForgotPassword[1][1]">
+                    <span class="paError">{{errArrForgotPassword[1][0]}}</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="changePassword()">{{changingTXT}}</button>
+        </div>
+    </div>
+
+
+
+    <!--________SUCCESS CHANGE PASSWORD________-->
+    <div *ngIf="condition_login_signup_clicked === 'successChange'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
+        <div>
+            <p class="paSuccessChange paSuccessChange-font">Successfully changing your password!</p>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="successChange()">Close</button>
+        </div>
+    </div>
+
+
+    <!--________SUCCESS Sign up________-->
+    <div *ngIf="condition_login_signup_clicked === 'successCreated'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
+        <div>
+            <p class="paSuccessChange paSuccessChange-font">Successfully created Account!</p>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="funcSignIn('true')">Close</button>
+        </div>
+    </div>
+
+    <!--________Sorry to keep you waiting for payment login________-->
+    <div *ngIf="condition_login_signup_clicked === 'sorryToKeepWaiting'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
+        <div>
+            <p class="paSuccessChange paSuccessChange-font">Continue your reservation. Sorry to keep you waiting.</p>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="funcSignIn('false')">Close</button>
+        </div>
+    </div>
+
+    <!--________Admin condition if login fromn payment________-->
+    <div *ngIf="condition_login_signup_clicked === 'loginFromadmin'" class="divSuccesschangePass" (click)="$event.stopPropagation()">
+        <div>
+            <p class="paSuccessChange paSuccessChange-font">Leave at payment section first before login for admin!</p>
+            <button class="btn btn-primary passwordChange passwordChange-font" (click)="funcSignIn('false')">Close</button>
+        </div>
+    </div>
 
     
-    <!--________Sign Up__________-->
-    <div *ngIf="condition_login_signup_clicked" class="signUpdiv">
-        <p class="paX" (click)="funcSignIn(false)">X</p>
-        <p class="paLoginSignup">Sign up</p>
+    <!--________SIGN UP__________-->
+    <div *ngIf="condition_login_signup_clicked === 'sign-up'" class="signUpdiv" (click)="$event.stopPropagation()">
+        <p class="paX paX-font" (click)="funcSignIn('false')">X</p>
+        <p class="paLoginSignup paLoginSignup-font">Sign up</p>
 
         <!--___Fill up___-->
         <div class="divFillSign">
             <form [formGroup]="formGroup_signup">
                 <div class="row">
                     <div class="col-6 padCol6">
-                        <input type="text" formControlName="firstname" placeholder="First name" class="form-control forminputReg" />
+                        <input type="text" formControlName="firstname" placeholder="First name" class="form-control forminputReg forminputReg-font" />
+                        <div *ngIf="errorSignupArr[0][1]">
+                            <span class="paError">{{errorSignupArr[0][0]}}</span>
+                        </div>
                     </div>
                     <div class="col-6 padCol6">
-                        <input type="text" formControlName="lastname" placeholder="Last name" class="form-control forminputReg" />
+                        <input type="text" formControlName="lastname" placeholder="Last name" class="form-control forminputReg forminputReg-font" />
+                        <div *ngIf="errorSignupArr[1][1]">
+                            <span class="paError">{{errorSignupArr[1][0]}}</span>
+                        </div>
                     </div>
     
                     <div class="col-12 margCol12">
-                        <input type="text" formControlName="username" placeholder="Username" class="form-control forminputReg" />
+                        <input type="text" formControlName="contactnumber" placeholder="Contact number" class="form-control forminputReg forminputReg-font" />
+                        <div *ngIf="errorSignupArr[2][1]">
+                            <span class="paError">{{errorSignupArr[2][0]}}</span>
+                        </div>
                     </div>
     
-                    <div class="col-12 margCol12">
-                        <input type="text" formControlName="contactnumber" placeholder="Contact number" class="form-control forminputReg" />
+                    <div class="col-lg-6 col-12 padCol6">
+                        <input type="text" formControlName="email" placeholder="Email" class="form-control forminputReg forminputReg-font" />
+                        <div *ngIf="errorSignupArr[3][1]">
+                            <span class="paError">{{errorSignupArr[3][0]}}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 padCol6">
+                        <input type="password" formControlName="password" placeholder="Password" class="form-control forminputReg forminputReg-font" />
+                        <div *ngIf="errorSignupArr[4][1]">
+                            <span class="paError">{{errorSignupArr[4][0]}}</span>
+                        </div>
                     </div>
     
-                    <div class="col-6 padCol6">
-                        <input type="text" formControlName="email" placeholder="Email" class="form-control forminputReg" />
-                    </div>
-                    <div class="col-6 padCol6">
-                        <input type="password" formControlName="password" placeholder="Password" class="form-control forminputReg" />
-                    </div>
-    
-                    <p class="paGender">Gender:</p>
+                    <p class="paGenderAccount">Gender:</p>
     
                     <div class="col-12 margCol12">
                         <select class="form-select formselect">
@@ -183,224 +346,362 @@
                             <option value="Female">Female</option>
                             <option value="Prefer not to say">Prefer not to say</option>
                         </select>
+                        <div *ngIf="errorSignupArr[5][1]">
+                            <span class="paError">{{errorSignupArr[5][0]}}</span>
+                        </div>
                     </div>
+
+                    <div *ngIf="typeOfAccount_close" style="padding:0%;">
+                        <p class="paGenderAccount">Type of account:</p>
+                        <div class="col-12 margCol12" style="display:flex;">
+                            <div style="display:flex;align-items: center;margin-right:10px;">
+                                <input class="form-check-input" (click)="adminNotAdmin(false)" style="padding:0%;margin:3px 5px 0px 0px;" 
+                                    type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                <span class="form-check-label fontadminNot" >
+                                    Not-Admin
+                                </span>
+                            </div>
     
-                    <button class="btn btn-primary signUpbttn" (click)="FuncsignUp()">Sign up</button>
+                            <div style="display:flex;align-items: center;">
+                                <input class="form-check-input" (click)="adminNotAdmin(true)" style="padding:0%;margin:3px 5px 0px 0px;" 
+                                    type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                <span class="form-check-label fontadminNot" >
+                                    Admin
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 margCol12" *ngIf="condition_adminNotAdmin">
+                        <input type="password" formControlName="adminPassword" placeholder="Enter the current password of admin" class="form-control forminputReg forminputReg-font" />
+                        <div *ngIf="errorSignupArr[6][1]">
+                            <span class="paError">{{errorSignupArr[6][0]}}</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary signUpbttn signUpbttn-font" (click)="FuncsignUp()">Sign up</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+<!--_______________________Show successfully send request____________________________-->
+<div class="container-fluid containerloginSignup" *ngIf="showSuccessfully_request">
+    <div class="container divSuccesss" (click)="$event.stopPropagation()">
+        <p class="paSuccess paSuccess-font">Success sending request!</p>
+        <button class="btn btn-primary successBttn successBttn-font" (click)="showSuccessfully_request = false">Close</button>
+    </div>
+</div>
 
 
 <!--______________________Router outlets______________________-->
-<router-outlet></router-outlet>
+<router-outlet *ngIf="condition_router_outlet"></router-outlet>
 
 
 <!--______________________APPOINTMENT PAGE______________________-->
-<div class="container-fluid" style="padding-top:50px;padding-bottom:50px;background:#FCFBFB;" *ngIf="clicked_handle !== 'contact-us'">
-    <div class="container" style="max-width:1330px;">
-        <div style="margin-bottom:10px;">
-            <p class="appointtxttitle">Set An Appointment</p>
-            <p class="appointtxtinfo">To Visit the Manhattan Garden City, you’re free to set an Appointment by fill-up the form.</p>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-12">
-                <form [formGroup]="formGroup_setAppointment">
-
-                    <div class="row">
-
-                        <div class="col-12 divformrow">
-
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div>
-                                        <label class="labels">Full Name</label>
-                                        <input type="text" formControlName="fullname" class="form-control forminput" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div>
-                                        <label class="labels">Email</label>
-                                        <input type="text" formControlName="email" class="form-control forminput" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 divformrow">
-                            <label class="labels">Number of Guest</label>
-                            <input type="text" formControlName="numberguest" class="form-control forminput" />
-                        </div>
-
-                        <div class="col-12 divformrow">
-                            <label class="labels">Contact Number</label>
-                            <input type="text" formControlName="contactnumber" class="form-control forminput" />
-                        </div>
-
-
-                        <div class="col-12 divformrow">
-                            <label class="labels">Let us know your thoughts</label>
-                            <textarea type="text" formControlName="letusknown" class="form-control forminputtextarea"></textarea>
-                        </div>
-
-                    </div>
-                </form>
+<div *ngIf="condition_admin_user && !condition_appointment">
+    <div class="container-fluid appointmentDivs" *ngIf="clicked_handle !== 'contact-us'">
+        <div class="container appointmentContainer" style="max-width:1330px;">
+            <div style="margin-bottom:10px;">
+                <p class="appointtxttitle">Set An Appointment</p>
+                <p class="appointtxtinfo">To Visit the Manhattan Garden City, you're free to set an Appointment by fill-up the form.</p>
             </div>
-
-            <div class="col-lg-6 col-md-6 col-12" style="padding-left:60px;padding-right:30px;">
-                <p class="selecttdtxt">Select time and date</p>
-                <div>
-                    <form [formGroup]="formGroup_setAppointment">
-                        <div class="row">
-                            <div class="col-8" style="padding-right:0px;">
-                                <label class="labels">Time</label>
-                                <input type="text" formControlName="time" class="form-control forminput" />
-                            </div>
     
-                            <div class="col-4">
-                                <p class="labels" style="margin:0%;">AM/PM</p>
-                                <input type="text"  formControlName="amPm" class="form-control forminput" style="margin-top:10px;" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <!--_______________________Calendar_______________________-->
-                <div style="margin-top:20px;" dates>
-                    <label class="labels">Date Arrival</label>
-
-                    <div class="calendar">
-                        <div class="row" *ngIf="!condition_clickedmonth">
-                            <div class="col-6">
-                                <span class="month-picker" id="month-picker" (click)="clickMonthPicker()">{{month_select}}</span>
-                            </div>
-                            <div class="col-6">
-                                <div class="year-picker">
-                                    <div style="margin-right:10px;">
-                                        <p class="preprev year-change" (click)="prevyear()" style="margin:0%;">{{prevtxt}}</p>
+            <div class="row" style="padding:0%;margin:0%;">
+                <div class="col-lg-6 col-md-6 col-12" style="padding:0%;margin:0%;">
+                    <form [formGroup]="formGroup_setAppointment">
+    
+                        <div class="row">
+    
+                            <div class="col-12 divformrow">
+    
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                        <div>
+                                            <label class="labels">Full Name:</label>
+                                            <input type="text" formControlName="fullname" class="form-control forminput" />
+                                            <div *ngIf="errAppointment[0][1]">
+                                                <span class="paError">{{errAppointment[0][0]}}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p id="year" style="margin:0%;">{{year_selected}}</p>
-                                    </div>
-                                    <div style="margin-left:10px;">
-                                        <p class="prenext year-change" (click)="nextyear()" id="next-year" style="margin:0%;">{{nextxt}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="calendar-body" *ngIf="!condition_clickedmonth">
-                            <div style="width:95%;">
-                                <div class="calendar-week-day">
-                                    <div>Sun</div>
-                                    <div>Mon</div>
-                                    <div>Tue</div>
-                                    <div>Wed</div>
-                                    <div>Thu</div>
-                                    <div>Fri</div>
-                                    <div>Sat</div>
-                                </div>
-                                <div class="calendar-days">
-                                    <div *ngFor="let days of day_numbers;index as dayindex">
-                                        <div (mouseover)="daypick_hover(days[0], days[1], 'mouseover')" (mouseout)="daypick_hover(days[0], days[1], 'mouseout')"  
-                                        (click)="daypick(days[0], days[1])"
-                                        [ngStyle]="{'cursor':(days[1] === 'true' ? 'pointer':'context-menu'), 'background':
-                                        (day_year_month_selected[0] === days[0] && day_year_month_selected[1] === month_select &&
-                                        day_year_month_selected[2] === year_selected ? '#FFD700': 
-                                        (days[0] === ''+numshandlePickDay ? '#ADD8E6':(days[1] === 'false' ? 'rgb(213, 213, 213)': '')) )}"
-                                        class="cols"
-                                        >
-                                            {{ days[0] }}
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 emailCol">
+                                        <div>
+                                            <label class="labels">Email:</label>
+                                            <input type="text" formControlName="email" class="form-control forminput" />
+                                            <div *ngIf="errAppointment[1][1]">
+                                                <span class="paError">{{errAppointment[1][0]}}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
+                            <div class="col-12 divformrow">
+                                <label class="labels">Number of Guest:</label>
+                                <select (change)="numGuest_func()"  class="form-select formselectAppointment" formControlName="numberguest">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
+                                <div *ngIf="errAppointment[2][1]">
+                                    <span class="paError">{{errAppointment[2][0]}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12 divformrow">
+                                <!--_________CHECK BOX__________-->
+                                <div>
+                                    <div *ngIf="boolean_close">
+                                        <input class="form-check-input checkGuest" type="checkbox" value="" id="flexCheckChecked" (click)="GDetails_check()"
+                                            style="margin-right:8px;position: relative;top:1px;">
+
+                                        <label class="form-check-label paAllGuest" for="flexCheckChecked">
+                                            I want to add all guest names.
+                                        </label>
+                                    </div>
+
+                                    <!--___GUEST DETAILS___-->
+                                    <div *ngIf="countD != 1" class="parentGD">
+                                        <div>
+                                            <div style="width:100%;padding:0px 10px 0px 10px;">
+                                                <!--{{data_room.nameRoom}}-->
+                                                <p class="patiGuest">Add the Inforamation of guests</p>
+
+                                                <!--____TABLE_____-->
+                                                <div style="width:100%;">
+                                                    <!--___HEADER___-->
+                                                    <div style="display: flex;">
+                                                        <div style="width:30%;font-weight: 600;font-size:14px">First name</div>
+                                                        <div style="width:30%;font-weight: 600;font-size:14px">Last name</div>
+                                                        <div style="width:30%;font-weight: 600;font-size:14px;">Contact number</div>
+                                                        <div style="width: 10%;"></div>
+                                                    </div>
+
+                                                    <!--___LOOPING INFO_____-->
+                                                    <div class="INFO_dtails">
+                                                        <div class="div_dtails" style="display: flex;margin-top:5px;" *ngFor="let cs of arr_details; index as indexes">
+                                                            <div class="inputDetails">
+                                                                <input type="text" (input)="updateArr_fill(0, indexes, $event)" class="form-control forminput_details" />
+                                                            </div>
+                                                            <div class="inputDetails">
+                                                                <input type="text" (input)="updateArr_fill(1, indexes, $event)" class="form-control forminput_details" />
+                                                            </div>
+                                                            <div class="inputDetails">
+                                                                <input type="text" (input)="updateArr_fill(2, indexes, $event)" 
+                                                                    [ngClass]="['form-control', 'forminput_details', 'forminput_details_'+indexes]" />
+                                                            </div>
+                                                            <div style="width:10%;">
+                                                                <img *ngIf="(countD-2) == indexes && boolean_close" src="/assets/icon/x_details.png" class="img-fluid img_xDetails" (click)="ex_GDetails(indexes)" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--____FOOTER ADD MORE GUEST____-->
+                                                    <div *ngIf="countD < countGuest">
+                                                        <span class="paAddGuest" (click)="addGuest()">+ add more guest</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="errAppointment[5][1]">
+                                        <span class="paError">{{errAppointment[5][0]}}</span>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="col-12 divformrow">
+                                <label class="labels">Contact Number:</label>
+                                <input type="text" formControlName="contactnumber" class="form-control contacts forminput" (input)="funcOnlyNumber(true)"/>
+                                <div *ngIf="errAppointment[3][1]">
+                                    <span class="paError">{{errAppointment[3][0]}}</span>
+                                </div>
+                            </div>
+    
+    
+                            <div class="col-12 divformrow">
+                                <label class="labels">Let us know your thoughts:</label>
+                                <textarea type="text" formControlName="letusknown" class="form-control forminputtextarea"></textarea>
+                            </div>
+    
                         </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-12 dateTimeDivs" >
+                    <p class="selecttdtxt">Select time and date:</p>
+                    <div>
+                        <div [formGroup]="formGroup_setAppointment">
+                            <div class="row">
+                                <div class="col-8" style="padding-right:0px;">
+                                    <label class="labels">Time:</label>
+                                    <select (change)="timeClick()" class="form-select formselectAppointment ds_DF" formControlName="time">
+                                        <option selected>Select your time</option>
+                                        <option *ngFor="let data of timeAvailable; index as indexes" [disabled]="!data[1]">
+                                            <span>{{data[0]}} {{ !data[1] ? 'reserved':'' }}</span>
+                                        </option>
+                                    </select>
+                                    <div *ngIf="errAppointment[4][1]">
+                                        <span class="paError">{{errAppointment[4][0]}}</span>
+                                    </div>
+                                </div>
+        
+                                <div class="col-4">
+                                    <label class="labels">AM/PM:</label>
+                                    <select class="form-select formselectAppointment ds_APM">
+                                        <option selected (click)="clickAM_PM(true)">am</option>
+                                        <option value="Male" (click)="clickAM_PM(false)">pm</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!--_______________________Calendar_______________________-->
+                    <div style="margin-top:20px;" dates>
+                        <label class="labels">Date Arrival:</label>
+    
+                        <div class="calendar">
+                            <div class="row" *ngIf="!condition_clickedmonth">
+                                <div class="col-6">
+                                    <span class="month-picker fontSizeMonth" id="month-picker" (click)="clickMonthPicker()">{{month_select}}</span>
+                                </div>
+                                <div class="col-6">
+                                    <div class="year-picker year-picker-font">
+                                        <div style="margin-right:10px;">
+                                            <p class="preprev year-change" (click)="prevyear()" style="margin:0%;">{{prevtxt}}</p>
+                                        </div>
+                                        <div>
+                                            <p id="year" style="margin:0%;">{{year_selected}}</p>
+                                        </div>
+                                        <div style="margin-left:10px;">
+                                            <p class="prenext year-change" (click)="nextyear()" id="next-year" style="margin:0%;">{{nextxt}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="calendar-body" *ngIf="!condition_clickedmonth">
+                                <div style="width:95%;">
+                                    <div class="calendar-week-day">
+                                        <div>Sun</div>
+                                        <div>Mon</div>
+                                        <div>Tue</div>
+                                        <div>Wed</div>
+                                        <div>Thu</div>
+                                        <div>Fri</div>
+                                        <div>Sat</div>
+                                    </div>
+                                    <div class="calendar-days">
+                                        <div *ngFor="let days of day_numbers;index as dayindex">
+                                            <div (mouseover)="daypick_hover(days[0], days[1], 'mouseover')" (mouseout)="daypick_hover(days[0], days[1], 'mouseout')"  
+                                            (click)="daypick(days[0], days[1])"
+                                            [ngStyle]="{'cursor':(days[1] === 'true' ? 'pointer':'context-menu'), 'background':
+                                            (day_year_month_selected[0] === days[0] && day_year_month_selected[1] === month_select &&
+                                            day_year_month_selected[2] === year_selected ? '#FFD700': 
+                                            (days[0] === ''+numshandlePickDay ? '#ADD8E6':(days[1] === 'false' ? 'rgb(213, 213, 213)': '')) )}"
+                                            class="cols"
+                                            >
+                                                {{ days[0] }}
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
-                        <div class="month-list" *ngIf="condition_clickedmonth">
-                            <div class="row" style="margin:0%;">
-                                <div class="col-4" style="padding:10px;margin-top:5px;" *ngFor="let stringa of month_names_final; index as nindex">
-                                    <div class="colfdivmontjh">
-                                        <div [ngClass]="[(stringa[1] !== 'false' ? 'colmonth': 'colmonth2')]" (click)="calenpick(nindex, stringa[1])">
-                                            <span class="coltxtmonth">{{ stringa[0] }}</span>
+                            </div>
+                                    
+                            <div class="month-list" *ngIf="condition_clickedmonth">
+                                <div class="row" style="margin:0%;">
+                                    <div class="col-4" style="padding:10px;margin-top:5px;" *ngFor="let stringa of month_names_final; index as nindex">
+                                        <div class="colfdivmontjh">
+                                            <div [ngClass]="[(stringa[1] !== 'false' ? 'colmonth': 'colmonth2')]" (click)="calenpick(nindex, stringa[1])">
+                                                <span class="coltxtmonth">{{ stringa[0] }}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!--_______________________knowing_______________________-->
-                <div style="margin-top:20px;">
-                    <div style="display:flex;">
-                        <div class="divknowing">
-                            <div class="boxknowing"></div>
-                            <span class="txtknowing">Available</span>
-                        </div>
-
-                        <div class="divknowingnot">
-                            <div class="boxknowing">
-                                <p class="xknowing">X</p>
+    
+                    <!--_______________________knowing_______________________-->
+                    <div style="margin-top:20px;">
+                        <div style="display:flex;">
+                            <div class="divknowing">
+                                <div class="boxknowing"></div>
+                                <span class="txtknowing txtknowing-font">Available</span>
                             </div>
-                            <span class="txtknowing">Not Available</span>
+    
+                            <div class="divknowingnot">
+                                <div class="boxknowing">
+                                    <p class="xknowing">X</p>
+                                </div>
+                                <span class="txtknowing txtknowing-font">Not Available</span>
+                            </div>
                         </div>
                     </div>
+    
+                    <!--_______________________Button_______________________-->
+                    <div style="display:flex;justify-content: center;">
+                        <button class="btn btn-primary btnsubmitbttn btnsubmitbttm-font" (click)="submitAppointment()">Submit</button>
+                    </div>
+    
                 </div>
-
-                <!--_______________________Button_______________________-->
-                <div style="display:flex;justify-content: center;">
-                    <button class="btn btn-primary btnsubmitbttn" (click)="submitAppointment()">Submit</button>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
 
 <!--____________________Footer____________________-->
-<div class="container-fluid" style="background: #F5F5F5;padding:0px;" *ngIf="clicked_handle !== 'contact-us'">
-    <div class="container" style="max-width:1200px;padding:40px;">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <p class="contactusfooter">Contact us on...</p>
-
-                <div style="margin-bottom:30px;">
-                    <p class="p1" style="margin:0px;">Email</p>
-                    <span class="s1" style="text-decoration: underline;">kylevelarde374@gmail.com</span>
+<div *ngIf="condition_admin_user && !condition_footer">
+    <div class="container-fluid" style="background: #F5F5F5;padding:0px;" *ngIf="clicked_handle !== 'contact-us'">
+        <div class="container containerFooter">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <p class="contactusfooter">Contact us on...</p>
+    
+                    <div style="margin-bottom:30px;">
+                        <p class="p1" style="margin:0px;">Email</p>
+                        <span class="s1" style="text-decoration: underline;">kylevelarde374@gmail.com</span>
+                    </div>
+    
+                    <div>
+                        <p class="p1" style="margin:0px;">Contact Info</p>
+                        <span class="s1">+639183344538</span>
+                    </div>
                 </div>
-
-                <div>
-                    <p class="p1" style="margin:0px;">Contact Info</p>
-                    <span class="s1">+639183344538</span>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div style="height:100%;display: flex;justify-content: center;position: relative;">
-                    <div style="position:absolute;bottom:0px;">
-                        <p class="followUs">Follow us on</p>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="footerFollowUs">
                         <div>
-                            <img src="/assets/icon/facebook.png" style="max-width:50px;max-height:50px;margin-right:20px;" />
-                            <img src="/assets/icon/instagram.png" style="max-width:55px;max-height:55px;margin-right:20px;" />
-                            <img src="/assets/icon/twitter.png" style="max-width:50px;max-height:50px;" />
+                            <p class="followUs followUs-font">Follow us on</p>
+                            <div>
+                                <img src="/assets/icon/facebook.png" style="max-width:50px;max-height:50px;margin-right:20px;" />
+                                <img src="/assets/icon/instagram.png" style="max-width:55px;max-height:55px;margin-right:20px;" />
+                                <img src="/assets/icon/twitter.png" style="max-width:50px;max-height:50px;" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div style="background:#ADD8E6;display:flex;justify-content: center;">
-        <div class="container" style="max-width:1300px;margin:0%;padding:5px;">
-            <p style="margin:0%;padding-left:10px;padding-right:10px;">© 2022-2023 All rights reserved. Managed by Abegeil Padilla</p>
+    
+        <div style="background:#ADD8E6;display:flex;justify-content: center;">
+            <div class="container" style="max-width:1300px;margin:0%;padding:5px;">
+                <p class="reserveds">© 2022-2023 All rights reserved. Managed by Abegeil Padilla</p>
+            </div>
         </div>
     </div>
 </div>

@@ -1,50 +1,4 @@
 
-/* ________________________Font from ttf extension_________________________ */
-
-@font-face {
-    font-family: inter_regular;
-    src: url(/assets/Inter-Regular.ttf);
-}
-
-@font-face {
-    font-family: inter_medium;
-    src: url(/assets/Inter-Medium.ttf);
-}
-
-@font-face {
-    font-family: inter_semibold;
-    src: url(/assets/Inter-SemiBold.ttf);
-}
-
-@font-face {
-    font-family: inter_bold;
-    src: url(/assets/Inter-Bold.ttf);
-}
-
-
-@font-face {
-    font-family: inria_serif_bold;
-    src: url(/assets/InriaSerif-Bold.ttf);
-}
-
-
-@font-face {
-    font-family: poppins_regular;
-    src: url(/assets/Poppins-Regular.ttf);
-}
-
-@font-face {
-    font-family: poppins_bold;
-    src: url(/assets/Poppins-Bold.ttf);
-}
-
-@font-face {
-    font-family: poppins_semibold;
-    src: url(/assets/Poppins-SemiBold.ttf);
-}
-
-/*__________________________________________________________________________*/
-
 
 .header{
     background:url("/assets/image/backgroundhome.png") no-repeat bottom center fixed;
@@ -60,15 +14,17 @@
 
 
 .welcomeT{
-    font-size:40px;
     font-family: inter_regular;
     color:#FCFBFB;
     padding:0px;
     margin:0%;
 }
 
+.welcomeT-font{
+    font-size:40px;
+}
+
 .manhattanG{
-    font-size:55px;
     font-family: inria_serif_bold;
     color:#FCFBFB;
     padding:0px;
@@ -77,8 +33,11 @@
     top:-2px;
 }
 
+.manhattanG-font{
+    font-size:55px;
+}
+
 .citymanhattan{
-    font-size:44px;
     font-family: inria_serif_bold;
     color:#FCFBFB;
     padding:0px;
@@ -87,8 +46,11 @@
     top:-20px;
 }
 
+.citymanhattan-font{
+    font-size:44px;
+}
+
 .infowelcomeTo{
-    font-size:22px;
     font-family: inter_regular;
     color:#FCFBFB;
     padding:0px;
@@ -97,8 +59,11 @@
     top:-15px;
 }
 
+.infowelcomeTo-font{
+    font-size:22px;
+}
+
 .arDiv{
-    width:95%;
     background: rgba(20, 23, 32, 0.76);
     border-radius: 20px;
 }
@@ -107,21 +72,31 @@
     color:#FCFBFB;
     font-family: inria_serif_bold;
     text-align: center;
-    font-size:39px;
     padding:0px;
     padding-top:20px;
     margin:0%;
 }
 
+.arAnow-font{
+    font-size:39px;
+}
+
+.mahttanLetter{
+    display: flex;align-items: center;
+}
+
 .infoarAnow{
     margin:0%;
-    padding-left:50px;
-    padding-right: 50px;
     padding-top:5px;
     color:#FCFBFB;
     font-family: inter_regular;
     text-align: center;
+}
+
+.infoarAnow-font{
     font-size:17px;
+    padding-left:50px;
+    padding-right: 50px;
 }
 
 .imgsAR{
@@ -174,10 +149,13 @@
 
 .facilities{
     text-align: center;
-    font-size: 30px;
     font-family: inter_semibold;
     margin:0%;
     color:#0063A8;
+}
+
+.facilities-font{
+    font-size: 30px;
 }
 
 .imgdivfacilities{
@@ -190,25 +168,35 @@
     max-height:90%;
 }
 
+.imgsfacilities2{
+    width:65%; max-height:65%;
+}
+
 .textnameFacilities{
     margin: 0%;
     padding:0px;
     font-family: inter_regular;
     text-align: center;
-    font-size:19px;
     margin-top:3px;
 }
 
+.textnameFacilities-font{
+    font-size:19px;
+}
+
 .btnseeMore{
-    width:25%;
     border-radius:20px;
     border:none;
     text-align: center;
     font-family: inter_regular;
-    font-size:18px;
     background: #FFD700;
     color:black;
     cursor: pointer;
+}
+
+.btnseeMore-width{
+    width:25%;
+    font-size:18px;
 }
 
 .divtrustwortyandWhy{
@@ -223,24 +211,38 @@
 
 .headerTrustworty1{
     font-family: inter_bold;
-    font-size:24px;
     color:#0063A8;
 }
 
-.headerTrustworty2{
-    font-family: inter_medium;
+.headerTrustworty1-font{
     font-size:24px;
-    color:#0A2B6A;
 }
+
+
+.headerTrustworty2{
+    font-family: inter_regular;
+    font-size:24px;
+}
+
+.headerTrustworty2-font{
+    font-size:24px;
+}
+
 
 .whyshouldtxt{
     font-family: inter_bold;
-    font-size:30px;
     color:#0063A8;
+}
+
+.whyshouldtxt-font{
+    font-size:30px;
 }
 
 .buyroomtxt{
     font-family: inter_regular;
+}
+
+.buyroomtxt-font{
     font-size:30px;
 }
 
@@ -262,6 +264,9 @@
     display: flex;
     align-items: center;
     font-family: inter_regular;
+}
+
+.divfinalbetterll-font{
     font-size:20px;
 }
 
@@ -324,16 +329,24 @@
 .availableAbegeil{
     font-family: inter_bold;
     color:#FCFBFB;
-    font-size:27px;
     margin:0%;
     margin-bottom:30px;
 }
 
+.availableAbegeil-font{
+    font-size:27px;
+}
+
 .roomavailalable{
     width:100%;
+    height:100%;
     border-radius:20px;
     background:#FCFBFB;
     overflow: hidden;
+}
+
+.roomavailalable-top{
+    margin-top: 0px;
 }
 
 .infodivroom{
@@ -347,19 +360,369 @@
 
 .bttndetails{
     font-family: poppins_semibold;
-    font-size:14px;
-    background:#F4694C;
-    border:none;
-    border-radius:0px;
+    background:#FFD700;
+    border-radius:10px;
+    font-family: inter_medium;
+    font-size:16px;
+    color:black;
+}
+
+.bttndetails-font{
+    font-size:16px;
 }
 
 .btnseemorbttn{
     width:50%;
     border-radius:20px;
+    font-family: inter_regular;
+    background:#FFD700;
+    border:none;
+    color:black;
+    margin-bottom:20px;
+}
+
+.btnseemorbttn-font{
     font-size:18px;
+}
+
+.notAvailable{
+    padding:15px;
+    border-radius:10px;
+    background:#FCFBFB;
+    display: flex;
+}
+
+.paNoAva{
+    margin:0px 0px 10px 0px;
+    font-family: inter_bold;
+    color:black;
+}
+
+.paNoAva-font{
+    font-size:25px;
+}
+
+.paNoAvaInfo-font{
+    max-width: 90%;
+    font-size:20px;
+}
+
+.bttnContacts-font{
+    font-size:18px;
+}
+
+.paNoAvaInfo{
+    margin: 0px 0px 15px 0px;
+    font-family: inter_regular;
+    color:black;
+}
+
+.bttnContacts{
+    width:70%;
+    border-radius:20px;
     font-family: inter_regular;
     background:#FFD700;
     border:none;
     color:black;
 }
 
+.iconsFas{
+    display:flex;justify-content: center;margin-top:40px;margin-bottom: 40px;
+}
+
+.middleFluid{
+    padding-left:35px;padding-right:35px;
+}
+
+.paWhyShould{
+    width:70%;
+}
+
+.facitiICon{
+    margin-bottom: 80px;
+}
+
+.img1{
+    max-width:100px;max-height:40px;
+}
+
+.img2, .img3{
+    max-width:100px;max-height:45px;
+}
+
+
+
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+
+
+/*992px for middle col-lg*/
+@media (max-width:992px){
+    .containerheader{
+        min-width: 100%;
+        margin-bottom: 204px;
+        position:relative;
+        top:100px;
+    }
+
+    .arDiv{
+        background: rgba(20, 23, 32, 0.76);
+        border-radius: 20px;
+        margin-top:40px;
+    }
+
+    .welcomeT-font{
+        font-size:30px;
+    }
+
+    .manhattanG-font{
+        font-size:45px;
+    }
+
+    .citymanhattan-font{
+        font-size:34px;
+    }
+
+    .infowelcomeTo-font{
+        font-size:20px;
+    }
+
+    .arAnow-font{
+        font-size:29px;
+    }
+
+    .infoarAnow-font{
+        font-size:15px;
+        padding-left:20px;
+        padding-right: 20px;
+    }
+
+    .imgsAR{
+        padding-left:20px;
+        padding-right:20px;
+        margin-top:15px;
+        position: relative;
+    }
+}
+
+@media (max-width: 885px){
+
+    .manhattanG-font{
+        font-size:40px;
+    }
+
+    .citymanhattan-font{
+        font-size:29px;
+    }
+
+    .availableAbegeil-font{
+        text-align: center;
+        font-size:25px;
+    }
+}
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .mahttanLetter{
+       display: block;
+    }
+
+    .welcomeT-font{
+        font-size:30px;
+        text-align: center;
+    }
+
+    .manhattanG-font{
+        font-size:45px;
+        text-align: center;
+    }
+
+    .citymanhattan-font{
+        font-size:34px;
+        text-align: center;
+    }
+
+    .infowelcomeTo-font{
+        font-size:20px;
+        text-align: center;
+    }
+
+    .middleFluid{
+        padding:0%;
+    }
+
+    .divtrustwortyandWhy{
+        padding-left:0px;
+        padding-right:0px;
+    }
+
+    .imglivebetter{
+        min-width:100%;
+        max-height:73%;
+        margin-top:40px;
+        position: relative;
+    }
+
+    .infotrust{
+        font-family: inter_regular;
+        font-size:15px;
+        margin-top: 20px;
+        margin-bottom:10px;
+    }
+
+    .notAvailable{
+        padding:15px;
+        border-radius:10px;
+        background:#FCFBFB;
+        display: flex;
+        margin-bottom:20px;
+    }
+
+    .paNoAva-font{
+        font-size:22px;
+    }
+    
+    .paNoAvaInfo-font{
+        max-width: 100%;
+        font-size:18px;
+    }
+    
+    .bttnContacts-font{
+        font-size:18px;
+    }
+    
+}
+
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .welcomeT-font{
+        font-size:30px;
+        text-align: center;
+    }
+
+    .manhattanG-font{
+        font-size:33px;
+        text-align: center;
+    }
+
+    .citymanhattan-font{
+        font-size:30px;
+        text-align: center;
+    }
+
+    .infowelcomeTo-font{
+        font-size:17px;
+        text-align: center;
+    }
+
+    .arAnow-font{
+        font-size:25px;
+    }
+
+    .imgsfacilities{
+        width:70%;
+        max-height:70%;
+    }
+    
+    .imgsfacilities2{
+        width:40%; max-height:40%;
+    }
+
+    .infoarAnow-font{
+        font-size:14px;
+        padding-left:20px;
+        padding-right: 20px;
+    }
+
+    .facilities-font{
+        font-size: 26px;
+    }
+
+    .facitiICon{
+        margin-bottom: 50px;
+    }    
+
+    .textnameFacilities-font{
+        font-size:16px;
+    }
+
+    .btnseeMore-width{
+        width:100%;
+        font-size:16px;
+    }
+
+    .paWhyShould{
+        width:80%;
+    }
+
+    .iconsFas{
+        display:flex;justify-content: center;margin-top:20px;margin-bottom: 20px;
+    }
+
+    .whyshouldtxt-font, .buyroomtxt-font{
+        font-size:23px;
+    }
+
+    .imglivebetter{
+        max-width:90%;
+        max-height:73%;
+        margin-top:20px;
+        position: relative;
+    }
+
+    .divfinalbetterll-font{
+        font-size:17px;
+    }
+
+    .infotrust{
+        font-family: inter_regular;
+        font-size:15px;
+        margin-top: 20px;
+        margin-bottom:10px;
+    }
+
+    .headerTrustworty1-font, .headerTrustworty2-font{
+        font-size:23px;
+    }
+
+    .img1{
+        max-width:100px;max-height:30px;
+    }
+    
+    .img2, .img3{
+        max-width:100px;max-height:35px;
+    }
+    
+    .availableAbegeil-font{
+        text-align: center;
+        font-size:23px;
+    }
+
+    .roomavailalable-top{
+        margin-top: 15px;
+    }
+    
+    .roomtxtinfo{
+        font-family: inter_medium;
+        font-size:15px;
+    }
+
+    .bttndetails-font, .btnseemorbttn-font{
+        font-size:15px;
+    }
+
+    .paNoAva-font{
+        font-size:20px;
+    }
+    
+    .paNoAvaInfo-font{
+        max-width: 100%;
+        font-size:15px;
+    }
+    
+    .bttnContacts-font{
+        font-size:15px;
+    }
+}

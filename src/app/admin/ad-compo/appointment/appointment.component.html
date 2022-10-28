@@ -1,0 +1,134 @@
+<div clas="container-fluid header">
+    <div style="padding:20px 30px 20px 30px">
+        <p class="paReservation">Appointment request</p>
+        <div style="display: flex;justify-content: center;">
+            <p class="paMeReser">Appointment component is the component where you can see all the request of the users.</p>
+        </div>
+
+        <div style="margin-top:40px;">
+            <div>
+                <!--___SORTING and SEARCHING___-->
+                <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">
+
+                    <!--__SORTING__-->
+                    <div style="display: flex;align-items: center;">
+                      <div class="form-check" style="margin-right:10px;">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="clickRadio('all')" checked>
+                            <label class="form-check-label" for="flexRadioDefault1">
+                              Pending
+                            </label>
+                        </div>
+                        <div class="form-check" style="margin-right:10px;">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="clickRadio('accepted')">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                              Accepted
+                            </label>
+                        </div>
+                        <div class="form-check" style="margin-right:10px;">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('declined')">
+                            <label class="form-check-label" for="flexRadioDefault3">
+                              Declined
+                            </label>
+                        </div>
+                        <div class="form-check" style="margin-right:10px;">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" (click)="clickRadio('canceled')">
+                          <label class="form-check-label" for="flexRadioDefault4">
+                            Canceled
+                          </label>
+                        </div>
+                        <div class="form-check" style="margin-right:10px;">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5" (click)="clickRadio('trash')">
+                          <label class="form-check-label" for="flexRadioDefault5">
+                            Archive
+                          </label>
+                      </div>
+                    </div>
+
+                    <!--__SEARCHING__-->
+                    <div style="display: flex;">
+                        <input type="text" placeholder="search..." class="form-control txtSearch" (input)="inputNs($event)" />
+                        <button *ngIf="inputN" class="btn btn-primary btnclear" (click)="clickClear()">Clear</button>
+                        <button class="btn btn-primary btnSearch" (click)="clickSearch()">Search</button>
+                    </div>
+                </div>
+
+
+                <!--___Request div___-->
+                <table class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Short Info</th>
+                        <th scope="col">Date arrival</th>
+                        <th scope="col">Transaction date</th>
+                        <th scope="col">Transaction id</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <!--___NOTHING REQUEST___-->
+                      <tr *ngIf="dataAppointmentAll.length == 0">
+                        <td colspan="8">
+                            <p class="paNothing">{{strLoadingNothing}}</p>
+                        </td>
+                      </tr>
+
+                      <!--____MAKING REQUEST____-->
+                      <tr *ngFor="let data of dataAppointmentSelected; index as indexes">
+                        <td>
+                          <div>{{data.fullname}} |<br/>{{data.reserved_email}}</div>
+                        </td>
+                        <td>{{data.dateArrival}}</td>
+                        <td>{{data.timeDate}}</td>
+                        <td>{{data.transaction_ID}}</td>
+                        <td>
+                            <div style="display: flex;justify-content: center;">
+                                <div style="display: flex;" *ngIf="data.acceptedNot === 'new' && str_radioCondition === 'all'">
+                                  <button class="btn btn-success btnNew" style="width:50%;" (click)="accept_Decline(indexes, true)">Accept</button>
+                                  <button class="btn btn-danger btnNew" style="width:50%;" (click)="accept_Decline(indexes, false)">Decline</button>
+                                </div>
+
+                                <div style="display: flex;" *ngIf="data.acceptedNot === 'new' && str_radioCondition === 'trash'">
+                                  <button class="btn btn-success btnActionNew" style="width:50%;" disabled>Accept</button>
+                                  <button class="btn btn-danger btnActionNew" style="width:50%;" disabled>Decline</button>
+                                </div>
+                                
+                                <button (click)="info(indexes)" *ngIf="str_radioCondition !== 'trash'" class="btn btn-primary btnAction"  
+                                [ngStyle]="{'width':str_radioCondition === 'trash' ? '32%':'90%'}">Info</button>
+                                
+    
+                                <button (click)="info_trash(indexes)" *ngIf="str_radioCondition === 'trash'" class="btn btn-primary btnAction"
+                                [ngStyle]="{'width':'90%'}">Info</button>
+                            </div>
+
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>  
+
+                  <!--____Footer_____-->
+                  <div style="display:flex;justify-content: space-between;">
+                    <div style="display: flex;align-items: center;">
+                        <p class="paShowing">Showing {{dataAppointmentSelected.length}} to 5 of {{countDataAll}} query</p>
+                    </div>
+
+                    <div *ngIf="arrNumber.length > 0" style="display:flex;border-radius:5px;border: 1px solid #dee2e6;">
+
+                        <div class="paOl" style="color:#6c757d;" (click)="clickprevious()">Previous</div>
+                        <div *ngFor="let numb of arrNumber; index as indexes">
+                            <div class="paOl" [ngStyle]="
+                            {'width': '40px', 'color':selectedNumbArr == indexes ? 'white':'#007bff', 'background': selectedNumbArr == indexes ? '#0d6efd':'white'}" 
+                            (click)="clickedNum(indexes)">
+                                {{numb}}
+                            </div>
+                        </div>
+                        <div class="paOl" style="color:#007bff;" (click)="clickNext()">Next</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

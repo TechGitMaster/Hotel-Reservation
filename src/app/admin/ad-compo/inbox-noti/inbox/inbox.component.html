@@ -1,0 +1,133 @@
+<div class="container-fluid" style="padding:0%;position: relative;">
+    <div class="divHeader">
+        <div style="display:flex;align-items: center;">
+
+            <!--_________ALL___________-->
+            <div style="display:flex;align-items: center;" *ngIf="!condition_selectMails">
+                <div style="margin-top:5px;"><span class="pAll">All</span></div>
+                <div><input type="checkbox" class="form-check-input checksBox checkBoxParent" (click)="checkAllbox($event)"  /></div>
+            </div>
+
+            <!--_________Arrow back___________-->
+            <div *ngIf="condition_selectMails" style="margin-right:15px;cursor: pointer;">
+                <img src="/assets/icon/arrow_back.png" class="img-fluid" style="height:15px;" (click)="condition_selectMails = false; this.arr_Checked = [];" />
+            </div>
+
+            <!--_________Trash Icon___________-->
+            <div style="cursor:pointer;">
+                <img src="/assets/icon/trash_admin.png" class="img-fluid" style="height:25px;" (click)="deleteMails()" />
+            </div>
+        </div>
+
+        <div *ngIf="deleteMailsMessage">
+            <div class="deleteMails" [ngStyle]="{'background': successDelete ? 'rgb(235, 47, 47)': '#28a745'}">
+                <span>{{messageDelete}}</span>
+            </div>
+        </div>
+
+        <!--_______________COUNT of mail and left and right clicks______________________-->
+        <div style="display: flex;align-items: center;" *ngIf="!condition_selectMails">
+
+            <!--___Count of mail____-->
+            <div style="margin-right:20px;">
+                <span class="pNumbs">{{lengthMails}}-{{numbCountLimit}} of {{numb_allMails}}</span>
+            </div>
+
+
+            <!--___LEFT and RIGHT clicks_____-->
+            <div class="row leftRight">
+                <div class="col-6 left" (click)="callMailsBack()">
+                    <span><</span>
+                </div>
+                <div class="col-6 right" (click)="callMailsNext()">
+                    <span>></span>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    
+    <!--________Mails Inbox_________-->
+    <div>
+
+        <!--this is the mail-->
+        <div class="mails_divs" *ngIf="!condition_loading && !condition_selectMails">
+            <div *ngFor="let data of numbMailsArr_notForAll; index as number">
+                <div [ngClass]="['board_boxMail', 'board_boxMail_'+number]" (click)="funcSeeMessage(number)">
+
+
+                    <div *ngIf="data.newNot" class="container" style="max-width:50px;height:100%;margin-top:3px;padding:0px 5px 0px 5px;">
+                        <div style="width:100%;padding:2px;background: rgb(232, 46, 46);border-radius:10px;">
+                            <p class="paNew">new</p>
+                        </div>
+                    </div>
+                    
+                    <div [ngClass]="['container', 'divInput_'+number]" style="max-width:40px;">
+                        <input type="checkbox" [ngClass]="['form-check-input', 'checksBoxMail','checksBoxMail_'+number]" 
+                        (click)="funcChecked_manually(number, $event);$event.stopPropagation()" />
+                    </div>
+
+                    <div class="starFavo">
+                        <img [src]="!data.favorite ? '/assets/icon/non_star_favo.png':'/assets/icon/favo_star.png'" class="img-fluid" 
+                        style="margin-top:3px;height:20px;cursor: pointer;" (click)="favoriteClick(number, data.favorite, true);$event.stopPropagation()"  />
+                    </div>
+
+                    <div class="container paDateName" style="max-width:150px;font-family: inter_bold;margin-top:3px;"><span>{{data.fullname}}</span></div>
+                    <div style="width:76%;font-family: inter_bold;" class="paMails"><span>{{data.message}}</span></div>
+                    <div style="width:15%;color:#76707A;" class="paDateName">
+                        <span style="float:right;">
+                            {{  
+                                dateCalcu(data.timeDate.split(',')[1].split(' ')[1], 
+                                data.timeDate.split(',')[1].split(' ')[0], 
+                                data.timeDate.split(',')[0])
+                            }}
+                        </span>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+
+
+        <!--___________________________________Appointment, INQUERY AND BOT MESSAGE SELECTED_________________________________-->
+        <div *ngIf="condition_selectMails" style="padding:0px 10px 0px 10px;">
+            <!--_________________HEADER______________________-->
+            <div style="display: flex;justify-content: space-between;">
+
+                <!--____Email____-->
+                <div>
+                    <span class="sEmail">{{arr_selectedMail[0]}}</span>
+                </div>
+
+                <!--____Date time and favorite____-->
+                <div style="display:flex;">
+                    <div style="margin-right:10px;">
+                        <span class="sDate">{{arr_selectedMail[1]}}</span>
+                    </div>
+                    <div style="display: flex;align-items: center;">
+                        <img [src]="arr_selectedMail[2] === 'true' ? '/assets/icon/favo_star.png':'/assets/icon/non_star_favo.png'" 
+                        class="img-fluid" style="height:23px;cursor: pointer;" (click)="favoriteClick(0, arr_selectedMail[2] === 'true' ? true:false, false)" />
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom:40px;"><span style="color:#5E5E5E;">to me</span></div>
+
+            <!--__________________THIS IS FOR INQUERY AND RESERVATION MESSAGE__________________-->
+            <div *ngIf="!condition_InqueryAppointment">
+                <p class="pAhC">{{arr_selectedMail[3]}}</p>
+
+                <p class="paInfo">Full name: {{arr_selectedMail[4]}}</p>
+                <p class="paInfo">Email: {{arr_selectedMail[5]}}</p>
+
+
+                <p class="paMessage">{{arr_selectedMail[8]}}</p>
+            </div>
+
+        </div>
+
+        <!--____________LOADING______________-->
+        <div *ngIf="condition_loading" >
+            <span>{{st_LoadingNoData}}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+.divFix{
+    width:100%;
+    height:100vh;
+    background:#1F1F1F;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left:0%; top:0%;
+}
+
+.divFacilities{
+    padding-top:150px;
+    padding-bottom:40px;
+}
+
+.paFacilities{
+    font-family: inria_serif_bold;
+    color:white;
+    margin:0%;
+}
+
+.paFacilities-font{
+    font-size:50px;
+}
+
+.paInfoF{
+    font-family: inter_regular;
+    color:white;
+    margin-top:10px;
+}
+
+.paInfoF-font{
+    font-size:17px;
+}
+
+.gallery{
+    margin-top:15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 2fr 1fr 2fr;
+    width: 100%;
+}
+
+.image{
+    margin:3px;
+    overflow: hidden;
+    position: relative;
+    left:-5px;
+    cursor: pointer;
+}
+
+.imgs{
+    width: 100%;
+    height:100%;
+    object-fit: cover;
+    border-radius:10px;
+}
+
+.colGalFacilities{
+    display: flex;
+    align-items: center;
+}
+
+.paFacilitiesG{
+    font-family: inter_regular;
+    color:white;
+    margin-bottom:5px;
+}
+
+.paFacilitiesG-font{
+    font-size:25px;
+}
+
+.divScroll{
+    width: 100%;
+    border-radius: 10px;
+    padding-bottom:10px;
+}
+
+.divImg{
+    margin-left:10px;
+    margin-right:10px;
+    margin-top:5px;
+    margin-bottom:5px;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:-1px 1px 5px black;
+    cursor:pointer;
+}
+
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .divFacilities{
+        min-width: 100%;
+        padding-top:120px;
+        padding-bottom:40px;
+    }
+
+    .paFacilities-font{
+        font-size:40px;
+    }
+
+    .paInfoF-font{
+        font-size:15px;
+    }
+
+    .paFacilitiesG-font{
+        font-size:23px;
+    }
+
+    .colGalFacilities{
+        display: flex;
+        align-items: center;
+        margin-top:20px;
+    }
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .divFacilities{
+        min-width: 100%;
+        padding-top:120px;
+        padding-bottom:40px;
+        padding-left:0px;
+        padding-right:0px;
+    }
+
+    .paFacilities-font{
+        font-size:30px;
+    }
+
+    .paInfoF-font{
+        font-size:14px;
+    }
+
+    .paFacilitiesG-font{
+        font-size:18px;
+    }
+
+    .img_Gym{
+        height:160px;
+        margin-right:10px;
+        border-radius: 10px;
+    }
+
+}

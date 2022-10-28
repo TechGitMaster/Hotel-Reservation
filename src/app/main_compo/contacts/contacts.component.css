@@ -31,14 +31,16 @@
 
 .abegeil{
     font-family: inter_bold;
-    font-size:36px;
     color:#0063A8;
 }
 
 .Padilla{
     font-family: inter_regular;
-    font-size:36px;
     color:#0A2B6A;
+}
+
+.abegeilPadilla-font{
+    font-size:36px;
 }
 
 .infocontact{
@@ -54,14 +56,16 @@
 
 .got{
     font-family: inter_bold;
-    font-size:25px;
     color:#0063A8;
 }
 
 .questions{
     font-family: inter_regular;
-    font-size:25px;
     color:#0A2B6A;
+}
+
+.Gotquestion-font{
+    font-size:25px;
 }
 
 .infoinstant{
@@ -71,23 +75,37 @@
 
 .labels{
     font-family: inter_regular;
-    font-size:17px;
     margin-bottom:10px;
+}
+
+.labels-font{
+    font-size:15px;
 }
 
 .forminput{
     border-radius: 15px;
-    border:none;
-    background:#ADD8E6;
+    border:1px solid black;
+    font-family: inter_regular;
     padding:10px;
+}
+
+
+.forminput-font{
+    font-size:17px;
 }
 
 .forminputtextarea{
     height:200px;
     border-radius: 15px;
-    border:none;
-    background:#ADD8E6;
     padding:10px;
+    font-family: inter_regular;
+    border:1px solid black;
+}
+
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
 }
 
 .divBttnsendMessage{
@@ -102,8 +120,100 @@
     padding-left:10%;
     padding-right:10%;
     font-family: inter_regular;
-    font-size:16px;
     background:#FFD700;
     border:none;
     color:black;
+}
+
+.btnsendMessage-font{
+    font-size:16px;
+}
+
+.callContacts{
+    display: flex;justify-content: center;align-items: center;
+}
+
+.imgCallcallend{
+    max-height:20px;
+}
+
+.imgLeftRight{
+    max-width:90px;
+}
+
+.imgMiddle{
+    max-width:105px;
+}
+
+.margin-form{
+    margin-bottom:40px;
+}
+
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .callContacts{
+        display: none;
+    }
+
+    .containerInfoContact{
+        max-width:1150px;
+        padding-left:15px;
+        padding-top:120px;
+        padding-bottom:20px;
+    }
+
+    .containForms{
+        min-width:100%;
+        padding:0%;
+    }
+
+    .abegeilPadilla-font{
+        font-size:30px;
+    }
+
+    .infocontact{
+        width:80%;
+        font-family: inter_regular;
+        font-size:15px;
+    }
+
+    .imgCallcallend{
+        max-height:17px;
+    }
+
+    .callnumemail{
+        font-family: inter_regular;
+        font-size:15px;
+    }
+
+    .imgLeftRight{
+        max-width:70px;
+    }
+
+    .imgMiddle{
+        max-width:80px;
+    }
+    
+    .margin-form{
+        margin-bottom:20px;
+    }
+
+    .Gotquestion-font{
+        font-size:24px;
+    }
+
+    .forminput-font{
+        font-size:14px;
+    }
+    
+    .labels-font, .btnsendMessage-font{
+        font-size:15px;
+    }
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
 }

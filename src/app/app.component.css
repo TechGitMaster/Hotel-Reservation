@@ -32,16 +32,15 @@
 
 .navigationforAll{
     background:rgba(0, 0, 0, 0.582);
-    z-index:1;
+    z-index:100;
     padding:0px;
-    position: absolute;
+    position: fixed;
 }
 
 .naviclicked{
-    height:100vh;
+    min-height:100vh;
     padding:0px;
-    z-index:3;
-    padding-top:50px;
+    z-index:100;
     padding-top:50px;
     background:#493B3B;
     position:fixed;
@@ -50,9 +49,12 @@
 .conX{
     color:white;
     font-family: inter_bold;
-    font-size:30px;
     margin-bottom:40px;
     cursor: pointer;
+}
+
+.conX-font{
+    font-size:30px;
 }
 
 .divborder1{
@@ -60,6 +62,7 @@
     padding-top:15px;
     padding-bottom:15px;
 }
+
 
 .divmenuicon{
     max-width:40px;
@@ -72,6 +75,12 @@
     max-height:130px;
     padding-top:10px;
     padding-bottom:10px;
+}
+
+.colMiddleNavi{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .logomenu{
@@ -90,8 +99,11 @@
     padding-left:20px;
     padding-right:20px;
     color:rgb(255, 255, 255);
-    font-size:30px;
     letter-spacing: 2px;
+}
+
+.navclickable-font{
+    font-size:30px; 
 }
 
 
@@ -108,18 +120,88 @@
     left:-20px;
 }
 
-.username{
+.email{
     font-size:17px;
     font-family: inter_bold;
     color:#FCFBFB;
-    margin-left:15px;
+    margin:0px 0px 0px 15px;
     cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width:150px;
 }
 
 .iconNoti{
     max-width:30px;
     height:30px;
     cursor: pointer;
+    position: relative;
+}
+
+.paPositionNumb_noti{
+    font-family: inter_bold;
+    font-size:13px;
+    margin:0%;
+    border-radius: 5px;
+    background: gold;
+    padding: 3px 5px 3px 5px;
+    position: absolute;
+    top:-10px;left:-10px;
+}
+
+.div_notiParent{
+    width:420px;
+    min-height:350px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.242);
+    border-radius: 10px;
+    overflow: hidden;
+    position: absolute;
+    top:40px;left:-390px;
+}
+
+.divNotiParent{
+    min-height:100px;
+    border:2px solid #F1F1F1;
+    background:white;
+    padding:15px;
+}
+
+.new{
+    padding:3px 10px 3px 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background:#F63030;
+    color:white;
+    font-family: inter_medium;
+    font-size:13px;
+}
+
+.nameHeader{
+    font-family: inter_semibold;
+}
+
+
+.paMessage{
+    font-family: inter_regular;
+    font-size:14px;
+    color:#4b4949;
+    margin:0%;
+}
+
+.paDate{
+    font-family: inter_medium;
+    font-size:13px;
+    color:#4b4949;
+}
+
+.seeAllNotification{
+    font-family: inter_medium;
+    font-size:15px;
+    color:#0063A8;
+    margin:0%;
+    cursor:pointer;
 }
 
 .contactusfooter{
@@ -129,7 +211,7 @@
 
 .p1{
     font-family: poppins_bold;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .s1{
@@ -140,6 +222,9 @@
 .followUs{
     text-align: center;
     font-family: inter_medium;
+}
+
+.followUs-font{
     font-size:18px;
 }
 
@@ -153,7 +238,7 @@
 .appointtxtinfo{
     font-family: inter_regular;
     font-size:17px;
-    max-width:45%;
+    width:45%;
     margin-top:10px;
 }
 
@@ -164,28 +249,77 @@
 }
 
 .forminput{
-    border-radius: 12px;
-    border:none;
-    background:#ADD8E6;
+    border-radius: 10px;
     padding:10px;
+    font-size:15px;
+    font-family: inter_regular;
+    border:1px solid black;
 }
 
 .divformrow{
     margin-top:15px;
 }
 
+.paAllGuest{
+    font-family: inter_medium;
+    font-size:14px;
+}
+
+.parentGD{
+    margin-top:5px;
+    padding:15px;
+    background:#F2F3F6;
+    border-radius:10px;
+}
+
+.patiGuest{
+    font-family: inter_bold;
+    font-size:14px;
+    margin:0px 0px 3px 0px;
+}
+
+.inputDetails{
+    width:30%;
+    padding-right:10px;
+}
+
+.forminput_details{
+    height:35px;
+    border-radius: 5px;
+    padding:10px;
+    font-size:14px;
+    font-family: inter_regular;
+}
+
+.img_xDetails{
+    height:15px;
+    cursor: pointer;
+    opacity: 0.9;
+    border-radius: 2px;
+}
+
+.paAddGuest{
+    font-family: inter_regular;
+    font-size:13px;
+    color:blue;
+    cursor: pointer;
+}
+
 .forminputtextarea{
     height:270px;
     border-radius: 15px;
-    border:none;
-    background:#ADD8E6;
     padding:10px;
+    border:1px solid black;
 }
 
 .dates{
     height:250px;
     border-radius: 15px;
     border:1px solid black;
+}
+
+.dateTimeDivs{
+    padding-left:60px;padding-right:30px;
 }
 
 .selecttdtxt{
@@ -219,8 +353,11 @@
 
 .txtknowing{
     font-family: inter_regular;
-    font-size:16px;
     margin-left:10px;
+}
+
+.txtknowing-font{
+    font-size:16px;
 }
 
 .xknowing{
@@ -233,12 +370,15 @@
 .btnsubmitbttn{
     width:80%;
     border-radius:20px;
-    font-size:18px;
     font-family: inter_regular;
     background:#FFD700;
     border:none;
     color:black;
     margin-top:30px;
+}
+
+.btnsubmitbttm-fon{
+    font-size:18px;
 }
 
 
@@ -324,8 +464,11 @@
     border-radius: 10px;
     cursor: pointer;
     font-family: inter_semibold;
-    font-size:24px;
     padding-left:30px;
+}
+
+.fontSizeMonth{
+    font-size:24px;
 }
 
 
@@ -335,8 +478,11 @@
     align-items: center;
     float:right;
     font-family: inter_semibold;
-    font-size:24px;
     margin-right:30px;
+}
+
+.year-picker-font{
+    font-size:24px;
 }
 
 .year-change {
@@ -400,11 +546,11 @@
 .containerloginSignup{
     height:100vh;
     background:rgba(0, 0, 0, 0.5);
-    position: fixed;
-    z-index:3;
+    z-index:110;
     display:flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
 }
 
 .logindiv{
@@ -418,18 +564,24 @@
 .paX{
     margin:0px;
     font-family: inter_bold;
-    font-size:25px;
     padding-left:20px;
     padding-top:15px;
     cursor: pointer;
 }
 
+.paX-font{
+    font-size:22px;
+}
+
 .paLoginSignup{
     margin-top:-5px;
     font-family: inter_bold;
-    font-size:30px;
     text-align: center;
     color:#0063A8;
+}
+
+.paLoginSignup-font{
+    font-size:30px;
 }
 
 .divFill{
@@ -445,7 +597,6 @@
 }
 
 .divGoogle{
-    height:50px;
     border:2px solid black;
     border-radius: 10px;
     display: flex;
@@ -454,11 +605,22 @@
     cursor: pointer;
 }
 
+.divGoogle-height{
+    height:50px;
+}
+
+.img_google{
+    max-height:25px;margin-right:10px;
+}
+
 .paGoogle{
     margin: 0px;
     font-family: inter_bold;
-    font-size: 17px;
     color:#493B3B;
+}
+
+.paGoogle-font{
+    font-size: 17px;
 }
 
 .paOr{
@@ -475,6 +637,9 @@
     border:none;
     border:2px solid black;
     padding: 10px 15px 10px 15px;
+}
+
+.forminputLog-font{
     font-size:17px;
 }
 
@@ -483,14 +648,15 @@
     border:none;
     border:2px solid black;
     padding: 10px 15px 10px 15px;
-    font-size:17px;
 }
 
+.forminputReg-font{
+    font-size:17px;
+}
 
 .loginbttn{
     width:100%;
     border-radius:20px;
-    font-size:18px;
     font-family: inter_medium;
     background:#FFD700;
     text-align: center;
@@ -500,10 +666,13 @@
     margin-top:15px;
 }
 
-.signUpbttn{
+.loginbttn-font{
+    font-size:18px;
+}
+
+.signUpbttn, .passwordChange{
     width:100%;
     border-radius:20px;
-    font-size:18px;
     font-family: inter_medium;
     background:#FFD700;
     text-align: center;
@@ -513,26 +682,39 @@
     margin-top:5px;
 }
 
+.signUpbttn-font, .passwordChange-font{
+    font-size:18px;
+}
+
 .paForgot{
     font-family: inter_medium;
-    font-size:16px;
     color:#0063A8;
     text-align: center;
     margin:0px;
     cursor: pointer;
 }
 
+.paForgot-font{
+    font-size:16px;
+}
+
 .padontHave{
     font-family: inter_medium;
-    font-size: 16px;
     color: #B59595;
+}
+
+.padontHave-font{
+    font-size: 16px;
 }
 
 .paCreate{
     font-family: inter_medium;
-    font-size: 16px;
     color: #0063A8;
     cursor: pointer;
+}
+
+.paCreate-font{
+    font-size: 16px;
 }
 
 .signUpdiv{
@@ -552,11 +734,11 @@
     margin-bottom: 15px;
 }
 
-.paGender{
+.paGenderAccount{
     margin:0px 0px 15px 0px;
     padding:0px 5px 0px 5px;
     font-family: inter_medium;
-    font-size:20px;
+    font-size:18px;
 }
 
 .formselect{
@@ -565,8 +747,161 @@
     border-radius:10px;
 }
 
+.formselectAppointment{
+    padding:10px 5px 10px 5px;
+    border-radius:10px;
+    border:1px solid black;
+}
+
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
+}
+
+.forgotDiv, .divchangePass{
+    width:600px;
+    min-height:200px;
+    background:white;
+    border-radius:10px;
+    padding-bottom:15px;
+}
+
+.paForgotPass{
+    margin-top:-5px;
+    font-family: inter_bold;
+    text-align: center;
+    color:#0063A8;
+    margin-bottom:15px;
+}
+
+.paForgotPass-font{
+    font-size:25px;
+}
+
+.paNote{
+    font-family: inter_bold;
+    margin:0px 0px 5px 0px;
+}
+
+.paNote-font{
+    font-size:17px;
+}
+
+.ulBu{
+    font-family: inter_medium;
+    font-size:16px;
+}
+
+.btn-getOTP{
+    font-family: inter_bold;
+    background:#FFD700;
+    border-radius:15px;
+    border:none;
+    color:black;
+    width:100%;
+    height:50px;
+}
+
+.paSuccessChange{
+    margin-top:-5px;
+    font-family: inter_bold;
+    text-align: center;
+    color:#0063A8;
+    margin-bottom:15px;
+}
+
+.paSuccessChange-font{
+    font-size:22px;
+}
+
+.divSuccesschangePass{
+    width:500px;
+    max-height:250px;
+    padding:20px;
+    background:white;
+    border-radius:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divSuccesss{
+    max-width:400px;
+    background:white;
+    border-radius:10px;
+    padding:30px;
+}
+
+.paSuccess{
+    margin-top:-5px;
+    font-family: inter_bold;
+    text-align: center;
+    margin-bottom:20px;
+    color:#0063A8;
+}
+
+.paSuccess-font{
+    font-size:20px;
+}
+
+.successBttn{
+    width:100%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+}
+
+.successBttn-font{
+    font-size:17px;
+}
+
+
+.appointmentDivs{
+    padding-top:50px;
+    padding-bottom:50px;
+    background:#FCFBFB;
+}
+
+.emailCol{
+    margin:0%;
+}
+
+.containerFooter{
+    max-width:1200px;padding:40px;
+}
+
+.footerFollowUs{
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.reserveds{
+    margin:0%;padding-left:10px;padding-right:10px;
+}
+
+.fontadminNot{
+    font-size:17px;
+}
+
+.rowGetOTPTxt{
+    margin:0%;
+}
+
+.rowBttnOTPTxt{
+    margin:0%;padding:0px 10px 0px 0px;
+}
+
 /* ________________________@MEDIA DESIGN_________________________ */
 
+/*992px for middle col-lg*/
 @media (max-width:992px){
     .divLogoCorner{
         display: block;
@@ -574,5 +909,268 @@
 
     .logomenu{
         display:none;
+    }
+
+
+    .rightSidesNavi{
+        display: none;
+    }
+
+    .conX{
+        color:white;
+        font-family: inter_bold;
+        margin-bottom:30px;
+        cursor: pointer;
+    }
+
+    .divlogo{
+        max-width:90px;
+        max-height:130px;
+        padding-top:10px;
+        padding-bottom:10px;
+        float: right;
+    }
+    
+    .colMiddleNavi{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .footerFollowUs{
+        height:100%;display: flex;justify-content: flex-end;position: relative;
+    }
+
+    .reserveds{
+        text-align: center;
+        padding:20px;
+        font-size:16px;
+    }
+}
+
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .naviclicked{
+        min-height:100vh;
+        padding:0px;
+        z-index:100;
+        padding-top:10px;
+        background:#493B3B;
+        position:fixed;
+    }
+
+    .divmenuicon{
+        max-width:30px;
+        max-height:30px;
+        cursor: pointer;
+    }
+
+    .conX-font{
+        font-size:26px;
+    }
+
+    .navclickable-font{
+        font-size:25px; 
+    }
+
+    .divlogo{
+        max-width:60px;
+        max-height:90px;
+        padding-top:10px;
+        padding-bottom:10px;
+        float: right;
+    }
+
+    .dateTimeDivs{
+        margin-top:20px;
+        padding:0%;
+    }    
+
+    .appointtxttitle{
+        font-size: 22px;
+        font-family: inter_bold;
+        color:#0063A8;
+        margin:0%;
+    }
+
+    .appointtxtinfo{
+        font-family: inter_regular;
+        font-size:14px;
+        margin-top:5px;
+        min-width:100%;
+    }
+
+    .appointmentDivs{
+        padding-top:30px;
+        padding-bottom:30px;
+        background:#FCFBFB;
+    }
+
+    .labels{
+        font-family: inter_regular;
+        font-size:15px;
+        margin-bottom:10px;
+    }
+
+    .emailCol{
+        margin-top:10px;
+    }
+
+    .forminput{
+        border-radius: 10px;
+        padding:10px;
+        font-size:14px;
+        font-family: inter_regular;
+        border:1px solid black;
+    }
+
+    .forminputtextarea{
+        height:270px;
+        border-radius: 14px;
+        padding:10px;
+        border:1px solid black;
+    }
+
+    .appointmentContainer{
+        padding:0%;
+    }
+
+    .selecttdtxt{
+        font-family: inter_semibold;
+        font-size:20px;
+        color:#493B3B;
+    }
+
+    .dateTimeDivs{
+        padding:0%;
+        margin:20px 0px 0px 0px;
+    }
+
+    .fontSizeMonth{
+        font-size:20px;
+    }
+
+    .year-picker-font{
+        font-size:20px;
+    }
+
+    .calendar-body {
+        width:100%;
+        display: flex;
+        justify-content: center;
+        font-size: 15px;
+    }
+
+    .txtknowing-font{
+        font-size:14px;
+    }
+
+    .contactusfooter{
+        font-family: poppins_regular;
+        font-size: 18px;
+    }
+
+    .containerFooter{
+        max-width:1200px;
+        padding:20px 15px 30px 15px;
+    }
+
+    .footerFollowUs{
+        height:100%;
+        display: flex;
+        justify-content: center;
+        margin:10px 0px 15px 0px;
+    }
+
+    .followUs-font{
+        font-size:18px;
+    }
+
+    .paX-font{
+        font-size:20px;
+    }
+
+    .paLoginSignup-font{
+        font-size:25px;
+    }
+
+    .divGoogle-height{
+        height:45px;
+    }
+
+    .img_google{
+        max-height:20px;margin-right:10px;
+    }
+
+    .divFill{
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-top:40px;
+    }
+
+    .divFillSign{
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-top:30px;
+    }
+
+    .signUpdiv{
+        width:600px;
+        background:#FCFBFB;
+        border-radius:10px;
+        padding-bottom:20px;
+    }
+
+    .paGenderAccount{
+        margin:0px 0px 5px 0px;
+        padding:0px 5px 0px 5px;
+        font-family: inter_medium;
+        font-size:16px;
+    }
+
+    .formselect{
+        padding:10px 5px 10px 5px;
+        border:2px solid black;
+        border-radius:10px;
+        font-size: 15px;
+    }
+
+    .paError{
+        font-family: inter_bold;
+        font-size:12px;
+        color:rgb(216, 67, 67);
+    }
+
+    .paForgotPass-font{
+        font-size:20px;
+    }
+
+    .paNote-font{
+        font-size:16px;
+    }
+
+    .ulBu{
+        font-family: inter_medium;
+        font-size:15px;
+    }
+
+    .rowGetOTPTxt{
+        margin:0%;
+        padding: 0px 5px 0px 5px;
+    }
+
+    .rowBttnOTPTxt{
+        margin:10px 0px 0px 0px; 
+        padding: 0px 5px 0px 5px;
+    }
+
+    .paSuccessChange-font, .paSuccess-font{
+        font-size:17px;
+    }
+
+    .paForgot-font, .padontHave-font, .paCreate-font, .forminputLog-font, .paGoogle-font, .btnsubmitbttm-font, .loginbttn-font,
+    .forminputReg-font, .fontadminNot, .signUpbttn-font, .passwordChange-font, .btn-getOTP-font, .successBttn-font{
+        font-size:15px;
     }
 }

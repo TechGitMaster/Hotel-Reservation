@@ -1,0 +1,107 @@
+
+.paDashboard{
+    font-family: inter_bold;
+    font-size:25px;
+    margin-bottom:20px;
+}
+
+.divRowRc{
+    min-height:130px;
+    border-radius:10px;
+    background:white;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.312);
+    padding:10px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.paDash{
+    font-family: inter_bold;
+    font-size:15px;
+    position: absolute;
+    top:15px;
+}
+
+.paDashCount{
+    font-family: inter_semibold;
+    font-size:30px;
+    margin:0%;
+    color:#4D3737;
+    position:relative;
+    top:10px;
+}
+
+.styleDashboard{
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    position: absolute;
+    right:-20px;bottom:-90px;
+}
+
+.navigationInbox{
+    max-width:255px;
+    margin-right:25px;
+}
+
+
+.pfolders{
+    font-family: inter_bold;
+    font-size:19px;
+    color:#493B3B;
+    padding-left:15px;
+    margin-bottom:10px;
+}
+
+.div_clickables_compo{
+    padding:10px 10px 10px 10px;
+    border-radius:10px;
+    display:flex;
+    cursor: pointer;
+    margin-bottom:5px;
+}
+
+.div_clickables_compo:hover{
+    background:#FEE2BB;
+}
+
+.divIconInboxes{
+    width:20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right:5px;
+}
+
+.backgrondDiv{
+    background:#FFD700;
+}
+
+.sNameCompo{
+    font-family: inter_regular;
+    font-size:15px;
+    color:#493B3B;
+}
+
+.pInbox{
+    font-family: inter_medium;
+    font-size:33px;
+    color:#493B3B;
+    margin:0px 0px 10px 0px;
+}
+
+.line{
+    width:100%;
+    border:1px solid #CECAD1;
+    margin-bottom:10px;
+}
+
+.inboxDeleting{
+    display: flex;
+    align-items: center;
+    font-family: inter_medium;
+    font-size:16px;
+    color:white;
+}

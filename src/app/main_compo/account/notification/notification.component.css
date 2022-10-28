@@ -1,0 +1,164 @@
+.paNoti{
+    font-family: inter_bold;
+    margin: 0%;
+    color:#493B3B;
+}
+
+.paNoti-font{
+    font-size:25px;
+}
+
+.pNumbs{
+    font-family: inter_medium;
+    font-size:14px;
+}
+
+
+.leftRight{
+    width:75px;
+    height:35px;
+    border-radius:5px;
+    margin-right:2px;
+    border:1px solid #c7cace;
+}
+
+.left{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:0%;
+    border-right:1px solid #c7cace;
+    cursor: pointer;
+}
+
+.left:hover{
+    background:#B3E5FC;;
+}
+
+.right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:0%;
+    cursor: pointer;
+}
+
+.right:hover{
+    background:#B3E5FC;;
+}
+
+.divNotiParent{
+    min-height:100px;
+    border:2px solid #F1F1F1;
+    background:white;
+    padding:15px;
+}
+
+.new{
+    padding:3px 15px 3px 15px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background:#F63030;
+    color:white;
+    font-family: inter_medium;
+    font-size:14px;
+}
+
+.nameHeader{
+    font-family: inter_semibold;
+    font-size:17px;
+}
+
+
+.paMessage{
+    font-family: inter_regular;
+    font-size:16px;
+    color:#4b4949;
+    margin:0px 0px 5px 0px;
+}
+
+.paDate{
+    font-family: inter_medium;
+    font-size:14px;
+    color:#4b4949;
+}
+
+
+
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+/*992px for middle col-lg*/
+@media (max-width:992px){}
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .paNoti-font{
+        font-size:20px;
+    }
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .paNoti-font{
+        font-size:17px;
+    }
+
+    .mess{
+        font-size:13px;
+    }
+
+    .pNumbs{
+        font-family: inter_medium;
+        font-size:13px;
+    }
+
+    .leftRight{
+        width:75px;
+        height:27px;
+        border-radius:5px;
+        margin-right:2px;
+        border:1px solid #c7cace;
+    }
+
+    .new{
+        padding:3px 7px 3px 7px;
+        margin-right: 10px;
+        border-radius: 5px;
+        background:#F63030;
+        color:white;
+        font-family: inter_medium;
+        font-size:11px;
+    }
+
+    .nameHeader{
+        font-family: inter_semibold;
+        font-size:15px;
+    }
+
+
+    .paMessage{
+        font-family: inter_regular;
+        font-size:14px;
+        color:#4b4949;
+        margin:0px 0px 5px 0px;
+    }
+
+    .paDate{
+        font-family: inter_medium;
+        font-size:12px;
+        color:#4b4949;
+    }
+
+    .loading{
+        font-size:14px;
+    }
+    
+}
+
+
+
+
+
+
+

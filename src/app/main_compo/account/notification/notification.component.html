@@ -1,0 +1,78 @@
+<div class="container-fluid" style="padding:20px;">
+    
+    <!--____HEADER_____-->
+    <div style="margin-bottom: 20px;">
+        <p class="paNoti paNoti-font">Notification</p>
+        <span class="mess">All your transaction message from the broker.</span>
+    </div>
+
+    
+    <!--_____Notification div______-->
+    <div>
+
+        <!--____Arrow left and right____-->
+        <div style="display: flex;justify-content: flex-end;margin-bottom: 20px;">
+            <!--_______________COUNT of mail and left and right clicks______________________-->
+            <div style="display: flex;align-items: center;">
+
+                <!--___Count of mail____-->
+                <div style="margin-right:20px;">
+                    <span class="pNumbs">{{count_to5}}-5 of {{count}}</span>
+                </div>
+
+
+                <!--___LEFT and RIGHT clicks_____-->
+                <div class="row leftRight">
+                    <div class="col-6 left" (click)="left()">
+                        <span><</span>
+                    </div>
+                    <div class="col-6 right" (click)="right()">
+                        <span>></span>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+
+        <!--________CREATE DIV NOTIFICATION______________-->
+        <div>
+
+            <p class="loading" *ngIf="arr_Notification.length == 0" style="text-align: center;">
+                {{loadingMessage}}
+            </p>
+
+            <div *ngFor="let data of arr_Notification; index as indexes" class="divNotiParent">
+                
+                <!--___HEADER NOTIFI___-->
+                <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">    
+                    <!--____New and Name_____-->
+                    <div style="display: flex;align-items: center;">
+                        <div *ngIf="checking(true, data.date) === 'new'" class="new">new</div>
+                        <span class="nameHeader">{{ data.name }}</span>
+                    </div>
+
+                    <!--____X button_____-->
+                    <div class="nameHeader" style="cursor: pointer;" (click)="deletes(indexes)">X</div>
+                </div>
+
+                <!--_____MIDDLE MESSAGE____-->
+                <p class="paMessage">{{data.message}}</p>
+
+                <!--_____FOOTER DATE_____-->
+                <div style="display: flex;justify-content: space-between;">
+                    <div></div>
+                    <span class="paDate">{{checking(false, data.date)}}</span>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+

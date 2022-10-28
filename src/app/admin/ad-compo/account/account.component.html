@@ -1,0 +1,21 @@
+<div class="container-fluid divContain">
+    <p class="paInfo">Account Information</p>
+    <p class="paMess">See information about your account, like your personal email or password and more</p>
+
+    <div *ngIf="arr_data.length > 0">
+        <div class="row rowInfo">
+            <div *ngFor="let arr of arr_data; index as indexes" class="col-12" style="padding:0%;">
+                <div class="divIn">
+                    <span><span style="font-family: inter_bold;">{{arr[0]}}: </span> 
+                    <span style="font-family: inter_regular;">{{arr[1]}}</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex;">
+            <button class="btn btn-primary cPass" style="margin-right:10px;" (click)="addAccount()">Add account</button>
+            <button class="btn btn-primary cPass" (click)="changePass()">Change password</button>
+        </div>
+
+    </div>
+</div>

@@ -1,1 +1,75 @@
-<p>facilities works!</p>
+<div class="container-fluid" style="min-height:800px;background: #493B3B;">
+    
+    <!--_______________Image Selected_____________________-->
+    <div class="divFix" *ngIf="img_selected.length > 0">
+        <div style="position: absolute;right: 10px;top:10px;">
+            <img src="/assets/icon/x_Image.png" class="img-fluid" style="height:35px;cursor: pointer;" (click)="this.img_selected=''"/>
+        </div>
+        <div class="container" style="padding:0%;">
+            <img [src]="img_selected" class="img-fluid" style="height: 50%;" />
+        </div>
+    </div>
+
+    <div class="container divFacilities">
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <p class="paFacilities paFacilities-font">Facilities</p>
+                <span class="paInfoF paInfoF-font">Taking this last opportunity to buy your dream room on Manhattan Heights Hotel. Also you can actually enjoy the facilities of the Hotel. The Gym, Game room and Swimming pool and many more.</span>
+
+                <div class="gallery">
+                    <div *ngFor="let image of Image_Facilities; index as indexes" [style.gridRow]="image.row" [style.gridCol]="image.col" class="image">
+                        <img [src]="image.url" class="imgs" (click)="selected_img(indexes)" />
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="col-lg-6 col-12 colGalFacilities">
+                <div class="row" style="min-width: 100%;">
+                    <div class="col-12">
+                        <p class="paFacilitiesG paFacilitiesG-font">Gym</p>
+
+                        <div class="divScroll">
+                            <owl-carousel-o [options]="customOptions">
+                                <ng-template carouselSlide *ngFor="let slide of Image_Gym; index as indexes" [id]="slide.id">
+                                    <div class="divImg" style="background: black;" (mousedown)="mouseDown()" (mousemove)="mouseMove()" (mouseup)="selectedImage(indexes, 1)">
+                                        <img [id]="slide.id" [src]="slide.image" class="img-fluid">
+                                    </div>
+                                </ng-template>
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+
+                    <div lcass="col-12">
+                        <p class="paFacilitiesG paFacilitiesG-font">Game room</p>
+
+                        <div class="divScroll">
+                            <owl-carousel-o [options]="customOptions">
+                                <ng-template carouselSlide *ngFor="let slide of Image_Ground; index as indexes" [id]="slide.id">
+                                    <div class="divImg" style="background: black;" (mousedown)="mouseDown()" (mousemove)="mouseMove()" (mouseup)="selectedImage(indexes, 2)">
+                                        <img [id]="slide.id" [src]="slide.image" class="img-fluid">
+                                    </div>
+                                </ng-template>
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+
+                    <div lcass="col-12" >
+                        <p class="paFacilitiesG paFacilitiesG-font">Swimming Pool</p>
+
+                        <div class="divScroll">
+                            <owl-carousel-o [options]="customOptions">
+                                <ng-template carouselSlide *ngFor="let slide of Image_Pool; index as indexes" [id]="slide.id">
+                                    <div class="divImg" style="background: black;" (mousedown)="mouseDown()" (mousemove)="mouseMove()" (mouseup)="selectedImage(indexes, 3)">
+                                        <img [id]="slide.id" [src]="slide.image" class="img-fluid">
+                                    </div>
+                                </ng-template>
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

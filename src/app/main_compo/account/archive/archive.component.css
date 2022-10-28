@@ -1,0 +1,445 @@
+.paAppo{
+    font-family: inter_bold;
+    margin: 0%;
+    color:#493B3B;
+}
+
+.paAppo-font{
+    font-size:25px;
+}
+
+.pNumbs{
+    font-family: inter_medium;
+    font-size:14px;
+}
+
+.leftRight{
+    width:75px;
+    height:35px;
+    border-radius:5px;
+    margin-right:2px;
+    border:1px solid #c7cace;
+
+}
+
+.left{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:0%;
+    border-right:1px solid #c7cace;
+    cursor: pointer;
+}
+
+.left:hover{
+    background:#B3E5FC;;
+}
+
+.right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:0%;
+    cursor: pointer;
+}
+
+.right:hover{
+    background:#B3E5FC;;
+}
+
+.divAppParent{
+    min-height:100px;
+    border:2px solid #F1F1F1;
+    background:white;
+    padding:15px;
+}
+
+.new{
+    padding:3px 15px 3px 15px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background:#F63030;
+    color:white;
+    font-family: inter_medium;
+    font-size:14px;
+}
+
+.nameHeader{
+    font-family: inter_semibold;
+    font-size:16px;
+    color:#3D3A3A;
+}
+
+
+.paMessage{
+    max-height:50px;
+    overflow: hidden;
+    font-family: inter_regular;
+    font-size:16px;
+    color:#4b4949;
+    margin:0px 0px 5px 0px;
+}
+
+.paDate{
+    font-family: inter_medium;
+    font-size:14px;
+    color:#4b4949;
+}
+
+.xDateBttn{
+    font-family: inter_semibold;
+    cursor: pointer;
+    color:black;
+}
+
+.xDateBttn-font{
+    font-size:19px;
+}
+
+.underline_text{
+    font-family: inter_regular;
+    color:#0063A8;
+    margin:0%;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.underline_text-font{
+    font-size:15px;
+}
+
+.selectedID{
+    background:white;
+    padding:20px;
+}
+
+.paNameSelected{
+    font-family: inter_semibold;
+    margin-left:15px;
+    color:#3D3A3A;
+}
+
+.paNameSelected-font{
+    font-size:18px;
+}
+
+.paDateSelected{
+    font-family: inter_regular;
+    color:#0063A8;
+    margin:0px 0px 10px 0px;
+}
+
+.paDateSelected-font{
+    font-size:16px;
+}
+
+.details{
+    font-family: inter_regular;
+    font-size:16px;
+    margin:0%;
+}
+
+.divNotiParent{
+    min-height:100px;
+    border:2px solid #F1F1F1;
+    background:white;
+    padding:15px;
+}
+
+.pa_header_body{
+    margin:0px 0px 5px 0px;
+}
+
+.pa_header_body-font{
+    font-size: 17px;
+}
+
+.imageAddDiv{
+    padding:15px;
+    border: 3px solid #F1F1F1;
+    margin-bottom:10px;
+}
+
+.paImageS{
+    font-family: inter_semibold;
+    font-size:18px;
+}
+
+.divForAdded{
+    max-height:300px;
+    overflow: auto;
+}
+
+.divForAdded{
+    max-height:300px;
+    overflow: auto;
+}
+
+.addImageR{
+    width:136px;
+    height:120px;
+    border-radius:5px;
+    overflow:hidden;
+    display: inline-block;
+    margin-right:10px;
+    margin-top:5px;
+    background:black;
+}
+
+.addChildIR{
+    display: flex;
+    justify-content: center;
+    height:100%;
+    position: relative;
+}
+
+.paRInfoT{
+    font-family:inter_semibold;
+    margin:20px 0px 0px 0px;
+}
+
+.paRInfoT-font{
+    font-size:19px;
+}
+
+.labels{
+    font-family: inter_medium;
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.forminputs{
+    height:35px;
+    border-radius: 10px;
+    padding:10px;
+    font-family: inter_regular;
+    background:rgb(246, 246, 246);
+}
+
+.forminputs-font{
+    font-size:15px;
+}
+
+.divDetails{
+    background:#493D3D;
+    border-radius:10px;
+    padding:20px;
+}
+
+.divCheckInOut{
+    max-width: 170px;
+    border-radius:10px;
+    border:1px solid #FFD700;
+    padding:20px;
+}
+
+.paCheckINOut{
+    margin:0%;
+    text-align: center;
+    font-size:14px;
+}
+
+.paNumbCheckInOut{
+    margin:0%;
+    text-align: center;
+    font-family: inter_regular;
+    color:white;
+}
+
+.paNumbCheckInOut-font{
+    font-size:30px;
+}
+
+.pdetails{
+    padding:10px;
+    font-family: inter_semibold;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
+.pdetails-font{
+    font-size:17px;
+}
+
+.paDetailsMiddle{
+    display: flex;
+    justify-content: space-between;
+    color:white;
+    font-family: inter_regular;
+    padding:5px 10px 2px 10px;
+}
+
+.paDetailsMiddle-font{
+    font-size:14px;
+}
+
+.headerInfos{
+    font-family: inter_semibold;
+    margin:15px 0px 10px 0px;
+}
+
+.headerInfos-font{
+    font-size:17px;
+}
+
+.selectionD{
+    display: flex;
+}
+
+.selectionMT{
+    display: none;
+}
+
+.mess{
+    font-size:16px;
+}
+
+.backArrow{
+    height:20px;
+}
+
+.bodyAppointment{
+    padding:0px 15px 0px 15px;
+}
+
+/* ________________________@MEDIA DESIGN_________________________ */
+
+/*992px for middle col-lg*/
+@media (max-width:992px){}
+
+@media (max-width:838px){
+    .selectionD{
+        display: none;
+    }
+
+    .selectionMT{
+        display: block;
+    }
+}
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .paAppo-font{
+        font-size:20px;
+    }
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .paAppo-font{
+        font-size:17px;
+    }
+
+    .mess{
+        font-size:13px;
+    }
+
+    .pNumbs{
+        font-family: inter_medium;
+        font-size:13px;
+    }
+
+    .leftRight{
+        width:75px;
+        height:27px;
+        border-radius:5px;
+        margin-right:2px;
+        border:1px solid #c7cace;
+    }
+
+    .new{
+        padding:3px 7px 3px 7px;
+        margin-right: 10px;
+        border-radius: 5px;
+        background:#F63030;
+        color:white;
+        font-family: inter_medium;
+        font-size:11px;
+    }
+
+    .nameHeader{
+        font-family: inter_semibold;
+        font-size:15px;
+    }
+
+
+    .paMessage{
+        font-family: inter_regular;
+        font-size:14px;
+        color:#4b4949;
+        margin:0px 0px 5px 0px;
+        padding-bottom:5px;
+    }
+
+    .paDate{
+        font-family: inter_medium;
+        font-size:12px;
+        color:#4b4949;
+    }
+
+    .backArrow{
+        height:15px;
+    }
+
+    .addImageR{
+        width:106px;
+        height:90px;
+        border-radius:5px;
+        overflow:hidden;
+        display: inline-block;
+        margin-right:10px;
+        margin-top:5px;
+        background:black;
+    }
+
+    .paLMes{
+        font-family: inter_regular;
+        font-size:13px;
+        margin:0%;
+    }
+
+    .paCheckINOut{
+        margin:0%;
+        text-align: center;
+        font-size:10px;
+    }
+
+    .selectedID{
+        background:white;
+        padding:10px;
+    }
+
+    .btnCancelRequest{
+        width:100%;
+        font-size:14px;
+    }
+
+    .bodyAppointment{
+        padding:0px 5px 0px 5px;
+    }
+
+    .paNumbCheckInOut-font{
+        font-size:20px;
+    }
+
+    .paDetailsMiddle-font{
+        font-size:12px;
+    }
+    
+    .paNameSelected-font, .paRInfoT-font{
+        font-size:16px;
+    }
+
+    .xDateBttn-font, .headerInfos-font{
+        font-size:15px;
+    }
+
+    .loading, .font-f, .paDateSelected-font, .details-font, .dgDs, .pa_header_body-font, .pdetails-font{
+        font-size:14px;
+    }
+
+    .underline_text-font, .forminputs-font{
+        font-size:13px;
+    }
+}

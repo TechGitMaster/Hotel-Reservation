@@ -1,7 +1,87 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*The @import style should be on the top of the styles.css because 
+    if you put it after the style css like this *{}. The @import will not work.  */
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-angular-schedule/styles/material.css';
 
 *{
     padding:0px;
     margin:0%;
+    scrollbar-color: #f1bd02 #d6cfcf;
+    scrollbar-width: thin;
+
 }
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background: #f1bd02;   
+}
+
+::-webkit-scrollbar-track{
+    background: #d6cfcf;   
+}
+
+
+/* ________________________Font from ttf extension_________________________ */
+
+@font-face {
+    font-family: inter_light;
+    src: url(/assets/Inter-Light.ttf);
+}
+
+@font-face {
+    font-family: inter_regular;
+    src: url(/assets/Inter-Regular.ttf);
+}
+
+@font-face {
+    font-family: inter_medium;
+    src: url(/assets/Inter-Medium.ttf);
+}
+
+@font-face {
+    font-family: inter_semibold;
+    src: url(/assets/Inter-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: inter_bold;
+    src: url(/assets/Inter-Bold.ttf);
+}
+
+
+@font-face {
+    font-family: inria_serif_bold;
+    src: url(/assets/InriaSerif-Bold.ttf);
+}
+
+
+@font-face {
+    font-family: poppins_regular;
+    src: url(/assets/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: poppins_bold;
+    src: url(/assets/Poppins-Bold.ttf);
+}
+
+@font-face {
+    font-family: poppins_semibold;
+    src: url(/assets/Poppins-SemiBold.ttf);
+}
+
+/*__________________________________________________________________________*/

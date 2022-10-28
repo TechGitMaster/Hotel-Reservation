@@ -1,0 +1,27 @@
+.expiredDiv{
+    padding:150px 0px 50px 0px;
+    display: flex;
+    align-items: center;
+}
+
+.paOops{
+    font-family: inter_bold;
+    font-size:25px;
+    text-align: center;
+    color:white;
+}
+
+
+
+/*768px for small col-sm*/
+@media (max-width: 768px){}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .paOops{
+        font-family: inter_bold;
+        font-size:20px;
+        text-align: center;
+        color:white;
+    }
+}

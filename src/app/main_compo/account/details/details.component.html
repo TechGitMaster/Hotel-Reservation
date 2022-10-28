@@ -1,0 +1,18 @@
+<div class="container-fluid divContain">
+    <p class="paInfo paInfo-font">Account details</p>
+    <p class="paMess paMess-font">See details about your account, like your email or password and more</p>
+
+    <div *ngIf="arr_data.length > 0">
+        <div class="row rowInfo">
+            <div *ngFor="let arr of arr_data; index as indexes" class="col-12" style="padding:0%;">
+                <div class="divIn divIn-font" >
+                    <span><span style="font-family: inter_bold;">{{arr[0]}}: </span> 
+                    <span style="font-family: inter_regular;">{{arr[1]}}</span></span>
+                </div>
+
+            </div>
+        </div>
+
+        <button class="btn btn-primary cPass cPass-font" (click)="changePass()">Change password</button>
+    </div>
+</div>
