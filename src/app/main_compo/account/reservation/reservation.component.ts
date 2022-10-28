@@ -87,7 +87,8 @@ export class ReservationComponent implements OnInit {
   //Click radio bttn__________________________________________________________________________
   chnageR(event: any): void{
     var nomalizeSelected = event.target.value.charAt(0).toLowerCase() + event.target.value.slice(1);
-    if(nomalizeSelected === 'pending' || nomalizeSelected === 'accepted' || nomalizeSelected === 'declined' || nomalizeSelected === 'canceled'){
+    if(nomalizeSelected === 'pending' || nomalizeSelected === 'Confirmed' || nomalizeSelected === 'declined' || nomalizeSelected === 'canceled'){
+      if(nomalizeSelected === 'Confirmed') nomalizeSelected = 'Accepted';
       this.clickRadio(nomalizeSelected);
     }else{
       this.clickRadio('pending');
