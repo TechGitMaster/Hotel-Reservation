@@ -20,6 +20,11 @@ import { PaymentComponent } from '../payment/payment.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -39,7 +44,11 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     CommonModule,
     McRouteRoutingModule,
     ReactiveFormsModule,
-    CarouselModule
+    CarouselModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule
   ],
   providers: [ McGuardGuard ]
 })

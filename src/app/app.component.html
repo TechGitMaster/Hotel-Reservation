@@ -78,13 +78,13 @@
 
 <!--______________________Navigation clicked______________________-->
 <div class="container-fluid naviclicked" *ngIf="condition_menu">
-    <div class="container-fluid" style="padding:0%;">
+    <div class="container-fluid" style="padding:20px 0px 0px 0px;">
         <div class="container" style="display:flex;justify-content: space-between;">
             <div class="conX conX-font" (click)="clickedMenu(false)">
                 <span>x</span>
             </div>
             <div class="divLogoCorner">
-                <img src="/assets/logo/logo.png" class="img-fluid" style="max-width: 50px;max-height:50px;" />
+                <img src="/assets/logo/logo.png" class="img-fluid" style="max-width: 50px;max-height:50px;position: relative;top:-15px;" />
             </div>
         </div>
         <div class="container" style="color:white;">
@@ -351,6 +351,7 @@
                         </div>
                     </div>
 
+                    <!--__________Close selecting admin and not admin_______-->
                     <div *ngIf="typeOfAccount_close" style="padding:0%;">
                         <p class="paGenderAccount">Type of account:</p>
                         <div class="col-12 margCol12" style="display:flex;">
@@ -374,6 +375,20 @@
                     
                     <div class="col-12 margCol12" *ngIf="condition_adminNotAdmin">
                         <input type="password" formControlName="adminPassword" placeholder="Enter the current password of admin" class="form-control forminputReg forminputReg-font" />
+                        <!--<div *ngIf="errorSignupArr[6][1]">
+                            <span class="paError">{{errorSignupArr[6][0]}}</span>
+                        </div>-->
+                    </div>
+                    <!--____///////_______-->
+
+                    <div class="col-12 margCol12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" (click)="privacy_policy()">
+                            <label class="form-check-label" for="flexCheckChecked">
+                              I agree to the <span><a href="https://policies.google.com/privacy?hl=en-US">Terms of service</a></span> and 
+                              <span><a href="https://policies.google.com/privacy?hl=en-US">Privacy Policy</a></span>.
+                            </label>
+                        </div>
                         <div *ngIf="errorSignupArr[6][1]">
                             <span class="paError">{{errorSignupArr[6][0]}}</span>
                         </div>

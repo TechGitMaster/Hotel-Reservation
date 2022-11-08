@@ -1,6 +1,6 @@
 .paAppo{
     font-family: inter_bold;
-    margin: 0%;
+    margin-bottom: 8px;
     color:#493B3B;
 }
 
@@ -261,7 +261,7 @@
 
 .paRInfoT{
     font-family:inter_semibold;
-    margin:20px 0px 0px 0px;
+    margin:20px 0px 5px 0px;
 }
 
 .paRInfoT-font{
@@ -301,13 +301,19 @@
 }
 
 .paCheckINOut{
-    margin:0%;
+    margin-bottom:10px;
+    text-align: center;
+    font-size:14px;
+}
+
+.paCheckINOuts{
+    margin: 0%;
     text-align: center;
     font-size:14px;
 }
 
 .paNumbCheckInOut{
-    margin:0%;
+    margin-bottom:10px;
     text-align: center;
     font-family: inter_regular;
     color:white;
@@ -360,6 +366,7 @@
 
 
 .selectionD{
+    font-size: 16px;
     display: flex;
 }
 

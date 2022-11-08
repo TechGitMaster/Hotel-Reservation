@@ -1,6 +1,6 @@
 .paAppo{
     font-family: inter_bold;
-    margin: 0%;
+    margin-bottom: 8px;
     color:#493B3B;
 }
 
@@ -157,6 +157,7 @@
 }
 
 .selectionD{
+    font-size: 16px;
     display: flex;
 }
 

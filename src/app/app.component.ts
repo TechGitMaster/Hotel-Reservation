@@ -60,6 +60,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   handle_email!: string;
   typeOfAccount_close: boolean = false;
   condition_fromPaymentLogin: boolean = false;
+  termsAndCondition: boolean = false;
 
   month_names: Array<string> = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 
   'Dec');
@@ -620,6 +621,7 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   //Sign_in button_____________________________________________________
   funcSignIn(condition: string): void{
+    this.termsAndCondition = false;
     this.condition_clicked_signup = condition;
     this.condition_login_signup_clicked = 'login';
     this.condition_menu = false;
@@ -643,7 +645,13 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   //Create One button__________________________________________________
   createOneForgotLogin(condition: string): void{
+    this.termsAndCondition = false;
     this.condition_login_signup_clicked = condition;
+  }
+
+  //Click Privacy and policy_____________________________________________
+  privacy_policy(): void{
+    this.termsAndCondition = !this.termsAndCondition ? true: false;
   }
 
 
@@ -822,7 +830,12 @@ export class AppComponent implements OnInit, AfterViewInit{
                       });
 
                     }else{
-                      this.creatingAccount(obj_data, 'not-admin');
+                      if(this.termsAndCondition){
+                        this.creatingAccount(obj_data, 'not-admin');
+                      }else{
+                        this.errorSignupArr[6][0] = "!Please check the Terms and condition.";
+                          this.errorSignupArr[6][1] = true;
+                      }
                     }
                   }
 

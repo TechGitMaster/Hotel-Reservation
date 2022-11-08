@@ -545,19 +545,24 @@
 }
 
 .paCheckINOut{
-    margin:0%;
+    margin-bottom:10px;
     text-align: center;
     font-size:14px;
 }
 
 .paNumbCheckInOut{
-    margin:0%;
+    margin-bottom:10px;
     text-align: center;
     font-family: inter_regular;
     font-size:30px;
     color:white;
 }
 
+.paCheckINOuts{
+    margin: 0%;
+    text-align: center;
+    font-size:14px;
+}
 .pdetails{
     padding:10px;
     font-family: inter_semibold;
@@ -718,7 +723,8 @@
     max-width:600px;
     background:#FCFBFB;
     border-radius:10px;
-    padding-bottom:60px;
+    padding-bottom:35px;
+    padding-top:20px;
 }
 
 .paLoginSignup{

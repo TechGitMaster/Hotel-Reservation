@@ -16,25 +16,25 @@
             <div class="selectionD">
                 <div class="form-check" style="margin-right:10px;">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="clickRadio('pending')" checked>
-                    <label class="form-check-label" for="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1" style="position: relative;top:2px;">
                       Pending
                     </label>
                 </div>
                 <div class="form-check" style="margin-right:10px;">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="clickRadio('accepted')">
-                    <label class="form-check-label" for="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2" style="position: relative;top:2px;">
                       Confirmed
                     </label>
                 </div>
                 <div class="form-check" style="margin-right:10px;">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('declined')">
-                    <label class="form-check-label" for="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3" style="position: relative;top:2px;">
                       Declined
                     </label>
                 </div>
                 <div class="form-check" style="margin-right:10px;">
                   <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" (click)="clickRadio('canceled')">
-                  <label class="form-check-label" for="flexRadioDefault4">
+                  <label class="form-check-label" for="flexRadioDefault4" style="position: relative;top:2px;">
                     Canceled
                   </label>
                 </div>
@@ -249,7 +249,7 @@
                                         <input type="text" [value]="arr_selected_data[0].phone_number" class="form-control forminputs forminputs-font" />
                                     </div>
                                     <div class="col-12" style="margin-top:10px;">
-                                        <p class="paRInfoT">Guest info:</p>
+                                        <p class="paRInfoT paRInfoT-font">Guest info:</p>
                                         <span *ngIf="arr_selected_data[0].guest_member.split('\n')[0].length == 0" >No guest info filled up.</span>
 
                                         <table *ngIf="arr_selected_data[0].guest_member.split('\n')[0].length != 0" class="table">
@@ -287,7 +287,7 @@
                                     <div class="divCheckInOut" style="margin-right:20px;">
                                         <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK IN</p>
                                         <p class="paNumbCheckInOut paNumbCheckInOut-font">{{dateCheckOutCheckIn(arr_selected_data[0].checkin_date, [1])}}</p>
-                                        <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                        <p class="paCheckINOuts" style="font-family: inter_regular;color:white">
                                             {{dateCheckOutCheckIn(arr_selected_data[0].checkin_date, [0,2])}}
                                         </p>
                                     </div>
@@ -296,7 +296,7 @@
                                     <div class="divCheckInOut">
                                         <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK OUT</p>
                                         <p class="paNumbCheckInOut paNumbCheckInOut-font">{{dateCheckOutCheckIn(arr_selected_data[0].checkout_date, [1])}}</p>
-                                        <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                        <p class="paCheckINOuts" style="font-family: inter_regular;color:white">
                                             {{dateCheckOutCheckIn(arr_selected_data[0].checkout_date, [0,2])}}
                                         </p>
                                     </div>

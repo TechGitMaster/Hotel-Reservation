@@ -25,14 +25,26 @@
                             <select class="selectS select1">
                                 <option selected>{{checkIn_mess}}</option>
                             </select>
-                            <input type="date" (change)="checkIn($event)" class="dates" [min]="minCheckIn" />
+
+                            <div (click)="picker1.open()">     
+                                <mat-form-field class="example-full-width" style="opacity:0.0;position: absolute;top:0%;" >
+                                  <input matInput [matDatepicker]="picker1" readonly="true" style="cursor:auto;"  [min]="minCheckIn" (dateChange)="checkIn($event)" />
+                                  <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
                         </div>
 
                         <div class="divMakeReservation">
-                            <select class="selectS">
+                            <select class="selectS select1">
                                 <option selected>{{checkOut_mess}}</option>
                             </select>
-                            <input type="date" (change)="checkOut($event)" class="dates" [min]="minCheckOut" />
+
+                            <div (click)="picker2.open()">     
+                                <mat-form-field class="example-full-width" style="opacity:0.0;position: absolute;top:0%;" >
+                                  <input matInput [matDatepicker]="picker2" readonly="true" style="cursor:auto;"  [min]="minCheckOut" (dateChange)="checkOut($event)" />
+                                  <mat-datepicker #picker2></mat-datepicker>
+                                </mat-form-field>
+                            </div>
                         </div>
 
                         <div class="divMakeReservation">
@@ -144,7 +156,7 @@
                                 <p class="titleroom titleroom-font margintxt">{{json_Data.nameRoom}}</p>
                                 <p class="titleroomtxt titleroomtxt-font margintxt">Located in General Roxas Ave, Cubao, Quezon City, Metro Manila.</p>
                                 <div style="margin:30px 0px 30px 0px;">
-                                    <p style="font-weight:600;margin-bottom: 0px;font-size: 16px;">Type of service: {{ json_Data.typeRoom ? 'Staycation':'Rental' }} room</p>
+                                    <p style="font-weight:600;margin-bottom: 5px;font-size: 16px;">Type of service: {{ json_Data.typeRoom ? 'Staycation':'Rental' }} room</p>
                                     <p style="font-weight:600;margin-bottom: 15px;font-size: 16px;">Type of room: {{ json_Data.typeRoom2 }} type</p>
                                     <textarea class=" margintxt textareas" disabled>{{json_Data.addInfo}}</textarea>
                                 </div>
@@ -175,7 +187,7 @@
                                         <p class="titleroom titleroom-font margintxt">{{json_Data.nameRoom}}</p>
                                         <p class="titleroomtxt titleroomtxt-font margintxt">Located in General Roxas Ave, Cubao, Quezon City, Metro Manila.</p>
                                         <div style="margin:30px 0px 30px 0px;">
-                                            <p style="font-weight:600;margin-bottom: 0px;font-size: 16px;">Type of service: {{ json_Data.typeRoom ? 'Staycation':'Rental' }} room</p>
+                                            <p style="font-weight:600;margin-bottom: 5px;font-size: 16px;">Type of service: {{ json_Data.typeRoom ? 'Staycation':'Rental' }} room</p>
                                             <p style="font-weight:600;margin-bottom: 15px;font-size: 16px;">Type of room: {{ json_Data.typeRoom2 }} type</p>
                                             <textarea class="inforooms margintxt textareas" style="background: #F5F5F5;" disabled>{{json_Data.addInfo}}</textarea>
                                         </div>

@@ -59,8 +59,8 @@
 
 .divborder1{
     border-top:1px solid #747272;
-    padding-top:15px;
-    padding-bottom:15px;
+    padding-top:23px;
+    padding-bottom:23px;
 }
 
 
@@ -232,7 +232,7 @@
     font-size: 27px;
     font-family: inter_bold;
     color:#0063A8;
-    margin:0%;
+    margin-bottom:15px;
 }
 
 .appointtxtinfo{
@@ -558,6 +558,7 @@
     min-height:500px;
     background:#FCFBFB;
     border-radius:10px;
+    padding-top:20px;
     padding-bottom:30px;
 }
 
@@ -721,7 +722,8 @@
     width:600px;
     background:#FCFBFB;
     border-radius:10px;
-    padding-bottom:60px;
+    padding-top:20px;
+    padding-bottom:45px;
 }
 
 .padCol6{
@@ -919,7 +921,6 @@
     .conX{
         color:white;
         font-family: inter_bold;
-        margin-bottom:30px;
         cursor: pointer;
     }
 
@@ -991,7 +992,7 @@
         font-size: 22px;
         font-family: inter_bold;
         color:#0063A8;
-        margin:0%;
+        margin-bottom:15px;
     }
 
     .appointtxtinfo{

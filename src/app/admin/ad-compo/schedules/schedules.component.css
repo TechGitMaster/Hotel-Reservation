@@ -1,7 +1,7 @@
 .paAppointSched{
     font-family: inter_bold;
     font-size:20px;
-    margin:0px;
+    margin-bottom:5px;
 }
 
 .btnSeeD{
@@ -43,7 +43,8 @@
     text-align: center;
     font-family: inter_semibold;
     font-size:25px;
-    margin:0%;
+    margin-top: 20px;
+    margin-bottom:5px;
 }
 
 .painfoTitleMe{

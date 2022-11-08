@@ -17,7 +17,7 @@
 .paFacilities{
     font-family: inria_serif_bold;
     color:white;
-    margin:0%;
+    margin-bottom: 23px;
 }
 
 .paFacilities-font{
@@ -27,7 +27,6 @@
 .paInfoF{
     font-family: inter_regular;
     color:white;
-    margin-top:10px;
 }
 
 .paInfoF-font{

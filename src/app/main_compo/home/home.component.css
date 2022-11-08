@@ -17,7 +17,7 @@
     font-family: inter_regular;
     color:#FCFBFB;
     padding:0px;
-    margin:0%;
+    margin-bottom:20px;
 }
 
 .welcomeT-font{
@@ -28,26 +28,12 @@
     font-family: inria_serif_bold;
     color:#FCFBFB;
     padding:0px;
-    margin:0%;
-    position: relative;
-    top:-2px;
+    line-height: 90%;
+    margin-bottom: 20px;
 }
 
 .manhattanG-font{
     font-size:55px;
-}
-
-.citymanhattan{
-    font-family: inria_serif_bold;
-    color:#FCFBFB;
-    padding:0px;
-    margin:0%;
-    position: relative;
-    top:-20px;
-}
-
-.citymanhattan-font{
-    font-size:44px;
 }
 
 .infowelcomeTo{
@@ -55,8 +41,7 @@
     color:#FCFBFB;
     padding:0px;
     margin:0%;
-    position: relative;
-    top:-15px;
+    line-height: 150%;
 }
 
 .infowelcomeTo-font{
@@ -73,8 +58,8 @@
     font-family: inria_serif_bold;
     text-align: center;
     padding:0px;
-    padding-top:20px;
-    margin:0%;
+    padding-top:30px;
+    margin-bottom:13px;
 }
 
 .arAnow-font{
@@ -330,6 +315,7 @@
     font-family: inter_bold;
     color:#FCFBFB;
     margin:0%;
+    line-height: 150%;
     margin-bottom:30px;
 }
 
@@ -436,6 +422,7 @@
 
 .paWhyShould{
     width:70%;
+    line-height: 200%;
 }
 
 .facitiICon{

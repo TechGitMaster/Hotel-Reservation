@@ -21,14 +21,13 @@
 .titlediv{
     background:rgba(26, 29, 29, 0.36);
     min-height:150px;
-    padding:20px;
+    padding:40px 20px 40px 20px;
 }
 
 .titletxt{
     font-family: inria_serif_bold;
     text-align: center;
     color:#F6F6F6;
-    margin:0px;
 }
 
 .divImg{
@@ -44,13 +43,14 @@
 
 .titletxt-font{
     font-size:40px;
+    margin-bottom:30px;
 }
 
 .titleinfo{
     font-family: inter_medium;
     color:#DAD6D6;
     text-align: center;
-    margin:0px 0px 10px 0px;
+    margin:0px 0px 25px 0px;
 }
 
 .titleinfo-font{
@@ -61,7 +61,7 @@
     margin:0px;
     font-family: inria_serif_bold;
     color:gold;
-    margin:0px 0px 10px 0px;
+    margin:0px 0px 20px 0px;
     text-align: center;
 }
 
@@ -79,7 +79,7 @@
 .roomstxt{
     font-family: inria_serif_bold;
     color:#493B3B;
-    margin:0%;
+    margin-bottom:30px;
 }
 
 .roomstxt-font{
@@ -90,6 +90,7 @@
     font-family: inter_regular;
     color:#493B3B;
     margin:0%;
+    line-height: 130%;
 }
 
 .roomsinfo-font{
@@ -111,6 +112,7 @@
 .titleroom{
     font-family: inter_regular;
     color: black;
+    padding:20px 0px 20px 0px;
 }
 
 .titleroom-font{
@@ -151,7 +153,7 @@
 }
 
 .paNoAva-font{
-    margin:0px 0px 10px 0px;
+    margin:0px 0px 20px 0px;
     font-size:25px;
 }
 
@@ -248,6 +250,7 @@
 
     .titletxt-font{
         font-size:35px;
+        margin-bottom:30px;
     }
 
     .titleinfo-font{
@@ -309,6 +312,7 @@
 
     .titletxt-font{
         font-size:30px;
+        margin-bottom:20px;
     }
 
     .titleinfo-font{
@@ -349,7 +353,7 @@
     }
 
     .paNoAva-font{
-        margin:0px 0px 5px 0px;
+        margin:0px 0px 15px 0px;
         font-size:22px;
     }
 
@@ -377,6 +381,7 @@
 
     .titletxt-font{
         font-size:25px;
+        margin-bottom:18px;
     }
 
     .titleinfo-font{
@@ -384,7 +389,7 @@
     }
 
     .paMakeReservation-font{
-        font-size:20px;
+        font-size:23px;
     }
 
     .divMakeReservation{
@@ -416,6 +421,12 @@
         font-size:14px;
     }
 
+    .roomstxt{
+        font-family: inria_serif_bold;
+        color:#493B3B;
+        margin-bottom:15px;
+    }
+
     .roomstxt-font{
         font-size: 30px;
     }
@@ -445,7 +456,7 @@
     }
 
     .paNoAva-font{
-        margin:0px 0px 5px 0px;
+        margin:0px 0px 10px 0px;
         font-size:20px;
     }
 

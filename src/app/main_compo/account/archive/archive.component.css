@@ -234,13 +234,19 @@
 }
 
 .paCheckINOut{
-    margin:0%;
+    margin-bottom:10px;
+    text-align: center;
+    font-size:14px;
+}
+
+.paCheckINOuts{
+    margin: 0%;
     text-align: center;
     font-size:14px;
 }
 
 .paNumbCheckInOut{
-    margin:0%;
+    margin-bottom:10px;
     text-align: center;
     font-family: inter_regular;
     color:white;
@@ -284,6 +290,7 @@
 }
 
 .selectionD{
+    font-size: 16px;
     display: flex;
 }
 

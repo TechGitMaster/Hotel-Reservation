@@ -119,7 +119,7 @@
                         
                         <!-- __IMG TRANSACTION__ -->
                         <div *ngIf="object_roomSelected.paymentMethod !== 'payment2'" class="imageAddDiv">
-                            <p class="paImageS" style="margin:0%;">Image transactions:</p>
+                            <p class="paImageS" style="margin-bottom:5px;">Image transactions:</p>
                             <span class="paLMes">The provided payment image transaction of the user.</span>
 
                             <!-- __IMG__ -->
@@ -206,7 +206,7 @@
                                             <div class="divCheckInOut" style="margin-right:20px;">
                                                 <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK IN</p>
                                                 <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(object_roomSelected.checkin_date, [1])}}</p>
-                                                <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                                <p class="paCheckINOuts" style="font-family: inter_regular;color:white">
                                                     {{dateCheckOutCheckIn(object_roomSelected.checkin_date, [0,2])}}
                                                 </p>
                                             </div>
@@ -215,7 +215,7 @@
                                             <div class="divCheckInOut">
                                                 <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK OUT</p>
                                                 <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(object_roomSelected.checkout_date, [1])}}</p>
-                                                <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                                <p class="paCheckINOuts" style="font-family: inter_regular;color:white">
                                                     {{dateCheckOutCheckIn(object_roomSelected.checkout_date, [0,2])}}
                                                 </p>
                                             </div>

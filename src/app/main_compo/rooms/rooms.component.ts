@@ -20,8 +20,8 @@ export class RoomsComponent implements OnInit {
   final_converted_data!: Array<getRoomsLandpage>;
   subs!: Subscription;
  
-  minCheckIn!: string;
-  minCheckOut!: string;
+  minCheckIn!: Date;
+  minCheckOut!: Date;
 
   checkIn_mess!: string;
   checkOut_mess!: string;
@@ -112,8 +112,8 @@ export class RoomsComponent implements OnInit {
 
   //GET THE ROOMS________________________________________________________________________________________________________
   getRooms(): void{
-    this.checkIn_mess = 'Check in';
-    this.checkOut_mess = 'Check out';
+    this.checkIn_mess = 'Check in date';
+    this.checkOut_mess = 'Check out date';
     this.persons_count = -1;
     this.room_selected = '';
     this.txt_availableNot = 'Select room';
@@ -177,29 +177,72 @@ export class RoomsComponent implements OnInit {
 
     this.date = new Date() as Date;
 
-    let month = (this.date.getMonth()+1) < 10 ? `0${(this.date.getMonth()+1)}`:(this.date.getMonth()+1);
-    let day = (this.date.getDate()) < 10 ? `0${(this.date.getDate())}`:(this.date.getDate());
-    this.minCheckIn = `${this.date.getFullYear()}-${month}-${day}`;
-    this.minCheckOut = '';
+    this.minCheckIn = new Date();
+    this.minCheckOut = new Date();
   }
 
-  asd(num: number): void{
-  }
+
 
 
   //Check-in bttn______________________________________________
-  checkIn(event: any): void{
-    let date = event.target.value.split('-');
-    let day = parseInt(date[2])+1;
-    this.minCheckOut = `${date[0]}-${date[1]}-${day}`;
-    this.checkIn_mess = event.target.value;
+  async checkIn(event: any){
+    
+    let arr_month = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
 
-    this.checkOut_mess = 'Check out';
+    const arr_data = ''+event.target.value;
+    let date_arr = arr_data.split(' ');
+
+    
+    //Get month______________________________________
+    let count = 0;
+    let handle_month_count = 0;
+    let converting_int_String = "";
+    for await (let datas_month of arr_month){
+      if(datas_month === date_arr[1]){
+        handle_month_count = count;
+      }
+      count++;
+    }
+
+    if(handle_month_count < 10){
+      converting_int_String = "0"+handle_month_count;
+    }else{
+      converting_int_String = ""+handle_month_count;
+    }
+
+    this.minCheckOut = new Date(parseInt(date_arr[3]), parseInt(converting_int_String), parseInt(date_arr[2])+1);
+
+    this.checkIn_mess = `${date_arr[3]}-${converting_int_String}-${date_arr[2]}`;
+
+    this.checkOut_mess = 'Check out date';
   }
 
   //Check-out bttn______________________________________________
-  checkOut(event: any): void{
-    this.checkOut_mess = event.target.value;
+  async checkOut(event: any){
+    let arr_month = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+
+    const arr_data = ''+event.target.value;
+    let date_arr = arr_data.split(' ');
+
+    
+    //Get month______________________________________
+    let count = 0;
+    let handle_month_count = 0;
+    let converting_int_String = "";
+    for await (let datas_month of arr_month){
+      if(datas_month === date_arr[1]){
+        handle_month_count = count;
+      }
+      count++;
+    }
+
+    if(handle_month_count < 10){
+      converting_int_String = "0"+handle_month_count;
+    }else{
+      converting_int_String = ""+handle_month_count;
+    }
+
+    this.checkOut_mess = `${date_arr[3]}-${converting_int_String}-${date_arr[2]}`;
   }
 
   //Persons selection_______________________________________________
@@ -223,7 +266,7 @@ export class RoomsComponent implements OnInit {
 
   //Reserve bttn____________________________________________________________________
   reserveBttn(): void{
-    if(this.checkIn_mess !== 'Check in' && this.checkOut_mess !== 'Check out'){
+    if(this.checkIn_mess !== 'Check in date' && this.checkOut_mess !== 'Check out date'){
       if(this.persons_count > -1){
         if(this.room_selected !== ''){
 
@@ -264,10 +307,10 @@ export class RoomsComponent implements OnInit {
         alert('Select how many person.');
       }
     }else{
-      if(this.checkIn_mess === 'Check in'){
-        alert('Check in is empty.');
+      if(this.checkIn_mess === 'Check in date'){
+        alert('Check in date is empty.');
       }else{
-        alert('Check out is empty.');
+        alert('Check out date is empty.');
       }
     }
   }

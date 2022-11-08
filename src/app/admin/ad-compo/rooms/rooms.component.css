@@ -175,7 +175,7 @@
 .paAddTitle{
     font-family: inter_semibold;
     font-size:24px;
-    margin:0%;
+    margin-bottom:10px;
     text-align: center;
 }
 
@@ -238,13 +238,19 @@
 }
 
 .paCheckINOut{
-    margin:0%;
+    margin-bottom:10px;
+    text-align: center;
+    font-size:14px;
+}
+
+.paCheckINOuts{
+    margin: 0%;
     text-align: center;
     font-size:14px;
 }
 
 .paNumbCheckInOut{
-    margin:0%;
+    margin-bottom:10px;
     text-align: center;
     font-family: inter_regular;
     font-size:30px;
@@ -284,6 +290,7 @@
     font-family: inter_semibold;
     font-size:19px;
     letter-spacing: 1px;
+    margin-bottom: 5px;
 }
 
 .addImageR{
@@ -353,7 +360,7 @@
 .paRInfoT{
     font-family:inter_semibold;
     font-size:19px;
-    margin:20px 0px 0px 0px;
+    margin:20px 0px 5px 0px;
 }
 
 .paHeaderapp{
@@ -375,7 +382,7 @@
 .labels{
     font-family: inter_medium;
     font-size:15px;
-    margin-bottom:5px;
+    margin-bottom:8px;
 }
 
 .forminput{
