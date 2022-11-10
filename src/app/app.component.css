@@ -431,7 +431,7 @@
     height: 50px;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .calendar-week-day div {

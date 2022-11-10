@@ -448,9 +448,9 @@
 @media (max-width:992px){
     .containerheader{
         min-width: 100%;
-        margin-bottom: 204px;
+        margin-bottom: 250px;
         position:relative;
-        top:100px;
+        top:150px;
     }
 
     .arDiv{
