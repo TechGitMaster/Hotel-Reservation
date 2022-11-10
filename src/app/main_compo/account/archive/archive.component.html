@@ -395,28 +395,28 @@
                                         <div class="pdetails pdetails-font">Details</div>
     
                                         <div *ngIf="arr_selected_data[0].paymentMethod==='payment1'" class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Confirmation date</span>
+                                            <span style="font-family: inter_medium !important;">Confirmation date:</span>
                                             <span>{{arr_selected_data[0].confirmation_date !== '' ? arr_selected_data[0].confirmation_date: 'no-date'}}</span>
                                         </div>
     
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
                                             <span style="font-family: inter_medium !important;">
-                                                {{arr_selected_data[0].paymentMethod==='payment2' ? "Transaction paid date":'Transaction date'}}</span>
+                                                {{arr_selected_data[0].paymentMethod==='payment2' ? "Transaction paid date:":'Transaction date:'}}</span>
                                             <span>{{arr_selected_data[0].transaction_date}}</span>
                                         </div>
     
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">{{arr_selected_data[0].acquired_persons}} persons</span>
+                                            <span style="font-family: inter_medium !important;">{{arr_selected_data[0].acquired_persons}} person/s:</span>
                                             <span>{{arr_selected_data[0].persons_price}}</span>
                                         </div>
     
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Total price a day</span>
+                                            <span style="font-family: inter_medium !important;">Total rate a day:</span>
                                             <span>{{arr_selected_data[0].total_day_price}}</span>
                                         </div>
     
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Price</span>
+                                            <span style="font-family: inter_medium !important;">Rate:</span>
                                             <span>{{arr_selected_data[0].defaultPrice}}.00</span>
                                         </div>
     

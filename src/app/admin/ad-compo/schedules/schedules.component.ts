@@ -263,10 +263,35 @@ export class SchedulesComponent implements OnInit {
     return `${converted_hours2}:${converted_minutes} ${amPm},${arr_months[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
   }
 
-  deleleFunc(args: any): void{
-    console.log(args);
+  async deleleFunc(args: any){
     let obs = args.data as any;
-    this.service.openCall(new Array<any>("chooseSchedMoveTrash_cancel"));
+
+    //Time converter________________________________________________________________
+    let arr_month = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+    let date = ""+obs.EndTime;
+    let date_arr = date.split(' ');
+
+    //Get month______________________________________
+    let count = 0;
+    let handle_month_count = 0;
+    let converting_int_String = "";
+    for await (let datas_month of arr_month){
+      if(datas_month === date_arr[1]){
+        handle_month_count = count;
+      }
+      count++;
+    }
+
+    if(handle_month_count < 10){
+      converting_int_String = "0"+handle_month_count;
+    }else{
+      converting_int_String = ""+handle_month_count;
+    }
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    //Call choose if move to trash or cancel apppointment_____________________________________
+    this.service.openCall(new Array<any>("chooseSchedMoveTrash_cancel", `${date_arr[3]} ${converting_int_String} ${date_arr[2]}`));
 
     this.backSubs = this.service.backEmitter.subscribe((res) => {
       this.backSubs.unsubscribe();

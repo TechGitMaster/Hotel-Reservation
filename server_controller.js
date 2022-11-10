@@ -13,7 +13,7 @@ app.use('/', require('./nodejs/user/reservation'));
 app.use('/', require('./nodejs/user/archive'));
 app.use('/', require('./nodejs/user/payment'));
 app.use('/', require('./nodejs/admin/appointment_void'));
-
+app.use('/', require('./nodejs/send_view_reservation'));
 
 
 module.exports = app;

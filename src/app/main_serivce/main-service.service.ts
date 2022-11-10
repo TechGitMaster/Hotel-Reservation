@@ -362,6 +362,15 @@ export class MainServiceService {
       transaction_date: data_info[12], paymentMethod: data_info[13], transcation_id: data_info[14], guest_member: data_info[15] } })
   }
 
+  send_reservation_toUser(data_info: Array<any>): Observable<any>{
+    return this.http.post<any>('/view_send',  
+    { data: { room_id: data_info[0], checkin_date: data_info[1], checkout_date: data_info[2], acquired_persons: data_info[3], 
+      persons_price: data_info[4], total_day_price: data_info[5], total_price: data_info[6], first_name: data_info[7],
+      last_name: data_info[8], phone_number: data_info[9], email: data_info[10], image_transaction: data_info[11], 
+      transaction_date: data_info[12], paymentMethod: data_info[13], transcation_id: data_info[14], guest_member: data_info[15],
+      price: data_info[16], nameOfRoom: data_info[17], typeRoom: data_info[18] } })
+  }
+
   deleting_sessionAfter(token: string): Observable<any>{
     return this.http.post<any>('/delete_session', { token: token });
   }

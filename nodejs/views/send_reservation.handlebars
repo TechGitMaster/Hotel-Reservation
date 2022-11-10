@@ -1,0 +1,310 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+<style>
+.divDetails{
+    max-width: 50%;
+    min-height:100px;
+    background:#493D3D;
+    border-radius:10px;
+    padding:20px;
+    margin-top:20px;
+}
+
+.divCheckInOut{
+    max-width: 170px;
+    border-radius:10px;
+    border:1px solid #FFD700;
+    padding:20px;
+    position: relative; 
+    left: 50%;
+}
+
+.paCheckINOut{
+    margin-bottom:10px;
+    text-align: center;
+    font-size:14px;
+}
+
+.paCheckINOuts{
+    margin: 0%;
+    text-align: center;
+    font-size:14px;
+}
+
+.paNumbCheckInOut{
+    margin:10px;
+    text-align: center;
+    font-family:sans-serif;
+    font-size:30px;
+    color:white;
+}        
+
+.pdetails{
+    padding:10px;
+    font-family:sans-serif;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
+.pdetails-font{
+    font-size:17px;
+}
+
+.paDetailsMiddle{
+    color:white;
+    font-family:sans-serif;
+    padding:5px 10px 2px 10px;
+}
+
+.paDetailsMiddle-font{
+    font-size:14px;
+}
+
+.paNote-font{
+    font-size:17px;
+}
+
+.paReD{
+    font-family: sans-serif;
+    font-weight:700;
+    margin:0%;
+}
+
+.labels{
+    font-family: sans-serif;
+    font-size:17px;
+    margin-bottom:5px;
+    font-weight: bold;
+}
+
+.labels_T{
+    font-family: sans-serif;
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.paRInfoT{
+    font-family:sans-serif;
+    margin:20px 0px 0px 0px;
+}
+
+.paRInfoT-font{
+    font-size:19px;
+}
+
+.detailsss{
+  font-family: sans-serif;
+  font-weight:500;
+  font-size:22px;
+  margin-bottom:20px;
+}
+
+</style>
+
+  </head>
+  <body width="100%">
+    <!--<h2>{{text1}}</h2>
+    <h2>{{text2}}</h2>-->
+
+    <p class="detailsss">Your Reservation Details</p>
+
+    <p class="paReD paNote-font">Transaction ID: {{Transcation_id}}</p>
+    <p class="paReD paNote-font">Name of room: {{nameRoom}}</p>
+    <p class="paReD paNote-font">Type of room: {{typeRoom}} type</p>
+
+    <div class="divDetails">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+          <tbody>
+            <tr align="center">
+              <td>
+                <div style="max-width:50%;display: flex;">
+
+                    <!--____Check in____-->
+                    <div class="divCheckInOut" style="margin-right:20px;flex: 0 0 auto">
+                        <p class="paCheckINOut" style="font-family:sans-serif; color:#FFD700;">CHECK IN</p>
+                        <p class="paNumbCheckInOut">{{checkInDay}}</p>
+                        <p class="paCheckINOut" style="font-family:sans-serif;color:white">
+                            {{checkInMonY}}
+                        </p>
+                    </div>
+
+                    <!--____Check out____-->
+                    <div class="divCheckInOut">
+                        <p class="paCheckINOut" style="font-family:sans-serif; color:#FFD700;">CHECK OUT</p>
+                        <p class="paNumbCheckInOut">{{checkOutDay}}</p>
+                        <p class="paCheckINOut" style="font-family:sans-serif;color:white">
+                            {{checkOutMonY}}
+                        </p>
+                    </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!--___DETAILS___-->
+        <div style="margin-top:20px;width:100%;">
+            <div class="pdetails pdetails-font">Details</div>
+
+            <div *ngIf="identify_PM === 'gcash'" class="paDetailsMiddle paDetailsMiddle-font">
+              <table cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:16px;font-family:sans-serif;">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>                  
+                  <tr>
+                    <td>Transaction paid date</td>
+                    <td style="text-align:right;">{{transaction_date}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Rate: </td>
+                    <td style="text-align:right;">php {{price}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{acquired_persons}} person/s total:</td>
+                    <td style="text-align:right;">php {{persons_price}}</td>
+                  </tr>
+
+
+                  <tr>
+                    <td>Total rate per day: </td>
+                    <td style="text-align:right;">php {{total_day_price}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pdetails pdetails-font" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:17px;font-family:sans-serif;">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Total</td>
+                    <td style="text-align:right;">php {{total_price}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!--__filled information__-->
+    <div>
+      <div style="margin-top:20px;">
+                                    
+          <div>
+            <div style="margin-top:5px;">
+              <label class="labels">First name: </label>
+              <span style="margin-left:5px;font-family:sans-serif;font-size:17px;">{{full_name}}</span>
+            </div>
+            <div style="margin-top:5px;">
+              <label class="labels">Last name: </label>
+              <span style="margin-left:5px;font-family:sans-serif;font-size:17px;">{{last_name}}</span>
+            </div>
+            <div style="margin-top:5px;">
+              <label class="labels">Email: </label>
+              <span style="margin-left:5px;font-family:sans-serif;font-size:17px;">{{email}}</span>
+            </div>
+            <div style="margin-top:5px;">
+              <label class="labels">Contact-number: </label>
+              <span style="margin-left:5px;font-family:sans-serif;font-size:17px;">{{phone_number}}</span>
+            </div>
+            <div style="margin-top:5px;">
+              <p class="paRInfoT paRInfoT-font">Guest info:</p>
+
+              <!--<span>No guest info filled up.</span>-->
+
+              <table cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:17px;font-family:sans-serif;">
+                <thead>
+                  <tr>
+                    <th scope="col" style="text-align:left;">#</th>
+                    <th scope="col" style="text-align:left;">Full name</th>
+                    <th scope="col" style="text-align:left;">Contact-number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{count_1}}</td>
+                    <td>{{fullnameG_1}}</td>
+                    <td>{{contactG_1}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{count_2}}</td>
+                    <td>{{fullnameG_2}}</td>
+                    <td>{{contactG_2}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{count_3}}</td>
+                    <td>{{fullnameG_3}}</td>
+                    <td>{{contactG_3}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{count_4}}</td>
+                    <td>{{fullnameG_4}}</td>
+                    <td>{{contactG_4}}</td>
+                  </tr>
+                  
+                  <tr>
+                    <td>{{count_5}}</td>
+                    <td>{{fullnameG_5}}</td>
+                    <td>{{contactG_5}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{count_6}}</td>
+                    <td>{{fullnameG_6}}</td>
+                    <td>{{contactG_6}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{count_7}}</td>
+                    <td>{{fullnameG_7}}</td>
+                    <td>{{contactG_7}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{count_8}}</td>
+                    <td>{{fullnameG_8}}</td>
+                    <td>{{contactG_8}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{count_9}}</td>
+                    <td>{{fullnameG_9}}</td>
+                    <td>{{contactG_9}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>{{count_10}}</td>
+                    <td>{{fullnameG_10}}</td>
+                    <td>{{contactG_10}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+                                
+          </div>
+        </div>  
+      </div>
+  </body>
+</html>

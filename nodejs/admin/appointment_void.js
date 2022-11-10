@@ -22,83 +22,92 @@ router.post('/voided_parse', async (req, res) => {
     //month______________________________________________
     const data = await data_admin.find({ acceptedNot: 'new', appointmentNot: 'appointment' });
     let arr_email = [];
-
     if(data.length > 0){
         let num_count = 0;
         for await (let manifest of data){
+            let condition_voided = false;
             let data_slice = manifest.timeDate.split(',')[1].split(" ");
             let year = parseInt(data_slice[2]);
             let month = arr_months.indexOf(data_slice[0]);
-            let day = parseInt(data_slice[1])+5;
+            let day = parseInt(data_slice[1]);
     
             let dates_t = new Date(year, month, day);
             let dates_i = new Date();
             if(dates_t.getFullYear() == dates_i.getFullYear()){
               if(dates_t.getMonth() == dates_i.getMonth()){
                 if(dates_t.getDate() < dates_i.getDate()){
-                    //Voided______________________________
-                    var id = mongoose.Types.ObjectId();
+                    condition_voided = true;
+                }
+              }else if(dates_t.getMonth() < dates_i.getMonth()){
+                condition_voided = true;
+              }
+            }
+
+            if(condition_voided){
+                //Voided______________________________
+                var id = mongoose.Types.ObjectId();
     
-                    //Set cancel appointment for admin____________________________________
-                    await data_admin.updateOne({ _id: manifest._id }, 
-                        { $set: { acceptedNot: 'true false' } } );
-                    
+                //Set cancel appointment for admin____________________________________
+                await data_admin.updateOne({ _id: manifest._id }, 
+                    { $set: { acceptedNot: 'true false' } } );
+                
+                if(manifest.email !== ''){
                     //Set cancel appointment for user______________________________________
                     await data_user.updateOne({ _id: manifest.usermail_id }, 
                         { $set: { acceptedNot: 'true false' } });
-                    
-                    //Send mail for admin__________________________________________
-                    await new data_admin({
-                        _id: id,
-                        usermail_id: '',
-                        fullname: manifest.fullname,
-                        email: manifest.reserved_email,
-                        reserved_email: 'Bot message',
-                        numGuest: '',
-                        contact_num: '',
-                        message: 'The appointment has been voided Transaction ID: '+manifest.transaction_ID,
-                        dateArrival: '',
-                        timeDate: date_converting(),
-                        favorite: false,
-                        acceptedNot: 'new',
-                        appointmentNot: 'void_app',
-                        newNot: true,
-                        folderName: 'inbox'
-                    }).save();
-                    await transporter.sendMail({
-                        from: process.env.USER_MAIL,
-                        to: process.env.USER_MAIL,
-                        subject: 'Voided appointment',
-                        text: `The appointment has been voided Transaction ID: ${manifest.transaction_ID}.`
-                    });
-    
-                    //Send mail for user_________________________________________________
-                    if(manifest.email !== ''){
-                        await new noti_user({
-                            email: manifest.email,
-                            name: 'Bot Message',
-                            message: `The appointment has been voided Transaction ID: ${manifest.transaction_ID}`,
-                            date: date_converting(),
-                            deleteNot: 'new'
-                        }).save();
-                        let data_check = await noti_user_click.findOne({ email: manifest.email });
-                            let numbers = data_check.number+1;
-        
-                        await noti_user_click.updateOne({ email: manifest.email },
-                            { $set: { number: numbers, clicked: true } });
-    
-                                            
-                        arr_email.push(manifest.email);
-                    }
-                    await transporter.sendMail({
-                        from: process.env.USER_MAIL,
-                        to: manifest.reserved_email,
-                        subject: 'Voided appointment',
-                        text: `The appointment has been voided Transaction ID: ${manifest.transaction_ID}.`
-                    });
                 }
-              }
+                
+                //Send mail for admin__________________________________________
+                await new data_admin({
+                    _id: id,
+                    usermail_id: '',
+                    fullname: manifest.fullname,
+                    email: manifest.reserved_email,
+                    reserved_email: 'Bot message',
+                    numGuest: '',
+                    contact_num: '',
+                    message: 'The appointment has been voided Transaction ID: '+manifest.transaction_ID,
+                    dateArrival: '',
+                    timeDate: date_converting(),
+                    favorite: false,
+                    acceptedNot: 'new',
+                    appointmentNot: 'void_app',
+                    newNot: true,
+                    folderName: 'inbox'
+                }).save();
+                await transporter.sendMail({
+                    from: process.env.USER_MAIL,
+                    to: process.env.USER_MAIL,
+                    subject: 'Voided appointment',
+                    text: `The appointment has been voided Transaction ID: ${manifest.transaction_ID}.`
+                });
+
+                //Send mail for user_________________________________________________
+                if(manifest.email !== ''){
+                    await new noti_user({
+                        email: manifest.email,
+                        name: 'Bot Message',
+                        message: `The appointment has been voided Transaction ID: ${manifest.transaction_ID}`,
+                        date: date_converting(),
+                        deleteNot: 'new'
+                    }).save();
+                    let data_check = await noti_user_click.findOne({ email: manifest.email });
+                        let numbers = data_check.number+1;
+    
+                    await noti_user_click.updateOne({ email: manifest.email },
+                        { $set: { number: numbers, clicked: true } });
+
+                                        
+                    arr_email.push(manifest.email);
+                }
+                await transporter.sendMail({
+                    from: process.env.USER_MAIL,
+                    to: manifest.reserved_email,
+                    subject: 'Voided appointment',
+                    text: `The appointment has been voided Transaction ID: ${manifest.transaction_ID}.`
+                });
             }
+
             
             num_count++;
             if(num_count == data.length){

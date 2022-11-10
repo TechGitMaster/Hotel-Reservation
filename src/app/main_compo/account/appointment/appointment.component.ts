@@ -167,6 +167,55 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
+  //Checking if the appointment can cancel_____________________________________________________
+  checking_ifCancel(numb: number): boolean{
+    let condition = true;
+
+    //Time converter________________________________________________________________
+    let arr_month = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+    let date = this.arr_data[numb].dateArrival.split(',')[1].split(" ");
+    let date_arr = date;
+
+    //Get month______________________________________
+    let count = 0;
+    let handle_month_count = 0;
+    let converting_int_String = "";
+    for (let datas_month of arr_month){
+      if(datas_month === date_arr[0]){
+        handle_month_count = count;
+      }
+      count++;
+    }
+
+    if(handle_month_count < 10){
+      converting_int_String = "0"+handle_month_count;
+    }else{
+      converting_int_String = ""+handle_month_count;
+    }
+
+    let year = parseInt(date_arr[2]);
+    let month = parseInt(converting_int_String);
+    let day = parseInt(date_arr[1]);
+
+
+    let dates_t = new Date(year, month, day);
+    let dates_i = new Date();
+    if(dates_t.getFullYear() == dates_i.getFullYear()){
+        if(dates_t.getMonth() == dates_i.getMonth()){
+            if(dates_t.getDate() < dates_i.getDate()){
+                condition = false;
+            }
+        }else if(dates_t.getMonth() < dates_i.getMonth()){
+            condition = false;
+        }
+    }else if(dates_t.getFullYear() < dates_i.getFullYear()){
+      condition = false;
+    }
+
+    console.log(condition);
+    return condition;
+  }
+
 
   //move to trash appointment________________________________________________________
   movetoTrash(numb: number): void{
@@ -219,9 +268,11 @@ export class AppointmentComponent implements OnInit {
   //Click details_______________________________________________________________________________
   selected_condition: boolean = false;
   arr_selected_data: Array<any> = new Array<any>();
+  selected_index: number = 0;
   click_details(numb: number): void{
     this.arr_selected_data = [this.arr_data[numb], numb];
     this.selected_condition = true;
+    this.selected_index = numb;
 
     console.log(this.arr_selected_data[0].guest_member.split('\n'));
   }

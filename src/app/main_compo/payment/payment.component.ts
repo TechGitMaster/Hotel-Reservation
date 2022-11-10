@@ -58,7 +58,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   arrHandle: Array<any> = new Array<any>('');
 
   ngOnInit(): void {
-    this.errAppointment = new Array<any>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
+    this.errAppointment = new Array<any>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
     this.formGroup_payment = this.formGroup.group({
       first_name: [''],
       last_name: [''],
@@ -161,104 +161,125 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   paypal_bttn: string = '';
   subs_paypal!: Subscription;
   protected enable_bttn!: any;
+  termsCondition: boolean = false;
   select_bttnPayment(payment_method: string): void{
-    this.condition_paymentMethod = payment_method;
     let flexRadioDefault1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
     let flexRadioDefault2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
+    if(this.termsCondition){
 
-    this.identify_PM = payment_method;
+      this.condition_paymentMethod = payment_method;
 
-    //Checking availability___________________________________
-    this.subs = this.checking_roomAvailability().subscribe((res) => {
-      if(res){
-        //Radio bttn_________________________________
-        if(payment_method === 'gcash' && this.gcash_bttn === ''){
-          flexRadioDefault1.checked = true;
-          flexRadioDefault2.checked = false;
-          this.gcash_bttn = 'have';
-          this.paypal_bttn = '';
-        }else if(payment_method === 'paypal' && this.paypal_bttn === ''){
-          this.paypal_bttn = 'have';
-          this.gcash_bttn = '';
+      this.identify_PM = payment_method;
 
-          flexRadioDefault1.checked = false;
-          flexRadioDefault2.checked = true;
+      //Checking availability___________________________________
+      this.subs = this.checking_roomAvailability().subscribe((res) => {
+        if(res){
+          //Radio bttn_________________________________
+          if(payment_method === 'gcash' && this.gcash_bttn === ''){
+            flexRadioDefault1.checked = true;
+            flexRadioDefault2.checked = false;
+            this.gcash_bttn = 'have';
+            this.paypal_bttn = '';
+          }else if(payment_method === 'paypal' && this.paypal_bttn === ''){
+            this.paypal_bttn = 'have';
+            this.gcash_bttn = '';
 
-          //Open the paypal and make pay___________________________________________
-          setTimeout(() => {
+            flexRadioDefault1.checked = false;
+            flexRadioDefault2.checked = true;
 
-            if(this.paypals != null) this.paypals.close();
+            //Open the paypal and make pay___________________________________________
+            setTimeout(() => {
 
-            this.paypals = paypal.Buttons({
-              style: {
-                height: 45,
-              },
-              
-              onInit: (data: any, actions: any) => {
-                // Disable the buttons paypal
-                actions.disable();
-                this.enable_bttn = actions;
-              },
+              if(this.paypals != null) this.paypals.close();
 
-              onClick: () => {
-                //Checking if the user fill up the information and checking if room is still available_________________________
+              this.paypals = paypal.Buttons({
+                style: {
+                  height: 45,
+                },
+                
+                onInit: (data: any, actions: any) => {
+                  // Disable the buttons paypal
+                  actions.disable();
+                  this.enable_bttn = actions;
+                },
 
-                const data_info = this.formGroup_payment.value;
+                onClick: () => {
+                  //Checking if the user fill up the information and checking if room is still available_________________________
 
-                this.textarea_details = '';
-                this.errAppointment = new Array<any>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
+                  const data_info = this.formGroup_payment.value;
 
-                if(this.checkingField(data_info)){
-                  this.transaction_ID(data_info, [], 'payment2');
-                  this.enable_bttn.enable();
-                }
-              },
+                  this.textarea_details = '';
+                  this.errAppointment = new Array<any>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false],  ['', false]);
 
-              createOrder: (data: any, actions: any) => {
-                return actions.order.create({
-                  purchase_units: [
-                    {
-                      amount: {
-                        currency_code: 'PHP',
-                        value: this.arr_data_savingInfo[6]
-                      }
+                  if(this.checkingField(data_info)){
+                    if(this.termsCondition){
+                      this.transaction_ID(data_info, [], 'payment2');
+                      this.enable_bttn.enable();
+                    }else{
+                      this.errAppointment[6][0] = "!Please confirm that you're agreed for the terms and condition.";
+                      this.errAppointment[6][1] = true;
                     }
-                  ]
-                });
-              },
-              onApprove: async (data: any, actions: any) => {
-                const transaction = await actions.order.capture();
-                try{
-                  let ds = transaction.id;
-
-                  if(ds != null && ds !== 'undefined' && ds != undefined){
-                    this.subs_paypal = this.service.saving_information_payment(this.arr_data_savingInfo).subscribe((ress_saved) => {
-                      this.subs_paypal.unsubscribe();
-                      this.arrHandle = new Array<any>('progress', 100, 'Room has been reserved.');
-
-                      //Deleting session______________________________________________________________
-                      this.subs = this.service.deleting_sessionAfter(this.token).subscribe(() => {
-                        //Show payment details for downloading payments____________________________________ 
-                        this.subs.unsubscribe();
-                        this.condition_paymentSection = false;
-                        this.condition_alertAfterpayment = true;
-                      });
-                    });
                   }
-                }catch(err){
-                  alert('Failed to pay. Logout your paypal account and try again!');
-                }
-              },
-              onCancel: () => {
-                if(this.subs_paypal != null) this.subs_paypal.unsubscribe();
-              }
-            });
-            this.paypals.render(this.paypalElement.nativeElement);
-          }, 100);
+                },
 
+                createOrder: (data: any, actions: any) => {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          currency_code: 'PHP',
+                          //this.arr_data_savingInfo[6]
+                          value: 1000
+                        }
+                      }
+                    ]
+                  });
+                },
+                onApprove: async (data: any, actions: any) => {
+                  const transaction = await actions.order.capture();
+                  try{
+                    let ds = transaction.id;
+
+                    if(ds != null && ds !== 'undefined' && ds != undefined){
+                      this.subs_paypal = this.service.saving_information_payment(this.arr_data_savingInfo).subscribe((ress_saved) => {
+                        this.subs_paypal.unsubscribe();
+
+                        this.subs_paypal = this.service.send_reservation_toUser(this.arr_data_savingInfo).subscribe((data) => {
+                          
+                          this.subs_paypal.unsubscribe();
+                          this.arrHandle = new Array<any>('progress', 100, 'Room has been reserved.');
+
+                          //Deleting session______________________________________________________________
+                          this.subs = this.service.deleting_sessionAfter(this.token).subscribe(() => {
+                            //Show payment details for downloading payments____________________________________ 
+                            this.subs.unsubscribe();
+                            this.condition_paymentSection = false;
+                            this.condition_alertAfterpayment = true;
+                          });
+                          
+                        });
+
+                      });
+                    }
+                  }catch(err){
+                    alert('Failed to pay. Logout your paypal account and try again!');
+                  }
+                },
+                onCancel: () => {
+                  if(this.subs_paypal != null) this.subs_paypal.unsubscribe();
+                }
+              });
+              this.paypals.render(this.paypalElement.nativeElement);
+            }, 100);
+
+          }
         }
-      }
-    });
+      });
+    }else{
+      flexRadioDefault1.checked = false;
+      flexRadioDefault2.checked = false;
+      alert("You need to check first the Terms and condition.");
+    }
   }
 
   //Home page bttn click___________________________________________________________________________
@@ -267,6 +288,21 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       this.arrHandle = new Array<any>('exiting', 'Cancel transaction', 'Are you sure you want to cancel the transaction?');
     }else{
       this.yesNO(true);
+    }
+  }
+
+  //Terms and condition bttn_____________________________________________________________________
+  termsAndCondition(): void{
+    let flexRadioDefault1 = <HTMLInputElement>document.querySelector('#flexRadioDefault1');
+    let flexRadioDefault2 = <HTMLInputElement>document.querySelector('#flexRadioDefault2');
+    if(!this.termsCondition){
+      this.termsCondition = true;
+    }else{
+      this.condition_paymentMethod = "new";
+      this.termsCondition = false;
+      flexRadioDefault1.checked = false;
+      flexRadioDefault2.checked = false;
+      this.paypal_bttn = '';
     }
   }
 
@@ -436,22 +472,26 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       this.subs.unsubscribe();
 
       this.textarea_details = '';
-      this.errAppointment = new Array<any>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
+      this.errAppointment = new Array<any>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
 
       const data_info = this.formGroup_payment.value;
 
       if(this.checkingField(data_info)){
+        if(this.termsCondition){
+          this.arrHandle = new Array<any>('progress', Math.floor(Math.random() * 50), 'Making a request.');
 
-        this.arrHandle = new Array<any>('progress', Math.floor(Math.random() * 50), 'Making a request.');
-
-        if(this.arr_blob_transaction.length != 0){
-          //Upload image to cloudinary_____________________
-          this.subs = this.service.uploadImage(this.arr_blob_transaction).subscribe((result) => {
-            this.subs.unsubscribe();
-            this.making_requestGcash(data_info, result.data, 'payment1')
-          }); 
+          if(this.arr_blob_transaction.length != 0){
+            //Upload image to cloudinary_____________________
+            this.subs = this.service.uploadImage(this.arr_blob_transaction).subscribe((result) => {
+              this.subs.unsubscribe();
+              this.making_requestGcash(data_info, result.data, 'payment1')
+            }); 
+          }else{
+            this.making_requestGcash(data_info, [], 'payment1');
+          }
         }else{
-          this.making_requestGcash(data_info, [], 'payment1');
+          this.errAppointment[6][0] = "!Please confirm that you're agreed for the terms and condition.";
+          this.errAppointment[6][1] = true;
         }
       }
     }, (err) => {
@@ -485,6 +525,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             this.arr_data_savingInfo[13] = condition_payment;
             this.arr_data_savingInfo[14] = transaction_id;
             this.arr_data_savingInfo[15] = this.textarea_details;
+            this.arr_data_savingInfo[16] = ''+this.data_room.defaultPrice+'.00';
+            this.arr_data_savingInfo[17] = this.data_room.nameRoom;
+            this.arr_data_savingInfo[18] = this.data_room.typeRoom2;
           }
         }
       }

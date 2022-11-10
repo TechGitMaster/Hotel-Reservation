@@ -32,9 +32,16 @@
 
             <div *ngIf="arrHandle[0] === 'chooseSchedMoveTrash_cancel'" class="container havePopup">
                 <div class="container boxHS">
-                    <span class="paCancel">Choose Event</span>
+                    <div style="display: flex;justify-content: space-between;">
+                        <span class="paX4" (click)="funErases()">X</span>
+                        <div></div>
+                    </div>
 
-                    <div class="cancelDeleteEvents" (click)="cancelDelete(false)">Cancel Event</div>
+                    <span class="paCancel">Choose Event</span>
+                    
+                    <div class="cancelDeleteEvents"
+                        (click)="checking_ifcanCancelAppointment(arrHandle[1]) ? cancelDelete(false): appointmentCancel_Not(); $event.stopPropagation();">Cancel Event</div>
+
                     <div class="cancelDeleteEvents" (click)="moveToTrash()">Move to Archive</div>
                 </div>
             </div>
@@ -333,29 +340,29 @@
                                     <div class="pdetails">Details</div>
 
                                     <div *ngIf="arrHandle[1].paymentMethod==='payment1'" class="paDetailsMiddle">
-                                        <span style="font-family: inter_medium !important;">Confirmation date</span>
+                                        <span style="font-family: inter_medium !important;">Confirmation date:</span>
                                         <span>{{arrHandle[1].confirmation_date !== '' ? arrHandle[1].confirmation_date: 'no-date'}}</span>
                                     </div>
 
                                     <div class="paDetailsMiddle">
                                         <span style="font-family: inter_medium !important;">
-                                            {{arrHandle[1].paymentMethod==='payment2' ? "Transaction paid date":'Transaction date'}}</span>
+                                            {{arrHandle[1].paymentMethod==='payment2' ? "Transaction paid date:":'Transaction date:'}}</span>
                                         <span>{{arrHandle[1].transaction_date}}</span>
                                     </div>
 
 
                                     <div class="paDetailsMiddle">
-                                        <span style="font-family: inter_medium !important;">{{arrHandle[1].acquired_persons}} persons</span>
+                                        <span style="font-family: inter_medium !important;">{{arrHandle[1].acquired_persons}} person/s:</span>
                                         <span>{{arrHandle[1].persons_price}}</span>
                                     </div>
 
                                     <div class="paDetailsMiddle">
-                                        <span style="font-family: inter_medium !important;">Total price a day</span>
+                                        <span style="font-family: inter_medium !important;">Total rate a day:</span>
                                         <span>{{arrHandle[1].total_day_price}}</span>
                                     </div>
 
                                     <div class="paDetailsMiddle">
-                                        <span style="font-family: inter_medium !important;">Price</span>
+                                        <span style="font-family: inter_medium !important;">Rate:</span>
                                         <span>{{arrHandle[1].defaultPrice}}.00</span>
                                     </div>
 

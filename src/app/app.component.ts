@@ -567,13 +567,17 @@ export class AppComponent implements OnInit, AfterViewInit{
     }, 200);
   }
 
-  //AM and PM click_______________________________________________________________
-  async clickAM_PM(condition: boolean){
 
-    if(condition){
+  clickAM_PMS(event: any): void{
+    
+    if(event.target.value.toLowerCase() === 'am' || event.target.value.toLowerCase() === 'pm'){
+      if(event.target.value.toLowerCase() === 'am'){
+        this.availableTime(true);
+      }else{
+        this.availableTime(false);
+      }
+    }else{
       this.availableTime(true);
-    }else{  
-      this.availableTime(false);
     }
   }
 

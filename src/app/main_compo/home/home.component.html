@@ -90,7 +90,7 @@
                         </div>
     
                         <div style="display: flex;justify-content: center;">
-                            <button class="btn btn-primary btnseeMore btnseeMore-width" (click)="room()">See more</button>
+                            <button class="btn btn-primary btnseeMore btnseeMore-width" (click)="facilities()">See more</button>
                         </div>
                     </div>
     
@@ -184,7 +184,7 @@
                                 </div>
     
                                 <div style="display: flex;justify-content: center;" *ngIf="count_room >= 2">
-                                    <button class="btn btn-primary btnseemorbttn btnseemorbttn-font">See more</button>
+                                    <button class="btn btn-primary btnseemorbttn btnseemorbttn-font" (click)="room()">See more</button>
                                 </div>
                             </div>
 
@@ -229,8 +229,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="locatehotelbttn">
-                                            <span>locate the hotel</span>
+                                        <div class="locatehotelbttn" (click)="locateTheHotel()">
+                                            <span>Locate the hotel</span>
                                         </div>
                                     </div>
                                 </div>

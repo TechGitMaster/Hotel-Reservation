@@ -217,7 +217,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                         reserved_email: 'Bot message',
                         numGuest: '',
                         contact_num: '',
-                        message: `The room already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`,
+                        message: `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`,
                         dateArrival: '',
                         timeDate: transaction_date,
                         favorite: false,
@@ -230,7 +230,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                     }).save().then(() => {
                         
                         //Send gmail to admin________________________________________________________
-                        const message = `The room already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`;
+                        const message = `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`;
                         transporter.sendMail({
                             from: email,
                             to: process.env.USER_MAIL,
@@ -691,7 +691,7 @@ router.post('/deleteReservation_final', (req, res) => {
 
 //TEMPORARY________________________________________________________________________
 router.get('/temporary', (req, res) => {
-    rooms_column.updateOne({ _id: "635b7ddf8be419b89753aae3" }, { $set: {
+    rooms_column.updateOne({ _id: "63637a57387d39f61029eb8e" }, { $set: {
         paymentMethod: "",
         account_id: "",
         checkin_date: "",

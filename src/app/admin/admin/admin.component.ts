@@ -175,6 +175,31 @@ export class AdminComponent implements OnInit {
 
   }
 
+
+  checking_ifcanCancelAppointment(date: string): boolean{
+    let condition = true;
+    let data_slice = date.split(' ');
+    let year = parseInt(data_slice[0]);
+    let month = parseInt(data_slice[1]);
+    let day = parseInt(data_slice[2]);
+
+    let dates_t = new Date(year, month, day);
+    let dates_i = new Date();
+
+    if(dates_t.getFullYear() == dates_i.getFullYear()){
+      if(dates_t.getMonth() == dates_i.getMonth()){
+        if(dates_t.getDate() < dates_i.getDate()){
+            condition = false;
+        }
+      }else if(dates_t.getMonth() < dates_i.getMonth()){
+        condition = false;
+      }
+    }else if(dates_t.getFullYear() < dates_i.getFullYear()){
+      condition = false;
+    }
+    return condition;
+  }
+
   string_fromAdmin_Image: string = 'notFromadmin';
   displayImage(url: string, condition: string): void{
       this.conditionSeeImage = true;
@@ -216,12 +241,23 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  //Close div for conditionFixDiv_______________________________________________________
+  funErases(): void{
+    this.conditionFixDiv = false;
+    this.service.backEmitters(new Array<any>( false ));
+  }
+
   //Close div timer and yesNo__________________________________________________________
   funcErase(): void{
     if(!this.condition_forPassword){
       this.conditionFixDiv = false;
       this.service.backEmitters(new Array<any>( false ));
     }
+  }
+
+  //Alert for do not cancel appointment when it's done___________________________________________
+  appointmentCancel_Not(): void{
+    alert("You don't need to cancel the appointment because it's done.");
   }
 
   yesNO(condition: boolean): void{

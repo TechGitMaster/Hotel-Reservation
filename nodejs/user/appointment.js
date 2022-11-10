@@ -70,10 +70,11 @@ router.post('/getAppointments_user', middleware, async (req, res) => {
 router.post('/cancelAppointment', middleware, async (req, res) => {
     const { _id, fullname, email, date, transaction_ID } = req.body;
 
-    var id = mongoose.Types.ObjectId();
+    const data_admin = await inbox_col.findOne({ usermail_id: _id });
 
+    var id = mongoose.Types.ObjectId();
     calendar_sched_col.deleteOne({ usermail_id: _id }).then(() => {
-        accepted_timeDate.deleteOne({ usermail_id: _id }).then(() => {
+        accepted_timeDate.deleteOne({ IDS: data_admin._id }).then(() => {
             inbox_col.updateOne({ usermail_id: _id }, { $set: { acceptedNot: 'true false' } }).then(() => {
                 appointment_col.updateOne({ _id: _id }, { $set: { acceptedNot: 'true false' } }).then(() => {
                     //Send mail to admin______________________________________________________________

@@ -108,8 +108,8 @@
                     <!--____ACCEPTED____-->
                     <div *ngIf="radioName === 'accepted'" style="width:100%;display: flex;justify-content: space-between;margin-top:5px;">
                         <div style="display: flex;">
-                            <p class="details_cancel details_cancel-font" (click)="cancelRequest(indexes)">Cancel request</p>
-                            <p class="details_cancel details_cancel-font" style="margin-left:15px;" (click)="click_details(indexes)">See details</p>
+                            <p *ngIf="checking_ifCancel(indexes)" class="details_cancel details_cancel-font" style="margin-right:15px;" (click)="cancelRequest(indexes)">Cancel request</p>
+                            <p class="details_cancel details_cancel-font" (click)="click_details(indexes)">See details</p>
                         </div>
 
                         <div class="paDate">{{checking(false, data.timeDate)}}</div>
@@ -181,7 +181,7 @@
             <p class="headerInfos headerInfos-font">Message: </p>
             <p class="details details-font" style="margin:0px 0px 20px 0px;">{{arr_selected_data[0].message}}</p>
 
-            <span *ngIf="radioName === 'pending' || radioName === 'accepted'" class="details_cancel details_cancel-font" 
+            <span *ngIf="radioName === 'pending' || radioName === 'accepted' && checking_ifCancel(selected_index)" class="details_cancel details_cancel-font" 
             (click)="cancelRequest(arr_selected_data[1])">Cancel request</span>
         </div>
     </div>

@@ -489,7 +489,7 @@
                                         <div>
                                             <div style="width:100%;padding:0px 10px 0px 10px;">
                                                 <!--{{data_room.nameRoom}}-->
-                                                <p class="patiGuest">Add the Inforamation of guests</p>
+                                                <p class="patiGuest">Add information of additional pax:</p>
 
                                                 <!--____TABLE_____-->
                                                 <div style="width:100%;">
@@ -572,9 +572,9 @@
         
                                 <div class="col-4">
                                     <label class="labels">AM/PM:</label>
-                                    <select class="form-select formselectAppointment ds_APM">
-                                        <option selected (click)="clickAM_PM(true)">am</option>
-                                        <option value="Male" (click)="clickAM_PM(false)">pm</option>
+                                    <select (change)="clickAM_PMS($event)" class="form-select formselectAppointment ds_APM">
+                                        <option value="am" selected>am</option>
+                                        <option value="pm">pm</option>
                                     </select>
                                 </div>
                             </div>

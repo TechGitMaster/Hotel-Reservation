@@ -46,11 +46,22 @@ export class HomeComponent implements OnInit {
   }
 
 
-  room(): void{
+  facilities(): void{
     window.scrollTo({ top: 0 });
     setTimeout(() => {
       this.router.navigate(['/mc/facilities']);
-    }, 50);
+    }, 200);
+  }
+
+  room(): void{
+    window.scrollTo({ top: 0 });
+    setTimeout(() => {
+      this.router.navigate(['/mc/rooms']);
+    }, 200);
+  }
+
+  locateTheHotel(): void{
+    window.open("https://www.google.com/maps/place/Manhattan+Garden+City/@14.6220653,121.0505355,17z/data=!3m1!5s0x3397b7bf7007f2b3:0xf5d53516a76a3d22!4m14!1m7!3m6!1s0x3397b7bfb10b1099:0xa22d84487ebc8804!2sManhattan+Garden+City!8m2!3d14.6220601!4d121.0527242!16s%2Fg%2F11bw613979!3m5!1s0x3397b7bfb10b1099:0xa22d84487ebc8804!8m2!3d14.6220601!4d121.0527242!16s%2Fg%2F11bw613979");
   }
 
 }

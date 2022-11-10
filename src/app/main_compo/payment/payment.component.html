@@ -42,7 +42,7 @@
         <div class="container" style="height:100%;display: flex;align-items: center;justify-content: center;">
             <div class="divSuccesschangePass" (click)="$event.stopPropagation()">
                 <div>
-                    <p class="paSuccessChange paSuccessChange-font">The session is expired. If you leave the page or refresh it you can't go back again. </p>
+                    <p class="paSuccessChange paSuccessChange-font">Before you leave do not forget to print/download your reservation details.</p>
                     <button class="btn btn-primary passwordChange passwordChange-font" (click)="condition_alertAfterpayment=false">Close</button>
                 </div>
             </div>
@@ -175,7 +175,7 @@
                         </div>
 
                         <!--_________CHECK BOX__________-->
-                        <div style="margin-bottom:50px;">
+                        <div style="margin-bottom:40px;">
                             <div *ngIf="boolean_close">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" (click)="GDetails_check()"
                                     style="margin-right:8px;position: relative;top:1px;">
@@ -190,7 +190,7 @@
                                 <div style="display: flex;">
                                     <div style="width:100%;padding:0px 10px 0px 10px;">
                                         <!--{{data_room.nameRoom}}-->
-                                        <p class="patiGuest">Add information of your friends/relatives</p>
+                                        <p class="patiGuest">Add information of additional pax:</p>
 
                                         <!--____TABLE_____-->
                                         <div style="width:100%;">
@@ -234,6 +234,18 @@
                             </div>
                         </div>
 
+                        <div style="margin-bottom:30px;">
+                            <p class="fontTermscondition fontTermscondition-font">Terms and Condition of Reservation</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckDefault23" (click)="termsAndCondition()">
+                                <label class="form-check-label fontTermsInfo" for="flexCheckDefault23">
+                                  I have read and agreed to the Terms & Condition and Privacy Policy.
+                                </label>
+                            </div>
+                            <div *ngIf="errAppointment[6][1]">
+                                <span class="paError">{{errAppointment[6][0]}}</span>
+                            </div>
+                        </div>
 
                         <!--__________SELECTION PAYMENT METHOD_________-->
                         <div style="padding:20px;border:2px solid rgba(0, 128, 0, 0.507);border-radius:15px;">
@@ -251,7 +263,7 @@
                                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                     <div class="paPeyments" style="display: flex;align-items: center;">
                                         <img src="/assets/image/gcash.png" class="img-fluid" style="max-width:20px;height:20px;" />
-                                        <label class="form-check-label" for="flexRadioDefault1" style="margin-left:5px;">
+                                        <label class="form-check-label paypalFonts" for="flexRadioDefault1" style="margin-left:5px;">
                                             Gcash payment
                                         </label>
                                     </div>
@@ -347,13 +359,12 @@
                                 </div>
 
                                 <!--____BODY____-->
-                                <div *ngIf="condition_paymentMethod === 'paypal'" 
-                                    style="margin-top:20px;">
+                                <div *ngIf="condition_paymentMethod === 'paypal'" style="margin-top:20px;">
                                     <div #paypalbuttons></div>
                                 </div>
                             </div>
                         </div>
-
+                        
 
                         <!--_____BUTTON MAKE A REQUEST OR RESERVE______-->
                         <div *ngIf="condition_paymentMethod === 'gcash'" style="margin-top:20px;display: grid;place-items: center;">
@@ -377,7 +388,7 @@
                         </div>
 
                         <div class="dateCheckInOut">
-                            <span><span style="font-family: inter_bold;">{{day_count_reservation}} nights: </span> 
+                            <span><span style="font-family: inter_bold;">{{day_count_reservation}} night\s: </span> 
                             <span style="font-family: inter_medium;">{{day_checkInOut_convert}}</span></span>
                         </div>
 
@@ -385,17 +396,17 @@
                             <p class="paDPs">Details payment summary</p>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold;">Price:</span>
+                                <span style="font-family: inter_semibold;">Rate:</span>
                                 <span style="font-family: inter_regular;">php {{price_room}}</span>
                             </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold;">{{token_convert.personsCount}} persons total:</span>
+                                <span style="font-family: inter_semibold;">{{token_convert.personsCount}} person\s total:</span>
                                 <span style="font-family: inter_regular;">php {{person_total}}</span>
                             </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold">Total price per day:</span>
+                                <span style="font-family: inter_semibold">Total rate per day:</span>
                                 <span style="font-family: inter_regular;">php {{total_price_perDay}}</span>
                             </div>
                         </div>
@@ -417,16 +428,19 @@
         <div *ngIf="!condition_paymentSection" class="container" style="max-width:1230px;padding:15px 10px 15px 10px;">
             <div class="details_payment">
                 <img src="/assets/icon/watermark.png" class="img-fluid imgwatermark" />
-                <!--___HEADER____-->
-                <div *ngIf="identify_PM === 'gcash' && conditionPrint" style="margin-bottom:15px;">
+                <!--___HEADER____*ngIf="identify_PM === 'gcash' && conditionPrint" -->
+                <div style="margin-bottom:15px;">
                     <p class="paNote paNote-font">Please Note:</p>
-                    <span class="securedPI">By using gcash as payment, you need to wait to accept your reservation request. To look into your request just go to your account setting.</span>
+                    <p class="securedPI">• Don't forget to print/download your reservation details.</p>
+                    <p class="securedPI">• By using gcash as payment, you need to wait to accept your reservation request. To look into your request just login and go to your account setting.</p>
+                    <p class="securedPI">• By using paypal as payment, you can view your reservation through your email.</p>
                 </div>
-                
+
+                <p class="paReD paNote-font">Transaction ID: {{arr_data_savingInfo[14]}}</p>
                 <p class="paReD paNote-font">Name of room: {{data_room.nameRoom}}</p>
                 <p class="paReD paNote-font">Type of room: {{data_room.typeRoom2}} type</p>
 
-                <p class="paReD paNote-font">Your reservation details:</p>
+                <p class="paReDs paNotes-font">Your reservation details:</p>
 
                 <!--_________BODY_____________-->
                 <div>
@@ -489,7 +503,7 @@
                                             <input type="text" [value]="formGroup_payment.value.contact_number" class="form-control forminputs" />
                                         </div>
                                         <div class="col-12" style="margin-top:10px;">
-                                            <p class="paRInfoT">Guest info:</p>
+                                            <p class="paRInfoT paRInfoT-font">Guest info:</p>
                                             <span *ngIf="arr_details.length == 0" >No guest info filled up.</span>
 
                                             <table *ngIf="textarea_details.split('\n')[0].length != 0" class="table">
@@ -526,7 +540,7 @@
                                         <div class="divCheckInOut" style="margin-right:20px;">
                                             <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK IN</p>
                                             <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(arr_data_savingInfo[1], [1])}}</p>
-                                            <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                            <p class="paCheckINOuts" style="font-family: inter_regular;color:white">
                                                 {{dateCheckOutCheckIn(arr_data_savingInfo[1], [0,2])}}
                                             </p>
                                         </div>
@@ -535,7 +549,7 @@
                                         <div class="divCheckInOut">
                                             <p class="paCheckINOut" style="font-family: inter_bold; color:#FFD700;">CHECK OUT</p>
                                             <p class="paNumbCheckInOut">{{dateCheckOutCheckIn(arr_data_savingInfo[2], [1])}}</p>
-                                            <p class="paCheckINOut" style="font-family: inter_regular;color:white">
+                                            <p class="paCheckINOuts" style="font-family: inter_regular;color:white">
                                                 {{dateCheckOutCheckIn(arr_data_savingInfo[2], [0,2])}}
                                             </p>
                                         </div>
@@ -557,17 +571,17 @@
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Price:</span>
+                                            <span style="font-family: inter_medium !important;">Rate:</span>
                                             <span>php {{price_room}}</span>
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">{{token_convert.personsCount}} persons total:</span>
+                                            <span style="font-family: inter_medium !important;">{{token_convert.personsCount}} person\s total:</span>
                                             <span>php {{arr_data_savingInfo[4]}}</span>
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Total price per day:</span>
+                                            <span style="font-family: inter_medium !important;">Total rate per day:</span>
                                             <span>php {{arr_data_savingInfo[5]}}</span>
                                         </div>
 
