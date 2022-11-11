@@ -8,6 +8,7 @@ import { MainServiceService } from './main_serivce/main-service.service';
 import { register, login, googleDataUser, timeDate } from './objects';
 import { HostListener } from '@angular/core';
 import { notification_user } from './objects';
+import * as e from 'express';
 
 @Component({
   selector: 'app-root',
@@ -130,11 +131,11 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
 
     //Forms_____________________________________________________
-    //'kylevelarde374@gmail.com'
-    //'kyleAdmin375@gmail.com'
+    //kyleAdmin375@gmail.com
+    //YF9ac466i1AwQwkb@
     this.formGroup_login = this.formBuilder.group({
-      email: ['kyleAdmin375@gmail.com'],
-      password: ['YF9ac466i1AwQwkb@']
+      email: [''],
+      password: ['']
     });
 
     this.formGroup_signup = this.formBuilder.group({
@@ -800,9 +801,6 @@ export class AppComponent implements OnInit, AfterViewInit{
 
       //Checking all input field if empty or not_____________________________________________________
       if(this.checkingField(obj_data)){
-
-          //Checking if contact_number is validate________________________________________________________
-          if((/^\d+$/).test(obj_data.contact_number)){
         
             //Checking if email is validate________________________________________________________
             if((/[@]/).test(obj_data.email) && (/[.]/).test(obj_data.email)){
@@ -852,11 +850,7 @@ export class AppComponent implements OnInit, AfterViewInit{
               this.errorSignupArr[3][0] = "!The Email is undefined.";
               this.errorSignupArr[3][1] = true;
             }
-        }else{
-          this.errorSignupArr[2][0] = "!Please check your contact-number";
-          this.errorSignupArr[2][1] = true;
-        }
-
+      
     }
 
   }
@@ -1035,49 +1029,57 @@ export class AppComponent implements OnInit, AfterViewInit{
   //Checking appointment input field_______________________________________________
   checkingAInputField(): boolean{
     let condition = true;
+    this.textarea_details = '';
     if(this.formGroup_setAppointment.value.fullname !== '' && this.formGroup_setAppointment.value.fullname !== ' '){
-      if((/[@]/).test(this.formGroup_setAppointment.value.email) && (/[.]/).test(this.formGroup_setAppointment.value.email)){
-        if((/^\d+$/).test(this.formGroup_setAppointment.value.numberguest) && this.formGroup_setAppointment.value.numberguest.length > 0){
 
-          let condition_GuestHave = true;
-          if(this.countD > 1) {
-            for(let count = 0;count < this.arr_details.length;count++){
-              if(this.arr_details[count][0] === '' || this.arr_details[count][1] === '' || this.arr_details[count][2] === ''){
-                this.errAppointment[5][0] = "!Check the input field on guest names.";
-                this.errAppointment[5][1] = true;
-                condition = false;   
-                condition_GuestHave = false;
-              }else{
-                this.textarea_details += 
-                  `${this.arr_details[count][0]+' '+this.arr_details[count][1]},${this.arr_details[count][2]}${count != this.arr_details.length-1 ? '\n':''}`
+      if(this.formGroup_setAppointment.value.fullname.length <= 40){
+
+        if((/[@]/).test(this.formGroup_setAppointment.value.email) && (/[.]/).test(this.formGroup_setAppointment.value.email)){
+          if((/^\d+$/).test(this.formGroup_setAppointment.value.numberguest) && this.formGroup_setAppointment.value.numberguest.length > 0){
+
+            let condition_GuestHave = true;
+            if(this.countD > 1) {
+              for(let count = 0;count < this.arr_details.length;count++){
+                if(this.arr_details[count][0] === '' || this.arr_details[count][1] === '' || this.arr_details[count][2] === ''){
+                  this.errAppointment[5][0] = "!Check the input field on guest names.";
+                  this.errAppointment[5][1] = true;
+                  condition = false;   
+                  condition_GuestHave = false;
+                }else{
+                  this.textarea_details += 
+                    `${this.arr_details[count][0]+' '+this.arr_details[count][1]},${this.arr_details[count][2]}${count != this.arr_details.length-1 ? '\n':''}`
+                }
               }
             }
-          }
-
-          if(condition_GuestHave){
-            if(!(/^\d+$/).test(this.formGroup_setAppointment.value.contactnumber) || this.formGroup_setAppointment.value.contactnumber.length == 0
-            || this.formGroup_setAppointment.value.contactnumber === ' '){
-              if(this.formGroup_setAppointment.value.contactnumber.length == 0 || this.formGroup_setAppointment.value.contactnumber === ' '){
+  
+            if(condition_GuestHave){
+              if(this.formGroup_setAppointment.value.contactnumber.length != 0){
+                let removeWhite = this.formGroup_setAppointment.value.contactnumber.replaceAll(' ','');
+                if(removeWhite.length != 11){
+                  this.errAppointment[3] = ['!Contact number must exact 11 length.', true];
+                  condition = false;
+                }
+              }else{
                 this.errAppointment[3] = ['!Empty input field.', true];
                 condition = false;
-              }else{
-                this.errAppointment[3] = ['!Only numbers need.', true];
-                condition = false;
               }
             }
-          }
-
-        }else{
-          if(this.formGroup_setAppointment.value.numberguest.length == 0){
-            this.errAppointment[2] = ['!Select how many guest.', true];
-            condition = false;
+  
           }else{
-            this.errAppointment[2] = ['!Only numbers need.', true];
-            condition = false;
+            if(this.formGroup_setAppointment.value.numberguest.length == 0){
+              this.errAppointment[2] = ['!Select how many guest.', true];
+              condition = false;
+            }else{
+              this.errAppointment[2] = ['!Only numbers need.', true];
+              condition = false;
+            }
           }
+        }else{
+          this.errAppointment[1] = ['!Check email again.', true];
+          condition = false;
         }
       }else{
-        this.errAppointment[1] = ['!Check email again.', true];
+        this.errAppointment[0] = ['!Max character is 40 length.', true];
         condition = false;
       }
     }else{
@@ -1087,6 +1089,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     return condition;
   }
 
+  //For appointment____________________________________________________________
   funcOnlyNumber(condition: boolean): void{
     if(!condition){
       let guestNum = <HTMLInputElement>document.querySelector('.guestNum');
@@ -1097,6 +1100,11 @@ export class AppComponent implements OnInit, AfterViewInit{
     }
   }
 
+  //For Signup________________________________________________________________
+  funcOnlyNumber_signup(): void{
+    let contacts_signup = <HTMLInputElement>document.querySelector('.contacts_signup');
+    contacts_signup.value = contacts_signup.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+  }
 
   //FORGOT PASSWORD__________________________________________________________________________________________________
 
@@ -1431,64 +1439,101 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.month_names_final.push(array);
     }
   }
+
+
+  //Follow link us__________________________________________________________________________________________________
+  linkFollowus(count: number): void{
+    let link = '';
+    switch(count){
+      case 1:
+        link = "https://www.facebook.com/profile.php?id=100086738842410";
+      break;
+      case 2:
+        link = "https://www.instagram.com/abe_manhattan";
+      break;
+      case 3:
+        link = "https://www.twitter.com/abe_manhattan";
+      break;
+    }
+
+    window.open(link);
+  }
  
 
   //Checking all input field if empty______________________________________________________________________________
   checkingField(data: register): boolean{
     let condition = true;
     if(data.firstname !== '' && data.firstname !== ' '){
+      if(data.firstname.length <= 15){
 
-      if(data.lastname !== '' && data.lastname !== ' '){
+        if(data.lastname !== '' && data.lastname !== ' '){
+          if(data.lastname.length <= 20){
 
-        if(data.contact_number !== '' && data.contact_number !== ' '){
+            if(data.contact_number !== '' && data.contact_number !== ' '){
+              if(data.contact_number.length == 11){
 
-          if(data.email !== '' && data.email !== ' '){
-
-              if(data.password !== '' && data.password !== ' '){
-
-                if(data.gender === 'Male' || data.gender === 'Female' || data.gender === 'Prefer not to say'){
-
-                  if(this.condition_adminNotAdmin && this.formGroup_signup.value.adminPassword === '' || this.formGroup_signup.value.adminPassword === ' '){
-                    console.log('error admin password');
-                    this.errorSignupArr[6][0] = '!Please Fill up the password input field.';
-                    this.errorSignupArr[6][1] = true;
+                if(data.email !== '' && data.email !== ' '){
+    
+                  if(data.password !== '' && data.password !== ' '){
+    
+                    if(data.gender === 'Male' || data.gender === 'Female' || data.gender === 'Prefer not to say'){
+    
+                      if(this.condition_adminNotAdmin && this.formGroup_signup.value.adminPassword === '' || this.formGroup_signup.value.adminPassword === ' '){
+                        this.errorSignupArr[6][0] = '!Please Fill up the password input field.';
+                        this.errorSignupArr[6][1] = true;
+                        condition = false;
+                      } 
+    
+                    }else{
+                      this.errorSignupArr[5][0] = "!Please select your gender.";
+                      this.errorSignupArr[5][1] = true;
+                    }
+    
+                  }else{
+                    this.errorSignupArr[4][0] = "!Please Fill up the password input field.";
+                    this.errorSignupArr[4][1] = true;
                     condition = false;
-                  } 
-
+                  }        
+    
+              
                 }else{
-                  console.log('error Gender');
-                  this.errorSignupArr[5][0] = "!Please select your gender.";
-                  this.errorSignupArr[5][1] = true;
+                  this.errorSignupArr[3][0] = "!Please Fill up the email input field.";
+                  this.errorSignupArr[3][1] = true;
+                  condition = false;
                 }
-
               }else{
-                console.log('error password');
-                this.errorSignupArr[4][0] = "!Please Fill up the password input field.";
-                this.errorSignupArr[4][1] = true;
-                condition = false;
-              }        
+                if(!(/\s/g).test(data.contact_number)){
+                  this.errorSignupArr[2][0] = "!Contact number must exact 11 length.";
+                  this.errorSignupArr[2][1] = true;
+                  condition = false;
+                }
+              }
 
-          
+
+            }else{
+              this.errorSignupArr[2][0] = "!Please Fill up the contact-number input field.";
+              this.errorSignupArr[2][1] = true;
+              condition = false;
+            }
+
           }else{
-            console.log('error email');
-            this.errorSignupArr[3][0] = "!Please Fill up the email input field.";
-            this.errorSignupArr[3][1] = true;
+            this.errorSignupArr[1][0] = "!Max character is 20 length.";
+            this.errorSignupArr[1][1] = true;
             condition = false;
           }
+
         }else{
-          console.log('error Contact_number');
-          this.errorSignupArr[2][0] = "!Please Fill up the contact-number input field.";
-          this.errorSignupArr[2][1] = true;
+          this.errorSignupArr[1][0] = "!Please Fill up the lastname input field.";
+          this.errorSignupArr[1][1] = true;
           condition = false;
         }
+
       }else{
-        console.log('error lastname');
-        this.errorSignupArr[1][0] = "!Please Fill up the lastname input field.";
-        this.errorSignupArr[1][1] = true;
+        this.errorSignupArr[0][0] = "!Max character is 15 length.";
+        this.errorSignupArr[0][1] = true;
         condition = false;
       }
     }else{
-      console.log('error firstname');
       this.errorSignupArr[0][0] = "!Please Fill up the firstname input field.";
       this.errorSignupArr[0][1] = true;
       condition = false;

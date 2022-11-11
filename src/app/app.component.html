@@ -318,7 +318,8 @@
                     </div>
     
                     <div class="col-12 margCol12">
-                        <input type="text" formControlName="contactnumber" placeholder="Contact number" class="form-control forminputReg forminputReg-font" />
+                        <input type="text" formControlName="contactnumber" placeholder="Contact number" class="form-control contacts_signup forminputReg forminputReg-font" 
+                            (input)="funcOnlyNumber_signup()"/>
                         <div *ngIf="errorSignupArr[2][1]">
                             <span class="paError">{{errorSignupArr[2][0]}}</span>
                         </div>
@@ -404,7 +405,7 @@
 <!--_______________________Show successfully send request____________________________-->
 <div class="container-fluid containerloginSignup" *ngIf="showSuccessfully_request">
     <div class="container divSuccesss" (click)="$event.stopPropagation()">
-        <p class="paSuccess paSuccess-font">Success sending request!</p>
+        <p class="paSuccess paSuccess-font">Success sending request. We will message you through your email!</p>
         <button class="btn btn-primary successBttn successBttn-font" (click)="showSuccessfully_request = false">Close</button>
     </div>
 </div>
@@ -690,12 +691,12 @@
     
                     <div style="margin-bottom:30px;">
                         <p class="p1" style="margin:0px;">Email</p>
-                        <span class="s1" style="text-decoration: underline;">kylevelarde374@gmail.com</span>
+                        <span class="s1" style="text-decoration: underline;">abpadillamail@gmail.com</span>
                     </div>
     
                     <div>
                         <p class="p1" style="margin:0px;">Contact Info</p>
-                        <span class="s1">+639183344538</span>
+                        <span class="s1">+639183342182</span>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
@@ -703,9 +704,9 @@
                         <div>
                             <p class="followUs followUs-font">Follow us on</p>
                             <div>
-                                <img src="/assets/icon/facebook.png" style="max-width:50px;max-height:50px;margin-right:20px;" />
-                                <img src="/assets/icon/instagram.png" style="max-width:55px;max-height:55px;margin-right:20px;" />
-                                <img src="/assets/icon/twitter.png" style="max-width:50px;max-height:50px;" />
+                                <img src="/assets/icon/facebook.png" style="max-width:50px;max-height:50px;margin-right:20px;cursor: pointer;" (click)="linkFollowus(1)"/>
+                                <img src="/assets/icon/instagram.png" style="max-width:55px;max-height:55px;margin-right:20px;cursor: pointer;" (click)="linkFollowus(2)"/>
+                                <img src="/assets/icon/twitter.png" style="max-width:50px;max-height:50px;cursor: pointer;" (click)="linkFollowus(3)"/>
                             </div>
                         </div>
                     </div>

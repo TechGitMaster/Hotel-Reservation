@@ -273,9 +273,12 @@ export class ReservationComponent implements OnInit {
 
 
   //Delete image_________________________________________________________________________________________________________
-  async deleteImage(url: string){
-    this.arr_image_tempo = this.arr_image_tempo.filter((data) => data !== url);
-    this.arr_image_blob = this.arr_image_blob.filter((data) => data[0] !== url);
+  async deleteImage(url: number){
+    this.arr_image_tempo[url] = '';
+    this.arr_image_blob[url][0] = '';
+
+    this.arr_image_tempo = this.arr_image_tempo.filter((data) => data !== '');
+    this.arr_image_blob = this.arr_image_blob.filter((data) => data[0] !== '');
 
     if(this.arr_image_tempo.length == 0){
       this.condition_ShowUpdate = false;      

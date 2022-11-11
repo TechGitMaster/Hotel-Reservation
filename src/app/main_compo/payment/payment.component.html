@@ -7,7 +7,7 @@
         <div style="position: absolute;right: 10px;top:10px;">
             <img src="/assets/icon/x_Image.png" class="img-fluid" style="height:35px;cursor: pointer;" (click)="this.img_selected=''"/>
         </div>
-        <div class="container" style="padding:0%;">
+        <div class="container" style="padding:0%;display:flex;justify-content: center;">
             <img [src]="img_selected" class="img-fluid" style="height: 50%;" />
         </div>
     </div>
@@ -135,7 +135,7 @@
                         <div class="row" style="margin-bottom:10px;">
                             <div class="col-lg-6 col-md-6 col-12">
                                 <label class="labels">First Name:</label>
-                                <input type="text" formControlName="first_name" class="form-control forminput" />
+                                <input type="text" formControlName="first_name" class="form-control forminput" (input)="checkingFieldsF($event)" />
                                 <div *ngIf="errAppointment[0][1]">
                                     <span class="paError">{{errAppointment[0][0]}}</span>
                                 </div>
@@ -143,7 +143,7 @@
 
                             <div class="col-lg-6 col-md-6 col-12">
                                 <label class="labels">Last Name:</label>
-                                <input type="text" formControlName="last_name" class="form-control forminput" />
+                                <input type="text" formControlName="last_name" class="form-control forminput" (input)="checkingFieldsF($event)"/>
                                 <div *ngIf="errAppointment[1][1]">
                                     <span class="paError">{{errAppointment[1][0]}}</span>
                                 </div>
@@ -153,21 +153,21 @@
                         <div class="row" style="margin-bottom:10px;">
                             <div class="col-lg-4 col-md-4 col-12">
                                 <label class="labels">Email:</label>
-                                <input type="text" formControlName="email" class="form-control forminput" />
+                                <input type="text" formControlName="email" class="form-control forminput" (input)="checkingFieldsF($event)"/>
                                 <div *ngIf="errAppointment[2][1]">
                                     <span class="paError">{{errAppointment[2][0]}}</span>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-12">
                                 <label class="labels">Email (re-confirm):</label>
-                                <input type="text" formControlName="email_re" class="form-control forminput" />
+                                <input type="text" formControlName="email_re" class="form-control forminput" (input)="checkingFieldsF($event)" />
                                 <div *ngIf="errAppointment[3][1]">
                                     <span class="paError">{{errAppointment[3][0]}}</span>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-12">
                                 <label class="labels">Contact number:</label>
-                                <input type="text" formControlName="contact_number" (input)="only_number_contact()" class="form-control forminput forminputC" />
+                                <input type="text" formControlName="contact_number" (input)="only_number_contact($event)" class="form-control forminput forminputC" />
                                 <div *ngIf="errAppointment[4][1]">
                                     <span class="paError">{{errAppointment[4][0]}}</span>
                                 </div>
@@ -273,18 +273,13 @@
                                 <div *ngIf="condition_paymentMethod === 'gcash'" style="margin-top: 15px;padding-bottom: 15px;">
 
                                     <p class="paTitlehM paTitlehM-font">Gcash payment method</p>
-                                    <span class="qrMP">Scan the QR code to make a pay or send a money to this number to make a pay.</span>
+                                    <span class="qrMP">Scan the QR code to make a pay for your reservation.</span>
 
                                     <div class="row" style="margin-top:15px;">
 
                                         <!--___QR CODE and Send money___-->
                                         <div class="col-lg-6 col-md-6 col-12">
                                             <div>
-                                                <label class="labels">Send money:</label>
-                                                <input type="text" class="form-control forminput" value="09186677538" style="letter-spacing: 1px;" disabled/>
-                                            </div>
-
-                                            <div style="margin-top:10px;">
                                                 <label class="labels" style="margin-bottom:10px;">QR code:</label>
                                                 <img src="/assets/image/gcash_qr.jpg" class="img-fluid" style="border-radius:10px;" />
                                             </div>
@@ -326,7 +321,7 @@
                                                                         <img src="/assets/icon/image_r.png" class="img-fluid" style="height:25px;" (click)="selected_img(indexes)" />
                                                                     </div>
                                                                     <div class="deleteD">
-                                                                        <img src="/assets/icon/trash_white.png" (click)="deleteImage(data)" class="img-fluid" style="height:25px;" />
+                                                                        <img src="/assets/icon/trash_white.png" (click)="deleteImage(indexes)" class="img-fluid" style="height:25px;" />
                                                                     </div>
                                                                 </div>
                                                             </div>

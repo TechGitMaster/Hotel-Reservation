@@ -399,6 +399,10 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       doc.value = doc.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
     }
 
+    if(event.target.value.length == 0 && this.enable_bttn != null){
+      this.enable_bttn.disable();
+    }
+
     this.arr_details[numb_parent][numb_child] = event.target.value;
   }
 
@@ -430,9 +434,12 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   }
 
   //Delete img______________________________________________________________________
-  deleteImage(data_img: string): void{
-    this.arr_img_transaction = this.arr_img_transaction.filter((data) => data != data_img);
-    this.arr_blob_transaction = this.arr_blob_transaction.filter((data) => data[0] != data_img);
+  deleteImage(data_img: number): void{
+    this.arr_img_transaction[data_img] = '';
+    this.arr_blob_transaction[data_img][0] = '';
+
+    this.arr_img_transaction = this.arr_img_transaction.filter((data) => data != '');
+    this.arr_blob_transaction = this.arr_blob_transaction.filter((data) => data[0] != '');
   }
 
 
@@ -461,9 +468,21 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   }
 
   //Contact_number only number_____________________________________________
-  only_number_contact(): void{
+  only_number_contact(event: any): void{
     let doc = <HTMLInputElement>document.querySelector(`.forminputC`);
     doc.value = doc.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+
+    //Checking if empty if emtpy disable button paypal_____________________________________________________
+    if(event.target.value.length == 0 && this.enable_bttn != null){
+      this.enable_bttn.disable();
+    }
+  }
+
+  //Checking if empty if emtpy disable button paypal_____________________________________________________
+  checkingFieldsF(event: any): void{
+    if(event.target.value.length == 0 && this.enable_bttn != null){
+      this.enable_bttn.disable();
+    }
   }
 
   //Bttn make a request bttn when using "Gcash"____________________________________________________________________________
@@ -583,87 +602,105 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   checkingField(data: any): boolean{
     let condition = true;
     if(data.first_name !== '' && data.first_name !== ' '){
+      if(data.first_name.length <= 15){
 
-      if(data.last_name !== '' && data.last_name !== ' '){
-
-        if(data.email !== '' && data.email !== ' '){
-          if(data.email_re !== '' && data.email_re !== ' '){
-
-            if(data.contact_number === '' || data.contact_number === ' '){
-              this.errAppointment[4][0] = "!Please Fill up the contact-number input field.";
-              this.errAppointment[4][1] = true;
-              condition = false;
-            }else{
-              if((/[@]/).test(data.email) && (/[.]/).test(data.email)){
-                if((/[@]/).test(data.email_re) && (/[.]/).test(data.email_re)){
-
-                  if(data.email === data.email_re){
-                    if(!(/^\d+$/).test(data.contact_number)){
-                      this.errAppointment[4][0] = "!Numbers only.";
-                      this.errAppointment[4][1] = true;
-                      condition = false;
-                    }else{
-                      if(this.cond_check){
-
-                        for(let count = 0;count < this.arr_details.length;count++){
-                          if(this.arr_details[count][0] === '' || this.arr_details[count][1] === '' || this.arr_details[count][2] === ''){
-                            this.errAppointment[5][0] = "!Check the input field on guest names.";
-                            this.errAppointment[5][1] = true;
-                            condition = false;   
-                          }else{
-                            this.textarea_details += 
-                              `${this.arr_details[count][0]+' '+this.arr_details[count][1]},${this.arr_details[count][2]}${count != this.arr_details.length-1 ? '\n':''}`
+        if(data.last_name !== '' && data.last_name !== ' '){
+          if(data.last_name.length <= 20){
+            
+            if(data.email !== '' && data.email !== ' '){
+              if(data.email_re !== '' && data.email_re !== ' '){
+    
+                if(data.contact_number === '' || data.contact_number === ' '){
+                  this.errAppointment[4][0] = "!Please Fill up the contact-number input field.";
+                  this.errAppointment[4][1] = true;
+                  condition = false;
+                }else{
+                  if((/[@]/).test(data.email) && (/[.]/).test(data.email)){
+                    if((/[@]/).test(data.email_re) && (/[.]/).test(data.email_re)){
+    
+                      if(data.email === data.email_re){
+                        let removeWhite = data.contact_number.replaceAll(' ','');
+                        if(removeWhite.length != 11){
+                          this.errAppointment[4][0] = "!Contact number must exact 11 length.";
+                          this.errAppointment[4][1] = true;
+                          condition = false;
+                        }else{
+                          if(this.cond_check){
+    
+                            for(let count = 0;count < this.arr_details.length;count++){
+                              if(this.arr_details[count][0] === '' || this.arr_details[count][1] === '' || this.arr_details[count][2] === ''){
+                                this.errAppointment[5][0] = "!Check the input field on guest names.";
+                                this.errAppointment[5][1] = true;
+                                condition = false;   
+                              }else{
+                                this.textarea_details += 
+                                  `${this.arr_details[count][0]+' '+this.arr_details[count][1]},${this.arr_details[count][2]}${count != this.arr_details.length-1 ? '\n':''}`
+                              }
+                            }
                           }
                         }
+                      }else{
+                        this.errAppointment[2][0] = "!Not same email and email re-confirm.";
+                        this.errAppointment[2][1] = true;
+    
+                        this.errAppointment[3][0] = "!Not same email and email re-confirm.";
+                        this.errAppointment[3][1] = true;
+    
+                        condition = false;
                       }
+    
+                    }else{  
+                      this.errAppointment[3][0] = "!Wrong format of email.";
+                      this.errAppointment[3][1] = true;
+                      condition = false;
                     }
                   }else{
-                    this.errAppointment[2][0] = "!Not same email and email re-confirm.";
+                    this.errAppointment[2][0] = "!Wrong format of email.";
                     this.errAppointment[2][1] = true;
-
-                    this.errAppointment[3][0] = "!Not same email and email re-confirm.";
-                    this.errAppointment[3][1] = true;
-
                     condition = false;
                   }
-
-                }else{  
-                  this.errAppointment[3][0] = "!Wrong format of email.";
-                  this.errAppointment[3][1] = true;
-                  condition = false;
                 }
+    
               }else{
-                this.errAppointment[2][0] = "!Wrong format of email.";
-                this.errAppointment[2][1] = true;
+                this.errAppointment[3][0] = "!Please Fill up the email (re-confirm) input field.";
+                this.errAppointment[3][1] = true;
                 condition = false;
-              }
+              }        
+    
+          
+            }else{
+              this.errAppointment[2][0] = "!Please Fill up the email input field.";
+              this.errAppointment[2][1] = true;
+              condition = false;
             }
-
+            
           }else{
-            this.errAppointment[3][0] = "!Please Fill up the email (re-confirm) input field.";
-            this.errAppointment[3][1] = true;
+            this.errAppointment[1][0] = "!Max character is 20 length.";
+            this.errAppointment[1][1] = true;
             condition = false;
-          }        
-
-      
+          }
+        
+    
         }else{
-          this.errAppointment[2][0] = "!Please Fill up the email input field.";
-          this.errAppointment[2][1] = true;
+          this.errAppointment[1][0] = "!Please Fill up the lastname input field.";
+          this.errAppointment[1][1] = true;
           condition = false;
         }
-      
-  
       }else{
-        this.errAppointment[1][0] = "!Please Fill up the lastname input field.";
-        this.errAppointment[1][1] = true;
+        this.errAppointment[0][0] = "!Max character is 15 length.";
+        this.errAppointment[0][1] = true;
         condition = false;
       }
+
     }else{
       this.errAppointment[0][0] = "!Please Fill up the firstname input field.";
       this.errAppointment[0][1] = true;
       condition = false;
     }
 
+    if(!condition && this.enable_bttn != null){
+      this.enable_bttn.disable();
+    }
 
     return condition;
   }

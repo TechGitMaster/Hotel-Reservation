@@ -172,7 +172,7 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
                         });
                     }else{
                         //Send mail to user that the admin canceled the appointment_______________________________________________
-                        sendEmail(res, '', data.reserved_email, '')
+                        sendEmail(res, data.transaction_ID, data.reserved_email, '')
                     }
                 });
     
@@ -193,7 +193,7 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
 //send email to user__________________________________________________________
 function sendEmail(res, transaction_ID, reserved_email, email){
 
-    const message = `Your Appointment request is cancelled by the admin. ${transaction_ID !== '' ? 'Transaction ID: '+transaction_ID:''}`
+    const message = `Your Appointment request is cancelled by the admin. Transaction ID: ${transaction_ID}`;
 
     transporter.sendMail({
         from: process.env.USER_MAIL,

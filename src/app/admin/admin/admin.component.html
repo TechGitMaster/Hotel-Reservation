@@ -452,7 +452,9 @@
                         <!--__From accept__-->
                         <div *ngIf="arrHandle[0].acceptedNot === 'true' && arrHandle[0].deleteNot !== 'true'"  style="width:100%;display: flex;justify-content: center;">
                             <button class="btn btn-danger" style="width:30%;" (click)="funcDelete_reservation(false)">Move to Archive</button>
-                            <button  class="btn btn-primary" style="margin-left:10px;width:30%;" (click)="funcCancel_Reservation(true)">Cancel request</button>
+                            <!--(click)="checking_ifcanCancelAppointment(arrHandle[0].timeDate, false) ? cancelDelete(false): appointmentCancel_Not(); $event.stopPropagation();"-->
+                            <button  class="btn btn-primary" style="margin-left:10px;width:30%;" 
+                            (click)="checking_ifcanCancelAppointment(arrHandle[1]) ? funcCancel_Reservation(true):appointmentCancel_Not(); $event.stopPropagation();">Cancel request</button>
                         </div>
 
                         <!--__From Trash__-->
@@ -552,7 +554,7 @@
         <div style="position: absolute;right: 10px;top:10px;">
             <img src="/assets/icon/x_Image.png" class="img-fluid" style="height:35px;cursor: pointer;" (click)="closeImage()"/>
         </div>
-        <div class="container" style="padding:0%;">
+        <div class="container" style="padding:0%;display:flex;justify-content: center;">
             <img [src]="img_selected" class="img-fluid" style="height: 50%;" />
         </div>
     </div>

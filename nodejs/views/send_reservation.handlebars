@@ -20,8 +20,6 @@
     border-radius:10px;
     border:1px solid #FFD700;
     padding:20px;
-    position: relative; 
-    left: 50%;
 }
 
 .paCheckINOut{
@@ -120,29 +118,33 @@
 
     <div class="divDetails">
         <table cellspacing="0" cellpadding="0" border="0" width="100%">
+          <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+          </thead>
           <tbody>
-            <tr align="center">
+            <tr>
               <td>
-                <div style="max-width:50%;display: flex;">
-
-                    <!--____Check in____-->
-                    <div class="divCheckInOut" style="margin-right:20px;flex: 0 0 auto">
+                <div class="divCheckInOut" style="margin-right:10px;float:right;">
                         <p class="paCheckINOut" style="font-family:sans-serif; color:#FFD700;">CHECK IN</p>
                         <p class="paNumbCheckInOut">{{checkInDay}}</p>
                         <p class="paCheckINOut" style="font-family:sans-serif;color:white">
                             {{checkInMonY}}
                         </p>
                     </div>
+              </td>
 
-                    <!--____Check out____-->
-                    <div class="divCheckInOut">
+              <td>
+                <!--____Check out____-->
+                    <div class="divCheckInOut" style="margin-left:10px;float:left;">
                         <p class="paCheckINOut" style="font-family:sans-serif; color:#FFD700;">CHECK OUT</p>
                         <p class="paNumbCheckInOut">{{checkOutDay}}</p>
                         <p class="paCheckINOut" style="font-family:sans-serif;color:white">
                             {{checkOutMonY}}
                         </p>
                     </div>
-                </div>
               </td>
             </tr>
           </tbody>

@@ -201,7 +201,7 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                             });
                         }else{
                             //send email to the user_____________________________________
-                            sendEmail(res, '', 'accepted', data.reserved_email)
+                            sendEmail(res, data.transaction_ID, 'accepted', data.reserved_email)
                         }
                     });
                 });

@@ -839,8 +839,9 @@
     margin-top:-5px;
     font-family: inter_bold;
     text-align: center;
-    margin-bottom:20px;
+    margin-bottom:10px;
     color:#0063A8;
+    line-height: 130%;
 }
 
 .paSuccess-font{

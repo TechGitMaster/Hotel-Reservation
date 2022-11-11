@@ -266,7 +266,14 @@ export class AppointmentComponent implements OnInit {
 
   //Info______________________________________________________________________
   info(numb: number): void{
-    this.service.emitCall_appointment(new Array<any>(this.dataAppointmentSelected[numb]));
+    //month______________________________________________
+    let arr_months = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+    let arr_date = this.dataAppointmentSelected[numb].timeDate.split(',')[1].split(' ');
+    let count_month = arr_months.indexOf(arr_date[0]);
+
+    let date_forChecking = ''+arr_date[2]+' '+count_month+' '+arr_date[1];
+    
+    this.service.emitCall_appointment(new Array<any>(this.dataAppointmentSelected[numb], date_forChecking));
     this.subs = this.service.emitBackEmitter_appointment.subscribe((result) => {
       this.subs.unsubscribe();
 

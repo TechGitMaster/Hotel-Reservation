@@ -52,19 +52,26 @@ export class ContactsComponent implements OnInit {
     if(this.formGroup.value.fullname !== '' && this.formGroup.value.fullname !== ' '){
       if((this.formGroup.value.email !== '' && this.formGroup.value.email !== ' ') && 
       (/[@]/).test(this.formGroup.value.email) && (/[.]/).test(this.formGroup.value.email)){
-        if(this.formGroup.value.letusknown.length > 0 && this.formGroup.value.letusknown !== ' '){
-          this.subs = this.service.sendAppointment(this.formGroup, '', this.date_converting(), 'inquery', '', '').subscribe((res) => {
-            this.formGroup = this.formBuild.group({
-              fullname: [''],
-              email: [''],
-              letusknown: ['']
+
+        if(this.formGroup.value.fullname.length <= 40){
+          if(this.formGroup.value.letusknown.length > 0 && this.formGroup.value.letusknown !== ' '){
+            this.subs = this.service.sendAppointment(this.formGroup, '', this.date_converting(), 'inquery', '', '').subscribe((res) => {
+              this.formGroup = this.formBuild.group({
+                fullname: [''],
+                email: [''],
+                letusknown: ['']
+              });
+              
+              this.service.emitShowSuccess();
             });
-            
-            this.service.emitShowSuccess();
-          });
+          }else{
+            this.errInquery[2] = ['!Empty input field.', true];
+          }
         }else{
-          this.errInquery[2] = ['!Empty input field.', true];
+          this.errInquery[0] = ['!Max character is 40 length.', true];
         }
+
+    
       }else{
         if((this.formGroup.value.email === '' || this.formGroup.value.email === ' ')){
           this.errInquery[1] = ['!Empty input field.', true];
@@ -75,5 +82,23 @@ export class ContactsComponent implements OnInit {
     }else{
       this.errInquery[0] = ['!Empty input field.', true];
     }
+  }
+
+  //Follow link us__________________________________________________________________________________________________
+  linkFollowus(count: number): void{
+    let link = '';
+    switch(count){
+      case 1:
+        link = "https://www.facebook.com/profile.php?id=100086738842410";
+      break;
+      case 2:
+        link = "https://www.instagram.com/abe_manhattan";
+      break;
+      case 3:
+        link = "https://www.twitter.com/abe_manhattan";
+      break;
+    }
+
+    window.open(link);
   }
 }
