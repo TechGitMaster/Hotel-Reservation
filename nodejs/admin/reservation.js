@@ -150,20 +150,46 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
         let room_img = roomdata.imgArr[0];
         let room_name = roomdata.nameRoom;
 
-        if(roomdata.confirmNot === 'false'){
-            //Save reservation info to column reservation_________________________________________________
-            new reservation_column({
-                room_id: room_id,
-                email_id: (token == null ? '': token.email),
+        //Save reservation info to column reservation_________________________________________________
+        new reservation_column({
+            room_id: room_id,
+            email_id: (token == null ? '': token.email),
 
-                img_room: room_img,
-                name_room: room_name,
-                typeRoom2: roomdata.typeRoom2,
-                
-                defaultPrice: roomdata.defaultPrice,
+            img_room: room_img,
+            name_room: room_name,
+            typeRoom2: roomdata.typeRoom2,
+            
+            defaultPrice: roomdata.defaultPrice,
+            paymentMethod: paymentMethod,
+            transaction_id: transcation_id,
+
+            checkin_date: checkin_date,
+            checkout_date:  checkout_date,
+            acquired_persons: acquired_persons,
+            persons_price: persons_price,
+            total_day_price: total_day_price,
+            total_price: total_price,
+            first_name: first_name,
+            last_name: last_name,
+            phone_number: phone_number,
+            email: email,
+            image_transaction: image_transaction,
+            confirmation_date: transaction_date,
+            transaction_date: transaction_date,
+            
+            guest_member: guest_member,
+
+            confirmNot: 'true',
+
+            delete_admin: 'false',
+            delete_user: 'false'
+        }).save().then(() => {
+
+            //Update the room already reserved_______________________________________________________
+            rooms_column.updateOne({ _id: room_id }, { $set: {
                 paymentMethod: paymentMethod,
                 transaction_id: transcation_id,
-
+                account_id: (token == null ? '': token.email),
                 checkin_date: checkin_date,
                 checkout_date:  checkout_date,
                 acquired_persons: acquired_persons,
@@ -174,79 +200,79 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 last_name: last_name,
                 phone_number: phone_number,
                 email: email,
-                image_transaction: image_transaction,
-                confirmation_date: transaction_date,
+                image_transaction: [],
                 transaction_date: transaction_date,
-                
+                confirmation_date: transaction_date,
+    
                 guest_member: guest_member,
-
-                confirmNot: 'true',
-
-                delete_admin: 'false',
-                delete_user: 'false'
-            }).save().then(() => {
-
-                //Update the room already reserved_______________________________________________________
-                rooms_column.updateOne({ _id: room_id }, { $set: {
-                    paymentMethod: paymentMethod,
-                    transaction_id: transcation_id,
-                    account_id: (token == null ? '': token.email),
-                    checkin_date: checkin_date,
-                    checkout_date:  checkout_date,
-                    acquired_persons: acquired_persons,
-                    persons_price: persons_price,
-                    total_day_price: total_day_price,
-                    total_price: total_price,
-                    first_name: first_name,
-                    last_name: last_name,
-                    phone_number: phone_number,
+                confirmNot: 'true'
+            } }).then(() => {
+                //Send mail to admin______________________________________________________________
+                new inboxes_column({
+                    _id: _id,
+                    usermail_id: '',
+                    fullname: first_name+" "+last_name,
                     email: email,
-                    image_transaction: [],
-                    transaction_date: transaction_date,
-                    confirmation_date: transaction_date,
-        
-                    guest_member: guest_member,
-                    confirmNot: 'true'
-                } }).then(() => {
-                    //Send mail to admin______________________________________________________________
-                    new inboxes_column({
-                        _id: _id,
-                        usermail_id: '',
-                        fullname: first_name+" "+last_name,
-                        email: email,
-                        reserved_email: 'Bot message',
-                        numGuest: '',
-                        contact_num: '',
-                        message: `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`,
-                        dateArrival: '',
-                        timeDate: transaction_date,
-                        favorite: false,
-                        acceptedNot: 'new',
-                        appointmentNot: 'reservation',
-                        newNot: true,
-                        folderName: 'inbox',
-                        guest_member: '',
-                        transaction_ID: ''
-                    }).save().then(() => {
-                        
-                        //Send gmail to admin________________________________________________________
-                        const message = `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`;
-                        transporter.sendMail({
-                            from: email,
-                            to: process.env.USER_MAIL,
-                            subject: 'Paid staycation room',
-                            text: message
-                        }, (err, info) => {});
+                    reserved_email: 'Bot message',
+                    numGuest: '',
+                    contact_num: '',
+                    message: `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`,
+                    dateArrival: '',
+                    timeDate: transaction_date,
+                    favorite: false,
+                    acceptedNot: 'new',
+                    appointmentNot: 'reservation',
+                    newNot: true,
+                    folderName: 'inbox',
+                    guest_member: '',
+                    transaction_ID: ''
+                }).save().then(() => {
+                    
+                    //Send gmail to admin________________________________________________________
+                    const message = `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`;
+                    transporter.sendMail({
+                        from: email,
+                        to: process.env.USER_MAIL,
+                        subject: 'Paid staycation room',
+                        text: message
+                    }, (err, info) => {});
 
-                        res.json({ response: 'success'});
+                    res.json({ response: 'success'});
 
-                    });
                 });
             });
-        }else{
-            res.json({ response: 'have' });
+        });
+    }
+});
+
+
+//Checking if already have request using paypal reservation_____________________________________________________
+router.post('/already_havePaypal', middleware_user, async (req, res) => {
+    const { room_id } = req.body;
+    const { token } = req;
+    
+    //Checking if the user already requested the room_____________________________
+    const reservation_check = await reservation_column.find({ room_id: room_id, email_id: (token != null ? token.email: '') }); 
+    const roomdata = await rooms_column.findOne({ _id: room_id });
+
+    let condition = true;
+    for await(let dd of reservation_check){
+        if(dd.confirmNot === 'true' || dd.confirmNot === 'new'){
+            condition = false;
         }
     }
+    
+    if(roomdata.confirmNot === 'false'){
+        if(condition){
+            res.json({ 'response': 'success' });
+        }else{
+            res.json({ 'response': 'you_already' });
+        }
+    }else{
+        res.json({ response: 'have' });
+    }
+        
+
 });
 
 

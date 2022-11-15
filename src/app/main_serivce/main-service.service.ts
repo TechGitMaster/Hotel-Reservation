@@ -354,6 +354,10 @@ export class MainServiceService {
     return this.http.post<any>('/getRoom_payment',  { _id: _id })
   }
 
+  checking_alreadyHave_paypal(room_id: string): Observable<any>{
+    return this.http.post('/already_havePaypal', { room_id: room_id});
+  }
+
   saving_information_payment(data_info: Array<any>): Observable<any>{
     return this.http.post<any>('/saveReservation',  
     { data: { room_id: data_info[0], checkin_date: data_info[1], checkout_date: data_info[2], acquired_persons: data_info[3], 

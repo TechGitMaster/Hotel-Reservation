@@ -213,8 +213,15 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
                   if(this.checkingField(data_info)){
                     if(this.termsCondition){
-                      this.transaction_ID(data_info, [], 'payment2');
-                      this.enable_bttn.enable();
+                      this.subs = this.service.checking_alreadyHave_paypal(this.arr_data_savingInfo[0]).subscribe((data_reserve) => {
+                        this.subs.unsubscribe();
+                        if(data_reserve.response === 'success'){
+                          this.transaction_ID(data_info, [], 'payment2');
+                          this.enable_bttn.enable();
+                        }else{
+                          this.session_delete(data_reserve);
+                        }
+                      });
                     }else{
                       this.errAppointment[6][0] = "!Please confirm that you're agreed for the terms and condition.";
                       this.errAppointment[6][1] = true;
@@ -244,20 +251,21 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                       this.subs_paypal = this.service.saving_information_payment(this.arr_data_savingInfo).subscribe((ress_saved) => {
                         this.subs_paypal.unsubscribe();
 
-                        this.subs_paypal = this.service.send_reservation_toUser(this.arr_data_savingInfo).subscribe((data) => {
+                          this.subs_paypal = this.service.send_reservation_toUser(this.arr_data_savingInfo).subscribe((data) => {
                           
-                          this.subs_paypal.unsubscribe();
-                          this.arrHandle = new Array<any>('progress', 100, 'Room has been reserved.');
-
-                          //Deleting session______________________________________________________________
-                          this.subs = this.service.deleting_sessionAfter(this.token).subscribe(() => {
-                            //Show payment details for downloading payments____________________________________ 
-                            this.subs.unsubscribe();
-                            this.condition_paymentSection = false;
-                            this.condition_alertAfterpayment = true;
+                            this.subs_paypal.unsubscribe();
+                            this.arrHandle = new Array<any>('progress', 100, 'Room has been reserved.');
+  
+                            //Deleting session______________________________________________________________
+                            this.subs = this.service.deleting_sessionAfter(this.token).subscribe(() => {
+                              //Show payment details for downloading payments____________________________________ 
+                              this.subs.unsubscribe();
+                              this.condition_paymentSection = false;
+                              this.condition_alertAfterpayment = true;
+                            });
+                            
                           });
-                          
-                        });
+                        
 
                       });
                     }
@@ -280,6 +288,19 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       flexRadioDefault2.checked = false;
       alert("You need to check first the Terms and condition.");
     }
+  }
+
+
+  session_delete(ress_saved: any): void{
+    this.subs = this.service.deleting_sessionAfter(this.token).subscribe((r) => {
+      this.subs.unsubscribe();
+      if(ress_saved.response === 'have'){
+        alert('This room is already reserved by other user.');
+      }else{
+        alert('You already have reservation request for this room.');
+      }
+      location.reload();
+    });
   }
 
   //Home page bttn click___________________________________________________________________________
@@ -571,6 +592,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
       }else{
         this.subs = this.service.deleting_sessionAfter(this.token).subscribe((r) => {
+          this.subs.unsubscribe();
           if(ress_saved.response === 'have'){
             alert('This room is already reserved by other user.');
           }else{

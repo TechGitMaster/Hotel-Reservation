@@ -562,8 +562,8 @@
                                     <label class="labels">Time:</label>
                                     <select (change)="timeClick()" class="form-select formselectAppointment ds_DF" formControlName="time">
                                         <option selected>Select your time</option>
-                                        <option *ngFor="let data of timeAvailable; index as indexes" [disabled]="!data[1]">
-                                            <span>{{data[0]}} {{ !data[1] ? 'reserved':'' }}</span>
+                                        <option *ngFor="let data of timeAvailable; index as indexes" [disabled]="data[1] !== 'true' ? true:false">
+                                            <span>{{data[0]}} {{ data[1] === 'reserved' ? 'reserved':'' }}</span>
                                         </option>
                                     </select>
                                     <div *ngIf="errAppointment[4][1]">

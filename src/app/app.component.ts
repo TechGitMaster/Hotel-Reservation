@@ -134,8 +134,8 @@ export class AppComponent implements OnInit, AfterViewInit{
     //kyleAdmin375@gmail.com
     //YF9ac466i1AwQwkb@
     this.formGroup_login = this.formBuilder.group({
-      email: [''],
-      password: ['']
+      email: ['kyleAdmin375@gmail.com'],
+      password: ['YF9ac466i1AwQwkb@']
     });
 
     this.formGroup_signup = this.formBuilder.group({
@@ -473,32 +473,60 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.finalAppointment_date[1] = condition ? 'am':'pm';
   
       this.array_time_available = new Array<any>();
-  
-      this.subs = this.service.gettingTime(`${this.day_year_month_selected[1]} ${this.day_year_month_selected[0]} ${this.day_year_month_selected[2]}`).subscribe(async (result) => {
       
+      let arr_months = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+      let date = new Date();
+
+      this.subs = this.service.gettingTime(`${this.day_year_month_selected[1]} ${this.day_year_month_selected[0]} ${this.day_year_month_selected[2]}`).subscribe(async (result) => {
+        let month = arr_months.indexOf(this.day_year_month_selected[1]);
+        let day = parseInt(this.day_year_month_selected[0]);
+        let year = parseInt(this.day_year_month_selected[2]);
+        let time_tempos = new Array<any>();
+        
         this.subs.unsubscribe();
         if(result.response === 'success'){
-          let time_tempos = new Array<any>();
           if(condition){
   
-            //AM checking not available__________________________________________________
+            //FOR AM SCANNING IF AVAILABLE__________________________________________________
             for await(let time of this.timeDate.AM){
               let cond = true;
   
+              //AM checking if already reserved__________________________________________________
               for await(let data of result.data){
                 let split = data.timeDate.split(',');
                 let split2 = split[0].split(' ');
                 if(split2[1] === 'am'){
                   if(time === data.time){
                     cond = false;
-                    time_tempos.push([time, false]);
+                    time_tempos.push([time, 'reserved']);
                     break;
                   }
                 }
               }
   
+              //AM checking pass time_____________________________________________________________
               if(cond){
-                time_tempos.push([time, true]);
+                let time_c = time.split(':');
+                let hrs_c = parseInt(time_c[0]);
+                let mns_c = parseInt(time_c[1]);
+                
+                if(year == date.getFullYear() && month == date.getMonth() && day == date.getDate()){
+                  if(date.getHours() < 12){
+                    if(hrs_c <= date.getHours()){
+                      if(mns_c < date.getMinutes()){
+                        cond = false;
+                        time_tempos.push([time, 'passT']);
+                      }
+                    }
+                  }else{
+                    cond = false;
+                    time_tempos.push([time, 'passT']);
+                  }
+                }
+              }
+
+              if(cond){
+                time_tempos.push([time, 'true']);
               }
             }
   
@@ -506,25 +534,46 @@ export class AppComponent implements OnInit, AfterViewInit{
           }else{
   
   
-            //PM checking not available____________________________________________________
-            
+            //FOR PM SCANNING IF AVAILABLE____________________________________________________
             for await(let time of this.timeDate.PM){
               let cond = true;
   
+              //PM checking if already reserved__________________________________________________
               for await(let data of result.data){
                 let split = data.timeDate.split(',');
                 let split2 = split[0].split(' ');
                 if(split2[1] === 'pm'){
                   if(time === data.time){
                     cond = false;
-                    time_tempos.push([time, false]);
+                    time_tempos.push([time, 'reserved']);
                     break;
+                  }
+                }
+              }
+
+              //PM checking pass time_____________________________________________________________
+              if(cond){
+                let time_c = time.split(':');
+                let hrs_c = parseInt(time_c[0]);
+                let mns_c = parseInt(time_c[1]);
+                
+                if(year == date.getFullYear() && month == date.getMonth() && day == date.getDate()){
+                  if(date.getHours() < 17){
+                    if(hrs_c <= date.getHours()){
+                      if(mns_c < date.getMinutes()){
+                        cond = false;
+                        time_tempos.push([time, 'passT']);
+                      }
+                    }
+                  }else{
+                    cond = false;
+                    time_tempos.push([time, 'passT']);
                   }
                 }
               }
   
               if(cond){
-                time_tempos.push([time, true]);
+                time_tempos.push([time, 'true']);
               }
             }
   
@@ -545,23 +594,77 @@ export class AppComponent implements OnInit, AfterViewInit{
         }else{
           if(condition){
             //AM________________________
-            for await(let data of this.timeDate.AM){
-              this.timeAvailable.push([data, true]);
+            for await(let time of this.timeDate.AM){
+              let cond = true;
+
+              //AM checking pass time_____________________________________________________________
+              let time_c = time.split(':');
+              let hrs_c = parseInt(time_c[0]);
+              let mns_c = parseInt(time_c[1]);
+                
+              if(year == date.getFullYear() && month == date.getMonth() && day == date.getDate()){
+                if(date.getHours() < 12){
+                  if(hrs_c <= date.getHours()){
+                    if(mns_c < date.getMinutes()){
+                      cond = false;
+                      time_tempos.push([time, 'passT']);
+                    }
+                  }
+                }else{
+                  cond = false;
+                  time_tempos.push([time, 'passT']);
+                }
+              }
+
+              if(cond){
+                time_tempos.push([time, 'true']);
+              }
+
+              this.timeAvailable = time_tempos;
             }
           }else{
             //PM_______________________
-            //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
-            let arr_tempo = new Array<any>();
-            for await(let data of this.timeDate.PM){
-              let arr_time = data.split(':');
-              let date_num = parseInt(arr_time[0]);
-              if(date_num > 12){
-                arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, true]);
-              }else{
-                arr_tempo.push([data, true]);
+            //FOR PM SCANNING IF AVAILABLE____________________________________________________
+            for await(let time of this.timeDate.PM){
+              let cond = true;
+
+              //PM checking pass time_____________________________________________________________
+              let time_c = time.split(':');
+              let hrs_c = parseInt(time_c[0]);
+              let mns_c = parseInt(time_c[1]);
+                
+              if(year == date.getFullYear() && month == date.getMonth() && day == date.getDate()){
+                if(date.getHours() < 17){
+                  if(hrs_c <= date.getHours()){
+                    if(mns_c < date.getMinutes()){
+                      cond = false;
+                      time_tempos.push([time, 'passT']);
+                    }
+                  }
+                }else{
+                  cond = false;
+                  time_tempos.push([time, 'passT']);
+                }
               }
+  
+              if(cond){
+                time_tempos.push([time, 'true']);
+              }
+
+              //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
+              let arr_tempo = new Array<any>();
+              for await(let data of time_tempos){
+                let arr_time = data[0].split(':');
+                let date_num = parseInt(arr_time[0]);
+                if(date_num > 12){
+                  arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, data[1]]);
+                }else{
+                  arr_tempo.push([data[0], data[1]]);
+                }
+              }
+
+              this.timeAvailable = arr_tempo;
             }
-            this.timeAvailable = arr_tempo;
           }
         }
       });
