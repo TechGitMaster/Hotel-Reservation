@@ -41,8 +41,15 @@
     background:white;
     box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
     padding-bottom:30px;
+    padding-top:30px;
 }
 
+.paXT{
+    font-family: inter_bold;
+    font-size:20px; 
+    margin-top:-10px;
+    cursor: pointer;
+}
 
 .paX{
     font-family: inter_bold;

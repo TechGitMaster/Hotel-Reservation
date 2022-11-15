@@ -493,7 +493,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     let doc = <HTMLInputElement>document.querySelector(`.forminputC`);
     doc.value = doc.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
 
-    //Checking if empty if emtpy disable button paypal_____________________________________________________
+    this.formGroup_payment.value.contact_number = doc.value
+
+    //Checking if empty disable button paypal_____________________________________________________
     if(event.target.value.length == 0 && this.enable_bttn != null){
       this.enable_bttn.disable();
     }

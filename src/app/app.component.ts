@@ -134,8 +134,8 @@ export class AppComponent implements OnInit, AfterViewInit{
     //kyleAdmin375@gmail.com
     //YF9ac466i1AwQwkb@
     this.formGroup_login = this.formBuilder.group({
-      email: ['kyleAdmin375@gmail.com'],
-      password: ['YF9ac466i1AwQwkb@']
+      email: [''],
+      password: ['']
     });
 
     this.formGroup_signup = this.formBuilder.group({
@@ -989,11 +989,14 @@ export class AppComponent implements OnInit, AfterViewInit{
             email: [''],
             numberguest: [''],
             contactnumber: [''],
-            letusknown: ['']
+            letusknown: [''],
+            time: ['']
           });
 
-          let doc = <HTMLSelectElement>document.querySelector('.ds_DF');
-          doc.selectedIndex= 0;
+          setTimeout(() => {
+            let doc = <HTMLSelectElement>document.querySelector('.ds_DF');
+            doc.selectedIndex = 0;
+          }, 500);
           
           this.finalAppointment_date = new Array<string>("", "am");
           this.day_year_month_selected = new Array<string>("", "", "");
@@ -1200,6 +1203,8 @@ export class AppComponent implements OnInit, AfterViewInit{
     }else{
       let contact = <HTMLInputElement>document.querySelector('.contacts');
       contact.value = contact.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+
+      this.formGroup_setAppointment.value.contactnumber = contact.value;
     }
   }
 
@@ -1207,6 +1212,8 @@ export class AppComponent implements OnInit, AfterViewInit{
   funcOnlyNumber_signup(): void{
     let contacts_signup = <HTMLInputElement>document.querySelector('.contacts_signup');
     contacts_signup.value = contacts_signup.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+
+    this.formGroup_signup.value.contactnumber = contacts_signup.value;
   }
 
   //FORGOT PASSWORD__________________________________________________________________________________________________
