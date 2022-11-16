@@ -42,7 +42,6 @@ export class InboxMainComponent implements OnInit {
   getCountsDashboard(): void{
     var subs = this.service.dashboardCount(this.date_converting()).subscribe((res) => {
       subs.unsubscribe();
-      console.log(res);
 
       const log = res.counts[0] < 10 ? (res.counts[0] != 0 ? `0${res.counts[0]}`: '0'):res.counts[0];
       const app = res.counts[1] < 10 ? (res.counts[1] != 0 ? `0${res.counts[1]}`: '0'):res.counts[1];

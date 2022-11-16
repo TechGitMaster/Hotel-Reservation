@@ -129,7 +129,6 @@ export class AppointmentComponent implements OnInit {
   //Click next and previous btn_________________________________________________________________
   clickNext(): void{
     if(this.limit < this.countDataAll){
-      console.log('asd');
       this.skip += 25;
       this.limit += 25;
 
@@ -338,5 +337,15 @@ export class AppointmentComponent implements OnInit {
     this.countDataAll = 0;
     this.getData();
   }
+
+  timeDate_converted(timeDate: string): string{
+    let date_arr = timeDate.split(",")[0].split(" ")[0];  
+    if(parseInt(date_arr.split(":")[0]) <= 12) return timeDate;
+
+    let date_final_converted = `0${Math.floor(parseInt(date_arr.split(":")[0])-12)}:${date_arr.split(":")[1]} ${timeDate.split(",")[0].split(" ")[1]},${timeDate.split(",")[1]}`
+  
+    return date_final_converted;
+  }
+
 
 }

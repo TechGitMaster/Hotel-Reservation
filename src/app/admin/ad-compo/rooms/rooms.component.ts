@@ -387,7 +387,6 @@ export class RoomsComponent implements OnInit {
       this.getAllRooms();
     }, (err) => {
       this.subs.unsubscribe();
-      console.log(err);
       location.reload();
     });
   }

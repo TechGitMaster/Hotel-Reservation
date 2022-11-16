@@ -93,7 +93,6 @@ export class ReservationComponent implements OnInit {
         }
 
         this.dataReservationSelected = this.dataReservationAll[this.selectedNumbArr];
-        console.log(this.dataReservationSelected[0]);
 
       }else{
         this.strLoadingNothing = result.response;
@@ -131,7 +130,6 @@ export class ReservationComponent implements OnInit {
   //Click next and previous btn_________________________________________________________________
   clickNext(): void{
     if(this.limit < this.countDataAll){
-      console.log('asd');
       this.skip += 25;
       this.limit += 25;
 

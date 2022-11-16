@@ -134,8 +134,8 @@ export class AppComponent implements OnInit, AfterViewInit{
     //kyleAdmin375@gmail.com
     //YF9ac466i1AwQwkb@
     this.formGroup_login = this.formBuilder.group({
-      email: [''],
-      password: ['']
+      email: ['evaluation1@gmail.com'],
+      password: ['YF9ac466i1AwQwkb@']
     });
 
     this.formGroup_signup = this.formBuilder.group({
@@ -688,7 +688,17 @@ export class AppComponent implements OnInit, AfterViewInit{
   //Click time____________________________________________________________________________
   timeClick(): void{
     let AM = this.timeDate.AM.filter((time) => { return time == this.formGroup_setAppointment.value.time});
-    let PM = this.timeDate.PM.filter((time) => { return time == this.formGroup_setAppointment.value.time});
+
+    //convert PM to 24 hrs time_______________________________________________________________________________
+    let PM = new Array<any>();
+    if(this.finalAppointment_date[1] === 'pm'){
+
+      let strA = this.formGroup_setAppointment.value.time.split(':');
+      let final_converted_pm = `${(parseInt(strA[0]) != 12 ? `${Math.floor(12+parseInt(strA[0]))}`:strA[0])}:${strA[1]}`;
+
+      PM = this.timeDate.PM.filter((time) => { return time == final_converted_pm});
+    }
+
     if(AM.length == 1 || PM.length == 1){
       this.finalAppointment_date[0] = this.finalAppointment_date[1] === 'am' ? AM[0]: PM[0];
     }
@@ -923,7 +933,6 @@ export class AppComponent implements OnInit, AfterViewInit{
                       
                       this.subs = this.service.checkingAdminpassword(this.formGroup_signup.value.adminPassword).subscribe((result) => {
                         this.subs.unsubscribe();
-                        console.log(result);
                         
                         if(result.response !== 'no'){
                           this.creatingAccount(obj_data, 'admin');
@@ -998,9 +1007,9 @@ export class AppComponent implements OnInit, AfterViewInit{
             doc.selectedIndex = 0;
           }, 500);
           
-          this.finalAppointment_date = new Array<string>("", "am");
-          this.day_year_month_selected = new Array<string>("", "", "");
-          this.day_year_month_selected[0] = "0";
+          this.finalAppointment_date = new Array<string>("", this.finalAppointment_date[1]);
+          //this.day_year_month_selected = new Array<string>("", "", "");
+          //this.day_year_month_selected[0] = "0";
 
           this.numGuest_func();
 
@@ -1277,18 +1286,15 @@ export class AppComponent implements OnInit, AfterViewInit{
             }else if(result.response === 'no-data'){
 
             }else{
-              console.log('incorrect');
               this.errArrForgotPassword[1] = ['!Incorrect code. Try again.', true];
             }
           });
 
         }
       }else{
-        console.log('err');
        this.errArrForgotPassword[1] = ['!No letter included. Just a number.', true];
       }
     }else{
-      console.log('err');
       this.errArrForgotPassword[1] = ['!Please Fill up the verify input field.', true];
     }
   }

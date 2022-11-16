@@ -251,4 +251,13 @@ export class ArchiveComponent implements OnInit {
 
     return str;
   }
+
+  timeDate_converted(timeDate: string): string{
+    let date_arr = timeDate.split(",")[0].split(" ")[0];  
+    if(parseInt(date_arr.split(":")[0]) <= 12) return timeDate;
+
+    let date_final_converted = `0${Math.floor(parseInt(date_arr.split(":")[0])-12)}:${date_arr.split(":")[1]} ${timeDate.split(",")[0].split(" ")[1]},${timeDate.split(",")[1]}`
+  
+    return date_final_converted;
+  }
 }
