@@ -981,9 +981,9 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   //Set Appointment button______________________________________________
-  errAppointment: Array<Array<any>> = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
+  errAppointment: Array<Array<any>> = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
   submitAppointment(): void{
-    this.errAppointment = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
+    this.errAppointment = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
 
     if(this.checkingAInputField()){
       if(this.finalAppointment_date[0] !== ''){
@@ -1173,10 +1173,20 @@ export class AppComponent implements OnInit, AfterViewInit{
                 if(removeWhite.length != 11){
                   this.errAppointment[3] = ['!Contact number must exact 11 length.', true];
                   condition = false;
+                  condition_GuestHave = false;
                 }
               }else{
                 this.errAppointment[3] = ['!Empty input field.', true];
                 condition = false;
+                condition_GuestHave = false;
+              }
+            }
+
+            if(condition_GuestHave){
+              if(this.formGroup_setAppointment.value.letusknown.length > 200){
+                this.errAppointment[6] = ['!Max character is 200 length.', true];
+                condition = false;
+                condition_GuestHave = false;
               }
             }
   

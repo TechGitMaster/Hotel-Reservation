@@ -547,6 +547,9 @@
                             <div class="col-12 divformrow">
                                 <label class="labels">Let us know your thoughts:</label>
                                 <textarea type="text" formControlName="letusknown" class="form-control forminputtextarea"></textarea>
+                                <div *ngIf="errAppointment[6][1]">
+                                    <span class="paError">{{errAppointment[6][0]}}</span>
+                                </div>
                             </div>
     
                         </div>

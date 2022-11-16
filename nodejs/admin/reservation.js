@@ -717,7 +717,7 @@ router.post('/deleteReservation_final', (req, res) => {
 
 //TEMPORARY________________________________________________________________________
 router.get('/temporary', (req, res) => {
-    rooms_column.updateOne({ _id: "635b7ddf8be419b89753aae3" }, { $set: {
+    rooms_column.updateOne({ _id: "637378969018070fa4cddb9e" }, { $set: {
         paymentMethod: "",
         account_id: "",
         checkin_date: "",

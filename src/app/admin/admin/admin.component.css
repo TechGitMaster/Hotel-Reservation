@@ -827,8 +827,6 @@
 
 @media print{
 
-    * { overflow: visible !important; }
-
     body *:not(#printingD):not(#printingD *){
         visibility: hidden;
     }

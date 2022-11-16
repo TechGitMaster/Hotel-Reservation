@@ -55,15 +55,19 @@ export class ContactsComponent implements OnInit {
 
         if(this.formGroup.value.fullname.length <= 40){
           if(this.formGroup.value.letusknown.length > 0 && this.formGroup.value.letusknown !== ' '){
-            this.subs = this.service.sendAppointment(this.formGroup, '', this.date_converting(), 'inquery', '', '').subscribe((res) => {
-              this.formGroup = this.formBuild.group({
-                fullname: [''],
-                email: [''],
-                letusknown: ['']
+            if(this.formGroup.value.letusknown.length <= 200){
+              this.subs = this.service.sendAppointment(this.formGroup, '', this.date_converting(), 'inquery', '', '').subscribe((res) => {
+                this.formGroup = this.formBuild.group({
+                  fullname: [''],
+                  email: [''],
+                  letusknown: ['']
+                });
+                
+                this.service.emitShowSuccess();
               });
-              
-              this.service.emitShowSuccess();
-            });
+            }else{
+              this.errInquery[2] = ['!Max character is 200 length', true];
+            }
           }else{
             this.errInquery[2] = ['!Empty input field.', true];
           }
