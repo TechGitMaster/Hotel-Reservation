@@ -1,4 +1,4 @@
-<div class="container-fluid" style="padding:0px;background:#FCFBFB;">
+<div class="container-fluid" style="padding:0px;background:#FCFBFB;" id="room_divs">
     <!--_______________Image Selected_____________________-->
     <div class="divFix" *ngIf="img_selected.length > 0">
         <div style="position: absolute;right: 10px;top:10px;">
@@ -169,7 +169,7 @@
                                 </div>
 
                                 <div><button *ngIf="json_Data.confirmNot === 'false'" 
-                                    class="btnsreserveAppointment btn btn-primary">Set Appointment</button>
+                                    class="btnsreserveAppointment btn btn-primary" (click)="appointment_go()">Set Appointment</button>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                                         </div>
         
                                         <div><button *ngIf="json_Data.confirmNot === 'false'" 
-                                            class="btnsreserveAppointment btn btn-primary">Set Appointment</button>
+                                            class="btnsreserveAppointment btn btn-primary" (click)="appointment_go()">Set Appointment</button>
                                         </div>
                                     </div>
                                 </div>

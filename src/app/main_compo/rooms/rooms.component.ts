@@ -38,7 +38,7 @@ export class RoomsComponent implements OnInit {
     pullDrag: true,
     dots: true,
     navSpeed: 1000,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 1000,
     autoplayTimeout: 5000,
     autoplayMouseleaveTimeout: 5000,
@@ -356,6 +356,15 @@ export class RoomsComponent implements OnInit {
     setTimeout(() => {
       this.router.navigate(['/mc/contact-us']);
     }, 350);
+  }
+
+
+  //Set appointment__________________________________________________________________
+  appointment_go(): void{
+    document.getElementById("room_divs")?.scrollIntoView(false)
+    setTimeout(() => {
+      window.scrollBy(0,550);
+    }, 400)
   }
 
 }
