@@ -85,6 +85,7 @@ router.post('/createJwt_payment', middleware_serve, (req, res) => {
             checkOut: req.body.data.checkOut,
             personsCount: req.body.data.personsCount,
             room_sh: req.body.data.room_sh,
+            time: req.body.data.time,
             email: req.token.email
         };
     }else{

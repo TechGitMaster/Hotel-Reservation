@@ -103,6 +103,11 @@
   margin-bottom:20px;
 }
 
+.headerLogo{
+  padding:20px;
+  background:#493B3B;
+  margin-bottom:30px;
+}
 </style>
 
   </head>
@@ -110,7 +115,33 @@
     <!--<h2>{{text1}}</h2>
     <h2>{{text2}}</h2>-->
 
-    <p class="detailsss">Your Reservation Details</p>
+
+
+    <div class="headerLogo">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>
+                  <div style="float:left;">
+                    <h2 style="color:white;">Reservation Details</h2>
+                  </div>
+                </td>
+                      
+                <td>
+                    <div style="float:right;">
+                        <img src="cid:logo" style="height:110px;" />
+                    </div>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
 
     <p class="paReD paNote-font">Transaction ID: {{Transcation_id}}</p>
     <p class="paReD paNote-font">Name of room: {{nameRoom}}</p>

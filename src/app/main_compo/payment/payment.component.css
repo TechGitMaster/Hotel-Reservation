@@ -845,8 +845,21 @@
     font-size:25px;
     text-align: center;
     color:white;
+    line-height: 140%;
 }
 
+
+.timeDiv{
+    background:white;
+    border-radius:10px;
+    padding:10px;
+    margin:0px 0px 10px 0px;
+    font-family: inter_medium;
+}
+
+.timeDiv-font{
+    font-size:16px;
+}
 
 .paymentDetailsDivs{
     padding:0px 0px 0px 10px;
@@ -1097,6 +1110,7 @@
         text-align: center;
         color:white;
         margin-bottom:15px;
+        line-height: 140%;
     }
 
     .btn_BTS-font{
@@ -1107,7 +1121,7 @@
         font-size:17px;
     }
 
-    .successBttn-font, .passwordChange-font, .fontTermsInfo{
+    .successBttn-font, .passwordChange-font, .fontTermsInfo, .timeDiv-font{
         font-size:14px;
     }
 }

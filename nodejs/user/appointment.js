@@ -15,6 +15,7 @@ const db_column_inboxes = require('../databases/inboxes_column');
 const inbox_col = db_column_inboxes('admin_inbox');
 
 const nodemailer = require('nodemailer');
+const hbs = require("nodemailer-express-handlebars");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -23,6 +24,17 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+const handlebarOptions = {
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: './nodejs/views/',
+      defaultLayout: false,
+    },
+    viewPath: './nodejs/views/',
+    extName: ".handlebars",
+}
+
+transporter.use('compile', hbs(handlebarOptions));
 
 //Get appointment____________________________________________________________
 router.post('/getAppointments_user', middleware, async (req, res) => {
@@ -107,15 +119,28 @@ router.post('/cancelAppointment', middleware, async (req, res) => {
 
 
 //send email to user__________________________________________________________
-function sendEmail(res, transaction_ID, email){
-    const message = `The Appointment request is cancelled by the user. Transaction ID: ${transaction_ID}`
+async function sendEmail(res, transaction_ID, email){
+
+    let data = {
+        header: 'Appointment', 
+        message: `The Appointment request is cancelled by the user. Transaction ID: ${transaction_ID}`
+    }
 
     transporter.sendMail({
         from: email,
         to: 'abpadillamail@gmail.com',
         subject: 'Appointment message',
-        text: message
-    }, (err, info) => {});
+        template: 'mail_template',
+        context: data,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
+    }, (err, info) => {
+        if(err)
+        console.log(err);
+    });
 
     res.json({ response: 'success'});
 }

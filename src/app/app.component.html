@@ -197,7 +197,7 @@
         <div style="padding:0px 20px 10px 20px;">
             <p class="paNote paNote-font">Note:</p>
             <ul class="ulBu">
-                <li>Get OTP code to procced.</li>
+                <li>Get OTP code to proceed.</li>
                 <li>You can see the code through your email.</li>
             </ul>
 
@@ -243,13 +243,30 @@
 
         <div [formGroup]="formGroup_newPassword"  style="padding:0px 20px 10px 20px;margin-top:30px;">
             <div style="margin-bottom:20px;">
-                <input type="password" formControlName="newPassword" placeholder="Enter your new password" class="form-control forminputReg forminputReg-font" />
+                <div style="position:relative;">
+                    <input [type]="!seeNotArr_password[0] ? 'password':'text'" formControlName="newPassword" placeholder="Enter your new password"
+                        class="form-control pass_padding forminputReg forminputReg-font" />
+
+                    <div style="display: flex;align-items: center;">
+                        <img [src]="!seeNotArr_password[0] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                            class="img-fluid eye_pass" (click)="passSeeNot('pass')" />
+                    </div>
+                </div>
                 <div *ngIf="errArrForgotPassword[0][1]">
                     <span class="paError">{{errArrForgotPassword[0][0]}}</span>
                 </div>
             </div>
             <div style="margin-bottom:10px;">
-                <input type="password" formControlName="verifyPassword" placeholder="Verify your new password" class="form-control forminputReg forminputReg-font" />
+                <div style="position:relative;">
+                    <input [type]="!seeNotArr_password[1] ? 'password':'text'" formControlName="verifyPassword" placeholder="Verify your new password"
+                        class="form-control pass_padding forminputReg forminputReg-font" />
+
+                    <div style="display: flex;align-items: center;">
+                        <img [src]="!seeNotArr_password[1] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                            class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                    </div>
+                </div>
+
                 <div *ngIf="errArrForgotPassword[1][1]">
                     <span class="paError">{{errArrForgotPassword[1][0]}}</span>
                 </div>
@@ -294,6 +311,33 @@
         </div>
     </div>
 
+
+    <!--__________Admin condition when login OTP code_____________________-->
+    <div *ngIf="condition_login_signup_clicked === 'adminOTP'" class="OTP_loginAdmin" (click)="$event.stopPropagation()">
+        <p class="paXAdminOTP paX-font" (click)="funcSignIn('false')">X</p>
+        <p class="paAdminOTP paForgotPass-font">Verify code</p>
+
+        <div style="padding:10px 0px 10px 0px;">
+            <p class="paNote paNote-font">Note:</p>
+            <ul class="ulBu">
+                <li>We sent a code through your email.</li>
+                <li>Verify the code before login as an admin.</li>
+            </ul>
+            <!--____________________Validate CODE______________________-->
+            <div [formGroup]="formGroup_verifyAdmin"  class="row">
+                <div class="col-lg-9 col-md-9 col-12 rowGetOTPTxt">
+                    <input type="text" formControlName="verfiyOTP" placeholder="Enter the code" 
+                        (input)="funcOnlyNumber_OTPAdmin()" class="form-control otpAdmin forminputReg forminputReg-font" />
+                    <div *ngIf="errArrForgotPassword[0][1]">
+                        <span class="paError">{{errArrForgotPassword[0][0]}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-12 rowBttnOTPTxt">
+                    <button class="btn btn-primary btn-getOTP btn-getOTP-font" (click)="verfiyOTP_admin()">{{verifyTxt}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!--________SIGN UP__________-->
     <div *ngIf="condition_login_signup_clicked === 'sign-up'" class="signUpdiv" (click)="$event.stopPropagation()">
@@ -325,16 +369,38 @@
                         </div>
                     </div>
     
-                    <div class="col-lg-6 col-12 padCol6">
+                    <div class="col-12 padCol6">
                         <input type="text" formControlName="email" placeholder="Email" class="form-control forminputReg forminputReg-font" />
                         <div *ngIf="errorSignupArr[3][1]">
                             <span class="paError">{{errorSignupArr[3][0]}}</span>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-12 padCol6">
-                        <input type="password" formControlName="password" placeholder="Password" class="form-control forminputReg forminputReg-font" />
+                    <div class="col-12 padCol6">
+                        <div style="position:relative;">
+                            <input [type]="!seeNotArr_password[0] ? 'password':'text'" formControlName="password" placeholder="Password" 
+                                class="form-control pass_padding forminputReg forminputReg-font" />
+
+                            <div style="display: flex;align-items: center;">
+                                <img [src]="!seeNotArr_password[0] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                    class="img-fluid eye_pass" (click)="passSeeNot('pass')" />
+                            </div>
+                        </div>
                         <div *ngIf="errorSignupArr[4][1]">
                             <span class="paError">{{errorSignupArr[4][0]}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 padCol6">
+                        <div style="position:relative;">
+                            <input [type]="!seeNotArr_password[1] ? 'password':'text'" formControlName="confirmPass" placeholder="Confirm password" 
+                                class="form-control pass_padding forminputReg forminputReg-font" />
+
+                            <div style="display: flex;align-items: center;">
+                                <img [src]="!seeNotArr_password[1] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                    class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                            </div>
+                        </div>
+                        <div *ngIf="errorSignupArr[7][1]">
+                            <span class="paError">{{errorSignupArr[7][0]}}</span>
                         </div>
                     </div>
     

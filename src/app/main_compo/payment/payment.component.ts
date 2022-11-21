@@ -67,7 +67,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       contact_number: ['']
     });
 
-
     this.condition_expiredNot = 'new';
     this.condition_paymentSection = true;
     this.condition_paymentMethod = 'new';
@@ -91,6 +90,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
           let date1 = new Date(parseInt(checkIn_arr[0]), parseInt(checkIn_arr[1]), parseInt(checkIn_arr[2])) as any;
           let date2 = new Date(parseInt(checkOut_arr[0]), parseInt(checkOut_arr[1]), parseInt(checkOut_arr[2])) as any;
           this.day_count_reservation = Math.round(Math.abs((date1 - date2) / oneDay));
+
+          //TIME SESSION EXPIRED______________________________________________________________
+          this.sessionCOUNT();
 
           //GET ROOM DATA________________________________________________________________________________
           this.subs = this.service.getRoom_payment(ress.data.room_sh).subscribe((res) => {
@@ -147,6 +149,59 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       });
     }
 
+    this.checkingIfLogin();
+  }
+
+
+  handleNumber!: number;
+  handleInterval_session!: any;
+  st_session: string = '';
+  clear_subs!: Subscription;
+  condition_forInterval: boolean = false;
+  txt_alertWindow: string = '';
+  //SESSION EXPIRED COUNT___________________________________________________________________________________________
+  sessionCOUNT(): void{
+    this.handleNumber = this.token_convert.time;
+    let condtAlert = -1;
+    
+    this.handleInterval_session = setInterval(() => {
+      let dates = new Date();
+      let minutess = this.handleNumber <= dates.getMinutes() ? ((this.handleNumber+20)-dates.getMinutes()): Math.abs(((60-this.handleNumber)+dates.getMinutes())-20);
+      let secondss = (60-dates.getSeconds());
+
+      this.st_session = ''+(minutess < 10 ? '0'+minutess:minutess)+":"+(secondss < 10 ? '0'+secondss:secondss);
+      if(minutess == 0 && secondss == 1){
+        clearInterval(this.handleInterval_session);
+        if(!this.condition_forInterval){
+          this.clear_subs = this.service.deleting_sessionAfter(this.token).subscribe(() => {
+            this.clear_subs.unsubscribe();
+            location.reload();
+          });
+        }
+      }
+
+      if((minutess == 10 || minutess == 5 || minutess == 1) && condtAlert != minutess){
+        condtAlert = minutess;
+        this.txt_alertWindow = this.st_session;
+        this.arrHandle = new Array<any>("showing_alertWindow");
+      }
+    }, 300);
+  }
+
+
+  //Checking login_____________________________________________________________________________________________
+  subs_checkingLog!: Subscription;
+  checkingIfLogin(): void{
+    this.subs_checkingLog = this.service.checkingToken().subscribe((result) => {
+      this.subs_checkingLog.unsubscribe();
+      this.formGroup_payment = this.formGroup.group({
+        first_name: [result.data_info.firstname],
+        last_name: [result.data_info.lastname],
+        email: [result.data_info.email],
+        email_re: [result.data_info.email],
+        contact_number: [result.data_info.contactnumber]
+      });
+    })
   }
 
   //SELECTED IMAGE___________________________________________________________
@@ -223,7 +278,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                         }
                       });
                     }else{
-                      this.errAppointment[6][0] = "!Please confirm that you're agreed for the terms and condition.";
+                      this.errAppointment[6][0] = "Please confirm that you're agreed for the terms and condition!";
                       this.errAppointment[6][1] = true;
                     }
                   }
@@ -248,6 +303,12 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                     let ds = transaction.id;
 
                     if(ds != null && ds !== 'undefined' && ds != undefined){
+
+                      //Stop interval timer count down____________________________________________________
+                      clearInterval(this.handleInterval_session);
+                      this.condition_forInterval = true;
+
+                      //Save data_____________________________________________________________________
                       this.subs_paypal = this.service.saving_information_payment(this.arr_data_savingInfo).subscribe((ress_saved) => {
                         this.subs_paypal.unsubscribe();
 
@@ -520,6 +581,11 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
       if(this.checkingField(data_info)){
         if(this.termsCondition){
+
+          //Clearing interval of timer countdown______________________________________________________________________
+          clearInterval(this.handleInterval_session);
+          this.condition_forInterval = true;
+
           this.arrHandle = new Array<any>('progress', Math.floor(Math.random() * 50), 'Making a request.');
 
           if(this.arr_blob_transaction.length != 0){
@@ -532,7 +598,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             this.making_requestGcash(data_info, [], 'payment1');
           }
         }else{
-          this.errAppointment[6][0] = "!Please confirm that you're agreed for the terms and condition.";
+          this.errAppointment[6][0] = "Please confirm that you're agreed for the terms and condition!";
           this.errAppointment[6][1] = true;
         }
       }
@@ -635,7 +701,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
               if(data.email_re !== '' && data.email_re !== ' '){
     
                 if(data.contact_number === '' || data.contact_number === ' '){
-                  this.errAppointment[4][0] = "!Please Fill up the contact-number input field.";
+                  this.errAppointment[4][0] = "Please Fill up the contact-number input field!";
                   this.errAppointment[4][1] = true;
                   condition = false;
                 }else{
@@ -645,7 +711,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                       if(data.email === data.email_re){
                         let removeWhite = data.contact_number.replaceAll(' ','');
                         if(removeWhite.length != 11){
-                          this.errAppointment[4][0] = "!Contact number must exact 11 length.";
+                          this.errAppointment[4][0] = "Contact number must exact 11 length!";
                           this.errAppointment[4][1] = true;
                           condition = false;
                         }else{
@@ -653,7 +719,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     
                             for(let count = 0;count < this.arr_details.length;count++){
                               if(this.arr_details[count][0] === '' || this.arr_details[count][1] === '' || this.arr_details[count][2] === ''){
-                                this.errAppointment[5][0] = "!Check the input field on guest names.";
+                                this.errAppointment[5][0] = "Check the input field on guest names!";
                                 this.errAppointment[5][1] = true;
                                 condition = false;   
                               }else{
@@ -664,60 +730,60 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                           }
                         }
                       }else{
-                        this.errAppointment[2][0] = "!Not same email and email re-confirm.";
+                        this.errAppointment[2][0] = "Not same email and email re-confirm!";
                         this.errAppointment[2][1] = true;
     
-                        this.errAppointment[3][0] = "!Not same email and email re-confirm.";
+                        this.errAppointment[3][0] = "Not same email and email re-confirm!";
                         this.errAppointment[3][1] = true;
     
                         condition = false;
                       }
     
                     }else{  
-                      this.errAppointment[3][0] = "!Wrong format of email.";
+                      this.errAppointment[3][0] = "Wrong format of email!";
                       this.errAppointment[3][1] = true;
                       condition = false;
                     }
                   }else{
-                    this.errAppointment[2][0] = "!Wrong format of email.";
+                    this.errAppointment[2][0] = "Wrong format of email!";
                     this.errAppointment[2][1] = true;
                     condition = false;
                   }
                 }
     
               }else{
-                this.errAppointment[3][0] = "!Please Fill up the email (re-confirm) input field.";
+                this.errAppointment[3][0] = "Please Fill up the email (re-confirm) input field!";
                 this.errAppointment[3][1] = true;
                 condition = false;
               }        
     
           
             }else{
-              this.errAppointment[2][0] = "!Please Fill up the email input field.";
+              this.errAppointment[2][0] = "Please Fill up the email input field!";
               this.errAppointment[2][1] = true;
               condition = false;
             }
             
           }else{
-            this.errAppointment[1][0] = "!Max character is 20 length.";
+            this.errAppointment[1][0] = "Max character is 20 length!";
             this.errAppointment[1][1] = true;
             condition = false;
           }
         
     
         }else{
-          this.errAppointment[1][0] = "!Please Fill up the lastname input field.";
+          this.errAppointment[1][0] = "Please Fill up the lastname input field!";
           this.errAppointment[1][1] = true;
           condition = false;
         }
       }else{
-        this.errAppointment[0][0] = "!Max character is 15 length.";
+        this.errAppointment[0][0] = "Max character is 15 length!";
         this.errAppointment[0][1] = true;
         condition = false;
       }
 
     }else{
-      this.errAppointment[0][0] = "!Please Fill up the firstname input field.";
+      this.errAppointment[0][0] = "Please Fill up the firstname input field!";
       this.errAppointment[0][1] = true;
       condition = false;
     }

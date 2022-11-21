@@ -417,8 +417,8 @@ export class RoomsComponent implements OnInit {
 
   //Validation input field_________________________________________________________
   validationInput(): boolean{
-    this.conditionErr = new Array<any>(["!Input field is empty.", false], ["!Input field is empty.", false], ["!Input field is empty.", false], 
-    ["!Input field is empty.", false], ["!Input field is empty.", false]);
+    this.conditionErr = new Array<any>(["Input field is empty!", false], ["Input field is empty!", false], ["Input field is empty!", false], 
+    ["Input field is empty!", false], ["Input field is empty!", false]);
 
     let condition = true;
     if(!!this.formGroup.value.nameRoom && !!this.formGroup.value.addInfo){
@@ -445,15 +445,15 @@ export class RoomsComponent implements OnInit {
           if(!(/^\d+$/).test(this.formGroup.value.defaultPrice)){
             condition = false;
             this.conditionErr[2][1] = true;
-            this.conditionErr[2][0] = '!Only number is allowed.';
+            this.conditionErr[2][0] = 'Only number is allowed!';
           }else if(!(/^\d+$/).test(this.formGroup.value.goodPersons)){
             condition = false;
             this.conditionErr[3][1] = true;
-            this.conditionErr[3][0] = '!Only number is allowed.';
+            this.conditionErr[3][0] = 'Only number is allowed!';
           }else if(!(/^\d+$/).test(this.formGroup.value.pricePersons)){
             condition = false;
             this.conditionErr[4][1] = true;
-            this.conditionErr[4][0] = '!Only number is allowed.';
+            this.conditionErr[4][0] = 'Only number is allowed!';
           }
         }
       }

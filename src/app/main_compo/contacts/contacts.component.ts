@@ -22,6 +22,20 @@ export class ContactsComponent implements OnInit {
       email: [''],
       letusknown: ['']
     });
+
+    this.checkingIfLogin();
+  }
+
+  //Checking login_____________________________________________________________________________________________
+  checkingIfLogin(): void{
+    this.subs = this.service.checkingToken().subscribe((result) => {
+      this.subs.unsubscribe();
+       this.formGroup = this.formBuild.group({
+        fullname: [result.data_info.fullName],
+        email: [result.data.email],
+        letusknown: ['']
+      });
+    })
   }
 
   //Get date converted____________________________________________________________________________________________
@@ -66,25 +80,25 @@ export class ContactsComponent implements OnInit {
                 this.service.emitShowSuccess();
               });
             }else{
-              this.errInquery[2] = ['!Max character is 200 length', true];
+              this.errInquery[2] = ['Max character is 200 length!', true];
             }
           }else{
-            this.errInquery[2] = ['!Empty input field.', true];
+            this.errInquery[2] = ['Empty input field!', true];
           }
         }else{
-          this.errInquery[0] = ['!Max character is 40 length.', true];
+          this.errInquery[0] = ['Max character is 40 length!', true];
         }
 
     
       }else{
         if((this.formGroup.value.email === '' || this.formGroup.value.email === ' ')){
-          this.errInquery[1] = ['!Empty input field.', true];
+          this.errInquery[1] = ['Empty input field!', true];
         }else{
-          this.errInquery[1] = ['!Check email again.', true];
+          this.errInquery[1] = ['Check email again!', true];
         }
       }
     }else{
-      this.errInquery[0] = ['!Empty input field.', true];
+      this.errInquery[0] = ['Empty input field!', true];
     }
   }
 

@@ -38,6 +38,8 @@ export class AdminComponent implements OnInit {
   arrHandle: Array<any> = new Array<any>("", "", "", 0, 0);
   arrLink: Array<string> = new Array<string>("/ad/admin/inbox-mail", "/ad/admin/appointments", "/ad/admin/schedules", "/ad/admin/rooms", "/ad/admin/reservations", "/ad/admin/account");
 
+  seeNotArr_password: Array<boolean> = new Array<boolean>(false, false, false);
+
   errArrPassword!: Array<Array<any>>;
   condition_forPassword!: boolean;
   formGroup_newPassword!: FormGroup;
@@ -57,7 +59,7 @@ export class AdminComponent implements OnInit {
 
     this.arr_route = new Array<string>("inbox-mail", "appointments", "schedules", "rooms", "reservations", "account", "");
     this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
-    ['email', false], ['password', false], ['gender', false], ['admin password', false]);
+    ['email', false], ['password', false], ['gender', false], ['admin password', false], ['confirmPass', false]);
 
     this.formGroup_newPassword = this.formBuild.group({
       currentPass: [''],
@@ -70,6 +72,7 @@ export class AdminComponent implements OnInit {
       contactnumber:[''],
       email:[''],
       password:[''],
+      confirmPass: [''],
       adminPassword: ['']
     });
     
@@ -117,6 +120,8 @@ export class AdminComponent implements OnInit {
       this.subs_rooms.unsubscribe();
       this.subs_appointment.unsubscribe();
 
+      this.seeNotArr_password = new Array<boolean>(false, false, false);
+      
       this.arrHandle = result;
 
       if(this.arrHandle[0] === 'ChangePassAdmin'){
@@ -362,12 +367,12 @@ export class AdminComponent implements OnInit {
                 });
               }else{
                 this.errArrPassword[1][0] = true;
-                this.errArrPassword[1][1] = "!This is your current password.";
+                this.errArrPassword[1][1] = "This is your current password!";
               }
             }
           }else{
             this.errArrPassword[0][0] = true;
-            this.errArrPassword[0][1] = "!Please provide a correct password.";
+            this.errArrPassword[0][1] = "Please provide a correct password!";
           }
 
 
@@ -376,8 +381,8 @@ export class AdminComponent implements OnInit {
           location.reload();
         });
     }else{
-      this.errArrPassword[0][1] = "!Empty input field.";
-      this.errArrPassword[1][1] = "!Empty input field.";
+      this.errArrPassword[0][1] = "Empty input field!";
+      this.errArrPassword[1][1] = "Empty input field!";
 
       if(current.length == 0 && newP.length == 0){
         this.errArrPassword[0][0] = true;
@@ -473,10 +478,29 @@ export class AdminComponent implements OnInit {
   //ADD ACCOUNT_______________________________________________________________________________________________
   funcSignIn(condition: string): void{
     this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
-    ['email', false], ['password', false], ['gender', false], ['admin password', false]);
+    ['email', false], ['password', false], ['gender', false], ['admin password', false], ['confirmPass', false]);
+    this.seeNotArr_password = new Array<boolean>(false, false, false);
+    this.condition_signup_clicked = false;
 
     this.conditionFixDiv4 = false;
   }
+
+  //Function password icon see or not_________________________________________
+  passSeeNot(condition: string): void{
+    if(condition === 'pass'){
+     if(!this.seeNotArr_password[0]){
+       this.seeNotArr_password[0] = true;
+     }else{
+       this.seeNotArr_password[0] = false;
+     }
+    }else{
+     if(!this.seeNotArr_password[1]){
+       this.seeNotArr_password[1] = true;
+     }else{
+       this.seeNotArr_password[1] = false;
+     }
+    }
+   }
 
 
   FuncsignUp(): void{
@@ -487,11 +511,12 @@ export class AdminComponent implements OnInit {
       contact_number: this.formGroup_signup.value.contactnumber,
       email: this.formGroup_signup.value.email,
       password: this.formGroup_signup.value.password,
+      confirmPass: this.formGroup_signup.value.confirmPass,
       gender: gender.value
     } as register;
     
     this.errorSignupArr = new Array<Array<any>>(['firstname', false], ['lastname', false], ['contact-number', false], 
-    ['email', false], ['password', false], ['gender', false], ['admin password', false]);
+    ['email', false], ['password', false], ['gender', false], ['admin password', false], ['confirmPass', false]);
 
       //Checking all input field if empty or not_____________________________________________________
       if(this.checkingField(obj_data)){
@@ -520,16 +545,16 @@ export class AdminComponent implements OnInit {
                   }
 
                 }else{
-                  this.errorSignupArr[3][0] = "!This Email is already exist.";
+                  this.errorSignupArr[3][0] = "This Email is already exist!";
                   this.errorSignupArr[3][1] = true;
                 }
               });
             }else{
-              this.errorSignupArr[3][0] = "!The Email is undefined.";
+              this.errorSignupArr[3][0] = "The Email is undefined!";
               this.errorSignupArr[3][1] = true;
             }
         }else{
-          this.errorSignupArr[2][0] = "!Please check your contact-number";
+          this.errorSignupArr[2][0] = "Please check your contact-number!";
           this.errorSignupArr[2][1] = true;
         }
 
@@ -553,6 +578,7 @@ export class AdminComponent implements OnInit {
       contactnumber:[''],
       email:[''],
       password:[''],
+      confirmPass: [''],
       adminPassword: ['']
     });
    }, (err) => console.log(err));
@@ -591,23 +617,23 @@ export class AdminComponent implements OnInit {
             regex =  /\W/g;
             if(!regex.test(password)){
               condition = false;
-              txtErr = "!The password must contain special characters";
+              txtErr = "The password must contain special characters!";
             }
           }else{
             condition = false;
-            txtErr = "!The password must contain numeric values";
+            txtErr = "The password must contain numeric values!";
           }
         }else{
           condition = false;
-          txtErr = "!The password must contain uppercase characters";
+          txtErr = "The password must contain uppercase characters!";
         }
       }else{
         condition = false;
-        txtErr = "!The password must contain lowercase characters";
+        txtErr = "The password must contain lowercase characters!";
       }
     }else{
       condition = false;
-      txtErr = "!Length must be greater than 8 or equal to 8";
+      txtErr = "Length must be greater than 8 or equal to 8!";
     }
 
     if(!condition){
@@ -633,36 +659,52 @@ export class AdminComponent implements OnInit {
           if(data.email !== '' && data.email !== ' '){
 
               if(data.password !== '' && data.password !== ' '){
-
-                if(data.gender !== 'Male' && data.gender !== 'Female' && data.gender !== 'Prefer not to say'){
-                  this.errorSignupArr[5][0] = "!Please select your gender.";
-                  this.errorSignupArr[5][1] = true;
+                
+                if(data.confirmPass !== '' && data.confirmPass !== ' '){
+                    if(data.password === data.confirmPass){
+                                        
+                      if(data.gender !== 'Male' && data.gender !== 'Female' && data.gender !== 'Prefer not to say'){
+                        this.errorSignupArr[5][0] = "Please select your gender!";
+                        this.errorSignupArr[5][1] = true;
+                        condition = false;
+                      }
+                    }else{
+                      this.errorSignupArr[7][0] = 'Not same password!';
+                        this.errorSignupArr[7][1] = true;
+                        this.errorSignupArr[4][0] = "Not same password!";
+                        this.errorSignupArr[4][1] = true;
+                        condition = false;
+                    }
+                }else{
+                    this.errorSignupArr[7][0] = 'Please Fill up the confirm password input field!';
+                    this.errorSignupArr[7][1] = true;
+                    condition = false;
                 }
 
               }else{
-                this.errorSignupArr[4][0] = "!Please Fill up the password input field.";
+                this.errorSignupArr[4][0] = "Please Fill up the password input field!";
                 this.errorSignupArr[4][1] = true;
                 condition = false;
               }        
 
           
           }else{
-            this.errorSignupArr[3][0] = "!Please Fill up the email input field.";
+            this.errorSignupArr[3][0] = "Please Fill up the email input field!";
             this.errorSignupArr[3][1] = true;
             condition = false;
           }
         }else{
-          this.errorSignupArr[2][0] = "!Please Fill up the contact-number input field.";
+          this.errorSignupArr[2][0] = "Please Fill up the contact-number input field!";
           this.errorSignupArr[2][1] = true;
           condition = false;
         }
       }else{
-        this.errorSignupArr[1][0] = "!Please Fill up the lastname input field.";
+        this.errorSignupArr[1][0] = "Please Fill up the lastname input field!";
         this.errorSignupArr[1][1] = true;
         condition = false;
       }
     }else{
-      this.errorSignupArr[0][0] = "!Please Fill up the firstname input field.";
+      this.errorSignupArr[0][0] = "Please Fill up the firstname input field!";
       this.errorSignupArr[0][1] = true;
       condition = false;
     }

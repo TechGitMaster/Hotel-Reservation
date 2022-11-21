@@ -18,6 +18,7 @@ const admin_calendarsched = require('../databases/sched_column')('admin_calendar
 const admin_user_reservation = require('../databases/rooms_column')('admin_user_reservation');
 
 const nodemailer = require('nodemailer');
+const hbs = require("nodemailer-express-handlebars");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -25,6 +26,19 @@ const transporter = nodemailer.createTransport({
         pass: process.env.PASSWORD_MAIL
     }
 });
+
+const handlebarOptions = {
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: './nodejs/views/',
+      defaultLayout: false,
+    },
+    viewPath: './nodejs/views/',
+    extName: ".handlebars",
+}
+
+transporter.use('compile', hbs(handlebarOptions));
+
 
 //Saving appointment and contact us more mail_____________________________________
 router.get('/inboxSaving_user', middleware_user, (req, res) => {
@@ -146,13 +160,22 @@ async function inbox_col_save(req, res, arr_tem, _id, data, email){
 //send email to user__________________________________________________________
 function sendEmail(res, transaction_ID, condition, email){
 
-    const message = `New ${condition} request. ${ condition !== 'Inquery' ? `Transaction ID: ${transaction_ID}`:''}`
+    let data = {
+        header: condition, 
+        message: `New ${condition} request. ${ condition !== 'Inquery' ? `Transaction ID: ${transaction_ID}`:''}`
+    }
 
     transporter.sendMail({
         from: email,
         to: 'abpadillamail@gmail.com',
         subject: `${condition} request`,
-        text: message
+        template: 'mail_template',
+        context: data,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
     }, (err, info) => {});
 
     res.json({ response: 'success' });

@@ -25,6 +25,8 @@ export class UserComponent implements OnInit {
   logoutCondition: boolean = false;
   img_selected: string = '';
 
+  seeNotArr_password: Array<boolean> = new Array<boolean>(false, false, false);
+
   ngOnInit(): void {
     this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""]);
 
@@ -46,6 +48,8 @@ export class UserComponent implements OnInit {
 
       this.conditionFixDiv = true;
       this.arrHandle = result;
+
+      this.seeNotArr_password = new Array<boolean>(false, false, false);
 
       this.gettingCall();
     });
@@ -102,6 +106,23 @@ export class UserComponent implements OnInit {
     this.arrHandle = new Array<any>('yesNo', 'Logout', 'Are you sure you want to logout?');
     this.conditionFixDiv = true;
   }
+
+  //Function password icon see or not_________________________________________
+  passSeeNot(condition: string): void{
+    if(condition === 'pass'){
+     if(!this.seeNotArr_password[0]){
+       this.seeNotArr_password[0] = true;
+     }else{
+       this.seeNotArr_password[0] = false;
+     }
+    }else{
+     if(!this.seeNotArr_password[1]){
+       this.seeNotArr_password[1] = true;
+     }else{
+       this.seeNotArr_password[1] = false;
+     }
+    }
+   }
 
 
   //Change Password Button______________________________________________________________________

@@ -21,13 +21,31 @@
 
                 <div [formGroup]="formGroup_newPassword"  style="padding:0px 20px 10px 20px;margin-top:30px;">
                     <div style="margin-bottom:20px;">
-                        <input type="password" formControlName="currentPass" placeholder="Enter your current password" class="form-control forminputReg forminputReg-font" />
+                        <div style="position:relative;">
+                            <input [type]="!seeNotArr_password[0] ? 'password':'text'" formControlName="currentPass" placeholder="Enter your current password"
+                                class="form-control pass_padding forminputReg forminputReg-font" />
+        
+                            <div style="display: flex;align-items: center;">
+                                <img [src]="!seeNotArr_password[0] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                    class="img-fluid eye_pass" (click)="passSeeNot('pass')" />
+                            </div>
+                        </div>
+
                         <div *ngIf="errArrPassword[0][0]">
                             <span class="paError">{{errArrPassword[0][1]}}</span>
                         </div>
                     </div>
                     <div style="margin-bottom:10px;">
-                        <input type="password" formControlName="newPass" placeholder="Enter your new password" class="form-control forminputReg forminputReg-font" />
+                        <div style="position:relative;">
+                            <input [type]="!seeNotArr_password[1] ? 'password':'text'" formControlName="newPass" placeholder="Enter your new password"
+                                class="form-control pass_padding forminputReg forminputReg-font" />
+        
+                            <div style="display: flex;align-items: center;">
+                                <img [src]="!seeNotArr_password[1] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                    class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                            </div>
+                        </div>
+
                         <div *ngIf="errArrPassword[1][0]">
                             <span class="paError">{{errArrPassword[1][1]}}</span>
                         </div>

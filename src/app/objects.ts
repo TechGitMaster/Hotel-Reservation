@@ -9,6 +9,7 @@ export interface register{
     contact_number: string,
     email: string,
     password: string,
+    confirmPass: string,
     gender: string
 }
 

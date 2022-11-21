@@ -197,22 +197,25 @@ export class RoomsComponent implements OnInit {
     let count = 0;
     let handle_month_count = 0;
     let converting_int_String = "";
+    let for_month = "";
     for await (let datas_month of arr_month){
       if(datas_month === date_arr[1]){
-        handle_month_count = count;
+        handle_month_count = (count);
       }
       count++;
     }
 
     if(handle_month_count < 10){
-      converting_int_String = "0"+handle_month_count;
+      converting_int_String = "0"+(handle_month_count);
+      for_month = "0"+(handle_month_count+1);
     }else{
-      converting_int_String = ""+handle_month_count;
+      converting_int_String = ""+(handle_month_count);
+      for_month = ""+(handle_month_count+1);
     }
 
     this.minCheckOut = new Date(parseInt(date_arr[3]), parseInt(converting_int_String), parseInt(date_arr[2])+1);
 
-    this.checkIn_mess = `${date_arr[3]}-${converting_int_String}-${date_arr[2]}`;
+    this.checkIn_mess = `${date_arr[3]}-${for_month}-${date_arr[2]}`;
 
     this.checkOut_mess = 'Check out date';
   }
@@ -237,9 +240,9 @@ export class RoomsComponent implements OnInit {
     }
 
     if(handle_month_count < 10){
-      converting_int_String = "0"+handle_month_count;
+      converting_int_String = "0"+(handle_month_count+1);
     }else{
-      converting_int_String = ""+handle_month_count;
+      converting_int_String = ""+(handle_month_count+1);
     }
 
     this.checkOut_mess = `${date_arr[3]}-${converting_int_String}-${date_arr[2]}`;
@@ -275,7 +278,8 @@ export class RoomsComponent implements OnInit {
               checkIn: this.checkIn_mess,
               checkOut: this.checkOut_mess,
               personsCount: this.persons_count,
-              room_sh: this.room_selected
+              room_sh: this.room_selected,
+              time: new Date().getMinutes()
             };
             
             var token = this.cookieService.get('token');

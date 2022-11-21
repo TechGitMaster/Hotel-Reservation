@@ -1,0 +1,58 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <style>
+
+        .headerLogo{
+            padding:20px;
+            background:#493B3B;
+            margin-bottom:20px;
+        }
+
+    </style>
+
+  </head>
+  <body width="100%">
+    <!--____This is for text only_____-->
+    <!--<h2>{{text2}}</h2>-->
+
+    <!--____This is for image only____-->
+    <!--<img src="cid:logo" />-->
+
+    <div>
+        <div class="headerLogo">
+            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="divCheckInOut" style="float:left;">
+                                <h2 style="color:white;">{{header}}</h2>
+                            </div>
+                        </td>
+                        
+                        <td>
+                            <div class="divCheckInOut" style="float:right;">
+                                <img src="cid:logo" style="height:110px;" />
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <p style="font-size:16px;">{{message}}</p>
+    </div>
+  </body>
+</html>

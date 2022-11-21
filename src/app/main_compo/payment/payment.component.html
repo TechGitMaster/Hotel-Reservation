@@ -89,6 +89,16 @@
         </div>
     </div>
 
+    <!--______________________Show alert window for timer___________________-->
+    <div class="container-fluid containerloginSignup"  *ngIf="arrHandle[0] === 'showing_alertWindow'" (click)="arrHandle[0] = ''">
+        <div class="container divSuccesss" (click)="$event.stopPropagation()">
+            <p class="paSuccess paSuccess-font">You only have {{txt_alertWindow}} time left!</p>
+            <button class="btn btn-primary successBttn successBttn-font" (click)="arrHandle[0] = ''">Close</button>
+        </div>
+    </div>
+
+
+
     <!--_________________________Payment divs_______________________________-->
     <div>
 
@@ -109,7 +119,7 @@
                 </div>
                 <div style="display: flex;align-items: center;">
                     <img src="/assets/icon/secure.png" class="img-fluid imgIG" />
-                    <span class="paBack paBack-font">{{condition_paymentSection ? 'Secured section (It only takes 5 minutes)':'Secured details'}}</span>
+                    <span class="paBack paBack-font">{{condition_paymentSection ? 'Secured section':'Secured details'}}</span>
                 </div>
                 <div style="display: flex;position: absolute;right:10px;top:9px;">
                     <div class="stepNumber stepNumber-font" [ngStyle]="{'border':'2px solid #373434', 
@@ -123,6 +133,12 @@
 
         <!--_______PAYMENT SECTION______-->
         <div *ngIf="condition_paymentSection" class="container" style="max-width:1230px;padding:15px 10px 15px 10px;">
+            <!--______Time sessions________-->
+            <div class="timeDiv timeDiv-font">
+                Page will expired in: <span style="color:red;">{{st_session}} minutes</span>
+            </div>
+
+            <!--______Enter THE details______-->
             <div class="row flex-column-reverse flex-lg-row" style="padding:0%;margin:0%;">
 
                 <!--_______INFORMATION DETAILS USER__________-->
@@ -607,7 +623,7 @@
         <div class="container"  style="max-width: 1170px;">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-12" style="display: grid;place-items: center;">
-                    <p class="paOops">Oops.. The link session is already expired.</p>
+                    <p class="paOops">Oops.. The page is already expired. Or you run out of time.</p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <div style="display: flex;justify-content: center;align-items: center;">

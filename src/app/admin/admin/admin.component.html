@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <!--______Call FIXED schedule and account settings_____-->
+    <!--______Call FIXED schedule, account settings and change password_____-->
     <div class="fixedDiv" *ngIf="conditionFixDiv" (click)="funcErase()">
         <div class="container" style="min-height:100%;display: flex;justify-content: center;align-items: center;" (click)="$event.stopPropagation()">
 
@@ -103,13 +103,29 @@
 
                 <div [formGroup]="formGroup_newPassword"  style="padding:0px 20px 10px 20px;margin-top:30px;">
                     <div style="margin-bottom:20px;">
-                        <input type="password" formControlName="currentPass" placeholder="Enter your current password" class="form-control forminputReg" />
+                        <div style="position:relative;">
+                            <input [type]="!seeNotArr_password[0] ? 'password':'text'" formControlName="currentPass" placeholder="Enter your current password" 
+                                class="form-control pass_padding forminputReg" />
+
+                            <div style="display: flex;align-items: center;">
+                                <img [src]="!seeNotArr_password[0] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                    class="img-fluid eye_pass" (click)="passSeeNot('pass')" />
+                            </div>
+                        </div>
                         <div *ngIf="errArrPassword[0][0]">
                             <span class="paError">{{errArrPassword[0][1]}}</span>
                         </div>
                     </div>
                     <div style="margin-bottom:10px;">
-                        <input type="password" formControlName="newPass" placeholder="Enter your new password" class="form-control forminputReg" />
+                        <div style="position:relative;">
+                            <input [type]="!seeNotArr_password[1] ? 'password':'text'" formControlName="newPass" placeholder="Enter your new password" 
+                            class="form-control pass_padding forminputReg" />
+
+                            <div style="display: flex;align-items: center;">
+                                <img [src]="!seeNotArr_password[1] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                    class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                            </div>
+                        </div>
                         <div *ngIf="errArrPassword[1][0]">
                             <span class="paError">{{errArrPassword[1][1]}}</span>
                         </div>
@@ -473,7 +489,7 @@
     <div class="fixedDiv" *ngIf="conditionFixDiv4">
         
         <div *ngIf="condition_signup_clicked" style="width:100%;height:100%;display: flex;align-items: center;z-index:10;background:rgba(0, 0, 0, 0.326);position: absolute;">
-            <!--___________________THIS IS FOR POP-UP changing Password______________________-->
+            <!--___________________THIS IS FOR POP-UP adding admin______________________-->
             <div class="container divSuccesschangePass">
                 <div class="container-fluid">
                     <div style="display: flex;justify-content: center;">
@@ -484,7 +500,7 @@
             </div>
         </div>
 
-        <div style="height:100%;display: flex;align-items: center;position: relative;">
+        <div *ngIf="!condition_signup_clicked" style="height:100%;display: flex;align-items: center;position: relative;">
             <!--________SIGN UP__________-->
             <div class="container signUpdiv" (click)="$event.stopPropagation()">
                 <p class="paX paX-font" (click)="funcSignIn('false')">X</p>
@@ -514,16 +530,39 @@
                                 </div>
                             </div>
             
-                            <div class="col-lg-6 col-12 padCol6">
+                            <div class="col-12 padCol6">
                                 <input type="text" formControlName="email" placeholder="Email" class="form-control forminputReg forminputReg-font" />
                                 <div *ngIf="errorSignupArr[3][1]">
                                     <span class="paError">{{errorSignupArr[3][0]}}</span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-12 padCol6">
-                                <input type="password" formControlName="password" placeholder="Password" class="form-control forminputReg forminputReg-font" />
+                            <div class="col-12 padCol6">
+                                <div style="position:relative;">
+                                    <input [type]="!seeNotArr_password[0] ? 'password':'text'" formControlName="password" placeholder="Password" 
+                                        class="form-control pass_padding forminputReg forminputReg-font" />
+        
+                                    <div style="display: flex;align-items: center;">
+                                        <img [src]="!seeNotArr_password[0] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                            class="img-fluid eye_pass" (click)="passSeeNot('pass')" />
+                                    </div>
+                                </div>
                                 <div *ngIf="errorSignupArr[4][1]">
                                     <span class="paError">{{errorSignupArr[4][0]}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12 padCol6">
+                                <div style="position:relative;">
+                                    <input [type]="!seeNotArr_password[1] ? 'password':'text'" formControlName="confirmPass" placeholder="Confirm password" 
+                                        class="form-control pass_padding forminputReg forminputReg-font" />
+                                        
+                                    <div style="display: flex;align-items: center;">
+                                        <img [src]="!seeNotArr_password[1] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                            class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                                    </div>
+                                </div>
+                                <div *ngIf="errorSignupArr[7][1]">
+                                    <span class="paError">{{errorSignupArr[7][0]}}</span>
                                 </div>
                             </div>
             

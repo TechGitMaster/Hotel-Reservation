@@ -24,6 +24,7 @@ const notification_click_col = notification_db('user_notification_click');
 
 
 const nodemailer = require('nodemailer');
+const hbs = require("nodemailer-express-handlebars");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -32,6 +33,17 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+const handlebarOptions = {
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: './nodejs/views/',
+      defaultLayout: false,
+    },
+    viewPath: './nodejs/views/',
+    extName: ".handlebars",
+}
+
+transporter.use('compile', hbs(handlebarOptions));
 
 //Save reservation request made by user___________________________________________________
 router.post('/saveReservation', middleware_user, async (req, res) => {
@@ -118,12 +130,22 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                             }).save().then(() => {
 
                                 //Send gmail to admin________________________________________________________
-                                const message = `New reservation request. Transaction ID: ${transcation_id}.`;
+                                let data = {
+                                    header: 'Reservation', 
+                                    message: `New reservation request. Transaction ID: ${transcation_id}.`
+                                }
+
                                 transporter.sendMail({
                                     from: email,
                                     to: process.env.USER_MAIL,
                                     subject: 'Reservation request',
-                                    text: message
+                                    template: 'mail_template',
+                                    context: data,
+                                    attachments: [{
+                                        filename: 'logo.png',
+                                        path: './src/assets/logo/logo.png',
+                                        cid: 'logo'
+                                    }]
                                 }, (err, info) => {});
 
                                 res.json({ response: 'success'});
@@ -229,12 +251,22 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 }).save().then(() => {
                     
                     //Send gmail to admin________________________________________________________
-                    const message = `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`;
+                    let data = {
+                        header: 'Reservation request', 
+                        message: `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`
+                    }
+
                     transporter.sendMail({
                         from: email,
                         to: process.env.USER_MAIL,
                         subject: 'Paid staycation room',
-                        text: message
+                        template: 'mail_template',
+                        context: data,
+                        attachments: [{
+                            filename: 'logo.png',
+                            path: './src/assets/logo/logo.png',
+                            cid: 'logo'
+                        }]
                     }, (err, info) => {});
 
                     res.json({ response: 'success'});
@@ -489,13 +521,22 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
 //send email to user__________________________________________________________
 function sendEmail(res, transaction_ID, condition, email){
 
-    const message = `Your reservation request is ${condition} by the admin. Transaction ID: ${transaction_ID}.`
+    let data = {
+        header: 'Reservation', 
+        message: `Your reservation request is ${condition} by the admin. Transaction ID: ${transaction_ID}.`
+    }
 
     transporter.sendMail({
         from: process.env.USER_MAIL,
         to: email,
         subject: 'Reservation message',
-        text: message
+        template: 'mail_template',
+        context: data,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
     }, (err, info) => {});
 
     res.json({ response: 'success'});
@@ -599,12 +640,23 @@ router.post('/cancelReservation', middleware_user, async (req, res) => {
                 }).save().then(() => {
 
                     //Send gmail to admin________________________________________________________
-                    const message = `The user is cancel the reservation. Transaction ID: ${data.transaction_id}`;
+
+                    let data = {
+                        header: 'Reservation', 
+                        message: `The user is cancel the reservation. Transaction ID: ${data.transaction_id}`
+                    }
+
                     transporter.sendMail({
                         from: email,
                         to: process.env.USER_MAIL,
                         subject: 'Reservation message',
-                        text: message
+                        template: 'mail_template',
+                        context: data,
+                        attachments: [{
+                            filename: 'logo.png',
+                            path: './src/assets/logo/logo.png',
+                            cid: 'logo'
+                        }]
                     }, (err, info) => {});
 
                     res.json({ response: 'success'});

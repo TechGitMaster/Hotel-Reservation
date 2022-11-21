@@ -20,6 +20,7 @@ const inboxes_column_user = require('../databases/inboxes_user_column')('user_pe
 const middleware = require('./authorization');
 
 const nodemailer = require('nodemailer');
+const hbs = require("nodemailer-express-handlebars");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -27,6 +28,18 @@ const transporter = nodemailer.createTransport({
         pass: process.env.PASSWORD_MAIL
     }
 });
+
+const handlebarOptions = {
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: './nodejs/views/',
+      defaultLayout: false,
+    },
+    viewPath: './nodejs/views/',
+    extName: ".handlebars",
+}
+
+transporter.use('compile', hbs(handlebarOptions));
 
 
 //Get Accept, Decline Data mails router___________________________________________________________________________
@@ -248,13 +261,22 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
 //send email to user__________________________________________________________
 function sendEmail(res, transaction_ID, condition, email){
 
-    const message = `Your Appointment request is ${condition} by the admin. ${transaction_ID !== '' ? 'Transaction ID: '+transaction_ID:''}`
+    let data = {
+        header: 'Appointment', 
+        message: `Your Appointment request is ${condition} by the admin. ${transaction_ID !== '' ? 'Transaction ID: '+transaction_ID:''}`
+    }
 
     transporter.sendMail({
         from: process.env.USER_MAIL,
         to: email,
         subject: 'Appointment message',
-        text: message
+        template: 'mail_template',
+        context: data,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
     }, (err, info) => {});
 
     res.json({ response: 'success' });

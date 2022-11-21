@@ -21,6 +21,7 @@ const notification_col = notification_db('user_notification');
 const notification_click_col = notification_db('user_notification_click');
 
 const nodemailer = require('nodemailer');
+const hbs = require("nodemailer-express-handlebars");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -29,6 +30,17 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+const handlebarOptions = {
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: './nodejs/views/',
+      defaultLayout: false,
+    },
+    viewPath: './nodejs/views/',
+    extName: ".handlebars",
+}
+
+transporter.use('compile', hbs(handlebarOptions));
 
 //This is for getting Current Appointment Schedule____________________________________________
 router.get('/getAllSched', middleware_admin, async (req, res) => {
@@ -193,13 +205,22 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
 //send email to user__________________________________________________________
 function sendEmail(res, transaction_ID, reserved_email, email){
 
-    const message = `Your Appointment request is cancelled by the admin. Transaction ID: ${transaction_ID}`;
+    let data = {
+        header: 'Appointment', 
+        message: `Your Appointment request is cancelled by the admin. Transaction ID: ${transaction_ID}`
+    }
 
     transporter.sendMail({
         from: process.env.USER_MAIL,
         to: reserved_email,
         subject: 'Appointment message',
-        text: message
+        template: 'mail_template',
+        context: data,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
     }, (err, info) => {});
 
     if(email !== ''){

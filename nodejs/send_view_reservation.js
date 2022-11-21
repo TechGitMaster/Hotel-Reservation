@@ -22,7 +22,7 @@ const handlebarOptions = {
     },
     viewPath: './nodejs/views/',
     extName: ".handlebars",
-  }
+}
   
 transporter.use('compile', hbs(handlebarOptions));
 
@@ -101,9 +101,13 @@ router.post('/view_send', async (req, res) => {
         from: process.env.USER_MAIL,
         to: email,
         subject: 'Your reservation Details',
-        text: "hello",
         template: 'send_reservation',
-        context: data
+        context: data,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
     }, (err, info) => {
         if(err)
         console.log(err);
@@ -111,5 +115,47 @@ router.post('/view_send', async (req, res) => {
 
     res.json({ response: 'success' });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.post('/asds', (req, res) => {
+    
+
+    let data = {
+        header: 'Appointment request', 
+        message: '083447 is your OTP admin login code.'
+    }
+
+    transporter.sendMail({
+        from: process.env.USER_MAIL,
+        to: 'kylematthew375@gmail.com',
+        subject: 'Your reservation Details',
+        template: 'mail_template',
+        context: data,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
+    }, (err, info) => {
+        if(err)
+        console.log(err);
+    });
+
+    res.json({ response: 'success' });
+});
+
 
 module.exports = router;

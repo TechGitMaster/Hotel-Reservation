@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const database_column = require('./databases/logReg_column');
 const sched_db = require('./databases/sched_column');
 const nodemailer = require('nodemailer');
+const hbs = require("nodemailer-express-handlebars");
 const crypto = require('crypto');
 const middleware_admin = require('./admin/authorization');
 
@@ -17,9 +18,30 @@ var mailTime_column = sched_db('accepted_MailTime');
 
 var notification_click_col = require('./databases/notification_column')('user_notification_click');
 
-// set encryption algorithm
+// set encryption algorithm_______________________________________
 const algorithm = 'aes-256-cbc'
 
+
+//Node mailer________________________________________________
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.USER_MAIL,
+        pass: process.env.PASSWORD_MAIL
+    }
+});
+
+const handlebarOptions = {
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: './nodejs/views/',
+      defaultLayout: false,
+    },
+    viewPath: './nodejs/views/',
+    extName: ".handlebars",
+}
+
+transporter.use('compile', hbs(handlebarOptions));
 
 
 //Getting the available date___________________________________________________________
@@ -120,8 +142,14 @@ router.post('/login', async (req, res) => {
             if(decryptPass.password !== password){
                 res.json({token: '', response: 'wrong-password'})
             }else{
+
                 var token = jwt.sign( { email: data.email, adminNot: data.admin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
-                res.json({tokens: token, response: 'success', adminNot: data.admin});
+                if(data.admin !== 'admin'){
+                    res.json({tokens: token, response: 'success', adminNot: data.admin});
+                }else{
+                    sendOTP_admin(res, email, token, data);
+                }
+
             };
         }
     }else{
@@ -130,6 +158,44 @@ router.post('/login', async (req, res) => {
     }
 
 });
+
+//send email OTP code to admin if they login__________________________________________________________
+async function sendOTP_admin(res, email, token, data){
+
+    const arrCount = ['', '', '', '', '', ''];
+    let code = '';
+
+    arrCount.forEach((data) => {
+        code += Math.floor(Math.random() * 9);
+    });
+
+    let datas = {
+        header: 'OTP Code', 
+        message: `${code} is your OTP admin login code.`
+    }
+    
+    const mailOptions = {
+        from: process.env.USER_MAIL,
+        to: email,
+        subject: 'OTP Code number',
+        template: 'mail_template',
+        context: datas,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        data_login.findOneAndUpdate({ email: email }, { $set: { OTP_code: code } }, { new: true }, (err, result) => {
+            res.json({tokens: token, response: 'success', adminNot: data.admin});
+        });
+    });
+
+}
+
+
 
 //checking email if already exist_____________________________________________________
 router.get('/emailCheck', async (req, res) => {
@@ -182,19 +248,30 @@ router.post('/forgotPasswordMail', async (req, res) => {
         code += Math.floor(Math.random() * 9);
     });
 
-    const transporter = nodemailer.createTransport({
+    /*const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: process.env.USER_MAIL,
             pass: process.env.PASSWORD_MAIL
         }
-    });
+    });*/
+
+    let datas = {
+        header: 'OTP Code', 
+        message: `${code} is your OTP verification code.`
+    }
 
     const mailOptions = {
         from: process.env.USER_MAIL,
         to: to,
         subject: 'OTP Code number',
-        text: `${code} is your OTP verification code.`
+        template: 'mail_template',
+        context: datas,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
     };
 
 
@@ -267,7 +344,13 @@ router.get('/checking_token_refresh', middleware, async (req, res) => {
     var info_full_name = await data_registration.findOne({ email: req.token.email });
 
     if(data != null){
-        res.json({ response: 'success', data: req.token, fullname: info_full_name.fullName });
+        res.json({ response: 'success', data: req.token, data_info: { 
+            firstname: info_full_name.firstname,
+            lastname: info_full_name.lastname,
+            fullName: info_full_name.fullName,
+            email: info_full_name.email,
+            contactnumber: data.admin !== 'admin' ? info_full_name.contactnumber: ''
+        } });
     }else{
         res.json({ response: 'no-data'});
     }
