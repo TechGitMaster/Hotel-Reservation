@@ -381,6 +381,29 @@
     justify-content: center;
 }
 
+.leaveMessageDiv{
+    width:600px;
+    min-height:220px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+}
+
+.paleaveM{
+    font-family: inter_bold;
+    color:#0063A8;
+    font-size:20px;
+    margin: 0%;
+}
+
+.forminputtextarea{
+    width:100%;
+    height:220px;
+    border-radius: 10px;
+    padding:10px;
+    border:1px solid rgb(0, 0, 0);
+}
+
 .paSuccessChange{
     width: 80%;
     margin:0px 0px 10px 0px;
@@ -826,6 +849,38 @@
     padding: 10px 0px 10px 0px;
     margin-top:5px;
     font-size:15px;
+}
+
+.confirmBttn{
+    width:49%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    margin-right:10px;
+    padding: 10px 0px 10px 0px;
+    font-size:15px;
+}
+
+.dischargeBttn{
+    width:49%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#b02a37;
+    text-align: center;
+    border:none;
+    color:white;
+    padding: 10px 0px 10px 0px;
+    font-size:15px;
+}   
+
+.selecting{
+    padding:10px 5px 10px 5px;
+    border-radius: 10px;
+    border:1px solid black;
+    margin:0px 0px 15px 0px;
 }
 
 

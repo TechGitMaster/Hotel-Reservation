@@ -222,43 +222,83 @@ export class AppointmentComponent implements OnInit {
   accept_Decline(numbs: number, condition: boolean): void{
 
     if(this.dataAppointmentSelected.length != -1){
-
       let data = this.dataAppointmentSelected[numbs] as mails;
-      this.subs = this.service.acceptDecline(data._id, condition, true, this.date_converting()).subscribe((result) => {
-        this.subs.unsubscribe();
-        if(result.response !== 'have'){
-          this.skip = 0;
-          this.limit = 25;
-          this.countDataAll = 0;
-          this.getData();
+      if(condition){
 
-          this.service.emit_socket_notification(data.email);
-        }else{
-          this.service.openCall(new Array<any>("haveSame", "Already listed", "Are you sure you want to accept the appointment that has been listed to your schedule?"));
-          this.subsAD = this.service.backEmitter.subscribe((result) => {
-            this.subsAD.unsubscribe();
-            if(result[0]){
-              if(result[1]){
-                this.subs = this.service.acceptDecline(data._id, condition, false, this.date_converting()).subscribe((res) => {
-                  this.subs.unsubscribe();
+        //Accept____________________________________________________________
+        this.service.openCall(new Array<any>("haveSame", "Accept request", "Are you sure you want to accept this request?"));
 
-                  this.toRestart();
-
-                  this.service.emit_socket_notification(data.email);
-                },(error) => 
-                {
-                  this.subs.unsubscribe();
-                  location.reload()
+        this.subsAD = this.service.backEmitter.subscribe((result) => {
+          this.subsAD.unsubscribe();
+          if(result[1]){
+            this.subs = this.service.acceptDecline(data._id, condition, true, this.date_converting(), '').subscribe((result) => {
+              this.subs.unsubscribe();
+              if(result.response !== 'have'){
+                this.skip = 0;
+                this.limit = 25;
+                this.countDataAll = 0;
+                this.getData();
+      
+                this.service.emit_socket_notification(data.email);
+              }else{
+                this.service.openCall(new Array<any>("haveSame", "Already listed", "Are you sure you want to accept the appointment that has been listed to your schedule?"));
+                this.subsAD = this.service.backEmitter.subscribe((result) => {
+                  this.subsAD.unsubscribe();
+                  if(result[0]){
+                    if(result[1]){
+                      this.subs = this.service.acceptDecline(data._id, condition, false, this.date_converting(), '').subscribe((res) => {
+                        this.subs.unsubscribe();
+      
+                        this.toRestart();
+      
+                        this.service.emit_socket_notification(data.email);
+                      },(error) => 
+                      {
+                        this.subs.unsubscribe();
+                        location.reload()
+                      });
+                    }
+                  }
                 });
               }
-            }
-          });
-        }
-      }, (error) => 
-      {
-        this.subs.unsubscribe();
-        location.reload()
-      });
+            }, (error) => 
+            {
+              this.subs.unsubscribe();
+              location.reload()
+            }); 
+          }
+        });
+      }else{
+        
+        //Decline_______________________________________________________________
+        this.service.openCall(new Array<any>("haveSame", "Decline request", "Are you sure you want to decline this request?"));
+        this.subsAD = this.service.backEmitter.subscribe((result) => {
+          this.subsAD.unsubscribe();
+          if(result[1]){
+
+            this.service.openCall(new Array<any>("leaveMessage", "decline"));
+            this.subsAD = this.service.backEmitter.subscribe((result) => {
+              this.subsAD.unsubscribe();
+
+              if(result[0]){
+                this.subs = this.service.acceptDecline(data._id, condition, true, this.date_converting(), result[1]).subscribe((result) => {
+                  this.subs.unsubscribe();
+                  if(result.response !== 'have'){
+                    this.skip = 0;
+                    this.limit = 25;
+                    this.countDataAll = 0;
+                    this.getData();
+          
+                    this.service.emit_socket_notification(data.email);
+                  }
+                });
+              }
+
+            });
+          }
+        });
+
+      }
     }
   }
 

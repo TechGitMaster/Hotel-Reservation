@@ -46,7 +46,7 @@
 
                     <!--__SEARCHING__-->
                     <div style="display: flex;">
-                        <input type="text" placeholder="search..." class="form-control txtSearch" (input)="inputNs($event)" />
+                        <input type="text" placeholder="Search transaction id..." class="form-control txtSearch" (input)="inputNs($event)" />
                         <button *ngIf="inputN" class="btn btn-primary btnclear" (click)="clickClear()">Clear</button>
                         <button class="btn btn-primary btnSearch" (click)="clickSearch()">Search</button>
                     </div>
@@ -57,10 +57,10 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                       <tr>
-                        <th scope="col">Short Info</th>
+                        <th scope="col">Transaction ID</th>
+                        <th scope="col">Short info</th>
                         <th scope="col">Date arrival</th>
                         <th scope="col">Transaction date</th>
-                        <th scope="col">Transaction id</th>
                         <th scope="col">Action</th>
                       </tr>
                     </thead>
@@ -75,12 +75,12 @@
 
                       <!--____MAKING REQUEST____-->
                       <tr *ngFor="let data of dataAppointmentSelected; index as indexes">
+                        <td>{{data.transaction_ID}}</td>
                         <td>
                           <div>{{data.fullname}} |<br/>{{data.reserved_email}}</div>
                         </td>
                         <td>{{timeDate_converted(data.dateArrival)}}</td>
                         <td>{{data.timeDate}}</td>
-                        <td>{{data.transaction_ID}}</td>
                         <td>
                             <div style="display: flex;justify-content: center;">
                                 <div style="display: flex;" *ngIf="data.acceptedNot === 'new' && str_radioCondition === 'all'">

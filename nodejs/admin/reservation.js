@@ -48,7 +48,7 @@ transporter.use('compile', hbs(handlebarOptions));
 //Save reservation request made by user___________________________________________________
 router.post('/saveReservation', middleware_user, async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
-        last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member} = req.body.data;
+        last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member, acquired_days} = req.body.data;
     const { token } = req;  
     var _id = mongoose.Types.ObjectId();
 
@@ -89,6 +89,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                             checkin_date: checkin_date,
                             checkout_date:  checkout_date,
                             acquired_persons: acquired_persons,
+                            acquired_days: acquired_days,
                             persons_price: persons_price,
                             total_day_price: total_day_price,
                             total_price: total_price,
@@ -130,9 +131,10 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                             }).save().then(() => {
 
                                 //Send gmail to admin________________________________________________________
-                                let data = {
+                                let datas = {
                                     header: 'Reservation', 
-                                    message: `New reservation request. Transaction ID: ${transcation_id}.`
+                                    message: `New reservation request. Transaction ID: ${transcation_id}.`,
+                                    reason: ''
                                 }
 
                                 transporter.sendMail({
@@ -140,7 +142,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                                     to: process.env.USER_MAIL,
                                     subject: 'Reservation request',
                                     template: 'mail_template',
-                                    context: data,
+                                    context: datas,
                                     attachments: [{
                                         filename: 'logo.png',
                                         path: './src/assets/logo/logo.png',
@@ -188,6 +190,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
             checkin_date: checkin_date,
             checkout_date:  checkout_date,
             acquired_persons: acquired_persons,
+            acquired_days: acquired_days,
             persons_price: persons_price,
             total_day_price: total_day_price,
             total_price: total_price,
@@ -251,9 +254,10 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 }).save().then(() => {
                     
                     //Send gmail to admin________________________________________________________
-                    let data = {
+                    let datas = {
                         header: 'Reservation request', 
-                        message: `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`
+                        message: `The reservation of the room has already have paid by the user using paypal as payment. Transaction ID: ${transcation_id}.`,
+                        reason: ''
                     }
 
                     transporter.sendMail({
@@ -261,7 +265,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                         to: process.env.USER_MAIL,
                         subject: 'Paid staycation room',
                         template: 'mail_template',
-                        context: data,
+                        context: datas,
                         attachments: [{
                             filename: 'logo.png',
                             path: './src/assets/logo/logo.png',
@@ -425,7 +429,7 @@ router.post('/getReservation', middleware_user, async (req, res) => {
 
 //Accept and decline reservation request______________________________________________________________
 router.post('/A-D_Request', middleware_admin, async (req, res) => {
-    const { id, room_id, email_id, confirmation_date, condition } = req.body;
+    const { id, room_id, email_id, confirmation_date, condition, reason } = req.body;
 
     let data_admin = await data_reg.findOne({ email: req.token.email });
 
@@ -477,7 +481,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
                             { $set: { number: numbers, clicked: true } }).then(() => {
 
                             //send mail to the user_______________________________________
-                            sendEmail(res, data.transaction_id, 'accepted', data.email)
+                            sendEmail(res, data.transaction_id, 'accepted', data.email, reason)
                         });
                     }); 
 
@@ -497,7 +501,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
             new notification_col({
                 email: email_id,
                 name: data_admin.fullName,
-                message: `Your reservation request has been declined by the admin. Transaction ID: ${data.transaction_id}`,
+                message: `Your reservation request has been declined by the admin. Transaction ID: ${data.transaction_id}${(reason.length > 0 ? ' ... Reason: '+reason:'')}`,
                 date: confirmation_date,
                 deleteNot: 'new'
             }).save().then(async () => {
@@ -509,7 +513,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
                     { $set: { number: numbers, clicked: true } }).then(() => {
 
                     //send mail to the user_______________________________________
-                    sendEmail(res, data.transaction_id, 'declined', data.email)
+                    sendEmail(res, data.transaction_id, 'declined', data.email, reason)
                 });
             }); 
 
@@ -519,13 +523,19 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
 });
 
 //send email to user__________________________________________________________
-function sendEmail(res, transaction_ID, condition, email){
+function sendEmail(res, transaction_ID, condition, email, reason){
 
     let data = {
         header: 'Reservation', 
-        message: `Your reservation request is ${condition} by the admin. Transaction ID: ${transaction_ID}.`
+        contact: (condition === 'accepted' ? "For more details for your appointment, please contact +63 917 813 1524.":''),
+        message: 
+        condition === 'accepted' ? `We are pleased to inform you that your reservation has been confirmed! Your Transaction ID: ${transaction_ID}
+        Rest assured that you will be there in the set time and date that you choose.`:
+        `We regret to inform you that your reservation has been declined. Your Transaction ID: ${transaction_ID} 
+        `,
+        reason: (reason.length > 0 ? 'Reason: '+reason:'')
     }
-
+    
     transporter.sendMail({
         from: process.env.USER_MAIL,
         to: email,
@@ -641,17 +651,19 @@ router.post('/cancelReservation', middleware_user, async (req, res) => {
 
                     //Send gmail to admin________________________________________________________
 
-                    let data = {
+                    let datas = {
                         header: 'Reservation', 
-                        message: `The user is cancel the reservation. Transaction ID: ${data.transaction_id}`
+                        message: `The user is cancel the reservation. Transaction ID: ${data.transaction_id}`,
+                        reason: ''
                     }
 
+                    
                     transporter.sendMail({
                         from: email,
                         to: process.env.USER_MAIL,
                         subject: 'Reservation message',
                         template: 'mail_template',
-                        context: data,
+                        context: datas,
                         attachments: [{
                             filename: 'logo.png',
                             path: './src/assets/logo/logo.png',

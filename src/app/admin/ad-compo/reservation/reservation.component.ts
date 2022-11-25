@@ -228,33 +228,76 @@ export class ReservationComponent implements OnInit {
     if(this.dataReservationSelected.length > 0){
       let data_handle = this.dataReservationSelected[numbs] as reservation;
       var dates = this.date_converting();
-      this.subs = this.service.accept_declineReservation(data_handle._id, data_handle.room_id, data_handle.email_id, dates, condition).subscribe((res) => {
-        this.subs.unsubscribe();
 
-        if(res.response === 'success'){
-          this.dataReservationSelected[numbs].confirmNot = `${condition}`;
-          this.dataReservationSelected[numbs].confirmation_date = dates;
+      if(condition){
 
-          this.service.emit_socket_notification(data_handle.email_id);
-
-          this.skip = 0;
-          this.limit = 25;
-          this.countDataAll = 0;
-          this.getData();
-
-        }else{
-          //alert reserved_________________________________
-          if(res.response === 'not'){
-            this.service.emitCall(new Array<any>("warning", "Already reserved", "The room is already reserved by someone."));
-          }else{
-            this.service.emitCall(new Array<any>("warning", "Deleted room", "This room is not exist on available rooms. To check if still exist, check it on your trash. If not maybe you deleted it."));
+        //Accept_________________________________________________________________
+        this.service.openCall(new Array<any>("haveSame", "Accept request", "Are you sure you want to accept this request?"));
+        this.subs = this.service.backEmitter.subscribe((result) => {
+          this.subs.unsubscribe();
+          if(result[1]){
+            this.subs = this.service.accept_declineReservation(data_handle._id, data_handle.room_id, data_handle.email_id, dates, condition, '').subscribe((res) => {
+              this.subs.unsubscribe();
+              if(res.response === 'success'){
+                this.dataReservationSelected[numbs].confirmNot = `${condition}`;
+                this.dataReservationSelected[numbs].confirmation_date = dates;
+      
+                this.service.emit_socket_notification(data_handle.email_id);
+      
+                this.skip = 0;
+                this.limit = 25;
+                this.countDataAll = 0;
+                this.getData();
+      
+              }else{
+                //alert reserved_________________________________
+                if(res.response === 'not'){
+                  this.service.emitCall(new Array<any>("warning", "Already reserved", "The room is already reserved by someone."));
+                }else{
+                  this.service.emitCall(new Array<any>("warning", "Deleted room", "This room is not exist on available rooms. To check if still exist, check it on your trash. If not, maybe you deleted it."));
+                }
+              }
+      
+            }, (err) => {
+              this.subs.unsubscribe();
+              location.reload();
+            });
           }
-        }
+        });
+      }else{
 
-      }, (err) => {
-        this.subs.unsubscribe();
-        location.reload();
-      });
+        //Decline__________________________________________________________________
+        this.service.openCall(new Array<any>("haveSame", "Decline request", "Are you sure you want to decline this request?"));
+        this.subs = this.service.backEmitter.subscribe((result) => {
+          this.subs.unsubscribe();
+          if(result[1]){
+
+            this.service.openCall(new Array<any>("leaveMessage", "decline"));
+            this.subs = this.service.backEmitter.subscribe((result) => {
+              this.subs.unsubscribe();
+
+              if(result[0]){
+                this.subs = this.service.accept_declineReservation(data_handle._id, data_handle.room_id, data_handle.email_id, dates, condition, result[1]).subscribe((res) => {
+                  this.subs.unsubscribe();
+                  this.dataReservationSelected[numbs].confirmNot = `${condition}`;
+                  this.dataReservationSelected[numbs].confirmation_date = dates;
+          
+                  this.service.emit_socket_notification(data_handle.email_id);
+          
+                  this.skip = 0;
+                  this.limit = 25;
+                  this.countDataAll = 0;
+                  this.getData();
+          
+                }, (err) => {
+                  this.subs.unsubscribe();
+                  location.reload();
+                });
+              }
+            });
+          }
+        });
+      }
     }
   }
 

@@ -269,9 +269,9 @@ export class AdServiceService {
     { skip: skip, limit: limit, radioCondition: radioCondition, searchingNot: searchingNot, searchString: searchString});
   }
 
-  accept_declineReservation(id: string, room_id: string, email_id: string, confirmation: string, condition: boolean): Observable<any>{
-    console.log(id);
-    return this.http.post<any>('/A-D_Request', { id: id, room_id: room_id,  email_id: email_id, confirmation_date: confirmation, condition: condition});
+  accept_declineReservation(id: string, room_id: string, email_id: string, confirmation: string, condition: boolean, reason: string): Observable<any>{
+    return this.http.post<any>('/A-D_Request', { id: id, room_id: room_id,  email_id: email_id, confirmation_date: confirmation, condition: condition,
+    reason: reason});
   }
 
   deleteReservation_tempo(id: string, room_id: string, email_id: string): Observable<any>{
@@ -335,9 +335,9 @@ export class AdServiceService {
     { skip: skip, limit: limit, radioCondition: radioCondition, searchingNot: searchingNot, searchString: searchString});
   }
 
-  acceptDecline(id: string, condition: boolean, firstFirst: boolean, str: string): Observable<any>{
+  acceptDecline(id: string, condition: boolean, firstFirst: boolean, str: string, reason: string): Observable<any>{
     return this.http.post<any>('/acceptDecline_Appointments', 
-    { datas: { id: id, condition: String(condition), firstFirst: firstFirst, date: str } });
+    { datas: { id: id, condition: String(condition), firstFirst: firstFirst, date: str, reason: reason } });
   }
 
   moveTo_trash_appointment(id: string): Observable<any>{

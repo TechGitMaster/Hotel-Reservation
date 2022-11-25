@@ -220,6 +220,10 @@
                                                 </p>
                                             </div>
                                         </div>
+                                        
+                                        <div style="margin:15px 0px 0px 0px;">
+                                            <p style="text-align: center;color:white;font-size:14px;font-family: inter_medium;">Start from 2 pm to 12 noon</p>
+                                        </div>
 
                                         <!--___DETAILS___-->
                                         <div style="margin-top:20px;">
@@ -237,23 +241,23 @@
                                             </div>
 
                                             <div class="paDetailsMiddle">
-                                                <span style="font-family: inter_medium !important;">{{object_roomSelected.acquired_persons}} person/s:</span>
-                                                <span>{{object_roomSelected.persons_price}}</span>
+                                                <span style="font-family: inter_medium !important;">{{object_roomSelected.acquired_persons}} price additional pax:</span>
+                                                <span>php {{object_roomSelected.persons_price}}</span>
                                             </div>
 
                                             <div class="paDetailsMiddle">
-                                                <span style="font-family: inter_medium !important;">Total rate a day:</span>
-                                                <span>{{object_roomSelected.total_day_price}}</span>
+                                                <span style="font-family: inter_medium !important;">Price rate per another day:</span>
+                                                <span>php {{object_roomSelected.total_day_price}}</span>
                                             </div>
 
                                             <div class="paDetailsMiddle">
                                                 <span style="font-family: inter_medium !important;">Rate:</span>
-                                                <span>{{object_roomSelected.defaultPrice}}.00</span>
+                                                <span>php {{object_roomSelected.defaultPrice}}.00</span>
                                             </div>
 
                                             <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
                                                 <span>Total</span>
-                                                <span>{{object_roomSelected.total_price}}</span>
+                                                <span>php {{object_roomSelected.total_price}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -426,7 +430,7 @@
                             </div>
                         </div>
                         <div class="fieldR">
-                            <label class="labels">Good for persons:</label>
+                            <label class="labels">Good for pax:</label>
                             <input type="text" formControlName="goodPersons" (input)="funcOnlynumber(1)" class="form-control forminput fs2" />
                             <div *ngIf="conditionErr[3][1]">
                                 <span class="paError">{{conditionErr[3][0]}}</span>
@@ -435,7 +439,7 @@
                     </div>
 
                     <div class="fieldR">
-                        <label class="labels">Price per person:</label>
+                        <label class="labels">Price additional pax:</label>
                         <input type="text" formControlName="pricePersons" (input)="funcOnlynumber(2)" class="form-control forminput fs3" />
                         <div *ngIf="conditionErr[4][1]">
                             <span class="paError">{{conditionErr[4][0]}}</span>

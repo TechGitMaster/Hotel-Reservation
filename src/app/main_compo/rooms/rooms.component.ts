@@ -119,7 +119,7 @@ export class RoomsComponent implements OnInit {
     this.txt_availableNot = 'Select room';
 
     let doc = <HTMLSelectElement>document.querySelector('.selectSS');
-    doc.value = 'Person';
+    doc.value = 'Pax';
 
     this.final_converted_data = new Array<getRoomsLandpage>();
     this.condition_have_room = false;
@@ -308,7 +308,7 @@ export class RoomsComponent implements OnInit {
           alert('Select a room.');
         }
       }else{
-        alert('Select how many person.');
+        alert('Select how many pax.');
       }
     }else{
       if(this.checkIn_mess === 'Check in date'){

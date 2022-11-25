@@ -46,7 +46,7 @@
 
                     <!--__SEARCHING__-->
                     <div style="display: flex;">
-                        <input type="text" placeholder="search..." class="form-control txtSearch" (input)="inputNs($event)" />
+                        <input type="text" placeholder="Search transaction id..." class="form-control txtSearch" (input)="inputNs($event)" />
                         <button *ngIf="inputN" class="btn btn-primary btnclear" (click)="clickClear()">Clear</button>
                         <button class="btn btn-primary btnSearch" (click)="clickSearch()">Search</button>
                     </div>
@@ -57,12 +57,12 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                       <tr>
+                        <th scope="col">Transaction ID</th>
                         <th scope="col">Room name</th>
                         <th scope="col">Type of room</th>
                         <th scope="col">Full name</th>
-                        <th scope="col">Transaction ID</th>
                         <th scope="col">Transaction date</th>
-                        <th scope="col">Pay method</th>
+                        <th scope="col">Payment method</th>
                         <th scope="col">Action</th>
                       </tr>
                     </thead>
@@ -77,10 +77,10 @@
 
                       <!--____MAKING REQUEST____-->
                       <tr *ngFor="let data of dataReservationSelected; index as indexes">
+                        <td>{{ data.transaction_id }}</td>
                         <th>{{data.name_room}}</th>
                         <td>{{data.typeRoom2}}</td>
                         <td>{{ data.first_name }} {{ data.last_name }}</td>
-                        <td>{{ data.transaction_id }}</td>
                         <td>{{ data.transaction_date }}</td>
                         <td>{{ (data.paymentMethod === 'payment1' ? 'Gcash':'Paypal') }}</td>
                         <td>

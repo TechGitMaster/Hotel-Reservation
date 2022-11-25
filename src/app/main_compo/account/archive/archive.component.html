@@ -389,6 +389,10 @@
                                             </p>
                                         </div>
                                     </div>
+
+                                    <div style="margin:15px 0px 0px 0px;">
+                                        <p style="text-align: center;color:white;font-size:14px;font-family: inter_medium;">Start from 2 pm to 12 noon</p>
+                                    </div>
     
                                     <!--___DETAILS___-->
                                     <div style="margin-top:20px;">
@@ -406,23 +410,23 @@
                                         </div>
     
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">{{arr_selected_data[0].acquired_persons}} person/s:</span>
-                                            <span>{{arr_selected_data[0].persons_price}}</span>
+                                            <span style="font-family: inter_medium !important;">{{arr_selected_data[0].acquired_persons}} price additional pax:</span>
+                                            <span>php {{arr_selected_data[0].persons_price}}</span>
                                         </div>
     
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Total rate a day:</span>
-                                            <span>{{arr_selected_data[0].total_day_price}}</span>
+                                            <span style="font-family: inter_medium !important;">Price rate per another day:</span>
+                                            <span>php {{arr_selected_data[0].total_day_price}}</span>
                                         </div>
     
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
                                             <span style="font-family: inter_medium !important;">Rate:</span>
-                                            <span>{{arr_selected_data[0].defaultPrice}}.00</span>
+                                            <span>php {{arr_selected_data[0].defaultPrice}}.00</span>
                                         </div>
     
                                         <div class="pdetails paDetailsMiddle-font" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
                                             <span>Total</span>
-                                            <span>{{arr_selected_data[0].total_price}}</span>
+                                            <span>php {{arr_selected_data[0].total_price}}</span>
                                         </div>
                                     </div>
                                 </div>

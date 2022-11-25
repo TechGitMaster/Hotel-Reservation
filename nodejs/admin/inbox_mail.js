@@ -234,8 +234,8 @@ router.post('/getCountsDashboard', middleware_admin, async (req, res) => {
 //Get inbox mail admin__________________________________________________________
 router.post('/getinboxAdmin', middleware_admin, async (req, res) => {
     const { skip, limit } = req.body.data;
-    const data = await inbox_col.find({ appointmentNot: { $ne: 'appointment' } }).sort({ createdAt: 'descending' }).skip(skip).limit(limit);
-    const count_data = await inbox_col.find();
+    const data = await inbox_col.find({ appointmentNot: 'appointments_message' }).sort({ createdAt: 'descending' }).skip(skip).limit(limit);
+    const count_data = await inbox_col.find({ appointmentNot: 'appointments_message' });
     if(data.length > 0){
         res.json({ response: 'success', data: data, count_data: count_data.length });
     }else{

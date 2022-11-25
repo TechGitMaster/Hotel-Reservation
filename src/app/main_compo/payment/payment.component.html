@@ -92,7 +92,7 @@
     <!--______________________Show alert window for timer___________________-->
     <div class="container-fluid containerloginSignup"  *ngIf="arrHandle[0] === 'showing_alertWindow'" (click)="arrHandle[0] = ''">
         <div class="container divSuccesss" (click)="$event.stopPropagation()">
-            <p class="paSuccess paSuccess-font">You only have {{txt_alertWindow}} time left!</p>
+            <p class="paSuccess paSuccess-font">You only have {{txt_alertWindow}} {{st_timerS}} left!</p>
             <button class="btn btn-primary successBttn successBttn-font" (click)="arrHandle[0] = ''">Close</button>
         </div>
     </div>
@@ -135,7 +135,7 @@
         <div *ngIf="condition_paymentSection" class="container" style="max-width:1230px;padding:15px 10px 15px 10px;">
             <!--______Time sessions________-->
             <div class="timeDiv timeDiv-font">
-                Page will expired in: <span style="color:red;">{{st_session}} minutes</span>
+                Page will expired in: <span style="color:red;">{{st_session}} {{st_timerS}}</span>
             </div>
 
             <!--______Enter THE details______-->
@@ -399,7 +399,7 @@
                         </div>
 
                         <div class="dateCheckInOut">
-                            <span><span style="font-family: inter_bold;">{{day_count_reservation}} night\s: </span> 
+                            <span><span style="font-family: inter_bold;">{{day_count_reservation}} day\s 2pm to 12nn: </span> 
                             <span style="font-family: inter_medium;">{{day_checkInOut_convert}}</span></span>
                         </div>
 
@@ -412,12 +412,12 @@
                             </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold;">{{token_convert.personsCount}} person\s total:</span>
+                                <span style="font-family: inter_semibold;">{{token_convert.personsCount}} price additional pax:</span>
                                 <span style="font-family: inter_regular;">php {{person_total}}</span>
                             </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold">Total rate per day:</span>
+                                <span style="font-family: inter_semibold">Price rate per another day:</span>
                                 <span style="font-family: inter_regular;">php {{total_price_perDay}}</span>
                             </div>
                         </div>
@@ -566,6 +566,10 @@
                                         </div>
                                     </div>
 
+                                    <div style="margin:15px 0px 0px 0px;">
+                                        <p style="text-align: center;color:white;font-size:14px;font-family: inter_medium;">Start from 2 pm to 12 noon</p>
+                                    </div>
+
                                     <!--___DETAILS___-->
                                     <div style="margin-top:20px;">
                                         <div class="pdetails pdetails-font">Details</div>
@@ -587,12 +591,12 @@
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">{{token_convert.personsCount}} person\s total:</span>
+                                            <span style="font-family: inter_medium !important;">{{token_convert.personsCount}} price additional pax:</span>
                                             <span>php {{arr_data_savingInfo[4]}}</span>
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Total rate per day:</span>
+                                            <span style="font-family: inter_medium !important;">Price rate per another day:</span>
                                             <span>php {{arr_data_savingInfo[5]}}</span>
                                         </div>
 

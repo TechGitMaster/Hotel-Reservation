@@ -56,6 +56,7 @@ module.exports = (name_column) => {
                 checkin_date: { type: String, required: true },
                 checkout_date: { type: String, required: true },
                 acquired_persons: { type: String, required: true },
+                acquired_days: {type: String, required: true},
                 persons_price: { type: String, required: true },
                 total_day_price: { type: String, required: true },
                 total_price: { type: String, required: true },

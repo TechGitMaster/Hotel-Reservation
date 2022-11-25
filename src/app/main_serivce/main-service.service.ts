@@ -363,7 +363,8 @@ export class MainServiceService {
     { data: { room_id: data_info[0], checkin_date: data_info[1], checkout_date: data_info[2], acquired_persons: data_info[3], 
       persons_price: data_info[4], total_day_price: data_info[5], total_price: data_info[6], first_name: data_info[7],
       last_name: data_info[8], phone_number: data_info[9], email: data_info[10], image_transaction: data_info[11], 
-      transaction_date: data_info[12], paymentMethod: data_info[13], transcation_id: data_info[14], guest_member: data_info[15] } })
+      transaction_date: data_info[12], paymentMethod: data_info[13], transcation_id: data_info[14], guest_member: data_info[15],
+      acquired_days: data_info[16] } })
   }
 
   send_reservation_toUser(data_info: Array<any>): Observable<any>{

@@ -151,7 +151,7 @@ router.post('/getAppointment', middleware, async (req, res) => {
 
 //Accept or Decline Message appointment____________________________________________
 router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
-    var { id, condition, firstFirst, date } = req.body.datas;
+    var { id, condition, firstFirst, date, reason } = req.body.datas;
 
     let data_admin = await data_reg.findOne({ email: req.token.email });
 
@@ -207,14 +207,14 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                                         { $set: { number: numbers, clicked: true } }).then(() => {
 
                                         //send mail to the user_______________________________________
-                                        sendEmail(res, data.transaction_ID, 'accepted', data.reserved_email)
+                                        sendEmail(res, data.transaction_ID, 'accepted', data.reserved_email, data.dateArrival, reason)
                                     });
                                 }); 
 
                             });
                         }else{
                             //send email to the user_____________________________________
-                            sendEmail(res, data.transaction_ID, 'accepted', data.reserved_email)
+                            sendEmail(res, data.transaction_ID, 'accepted', data.reserved_email, data.dateArrival, reason)
                         }
                     });
                 });
@@ -231,7 +231,7 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                     new notification_col({
                         email: data.email,
                         name: data_admin.fullName,
-                        message: 'Your appointment has been declined by the admin. Transaction ID: '+data.transaction_ID,
+                        message: 'Your appointment has been declined by the admin. Transaction ID: '+data.transaction_ID+(reason.length > 0 ? ' ... Reason: '+reason:''),
                         date: date,
                         deleteNot: 'new'
                     }).save().then(async () => {
@@ -243,14 +243,14 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
                             { $set: { number: numbers, clicked: true } }).then(() => {
 
                             //send mail to the user_______________________________________
-                            sendEmail(res, data.transaction_ID, 'declined', data.reserved_email)
+                            sendEmail(res, data.transaction_ID, 'declined', data.reserved_email, data.dateArrival, reason)
                         });
                     }); 
 
                 });    
             }else{
                 //send email to the user_____________________________________
-                sendEmail(res, '', 'declined', data.reserved_email)
+                sendEmail(res, '', 'declined', data.reserved_email, data.dateArrival, reason)
             }
         }
     });
@@ -259,11 +259,20 @@ router.post('/acceptDecline_Appointments', middleware, async (req, res) => {
 
 
 //send email to user__________________________________________________________
-function sendEmail(res, transaction_ID, condition, email){
+function sendEmail(res, transaction_ID, condition, email, dateArrival, reason){
 
-    let data = {
+    let message = 
+    condition==='accepted' ? `We are pleased to inform you that your appointment on the ${dateArrival} has been approved! 
+        Your ${transaction_ID !== '' ? 'Transaction ID: '+transaction_ID:''} We look forward to your visit and we hope you enjoy your stay.`: 
+        `We regret to inform you that your appointment on ${dateArrival} has been declined
+        Your ${transaction_ID !== '' ? 'Transaction ID: '+transaction_ID:''}`
+    ;
+
+    let datas = {
         header: 'Appointment', 
-        message: `Your Appointment request is ${condition} by the admin. ${transaction_ID !== '' ? 'Transaction ID: '+transaction_ID:''}`
+        contact: (condition === 'accepted' ? "For more details for your appointment, please contact +63 917 813 1524.":''),
+        message: message,
+        reason: (reason.length > 0 ? 'Reason: '+reason:'')
     }
 
     transporter.sendMail({
@@ -271,7 +280,7 @@ function sendEmail(res, transaction_ID, condition, email){
         to: email,
         subject: 'Appointment message',
         template: 'mail_template',
-        context: data,
+        context: datas,
         attachments: [{
             filename: 'logo.png',
             path: './src/assets/logo/logo.png',

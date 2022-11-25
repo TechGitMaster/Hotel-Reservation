@@ -44,6 +44,7 @@ export class AdminComponent implements OnInit {
   condition_forPassword!: boolean;
   formGroup_newPassword!: FormGroup;
   formGroup_signup!: FormGroup;
+  formGroup_textarea!: FormGroup;
   img_selected: string = '';
 
   slidesStore: Array<string> = new Array<string>("https://cloudinary.com/console/c-9b3c2829918a5648a364c53cc49833/media_library/folders/home/asset/8003ae4935bbf364f99759586513f950/manage?context=manage");
@@ -76,6 +77,9 @@ export class AdminComponent implements OnInit {
       adminPassword: ['']
     });
     
+    this.formGroup_textarea = this.formBuild.group({
+      textarea: ['']
+    });
 
     this.getName();
   }
@@ -268,6 +272,30 @@ export class AdminComponent implements OnInit {
   yesNO(condition: boolean): void{
     this.conditionFixDiv = false;
     this.service.backEmitters(new Array<any>(true, condition, this.conditionTo_cancelDeleteSched));
+  }
+
+  confirmDischarge(condition: boolean): void{
+    this.conditionFixDiv = false;
+    this.service.backEmitters(new Array<any>(condition, this.formGroup_textarea.value.textarea));
+  }
+
+  condition_textArea_reason: boolean = false;
+  selection_reason(){
+    if(this.formGroup_textarea.value.textarea !== 'None'){
+      if(this.formGroup_textarea.value.textarea === 'Custom'){
+        this.condition_textArea_reason = true;
+        setTimeout(() => {
+          let element = <HTMLTextAreaElement>document.querySelector('.forminputtextarea');
+          element.value = "";
+          this.formGroup_textarea.value.textarea = "";
+        }, .1);
+      }else{
+        this.condition_textArea_reason = false;
+      }
+    }else{
+      this.condition_textArea_reason = false;
+      this.formGroup_textarea.value.textarea = '';
+    }
   }
 
 

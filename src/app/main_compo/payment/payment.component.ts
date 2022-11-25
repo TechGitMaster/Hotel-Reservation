@@ -46,7 +46,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   
   arr_img_transaction: Array<string> = new Array<string>();
   arr_blob_transaction: Array<any> = new Array<any>();
-  arr_data_savingInfo: Array<any> = new Array<any>('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  arr_data_savingInfo: Array<any> = new Array<any>('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
   errAppointment!: Array<any>;
   formGroup_payment!: FormGroup;
@@ -87,6 +87,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
           let checkIn_arr = this.token_convert.checkIn.split('-');
           let checkOut_arr = this.token_convert.checkOut.split('-');
           
+          //Convert to how many per day__________________________________________________________________________________
           let date1 = new Date(parseInt(checkIn_arr[0]), parseInt(checkIn_arr[1]), parseInt(checkIn_arr[2])) as any;
           let date2 = new Date(parseInt(checkOut_arr[0]), parseInt(checkOut_arr[1]), parseInt(checkOut_arr[2])) as any;
           this.day_count_reservation = Math.round(Math.abs((date1 - date2) / oneDay));
@@ -107,7 +108,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
               //Total persons________________________________
               this.person_total = this.total_persons();
               //Total price perday_________________________________
-              this.total_price_perDay = Math.floor(this.data_room.defaultPrice * this.day_count_reservation);
+              this.total_price_perDay = Math.floor(this.data_room.defaultPrice * (this.day_count_reservation > 1 ? (this.day_count_reservation-1):0));
               //Total price___________________________________
               this.total_price = ((parseInt(this.data_room.defaultPrice) + this.person_total) + this.total_price_perDay).toFixed(2);
               
@@ -159,6 +160,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   clear_subs!: Subscription;
   condition_forInterval: boolean = false;
   txt_alertWindow: string = '';
+  st_timerS: string = 'minutes';
   //SESSION EXPIRED COUNT___________________________________________________________________________________________
   sessionCOUNT(): void{
     this.handleNumber = this.token_convert.time;
@@ -169,7 +171,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       let minutess = this.handleNumber <= dates.getMinutes() ? ((this.handleNumber+20)-dates.getMinutes()): Math.abs(((60-this.handleNumber)+dates.getMinutes())-20);
       let secondss = (60-dates.getSeconds());
 
-      this.st_session = ''+(minutess < 10 ? '0'+minutess:minutess)+":"+(secondss < 10 ? '0'+secondss:secondss);
+      this.st_session = ''+(minutess < 10 ? '0'+minutess:minutess)+":"+(secondss < 10 ? '0'+secondss:(secondss == 10 ? '0'+(secondss-1):(secondss-1)));
       if(minutess == 0 && secondss == 1){
         clearInterval(this.handleInterval_session);
         if(!this.condition_forInterval){
@@ -184,6 +186,12 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         condtAlert = minutess;
         this.txt_alertWindow = this.st_session;
         this.arrHandle = new Array<any>("showing_alertWindow");
+      }
+
+      if(minutess == 1){
+        this.st_timerS = "minute";
+      }else if(minutess == 0){
+        this.st_timerS = "seconds";
       }
     }, 300);
   }
@@ -291,7 +299,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                         amount: {
                           currency_code: 'PHP',
                           //this.arr_data_savingInfo[6]
-                          value: 1000
+                          value: 1
                         }
                       }
                     ]
@@ -636,6 +644,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             this.arr_data_savingInfo[16] = ''+this.data_room.defaultPrice+'.00';
             this.arr_data_savingInfo[17] = this.data_room.nameRoom;
             this.arr_data_savingInfo[18] = this.data_room.typeRoom2;
+            this.arr_data_savingInfo[19] = this.day_count_reservation;
           }
         }
       }

@@ -177,14 +177,14 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
                                     { $set: { number: numbers, clicked: true } }).then(() => {
 
                                     //send mail to the user_______________________________________
-                                    sendEmail(res, data.transaction_ID, data.reserved_email, data.email)
+                                    sendEmail(res, data.transaction_ID, data.reserved_email, data.email, data.timeDate)
                                 });
                             }); 
 
                         });
                     }else{
                         //Send mail to user that the admin canceled the appointment_______________________________________________
-                        sendEmail(res, data.transaction_ID, data.reserved_email, '')
+                        sendEmail(res, data.transaction_ID, data.reserved_email, '', data.timeDate)
                     }
                 });
     
@@ -203,13 +203,15 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
 
 
 //send email to user__________________________________________________________
-function sendEmail(res, transaction_ID, reserved_email, email){
+function sendEmail(res, transaction_ID, reserved_email, email, dateArrival){
 
     let data = {
         header: 'Appointment', 
-        message: `Your Appointment request is cancelled by the admin. Transaction ID: ${transaction_ID}`
+        contact: '',
+        message: `We regret to inform you that your appointment on ${dateArrival} 
+        has been cancelled due to conflict of schedule. Your ${email !== '' ? 'Transaction ID: '+transaction_ID:''}`,
+        reason: ''
     }
-
     transporter.sendMail({
         from: process.env.USER_MAIL,
         to: reserved_email,

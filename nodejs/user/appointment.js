@@ -123,7 +123,8 @@ async function sendEmail(res, transaction_ID, email){
 
     let data = {
         header: 'Appointment', 
-        message: `The Appointment request is cancelled by the user. Transaction ID: ${transaction_ID}`
+        message: `The Appointment request is cancelled by the user. Transaction ID: ${transaction_ID}`,
+        reason: ''
     }
 
     transporter.sendMail({

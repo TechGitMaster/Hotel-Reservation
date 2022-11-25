@@ -145,7 +145,7 @@ router.post('/login', async (req, res) => {
 
                 var token = jwt.sign( { email: data.email, adminNot: data.admin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
                 if(data.admin !== 'admin'){
-                    res.json({tokens: token, response: 'success', adminNot: data.admin});
+                    sendMessage_login(res, email, token, data);
                 }else{
                     sendOTP_admin(res, email, token, data);
                 }
@@ -154,13 +154,13 @@ router.post('/login', async (req, res) => {
         }
     }else{
         var token = jwt.sign({ email: data.email, adminNot: data.admin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
-        res.json({tokens: token, response: 'success'});
+        sendMessage_login(res, data.email, token, null);
     }
 
 });
 
 //send email OTP code to admin if they login__________________________________________________________
-async function sendOTP_admin(res, email, token, data){
+function sendOTP_admin(res, email, token, data){
 
     const arrCount = ['', '', '', '', '', ''];
     let code = '';
@@ -187,12 +187,42 @@ async function sendOTP_admin(res, email, token, data){
         }]
     };
 
-    transporter.sendMail(mailOptions, (err, info) => {
-        data_login.findOneAndUpdate({ email: email }, { $set: { OTP_code: code } }, { new: true }, (err, result) => {
-            res.json({tokens: token, response: 'success', adminNot: data.admin});
-        });
+    transporter.sendMail(mailOptions, (err, info) => {});
+
+    data_login.findOneAndUpdate({ email: email }, { $set: { OTP_code: code } }, { new: true }, (err, result) => {
+        res.json({tokens: token, response: 'success', adminNot: data.admin, otp: code});
     });
 
+}
+
+
+//Send email to user when they login__________________________________________________________________
+function sendMessage_login(res, email, token, data){
+    let datas = {
+        header: 'Login', 
+        message: `You just login in abpadilla website.`
+    }
+    
+    const mailOptions = {
+        from: process.env.USER_MAIL,
+        to: email,
+        subject: 'Login',
+        template: 'mail_template',
+        context: datas,
+        attachments: [{
+            filename: 'logo.png',
+            path: './src/assets/logo/logo.png',
+            cid: 'logo'
+        }]
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {});
+
+    if(data != null){
+        res.json({tokens: token, response: 'success', adminNot: data.admin});
+    }else{
+        res.json({tokens: token, response: 'success'});
+    }
 }
 
 

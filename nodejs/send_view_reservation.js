@@ -135,7 +135,8 @@ router.post('/asds', (req, res) => {
 
     let data = {
         header: 'Appointment request', 
-        message: '083447 is your OTP admin login code.'
+        message: '083447 is your OTP admin login code.',
+        reason: ''
     }
 
     transporter.sendMail({

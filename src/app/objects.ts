@@ -118,6 +118,7 @@ export interface reservation{
     checkin_date: string,
     checkout_date: string,
     acquired_persons: string,
+    acquired_days: string,
     persons_price: string,
     total_price: string,
     first_name: string,
