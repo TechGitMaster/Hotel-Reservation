@@ -410,18 +410,23 @@
                                         </div>
     
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">{{arr_selected_data[0].acquired_persons}} price additional pax:</span>
-                                            <span>php {{arr_selected_data[0].persons_price}}</span>
-                                        </div>
-    
-                                        <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Price rate per another day:</span>
-                                            <span>php {{arr_selected_data[0].total_day_price}}</span>
-                                        </div>
-    
-                                        <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Rate:</span>
+                                            <span style="font-family: inter_regular !important;">Rate (Per Day):</span>
                                             <span>php {{arr_selected_data[0].defaultPrice}}.00</span>
+                                        </div>
+    
+                                        <div class="paDetailsMiddle paDetailsMiddle-font">
+                                            <span style="font-family: inter_bold !important;">x {{arr_selected_data[0].acquired_days}}</span>
+                                            <span style="font-family: inter_bold !important;">php {{arr_selected_data[0].total_day_price}}</span>
+                                        </div>
+    
+                                        <div class="paDetailsMiddle paDetailsMiddle-font">
+                                            <span style="font-family: inter_medium !important;">Rate for Additional Pax:</span>
+                                            <span>php {{arr_selected_data[0].default_personPrice}}</span>
+                                        </div>
+    
+                                        <div class="paDetailsMiddle paDetailsMiddle-font">
+                                            <span style="font-family: inter_bold !important;">x {{arr_selected_data[0].acquired_persons}}</span>
+                                            <span style="font-family: inter_bold !important;">php {{arr_selected_data[0].persons_price}}</span>
                                         </div>
     
                                         <div class="pdetails paDetailsMiddle-font" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">

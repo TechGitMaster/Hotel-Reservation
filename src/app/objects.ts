@@ -113,6 +113,7 @@ export interface reservation{
     typeRoom2: string,
 
     defaultPrice: string,
+    default_personPrice: string,
     paymentMethod: string,
 
     checkin_date: string,

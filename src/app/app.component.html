@@ -324,15 +324,15 @@
                 <li>Verify the code before login as an admin.</li>
             </ul>
             <!--____________________Validate CODE______________________-->
-            <div [formGroup]="formGroup_verifyAdmin"  class="row">
-                <div class="col-lg-9 col-md-9 col-12 rowGetOTPTxt">
+            <div [formGroup]="formGroup_verifyAdmin">
+                <div>
                     <input type="text" formControlName="verfiyOTP" placeholder="Enter the code" 
                         (input)="funcOnlyNumber_OTPAdmin()" class="form-control otpAdmin forminputReg forminputReg-font" />
                     <div *ngIf="errArrForgotPassword[0][1]">
                         <span class="paError">{{errArrForgotPassword[0][0]}}</span>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-12 rowBttnOTPTxt">
+                <div style="margin-top:10px;">
                     <button class="btn btn-primary btn-getOTP btn-getOTP-font" (click)="verfiyOTP_admin()">{{verifyTxt}}</button>
                 </div>
             </div>

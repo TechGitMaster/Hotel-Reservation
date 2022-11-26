@@ -241,18 +241,23 @@
                                             </div>
 
                                             <div class="paDetailsMiddle">
-                                                <span style="font-family: inter_medium !important;">{{object_roomSelected.acquired_persons}} price additional pax:</span>
-                                                <span>php {{object_roomSelected.persons_price}}</span>
-                                            </div>
-
-                                            <div class="paDetailsMiddle">
-                                                <span style="font-family: inter_medium !important;">Price rate per another day:</span>
-                                                <span>php {{object_roomSelected.total_day_price}}</span>
-                                            </div>
-
-                                            <div class="paDetailsMiddle">
-                                                <span style="font-family: inter_medium !important;">Rate:</span>
+                                                <span>Rate (Per Day):</span>
                                                 <span>php {{object_roomSelected.defaultPrice}}.00</span>
+                                            </div>
+
+                                            <div class="paDetailsMiddle">
+                                                <span style="font-family: inter_bold !important;">x {{object_roomSelected.acquired_days}}</span>
+                                                <span style="font-family: inter_bold !important;">php {{object_roomSelected.total_day_price}}</span>
+                                            </div>
+
+                                            <div class="paDetailsMiddle">
+                                                <span>Rate for Additional Pax:</span>
+                                                <span>php {{object_roomSelected.pricePersons}}</span>
+                                            </div>
+        
+                                            <div class="paDetailsMiddle">
+                                                <span style="font-family: inter_bold !important;">x {{object_roomSelected.acquired_persons}}</span>
+                                                <span style="font-family: inter_bold !important;">php {{object_roomSelected.persons_price}}</span>
                                             </div>
 
                                             <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">

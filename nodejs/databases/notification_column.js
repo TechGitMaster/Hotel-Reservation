@@ -10,7 +10,7 @@ module.exports = (name_column) => {
             schema_handle = new schema({
                 email: { type: String, required: true },
                 name: { type: String, required: true },
-                message: { type: String, required: true },
+                message: { type: String, required: false },
                 date: { type: String, required: true },
                 deleteNot: { type: String, required: true }
             }, { timestamps: true });

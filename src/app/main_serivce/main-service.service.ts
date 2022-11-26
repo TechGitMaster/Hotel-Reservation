@@ -364,7 +364,7 @@ export class MainServiceService {
       persons_price: data_info[4], total_day_price: data_info[5], total_price: data_info[6], first_name: data_info[7],
       last_name: data_info[8], phone_number: data_info[9], email: data_info[10], image_transaction: data_info[11], 
       transaction_date: data_info[12], paymentMethod: data_info[13], transcation_id: data_info[14], guest_member: data_info[15],
-      acquired_days: data_info[16] } })
+      acquired_days: data_info[19] } })
   }
 
   send_reservation_toUser(data_info: Array<any>): Observable<any>{
@@ -373,7 +373,7 @@ export class MainServiceService {
       persons_price: data_info[4], total_day_price: data_info[5], total_price: data_info[6], first_name: data_info[7],
       last_name: data_info[8], phone_number: data_info[9], email: data_info[10], image_transaction: data_info[11], 
       transaction_date: data_info[12], paymentMethod: data_info[13], transcation_id: data_info[14], guest_member: data_info[15],
-      price: data_info[16], nameOfRoom: data_info[17], typeRoom: data_info[18] } })
+      price: data_info[16], nameOfRoom: data_info[17], typeRoom: data_info[18], acquired_days: data_info[19], default_Personprice: data_info[20] } })
   }
 
   deleting_sessionAfter(token: string): Observable<any>{

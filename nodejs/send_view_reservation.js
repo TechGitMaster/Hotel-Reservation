@@ -29,7 +29,7 @@ transporter.use('compile', hbs(handlebarOptions));
 router.post('/view_send', async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
         last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member,
-        price, nameOfRoom, typeRoom} = req.body.data;
+        price, nameOfRoom, typeRoom, acquired_days, default_Personprice} = req.body.data;
 
     let data = {};
 
@@ -45,10 +45,15 @@ router.post('/view_send', async (req, res) => {
     
     //Reservation details____________________________________________________________
     data.transaction_date = transaction_date;
+    
     data.price = price;
+    data.acquired_days = acquired_days;
+    data.total_day_price = total_day_price;
+    
+    data.default_Personprice = default_Personprice;
     data.acquired_persons = acquired_persons;
     data.persons_price = persons_price;
-    data.total_day_price = total_day_price;
+
     data.total_price = total_price;
     
 

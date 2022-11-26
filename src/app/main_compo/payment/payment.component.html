@@ -42,7 +42,7 @@
         <div class="container" style="height:100%;display: flex;align-items: center;justify-content: center;">
             <div class="divSuccesschangePass" (click)="$event.stopPropagation()">
                 <div>
-                    <p class="paSuccessChange paSuccessChange-font">Before you leave do not forget to print/download your reservation details.</p>
+                    <p class="paSuccessChange paSuccessChange-font">Before you leave, do not forget to print/download your reservation details.</p>
                     <button class="btn btn-primary passwordChange passwordChange-font" (click)="condition_alertAfterpayment=false">Close</button>
                 </div>
             </div>
@@ -399,7 +399,7 @@
                         </div>
 
                         <div class="dateCheckInOut">
-                            <span><span style="font-family: inter_bold;">{{day_count_reservation}} day\s 2pm to 12nn: </span> 
+                            <span><span style="font-family: inter_bold;">From 2pm to 12nn: </span> 
                             <span style="font-family: inter_medium;">{{day_checkInOut_convert}}</span></span>
                         </div>
 
@@ -407,18 +407,23 @@
                             <p class="paDPs">Details payment summary</p>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold;">Rate:</span>
+                                <span style="font-family: inter_regular;">Rate (Per Day):</span>
                                 <span style="font-family: inter_regular;">php {{price_room}}</span>
                             </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold;">{{token_convert.personsCount}} price additional pax:</span>
-                                <span style="font-family: inter_regular;">php {{person_total}}</span>
+                                <span style="font-family: inter_semibold;">x {{day_count_reservation}}</span>
+                                <span style="font-family: inter_semibold;">php {{arr_data_savingInfo[5]}}</span>
                             </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold">Price rate per another day:</span>
-                                <span style="font-family: inter_regular;">php {{total_price_perDay}}</span>
+                                <span style="font-family: inter_regular;">Rate for Additional Pax:</span>
+                                <span style="font-family: inter_regular;">php {{data_room.pricePersons}}</span>
+                            </div>
+
+                            <div style="display: flex;justify-content: space-between;font-size:14px;">
+                                <span style="font-family: inter_semibold">x {{token_convert.personsCount}}</span>
+                                <span style="font-family: inter_semibold;">php {{arr_data_savingInfo[4]}}</span>
                             </div>
                         </div>
 
@@ -586,18 +591,23 @@
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Rate:</span>
+                                            <span style="font-family: inter_regular !important;">Rate (Per Day):</span>
                                             <span>php {{price_room}}</span>
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">{{token_convert.personsCount}} price additional pax:</span>
-                                            <span>php {{arr_data_savingInfo[4]}}</span>
+                                            <span style="font-family: inter_bold !important;">x {{day_count_reservation}}</span>
+                                            <span style="font-family: inter_bold !important;">php {{arr_data_savingInfo[5]}}</span>
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">Price rate per another day:</span>
-                                            <span>php {{arr_data_savingInfo[5]}}</span>
+                                            <span style="font-family: inter_medium !important;">Rate for Additional Pax:</span>
+                                            <span>php {{data_room.pricePersons}}</span>
+                                        </div>
+
+                                        <div class="paDetailsMiddle paDetailsMiddle-font">
+                                            <span style="font-family: inter_medium !important;">x {{token_convert.personsCount}}</span>
+                                            <span>php {{arr_data_savingInfo[4]}}</span>
                                         </div>
 
 

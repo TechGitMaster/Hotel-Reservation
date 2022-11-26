@@ -15,7 +15,7 @@ const mongooseSchema = (name_column) => {
                 reserved_email: { type: String, required: true },
                 numGuest: { type: String, required: true },
                 contact_num: { type: String, required: true },
-                message: { type: String, required: true },
+                message: { type: String, required: false },
                 timeDate: { type: String, required: true },
                 date: { type: String, required: true },
                 transaction_ID: { type: String, required: true },

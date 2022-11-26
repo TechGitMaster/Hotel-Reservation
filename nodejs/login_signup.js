@@ -200,7 +200,7 @@ function sendOTP_admin(res, email, token, data){
 function sendMessage_login(res, email, token, data){
     let datas = {
         header: 'Login', 
-        message: `You just login in abpadilla website.`
+        message: `You just logged in AbPadilla website.`
     }
     
     const mailOptions = {

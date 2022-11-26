@@ -23,6 +23,7 @@ module.exports = (name_column) => {
                 checkin_date: { type: String, required: false },
                 checkout_date: { type: String, required: false },
                 acquired_persons: { type: String, required: false },
+                acquired_days: {type: String, required: true},
                 persons_price: { type: String, required: false },
                 total_day_price: { type: String, required: false },
                 total_price: { type: String, required: false },
@@ -50,6 +51,7 @@ module.exports = (name_column) => {
                 typeRoom2: { type: String, required: true },
 
                 defaultPrice: { type: String, required: false  },
+                default_personPrice: { type: String, required: false },
                 paymentMethod: { type: String, required: false },
                 transaction_id: { type: String, required: false },
 

@@ -204,26 +204,31 @@
                   </tr>
 
                   <tr>
-                    <td>Rate: </td>
+                    <td>Rate (Per Day): </td>
                     <td style="text-align:right;">php {{price}}</td>
                   </tr>
 
+                  <tr style="font-weight:bold;">
+                    <td>x {{acquired_days}}</td>
+                    <td style="text-align:right;">php {{total_day_price}}</td>
+                  </tr>
+
                   <tr>
-                    <td>{{acquired_persons}} price additional pax:</td>
+                    <td>Rate for Additional Pax:</td>
+                    <td style="text-align:right;">php {{default_Personprice}}</td>
+                  </tr>
+
+                  <tr style="font-weight:bold;">
+                    <td>x {{acquired_persons}}</td>
                     <td style="text-align:right;">php {{persons_price}}</td>
                   </tr>
 
-
-                  <tr>
-                    <td>Price rate per another day: </td>
-                    <td style="text-align:right;">php {{total_day_price}}</td>
-                  </tr>
                 </tbody>
               </table>
             </div>
 
             <div class="pdetails pdetails-font" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
-                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:17px;font-family:sans-serif;">
+                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:17px;font-family:sans-serif;font-weight:bold;">
                 <thead>
                   <tr>
                     <th scope="col"></th>

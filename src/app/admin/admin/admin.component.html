@@ -153,7 +153,8 @@
     
                     <p style="color:rgb(123, 123, 123);margin-bottom: 12px;font-size:18px;">(Optional):</p>
                     <select (change)="selection_reason()" formControlName="textarea" class="form-select selecting" aria-label="Default select example">
-                        <option>None</option>
+                        <option>Not valid</option>
+                        <option>Incomplete transaction</option>
                         <option>Fully book</option>
                         <option>Look like a scam</option>
                         <option>Custom</option>
@@ -392,18 +393,23 @@
 
 
                                     <div class="paDetailsMiddle">
-                                        <span style="font-family: inter_medium !important;">{{arrHandle[1].acquired_persons}} price additional pax:</span>
-                                        <span>php {{arrHandle[1].persons_price}}</span>
-                                    </div>
-
-                                    <div class="paDetailsMiddle">
-                                        <span style="font-family: inter_medium !important;">Price rate per another day:</span>
-                                        <span>php {{arrHandle[1].total_day_price}}</span>
-                                    </div>
-
-                                    <div class="paDetailsMiddle">
-                                        <span style="font-family: inter_medium !important;">Rate:</span>
+                                        <span>Rate (Per Day):</span>
                                         <span>php {{arrHandle[1].defaultPrice}}.00</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle">
+                                        <span style="font-family: inter_bold !important;">x {{arrHandle[1].acquired_days}}</span>
+                                        <span style="font-family: inter_bold !important;">php {{arrHandle[1].total_day_price}}</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle">
+                                        <span>Rate for Additional Pax:</span>
+                                        <span>php {{arrHandle[1].default_personPrice}}</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle">
+                                        <span style="font-family: inter_bold !important;">x {{arrHandle[1].acquired_persons}}</span>
+                                        <span style="font-family: inter_bold !important;">php {{arrHandle[1].persons_price}}</span>
                                     </div>
 
                                     <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">

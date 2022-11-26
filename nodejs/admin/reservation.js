@@ -48,7 +48,8 @@ transporter.use('compile', hbs(handlebarOptions));
 //Save reservation request made by user___________________________________________________
 router.post('/saveReservation', middleware_user, async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
-        last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member, acquired_days} = req.body.data;
+        last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member, acquired_days,
+        default_personPrice } = req.body.data;
     const { token } = req;  
     var _id = mongoose.Types.ObjectId();
 
@@ -83,6 +84,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                             typeRoom2: roomdata.typeRoom2,
                             
                             defaultPrice: roomdata.defaultPrice,
+                            default_personPrice: roomdata.pricePersons,
                             paymentMethod: paymentMethod,
                             transaction_id: transcation_id,
             
@@ -184,6 +186,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
             typeRoom2: roomdata.typeRoom2,
             
             defaultPrice: roomdata.defaultPrice,
+            default_personPrice: roomdata.pricePersons,
             paymentMethod: paymentMethod,
             transaction_id: transcation_id,
 
@@ -450,6 +453,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
                     checkin_date: data.checkin_date,
                     checkout_date: data.checkout_date,
                     acquired_persons: data.acquired_persons,
+                    acquired_days: data.acquired_days,
                     persons_price: data.persons_price,
                     total_day_price: data.total_day_price,
                     total_price: data.total_price,

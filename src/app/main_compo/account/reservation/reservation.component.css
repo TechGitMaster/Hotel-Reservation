@@ -325,7 +325,7 @@
 
 .pdetails{
     padding:10px;
-    font-family: inter_semibold;
+    font-family: inter_bold;
     border-top:1px solid #9D9D9D;
     border-bottom:1px solid #9D9D9D;
     color:white;
@@ -345,7 +345,7 @@
 }
 
 .paDetailsMiddle-font{
-    font-size:14px;
+    font-size:15px;
 }
 
 .print{
@@ -543,7 +543,7 @@
     }
 
     .paDetailsMiddle-font{
-        font-size:12px;
+        font-size:13px;
     }
 
     .forminputs-font{

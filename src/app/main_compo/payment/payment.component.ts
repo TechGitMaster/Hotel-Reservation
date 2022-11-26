@@ -46,7 +46,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   
   arr_img_transaction: Array<string> = new Array<string>();
   arr_blob_transaction: Array<any> = new Array<any>();
-  arr_data_savingInfo: Array<any> = new Array<any>('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  arr_data_savingInfo: Array<any> = new Array<any>('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
   errAppointment!: Array<any>;
   formGroup_payment!: FormGroup;
@@ -108,9 +108,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
               //Total persons________________________________
               this.person_total = this.total_persons();
               //Total price perday_________________________________
-              this.total_price_perDay = Math.floor(this.data_room.defaultPrice * (this.day_count_reservation > 1 ? (this.day_count_reservation-1):0));
+              this.total_price_perDay = Math.floor(this.data_room.defaultPrice * this.day_count_reservation);
               //Total price___________________________________
-              this.total_price = ((parseInt(this.data_room.defaultPrice) + this.person_total) + this.total_price_perDay).toFixed(2);
+              this.total_price = (this.person_total + this.total_price_perDay).toFixed(2);
               
               this.price_room = ''+this.data_room.defaultPrice+'.00';
               this.person_total = this.person_total.toFixed(2);
@@ -206,7 +206,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         first_name: [result.data_info.firstname],
         last_name: [result.data_info.lastname],
         email: [result.data_info.email],
-        email_re: [result.data_info.email],
+        email_re: [''],
         contact_number: [result.data_info.contactnumber]
       });
     })
@@ -645,6 +645,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             this.arr_data_savingInfo[17] = this.data_room.nameRoom;
             this.arr_data_savingInfo[18] = this.data_room.typeRoom2;
             this.arr_data_savingInfo[19] = this.day_count_reservation;
+            this.arr_data_savingInfo[20] = this.data_room.pricePersons;
           }
         }
       }
