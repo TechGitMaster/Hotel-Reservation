@@ -914,6 +914,38 @@
     font-size:15px;
 }
 
+.termsCondition{
+    background:#ffffff;
+    font-size:15px;
+    overflow: hidden;
+    border-radius:10px;
+}
+
+.termsmaxHeight{
+    max-height:100px;
+}
+
+.termsminHeight{
+    min-height:130px;
+}
+
+.termsBttn{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+    background:white;
+    position: relative;
+}
+
+.continueRead{
+    border:1px solid black;
+    padding:10px;
+    font-size:15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
 /*___________________________________@MEDIA_______________________________________*/
 
 
@@ -1111,6 +1143,15 @@
         color:white;
         margin-bottom:15px;
         line-height: 140%;
+    }
+
+    .continueRead{
+        border:1px solid black;
+        padding:10px;
+        font-size:14px;
+        border-radius: 20px;
+        margin-top:10px;
+        cursor: pointer;
     }
 
     .btn_BTS-font{

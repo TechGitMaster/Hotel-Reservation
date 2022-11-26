@@ -252,10 +252,29 @@
 
                         <div style="margin-bottom:30px;">
                             <p class="fontTermscondition fontTermscondition-font">Terms and Condition of Reservation</p>
+                            
+                            <div style="margin:10px 0px 20px 0px;position: relative;">
+                                <div [ngClass]="['termsCondition', !condition_termsCondition ? 'termsmaxHeight':'termsminHeight']">
+                                    <p>1. For the reservation of staycation, the guest need to settle a payment of php 1000 for the reservation fee to confirm the reservation of their chosen date</p>
+                                    <p>2. The reservation payment is non-refundable. If the guest failed to arrive on the reserved time and date without stating the reason nor giving a heads up to the management, the reservation fee will not be refunded.</p>
+                                    <p>3. Reservation fee will be deducted on the total amount of payment.</p>
+                                    <p>4. The management reserves the right to decline a reservation request due to incomplete and/or delay in payment of the reservation fee.</p>
+                                </div>
+                                
+                                <div class="termsBttn" [ngStyle]="{'margin-top':!condition_termsCondition ? '-10px':'0px', 
+                                'box-shadow':!condition_termsCondition ? '-1px -10px 10px rgba(255, 255, 255, 0.821)':'0px 0px 0px white'}">
+                                    <div class="continueRead" [ngStyle]="{'margin-top':!condition_termsCondition ? '25px':'0px'}" (click)="termsCondition_func()">
+                                        <img [src]="!condition_termsCondition ? '/assets/icon/arrow_reading.png': '/assets/icon/arrow_less.png'" class="img-fluid" style="height:25px;margin-right:5px;position: relative;left:-1px;" />
+                                         <span style="position: relative;top:1px;">{{!condition_termsCondition ? 'Continue reading':'Less reading'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="flexCheckDefault23" (click)="termsAndCondition()">
                                 <label class="form-check-label fontTermsInfo" for="flexCheckDefault23">
-                                  I have read and agreed to the Terms & Condition and Privacy Policy.
+                                  I have read and agreed to the Terms and Condition.
                                 </label>
                             </div>
                             <div *ngIf="errAppointment[6][1]">

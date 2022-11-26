@@ -168,7 +168,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     
     this.handleInterval_session = setInterval(() => {
       let dates = new Date();
-      let minutess = this.handleNumber <= dates.getMinutes() ? ((this.handleNumber+20)-dates.getMinutes()): Math.abs(((60-this.handleNumber)+dates.getMinutes())-20);
+      let minutess = this.handleNumber <= dates.getMinutes() ? ((this.handleNumber+50)-dates.getMinutes()): Math.abs(((60-this.handleNumber)+dates.getMinutes())-50);
       let secondss = (60-dates.getSeconds());
 
       this.st_session = ''+(minutess < 10 ? '0'+minutess:minutess)+":"+(secondss < 10 ? '0'+secondss:(secondss == 10 ? '0'+(secondss-1):(secondss-1)));
@@ -195,6 +195,14 @@ export class PaymentComponent implements OnInit, AfterViewInit {
       }
     }, 300);
   }
+
+
+  //Terms and condition button________________________________________________________________________________
+  condition_termsCondition: boolean = false;
+  termsCondition_func(): void{
+    this.condition_termsCondition = (!this.condition_termsCondition ? this.condition_termsCondition = true:this.condition_termsCondition = false);
+  }
+
 
 
   //Checking login_____________________________________________________________________________________________
