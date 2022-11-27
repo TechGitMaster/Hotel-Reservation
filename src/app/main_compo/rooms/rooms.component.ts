@@ -273,35 +273,33 @@ export class RoomsComponent implements OnInit {
       if(this.persons_count > -1){
         if(this.room_selected !== ''){
 
-          if(this.checkingDateCheckInout_good()){
-            let reservation = {
-              checkIn: this.checkIn_mess,
-              checkOut: this.checkOut_mess,
-              personsCount: this.persons_count,
-              room_sh: this.room_selected,
-              time: new Date().getMinutes()
-            };
-            
-            var token = this.cookieService.get('token');
-  
-            if(token !== '' && token !== ' '){
-              this.subs = this.service.token_get(reservation).subscribe((ress) => {
-                this.subs.unsubscribe();
-  
-                if(ress._ds){ 
-                  this.service.emit_PaymentExpired(false);
-                  this.router.navigate([`/mc/payment/${ress.data}`]);
-                }else{
-                  location.reload();
-                }
-              });
-            }else{
-              this.subs = this.service.token_get(reservation).subscribe((ress) => {
-                this.subs.unsubscribe();
+          let reservation = {
+            checkIn: this.checkIn_mess,
+            checkOut: this.checkOut_mess,
+            personsCount: this.persons_count,
+            room_sh: this.room_selected,
+            time: new Date().getMinutes()
+          };
+          
+          var token = this.cookieService.get('token');
+
+          if(token !== '' && token !== ' '){
+            this.subs = this.service.token_get(reservation).subscribe((ress) => {
+              this.subs.unsubscribe();
+
+              if(ress._ds){ 
                 this.service.emit_PaymentExpired(false);
                 this.router.navigate([`/mc/payment/${ress.data}`]);
-              });
-            }
+              }else{
+                location.reload();
+              }
+            });
+          }else{
+            this.subs = this.service.token_get(reservation).subscribe((ress) => {
+              this.subs.unsubscribe();
+              this.service.emit_PaymentExpired(false);
+              this.router.navigate([`/mc/payment/${ress.data}`]);
+            });
           }
 
         }else{
@@ -319,7 +317,7 @@ export class RoomsComponent implements OnInit {
     }
   }
 
-  checkingDateCheckInout_good(): boolean{
+  /*checkingDateCheckInout_good(): boolean{
     let checkIn = this.checkIn_mess.split('-');
     let checkOut = this.checkOut_mess.split('-');
 
@@ -344,7 +342,7 @@ export class RoomsComponent implements OnInit {
     }
 
     return condition;
-  }
+  }*/
 
   //Click bttn_____________________________________________________________________
   scrollUp(): void{

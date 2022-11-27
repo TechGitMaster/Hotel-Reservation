@@ -262,11 +262,12 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             setTimeout(() => {
 
               if(this.paypals != null) this.paypals.close();
-
+              
               this.paypals = paypal.Buttons({
                 style: {
                   height: 45,
                 },
+                
                 
                 onInit: (data: any, actions: any) => {
                   // Disable the buttons paypal
@@ -352,6 +353,14 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                 },
                 onCancel: () => {
                   if(this.subs_paypal != null) this.subs_paypal.unsubscribe();
+                },
+                onShippingChange: (data: any, actions: any) => {
+                  return actions.resolve();
+                },
+                onError: (err: any) => {
+                  setTimeout(() => {
+                    alert(`Ooops... You got an error. To solve this. You need to log-out first to your paypal account before paying.`);
+                  }, 1000);
                 }
               });
               this.paypals.render(this.paypalElement.nativeElement);
