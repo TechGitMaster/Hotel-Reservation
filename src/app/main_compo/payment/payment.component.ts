@@ -267,6 +267,19 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                 style: {
                   height: 45,
                 },
+
+                createOrder: (data: any, actions: any) => {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          currency_code: 'PHP',
+                          value: 1
+                        }
+                      }
+                    ]
+                  });
+                },
                 
                 
                 onInit: (data: any, actions: any) => {
@@ -299,20 +312,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                       this.errAppointment[6][1] = true;
                     }
                   }
-                },
-
-                createOrder: (data: any, actions: any) => {
-                  return actions.order.create({
-                    purchase_units: [
-                      {
-                        amount: {
-                          currency_code: 'PHP',
-                          //this.arr_data_savingInfo[6]
-                          value: 1
-                        }
-                      }
-                    ]
-                  });
                 },
                 onApprove: async (data: any, actions: any) => {
                   const transaction = await actions.order.capture();
@@ -357,6 +356,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                 onShippingChange: (data: any, actions: any) => {
                   return actions.resolve();
                 },
+                
                 onError: (err: any) => {
                   setTimeout(() => {
                     alert(`Ooops... You got an error. To solve this. You need to log-out first to your paypal account before paying.`);
