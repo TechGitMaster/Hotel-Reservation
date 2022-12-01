@@ -356,7 +356,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                 onShippingChange: (data: any, actions: any) => {
                   return actions.resolve();
                 },
-                
                 onError: (err: any) => {
                   setTimeout(() => {
                     alert(`Ooops... You got an error. To solve this. You need to log-out first to your paypal account before paying.`);

@@ -104,7 +104,7 @@ router.post('/voided_parse', async (req, res) => {
                     from: process.env.USER_MAIL,
                     to: manifest.reserved_email,
                     subject: 'Voided appointment',
-                    text: `The appointment has been voided Transaction ID: ${manifest.transaction_ID}.`
+                    text: `Greetings! your appointment has been voided Transaction ID: ${manifest.transaction_ID}. With regards, Ms. Abegeil Padilla Real-estate broker of Manhattan Garden City.`
                 });
             }
 

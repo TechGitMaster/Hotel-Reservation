@@ -822,7 +822,6 @@ export class AppComponent implements OnInit, AfterViewInit{
 
               this.condition_clicked_signup = 'true';
               this.condition_login_signup_clicked = 'adminOTP';
-              console.log(result.otp);
 
             }else{
               this.condition_login_signup_clicked = 'loginFromadmin';
