@@ -133,10 +133,8 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.errArrForgotPassword = new Array<Array<any>>(['', false], ['', false]);
 
     //Forms_____________________________________________________
-    //evaluation1@gmail.com
-    //YF9ac466i1AwQwkb@
     this.formGroup_login = this.formBuilder.group({
-      email: ['kylematthew375@gmail.com'],
+      email: ['abpadillamail@gmail.com'],
       password: ['YF9ac466i1AwQwkb@']
     });
 
@@ -822,6 +820,8 @@ export class AppComponent implements OnInit, AfterViewInit{
 
               this.condition_clicked_signup = 'true';
               this.condition_login_signup_clicked = 'adminOTP';
+              
+              console.log(""+result.otp);
 
             }else{
               this.condition_login_signup_clicked = 'loginFromadmin';
