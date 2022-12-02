@@ -177,7 +177,7 @@ export class RoomsComponent implements OnInit {
 
     this.date = new Date() as Date;
 
-    this.minCheckIn = new Date();
+    this.minCheckIn = new Date(this.date.getFullYear(), (this.date.getMonth()), this.date.getDate()+1);
     this.minCheckOut = new Date();
   }
 

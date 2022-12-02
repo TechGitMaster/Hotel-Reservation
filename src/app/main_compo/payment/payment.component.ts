@@ -274,7 +274,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                       {
                         amount: {
                           currency_code: 'PHP',
-                          value: 1
+                          value: 1000
                         }
                       }
                     ]
