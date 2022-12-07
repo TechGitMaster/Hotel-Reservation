@@ -49,7 +49,7 @@ transporter.use('compile', hbs(handlebarOptions));
 router.post('/saveReservation', middleware_user, async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
         last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member, acquired_days,
-        default_personPrice } = req.body.data;
+        default_personPrice, addtionalPax } = req.body.data;
     const { token } = req;  
     var _id = mongoose.Types.ObjectId();
 
@@ -91,6 +91,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                             checkin_date: checkin_date,
                             checkout_date:  checkout_date,
                             acquired_persons: acquired_persons,
+                            addtionalPax_count: addtionalPax,
                             acquired_days: acquired_days,
                             persons_price: persons_price,
                             total_day_price: total_day_price,
@@ -193,6 +194,7 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
             checkin_date: checkin_date,
             checkout_date:  checkout_date,
             acquired_persons: acquired_persons,
+            addtionalPax_count: addtionalPax,
             acquired_days: acquired_days,
             persons_price: persons_price,
             total_day_price: total_day_price,
@@ -220,7 +222,9 @@ router.post('/saveReservation', middleware_user, async (req, res) => {
                 account_id: (token == null ? '': token.email),
                 checkin_date: checkin_date,
                 checkout_date:  checkout_date,
+                acquired_days: acquired_days,
                 acquired_persons: acquired_persons,
+                addtionalPax_count: addtionalPax,
                 persons_price: persons_price,
                 total_day_price: total_day_price,
                 total_price: total_price,
@@ -453,6 +457,7 @@ router.post('/A-D_Request', middleware_admin, async (req, res) => {
                     checkin_date: data.checkin_date,
                     checkout_date: data.checkout_date,
                     acquired_persons: data.acquired_persons,
+                    addtionalPax_count: data.addtionalPax_count,
                     acquired_days: data.acquired_days,
                     persons_price: data.persons_price,
                     total_day_price: data.total_day_price,
@@ -785,7 +790,7 @@ router.post('/deleteReservation_final', (req, res) => {
 
 //TEMPORARY________________________________________________________________________
 router.get('/temporary', (req, res) => {
-    rooms_column.updateOne({ _id: "637378969018070fa4cddb9e" }, { $set: {
+    rooms_column.updateOne({ _id: "637376d89018070fa4cddb7d" }, { $set: {
         paymentMethod: "",
         account_id: "",
         checkin_date: "",

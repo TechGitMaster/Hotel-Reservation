@@ -24,12 +24,14 @@ export class AdminComponent implements OnInit {
   conditionFixDiv3: boolean = false;
   conditionFixDiv4: boolean = false;
   conditionSeeImage: boolean = false;
+  conditionSeeNavigation: boolean = true;
 
   subs!: Subscription;
   subs_rooms!: Subscription;
   subs_appointment!: Subscription;
   subs_account!: Subscription;
   subs_name!: Subscription;
+  subs_hidden!: Subscription;
 
 
   condition_adminNotAdmin!: boolean;
@@ -51,7 +53,7 @@ export class AdminComponent implements OnInit {
   
   ngOnInit(): void {
     this.str_name = '';
-    this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""]);
+    this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""], [false, ""]);
     this.condition_forPassword = false;
     this.condition_adminNotAdmin = true;
     this.condition_signup_clicked = false;
@@ -64,7 +66,8 @@ export class AdminComponent implements OnInit {
 
     this.formGroup_newPassword = this.formBuild.group({
       currentPass: [''],
-      newPass: ['']
+      newPass: [''],
+      confirmPass: ['']
     });
 
     this.formGroup_signup = this.formBuild.group({
@@ -123,6 +126,7 @@ export class AdminComponent implements OnInit {
       this.subs.unsubscribe();
       this.subs_rooms.unsubscribe();
       this.subs_appointment.unsubscribe();
+      this.subs_hidden.unsubscribe();
 
       this.seeNotArr_password = new Array<boolean>(false, false, false);
       
@@ -145,6 +149,7 @@ export class AdminComponent implements OnInit {
       this.subs.unsubscribe();
       this.subs_rooms.unsubscribe();
       this.subs_appointment.unsubscribe();
+      this.subs_hidden.unsubscribe();
 
       this.conditionFixDiv2 = true;
       this.arrHandle = result;
@@ -162,6 +167,7 @@ export class AdminComponent implements OnInit {
       this.subs.unsubscribe();
       this.subs_rooms.unsubscribe();
       this.subs_appointment.unsubscribe();
+      this.subs_hidden.unsubscribe();
 
       this.conditionFixDiv3 = true;
       this.arrHandle = result;
@@ -176,8 +182,24 @@ export class AdminComponent implements OnInit {
       this.subs.unsubscribe();
       this.subs_rooms.unsubscribe();
       this.subs_appointment.unsubscribe();
+      this.subs_hidden.unsubscribe();
 
       this.conditionFixDiv4 = true;
+
+      this.calling();
+    });
+
+    
+
+    //This is for to hide navigation_________________________________________________________________
+    this.subs_hidden = this.service.eventEmitter_NavigationFrom.subscribe((result) => {
+      this.subs_account.unsubscribe();
+      this.subs.unsubscribe();
+      this.subs_rooms.unsubscribe();
+      this.subs_appointment.unsubscribe();
+      this.subs_hidden.unsubscribe();
+
+      this.conditionSeeNavigation = result;
 
       this.calling();
     });
@@ -375,29 +397,40 @@ export class AdminComponent implements OnInit {
   changePassword(): void{
     let current = this.formGroup_newPassword.value.currentPass;
     let newP = this.formGroup_newPassword.value.newPass;
+    let confirmP = this.formGroup_newPassword.value.confirmPass;
 
-    this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""]);
+    this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""], [false, ""]);
     if(current.length > 0 && newP.length > 0){
         this.subsChange = this.service.checkingPassword(current).subscribe((data) => {
           this.subsChange.unsubscribe();
           if(data.response === 'success'){
             
-            if(this.passStrength(newP)){
-              if(current !== newP){
-                this.subsChange = this.service.changePasswords(data.email, newP).subscribe(() => {
-                  this.subsChange.unsubscribe();
-  
-                  this.arrHandle[0] = 'popUPChangePassAdmin';
-  
-                }, (err) => {
-                  this.subsChange.unsubscribe();
-                  location.reload();
-                });
-              }else{
-                this.errArrPassword[1][0] = true;
-                this.errArrPassword[1][1] = "This is your current password!";
+            if(confirmP == newP){
+              if(this.passStrength(newP)){
+                if(current !== newP){
+                  this.subsChange = this.service.changePasswords(data.email, newP).subscribe(() => {
+                    this.subsChange.unsubscribe();
+    
+                    this.arrHandle[0] = 'popUPChangePassAdmin';
+    
+                  }, (err) => {
+                    this.subsChange.unsubscribe();
+                    location.reload();
+                  });
+                }else{
+                  this.errArrPassword[1][0] = true;
+                  this.errArrPassword[1][1] = "This is your current password!";
+                  this.errArrPassword[2][0] = true;
+                  this.errArrPassword[2][1] = "This is your current password!";
+                }
               }
+            }else{
+              this.errArrPassword[1][0] = true;
+              this.errArrPassword[1][1] = "New password and confirm password are not same!";
+              this.errArrPassword[2][0] = true;
+              this.errArrPassword[2][1] = "New password and confirm password are not same!";
             }
+
           }else{
             this.errArrPassword[0][0] = true;
             this.errArrPassword[0][1] = "Please provide a correct password!";
@@ -516,18 +549,24 @@ export class AdminComponent implements OnInit {
   //Function password icon see or not_________________________________________
   passSeeNot(condition: string): void{
     if(condition === 'pass'){
-     if(!this.seeNotArr_password[0]){
-       this.seeNotArr_password[0] = true;
+      if(!this.seeNotArr_password[0]){
+        this.seeNotArr_password[0] = true;
+      }else{
+        this.seeNotArr_password[0] = false;
+      }
+     }else if(condition === 'newPass'){
+      if(!this.seeNotArr_password[1]){
+        this.seeNotArr_password[1] = true;
+      }else{
+        this.seeNotArr_password[1] = false;
+      }
      }else{
-       this.seeNotArr_password[0] = false;
+       if(!this.seeNotArr_password[2]){
+         this.seeNotArr_password[2] = true;
+       }else{
+         this.seeNotArr_password[2] = false;
+       }
      }
-    }else{
-     if(!this.seeNotArr_password[1]){
-       this.seeNotArr_password[1] = true;
-     }else{
-       this.seeNotArr_password[1] = false;
-     }
-    }
    }
 
 
@@ -588,6 +627,12 @@ export class AdminComponent implements OnInit {
 
     }
 
+  }
+
+
+  //Subtotal________________________________________________________
+  subsTotal(total_price: string): number{
+    return (Math.floor(parseInt(total_price))+1000);
   }
 
 

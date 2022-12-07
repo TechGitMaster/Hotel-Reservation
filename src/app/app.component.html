@@ -141,22 +141,6 @@
 
         <!--___Fill up___-->
         <div class="divFill">
-            <div class="divGoogle divGoogle-height" (click)="signInWithGoogle()">
-                <div style="display: flex;align-items: center;"><img src="/assets/icon/google.png" class="img-fluid img_google" /></div>
-                <div><p class="paGoogle">Continue with Google</p></div>
-            </div>
-
-            <div style="display:flex;">
-                <div style="width:55%;display: flex;justify-content: center;align-items: center;">
-                    <div style="width:90%;height:2px;background:rgb(117, 112, 112);"></div>
-                </div>
-                <div style="width:10%;">
-                    <p class="paOr">or</p>
-                </div>
-                <div style="width:55%;display: flex;justify-content: center;align-items: center;">
-                    <div style="width:90%;height:2px;background:rgb(117, 112, 112);"></div>
-                </div>
-            </div>
             
             <form [formGroup]="formGroup_login">
                 <div>
@@ -184,6 +168,27 @@
             <p style="text-align: center;margin:10px 0px 10px 0px;"><span class="padontHave padontHave-font">Don't have one? </span> 
                 <span class="paCreate paCreate-font" (click)="createOneForgotLogin('sign-up');$event.stopPropagation()">Create one</span></p>
         </div>
+
+        
+        <div class="divFill_bottom">
+            <div style="display:flex;margin-top:-10px;">
+                <div style="width:55%;display: flex;justify-content: center;align-items: center;">
+                    <div style="width:90%;height:2px;background:rgb(117, 112, 112);"></div>
+                </div>
+                <div style="width:10%;">
+                    <p class="paOr">or</p>
+                </div>
+                <div style="width:55%;display: flex;justify-content: center;align-items: center;">
+                    <div style="width:90%;height:2px;background:rgb(117, 112, 112);"></div>
+                </div>
+            </div>
+    
+            <div class="divGoogle divGoogle-height" (click)="signInWithGoogle()">
+                <div style="display: flex;align-items: center;"><img src="/assets/icon/google.png" class="img-fluid img_google" /></div>
+                <div><p class="paGoogle">Continue with Google</p></div>
+            </div>
+        </div>
+
     </div>
 
 
@@ -258,7 +263,7 @@
             </div>
             <div style="margin-bottom:10px;">
                 <div style="position:relative;">
-                    <input [type]="!seeNotArr_password[1] ? 'password':'text'" formControlName="verifyPassword" placeholder="Verify your new password"
+                    <input [type]="!seeNotArr_password[1] ? 'password':'text'" formControlName="verifyPassword" placeholder="Confirm your new password"
                         class="form-control pass_padding forminputReg forminputReg-font" />
 
                     <div style="display: flex;align-items: center;">
@@ -501,8 +506,8 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div>
-                                            <label class="labels">Full Name:</label>
-                                            <input type="text" formControlName="fullname" class="form-control forminput" />
+                                            <label class="labels">First Name:</label>
+                                            <input type="text" formControlName="fName" class="form-control forminput" />
                                             <div *ngIf="errAppointment[0][1]">
                                                 <span class="paError">{{errAppointment[0][0]}}</span>
                                             </div>
@@ -510,12 +515,22 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12 emailCol">
                                         <div>
-                                            <label class="labels">Email:</label>
-                                            <input type="text" formControlName="email" class="form-control forminput" />
-                                            <div *ngIf="errAppointment[1][1]">
-                                                <span class="paError">{{errAppointment[1][0]}}</span>
+                                            <label class="labels">Last Name:</label>
+                                            <input type="text" formControlName="lName" class="form-control forminput" />
+                                            <div *ngIf="errAppointment[7][1]">
+                                                <span class="paError">{{errAppointment[7][0]}}</span>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 divformrow">
+                                <div>
+                                    <label class="labels">Email:</label>
+                                    <input type="text" formControlName="email" class="form-control forminput" />
+                                    <div *ngIf="errAppointment[1][1]">
+                                        <span class="paError">{{errAppointment[1][0]}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -688,13 +703,21 @@
                                         <div>Sat</div>
                                     </div>
                                     <div class="calendar-days">
+                                        
+                                        <!--'background':
+                                            (day_year_month_selected[0] === days[0] && day_year_month_selected[1] === month_select &&
+                                            day_year_month_selected[2] === year_selected ? '#FFD700': 
+                                            (days[0] === ''+numshandlePickDay ? '#ADD8E6':(days[1] === 'false' ? 'rgb(213, 213, 213)': '')) )-->
+
                                         <div *ngFor="let days of day_numbers;index as dayindex">
                                             <div (mouseover)="daypick_hover(days[0], days[1], 'mouseover')" (mouseout)="daypick_hover(days[0], days[1], 'mouseout')"  
                                             (click)="daypick(days[0], days[1])"
-                                            [ngStyle]="{'cursor':(days[1] === 'true' ? 'pointer':'context-menu'), 'background':
+                                            [ngStyle]="{'cursor':(days[1] === 'true' ? 'pointer':'context-menu'), 
+                                            'color': (days[1] === 'no_time' ? 'white':'black'), 
+                                            'background': (days[1] === 'false' ? 'rgb(213, 213, 213)': (days[1] === 'no_time' ? 'rgb(255, 63, 63)': 
                                             (day_year_month_selected[0] === days[0] && day_year_month_selected[1] === month_select &&
-                                            day_year_month_selected[2] === year_selected ? '#FFD700': 
-                                            (days[0] === ''+numshandlePickDay ? '#ADD8E6':(days[1] === 'false' ? 'rgb(213, 213, 213)': '')) )}"
+                                            day_year_month_selected[2] === year_selected ? '#FFD700': (days[0] === ''+numshandlePickDay ? '#ADD8E6':''))))}"
+
                                             class="cols"
                                             >
                                                 {{ days[0] }}
@@ -724,19 +747,39 @@
                     </div>
     
                     <!--_______________________knowing_______________________-->
-                    <div style="margin-top:20px;">
-                        <div style="display:flex;">
-                            <div class="divknowing">
-                                <div class="boxknowing"></div>
-                                <span class="txtknowing txtknowing-font">Available</span>
-                            </div>
-    
-                            <div class="divknowingnot">
-                                <div class="boxknowing">
-                                    <p class="xknowing">X</p>
+                    <div style="display:flex;justify-content: center;margin-top:20px;">
+                        <div class="row width_meaning">
+
+                            <div class="col-6">
+                                <div class="divknowingnot">
+                                    <div class="boxknowing"></div>
+                                    <span class="txtknowing txtknowing-font">Available Day</span>
                                 </div>
-                                <span class="txtknowing txtknowing-font">Not Available</span>
                             </div>
+
+                            <div class="col-6">
+                                <div class="divknowingnot">
+                                    <div class="boxknowing" style="background:gold;"></div>
+                                    <span class="txtknowing txtknowing-font">Selected Day</span>
+                                </div>
+                            </div>
+
+
+                            <div class="col-6" style="margin-top:10px;">
+                                <div class="divknowingnot">
+                                    <div class="boxknowing" style="background:rgb(255, 63, 63);">
+                                    </div>
+                                    <span class="txtknowing txtknowing-font">No available Time</span>
+                                </div>
+                            </div>
+
+                            <div class="col-6" style="margin-top:10px;">
+                                <div class="divknowingnot">
+                                    <div class="boxknowing" style="background:rgb(213, 213, 213);"></div>
+                                    <span class="txtknowing txtknowing-font">Not available Day</span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
     

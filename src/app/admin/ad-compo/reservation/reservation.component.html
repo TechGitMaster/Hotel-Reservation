@@ -1,4 +1,6 @@
-<div clas="container-fluid header">
+<div clas="container-fluid header" id="printingD">
+  <img src="/assets/icon/watermark.png" class="img-fluid imgwatermark" />
+
     <div style="padding:20px 30px 20px 30px">
         <p class="paReservation">Reservation</p>
         <div style="display: flex;justify-content: center;">
@@ -6,43 +8,50 @@
         </div>
 
         <div style="margin-top:40px;">
+          <!--__SORTING__-->
+          <div style="display: flex;align-items: center;font-size: 16px;">
+            <div class="form-check" style="margin-right:10px;">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="clickRadio('all')" checked>
+                  <label class="form-check-label" for="flexRadioDefault1" style="position: relative;top:2px;">
+                    Pending
+                  </label>
+              </div>
+              <div class="form-check" style="margin-right:10px;">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="clickRadio('accepted')">
+                  <label class="form-check-label" for="flexRadioDefault2" style="position: relative;top:2px;">
+                    Accepted
+                  </label>
+              </div>
+              <div class="form-check" style="margin-right:10px;">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('declined')">
+                  <label class="form-check-label" for="flexRadioDefault3" style="position: relative;top:2px;">
+                    Declined
+                  </label>
+              </div>
+              <div class="form-check" style="margin-right:10px;">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" (click)="clickRadio('canceled')">
+                <label class="form-check-label" for="flexRadioDefault4" style="position: relative;top:2px;">
+                  Canceled
+                </label>
+              </div>
+              <div class="form-check" style="margin-right:10px;">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5" (click)="clickRadio('trash')">
+                <label class="form-check-label" for="flexRadioDefault5" style="position: relative;top:2px;">
+                  Archive
+                </label>
+            </div>
+          </div>
+          
             <div>
                 <!--___SORTING and SEARCHING___-->
-                <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">
+                <div style="display: flex;justify-content: space-between;margin-bottom: 10px;margin-top:10px;">
 
-                    <!--__SORTING__-->
-                    <div style="display: flex;align-items: center;font-size: 16px;">
-                      <div class="form-check" style="margin-right:10px;">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="clickRadio('all')" checked>
-                            <label class="form-check-label" for="flexRadioDefault1" style="position: relative;top:2px;">
-                              Pending
-                            </label>
-                        </div>
-                        <div class="form-check" style="margin-right:10px;">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="clickRadio('accepted')">
-                            <label class="form-check-label" for="flexRadioDefault2" style="position: relative;top:2px;">
-                              Accepted
-                            </label>
-                        </div>
-                        <div class="form-check" style="margin-right:10px;">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="clickRadio('declined')">
-                            <label class="form-check-label" for="flexRadioDefault3" style="position: relative;top:2px;">
-                              Declined
-                            </label>
-                        </div>
-                        <div class="form-check" style="margin-right:10px;">
-                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" (click)="clickRadio('canceled')">
-                          <label class="form-check-label" for="flexRadioDefault4" style="position: relative;top:2px;">
-                            Canceled
-                          </label>
-                        </div>
-                        <div class="form-check" style="margin-right:10px;">
-                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5" (click)="clickRadio('trash')">
-                          <label class="form-check-label" for="flexRadioDefault5" style="position: relative;top:2px;">
-                            Archive
-                          </label>
-                      </div>
+                  <div style="display: flex;align-items: center;">
+                    <div style="cursor:pointer;" (click)="print()">
+                      <img src="/assets/icon/prints.png" class="img-fluid" style="height:25px;margin-right:5px;" />
+                      <span style="color:#0d6efd;text-decoration:underline;font-size:15px;position: relative;top:2px;">Print transaction summary</span>
                     </div>
+                  </div>
 
                     <!--__SEARCHING__-->
                     <div style="display: flex;">

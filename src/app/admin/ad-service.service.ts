@@ -36,6 +36,13 @@ export class AdServiceService {
 
 
 
+  //This is to hide navigation_______________________________________________________________
+  eventEmitter_NavigationFrom: EventEmitter<any> = new EventEmitter<any>();
+  eventEmiterF_func(condition: boolean): void{
+    this.eventEmitter_NavigationFrom.emit(condition);
+  }
+
+
   //DASHBOARD______________________________________________________________________________________
 
   //Getting mails from inbox, favorite, and trash________________________________________________

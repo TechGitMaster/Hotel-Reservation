@@ -260,4 +260,9 @@ export class ArchiveComponent implements OnInit {
   
     return date_final_converted;
   }
+
+  //Subtotal count________________________________________________________________________________
+  subTotals(total_price: string): number{
+    return (Math.floor(parseInt(total_price))+1000);
+  }
 }

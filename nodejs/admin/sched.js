@@ -125,9 +125,12 @@ router.post('/notAvailable_save', middleware_admin, async (req, res) => {
 //Move to trash the event______________________________________________________________
 router.post('/deletePermanent', middleware_admin, async (req, res) => {
    let { _id } = req.body;
-    
-    calendar_sched_col.deleteOne({ _id: _id }).then(() => {
-        res.json({ response: 'success' });
+   let inbox_col_appointment = await calendar_sched_col.findOne({ _id: _id });
+
+    inbox_col.deleteOne({ _id: inbox_col_appointment.IDS }).then(() => {
+        calendar_sched_col.deleteOne({ _id: _id }).then(() => {
+            res.json({ response: 'success' });
+        });
     });
 
 });
@@ -136,8 +139,13 @@ router.post('/deletePermanent', middleware_admin, async (req, res) => {
 //retrieve appointment_____________________________________________________________________________________
 router.post('/retrieveAppointment', middleware_admin, async (req, res) => {
     const { _id } = req.body;
+
+    let inbox_col_appointment = await calendar_sched_col.findOne({ _id: _id });
     calendar_sched_col.updateOne({ _id: _id }, { $set: { delete_admin: false } }).then(() => {
-        res.json({ response: 'success' });
+        
+        inbox_col.updateOne({ _id: inbox_col_appointment.IDS }, { $set: { deleteNot: 'false' } }).then(() => {
+            res.json({ response: 'success' });
+        });
     });
 });
 
@@ -146,6 +154,8 @@ router.post('/retrieveAppointment', middleware_admin, async (req, res) => {
 //This is to "cancelTrashEvent and move to trash"____________________________________________________________________________
 router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
     let { id, cancelDelete, date } = req.body.datas;
+
+
     let data_admin = await data_reg.findOne({ email: req.token.email });
 
     if(!cancelDelete){
@@ -192,9 +202,14 @@ router.post('/cancelTrashEvent', middleware_admin, async (req, res) => {
         });   
     }else{
 
+        let inbox_col_appointment = await calendar_sched_col.findOne({ _id: id });
+
         //Move to trash__________________________________________
         calendar_sched_col.updateOne({ _id: id }, { $set: { delete_admin: true } }).then(() => {
-            res.json({ response: 'success' });
+        
+            inbox_col.updateOne({ _id: inbox_col_appointment.IDS }, { $set: { deleteNot: 'true' } }).then(() => {
+                res.json({ response: 'success' });
+            });
         });
     }
 

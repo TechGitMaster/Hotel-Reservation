@@ -112,6 +112,10 @@
                                 <span style="margin-left:5px;font-size: 17px;">{{object_roomSelected.transaction_id}}</span>
                             </div>
                             <div>
+                                <label class="labels" style="font-weight: bold;font-size: 16px;">Number of Pax:</label>
+                                <span style="margin-left:5px;font-size: 17px;">{{object_roomSelected.acquired_persons}}</span>
+                            </div>
+                            <div>
                                 <label class="labels" style="font-weight: bold;font-size: 16px;">Payment Method:</label>
                                 <span style="margin-left:5px;font-size: 17px;">{{(object_roomSelected.paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</span>
                             </div>
@@ -241,6 +245,11 @@
                                             </div>
 
                                             <div class="paDetailsMiddle">
+                                                <span style="font-family: inter_bold !important;">Incident fee: </span>
+                                                <span style="font-family: inter_bold !important;">php 1500.00</span>
+                                            </div>
+
+                                            <div class="paDetailsMiddle">
                                                 <span>Rate (Per Day):</span>
                                                 <span>php {{object_roomSelected.defaultPrice}}.00</span>
                                             </div>
@@ -256,8 +265,18 @@
                                             </div>
         
                                             <div class="paDetailsMiddle">
-                                                <span style="font-family: inter_bold !important;">x {{object_roomSelected.acquired_persons}}</span>
+                                                <span style="font-family: inter_bold !important;">x {{object_roomSelected.addtionalPax_count}}</span>
                                                 <span style="font-family: inter_bold !important;">php {{object_roomSelected.persons_price}}</span>
+                                            </div>
+
+                                            <div class="pdetailsSub" style="margin-top:10px;margin-bottom:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                                                <span>Subtotal</span>
+                                                <span>php {{subsTotal(object_roomSelected.total_price)}}.00</span>
+                                            </div>
+
+                                            <div class="paDetailsMiddle">
+                                                <span style="font-family: inter_bold !important;">Reservation fee: </span>
+                                                <span style="font-family: inter_bold !important;">php -1000.00</span>
                                             </div>
 
                                             <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">

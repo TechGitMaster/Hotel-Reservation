@@ -66,13 +66,15 @@
 }
 
 .paX{
+    margin:25px 0px 10px 0px;
     font-family: inter_bold;
-    padding-top:10px;
+    padding-right:20px;
+    text-align: right;
     cursor: pointer;
 }
 
 .paX-font{
-    font-size:20px; 
+    font-size:24px; 
 }
 
 .chPass{
@@ -83,7 +85,6 @@
 }
 
 .paForgotPass{
-    margin-top:-5px;
     font-family: inter_bold;
     text-align: center;
     color:#0063A8;
@@ -530,7 +531,7 @@
 
 
     .paX-font{
-        font-size:18px; 
+        font-size:24px; 
     }    
 
     .paForgotPass-font{

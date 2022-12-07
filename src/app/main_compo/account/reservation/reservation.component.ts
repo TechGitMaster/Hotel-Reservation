@@ -323,6 +323,12 @@ export class ReservationComponent implements OnInit {
       });
     }
   }
+
+
+  //Subtotal count________________________________________________________________________________
+  subTotals(total_price: string): number{
+    return (Math.floor(parseInt(total_price))+1000);
+  }
   
   //________PRINTING___________
   printing_condition: boolean = false;

@@ -255,10 +255,12 @@
                             
                             <div style="margin:10px 0px 20px 0px;position: relative;">
                                 <div [ngClass]="['termsCondition', !condition_termsCondition ? 'termsmaxHeight':'termsminHeight']">
-                                    <p>1. For the reservation of staycation, the guest need to settle a payment of php 1000 for the reservation fee to confirm the reservation of their chosen date</p>
-                                    <p>2. The reservation payment is non-refundable. If the guest failed to arrive on the reserved time and date without stating the reason nor giving a heads up to the management, the reservation fee will not be refunded.</p>
-                                    <p>3. Reservation fee will be deducted on the total amount of payment.</p>
+                                    <p>1. For the reservation of staycation, the guest need to settle a payment of php 1000 for the down payment to confirm the reservation of their chosen date.</p>
+                                    <p>2. The guest also need to pay the incident fee (php 1500) upon the total payment for reservation, take note that the incident fee will be refund after the management check if there's broken and missing furniture and appliances upon the guest's stay. </p>
+                                    <p>3. The reservation fee will be deducted on the total amount of payment after the check-out date.</p>
                                     <p>4. The management reserves the right to decline a reservation request due to incomplete and/or delay in payment of the reservation fee.</p>
+                                    <p>5. The reservation payment is non-refundable If the guest failed to arrive on the reserved time and date without stating the reason nor giving a heads up to the management.</p>
+                                    <p>6. For the reservation, if the management cancelled the reservation, rest assured that the down payment and incident fee will be refunded.</p>
                                 </div>
                                 
                                 <div class="termsBttn" [ngStyle]="{'margin-top':!condition_termsCondition ? '-10px':'0px', 
@@ -412,18 +414,26 @@
                             <img [src]="data_room.img_first" class="img-fluid" style="max-width:90px;min-height:100%;border-radius:5px;" />
                             <div style="margin-left:5px;padding:5px;">
                                 <p class="paTitleSum">{{data_room.nameRoom}}</p>
-                                <p class="paTitleSum">{{data_room.typeRoom2}} type</p>
+                                <p class="paTitleSum">{{data_room.typeRoom2}} Type</p>
                                 <span style="font-family:inter_regular;font-size:14px;">Quezon City, Manhattan Garden</span>
                             </div>
                         </div>
 
                         <div class="dateCheckInOut">
-                            <span><span style="font-family: inter_bold;">From 2pm to 12nn: </span> 
-                            <span style="font-family: inter_medium;">{{day_checkInOut_convert}}</span></span>
+                            <span style="font-family: inter_semibold;">From: {{day_checkInOut_convert}} (2pm to 12nn)</span> 
+                        </div>
+
+                        <div class="numberPax">
+                            <span style="font-family: inter_semibold;">Number of Pax: {{token_convert.personsCount}}</span> 
                         </div>
 
                         <div class="details_inPay">
                             <p class="paDPs">Details payment summary</p>
+
+                            <div style="display: flex;justify-content: space-between;font-size:14px;">
+                                <span style="font-family: inter_semibold">Incidental fee: </span>
+                                <span style="font-family: inter_semibold;">php 1500.00</span>
+                            </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
                                 <span style="font-family: inter_regular;">Rate (Per Day):</span>
@@ -441,15 +451,27 @@
                             </div>
 
                             <div style="display: flex;justify-content: space-between;font-size:14px;">
-                                <span style="font-family: inter_semibold">x {{token_convert.personsCount}}</span>
+                                <span style="font-family: inter_semibold">x {{total_addPax()}}</span>
                                 <span style="font-family: inter_semibold;">php {{arr_data_savingInfo[4]}}</span>
+                            </div>
+                        </div>
+
+                        <div style=" padding:7px 5px 0px 5px;">
+                            <div style="display: flex;justify-content: space-between;font-size:14px;">
+                                <span style="font-family: inter_semibold">Subtotal: </span>
+                                <span style="font-family: inter_semibold">php {{subTotals(total_price)}}.00</span>
+                            </div>
+
+                            <div style="display: flex;justify-content: space-between;font-size:14px;">
+                                <span style="font-family: inter_semibold">Reservation fee: </span>
+                                <span style="font-family: inter_semibold">php -1000.00</span>
                             </div>
                         </div>
 
                         <div class="total_inPay">
                             <span style="font-family: inter_semibold">Total</span>
                             <div style="display: flex;align-items: flex-end;">
-                                <span class="fontphp" style="font-family: inter_medium;margin-right:3px;position: relative;top:-4px;">php</span>
+                                <span class="fontphp" style="font-family: inter_medium;margin-right:3px;position: relative;">php</span>
                                 <span class="totalPriceFont" style="font-family: inter_regular;">{{total_price}}</span>
                             </div>
                         </div>
@@ -473,7 +495,8 @@
 
                 <p class="paReD paNote-font">Transaction ID: {{arr_data_savingInfo[14]}}</p>
                 <p class="paReD paNote-font">Name of room: {{data_room.nameRoom}}</p>
-                <p class="paReD paNote-font">Type of room: {{data_room.typeRoom2}} type</p>
+                <p class="paReD paNote-font">Type of room: {{data_room.typeRoom2}} Type</p>
+                <p class="paReD paNote-font">Number of Pax: {{token_convert.personsCount}}</p>
 
                 <p class="paReDs paNotes-font">Your reservation details:</p>
 
@@ -610,6 +633,11 @@
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
+                                            <span style="font-family: inter_bold !important;">Incidental fee: </span>
+                                            <span style="font-family: inter_bold !important;">php 1500.00</span>
+                                        </div>
+
+                                        <div class="paDetailsMiddle paDetailsMiddle-font">
                                             <span style="font-family: inter_regular !important;">Rate (Per Day):</span>
                                             <span>php {{price_room}}</span>
                                         </div>
@@ -625,11 +653,19 @@
                                         </div>
 
                                         <div class="paDetailsMiddle paDetailsMiddle-font">
-                                            <span style="font-family: inter_medium !important;">x {{token_convert.personsCount}}</span>
-                                            <span>php {{arr_data_savingInfo[4]}}</span>
+                                            <span style="font-family: inter_bold !important;">x {{total_addPax()}}</span>
+                                            <span style="font-family: inter_bold !important;">php {{arr_data_savingInfo[4]}}</span>
                                         </div>
 
+                                        <div class="pdetailsSub paDetailsMiddle-font" style="margin-top:10px;margin-bottom:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                                            <span>Subtotal</span>
+                                            <span>php {{subTotals(arr_data_savingInfo[6])}}.00</span>
+                                        </div>
 
+                                        <div class="paDetailsMiddle paDetailsMiddle-font">
+                                            <span style="font-family: inter_bold !important;">Reservation fee: </span>
+                                            <span style="font-family: inter_bold !important;">php -1000.00</span>
+                                        </div>
 
                                         <div class="pdetails pdetails-font" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
                                             <span>Total</span>

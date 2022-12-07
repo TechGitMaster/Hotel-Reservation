@@ -387,5 +387,14 @@ export class AppointmentComponent implements OnInit {
     return date_final_converted;
   }
 
+  //Print transaction______________________________________________
+  print(): void{
+    this.service.eventEmiterF_func(false);
+    setTimeout(() => {
+      window.print();
+      this.service.eventEmiterF_func(true);
+    }, 100);
+  }
+
 
 }

@@ -266,6 +266,15 @@
     color:white;
 }
 
+.pdetailsSub{
+    padding:10px;
+    font-family: inter_bold;
+    font-size:14px;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
 .paDetailsMiddle{
     display: flex;
     justify-content: space-between;

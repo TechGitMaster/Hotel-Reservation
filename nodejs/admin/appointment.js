@@ -294,19 +294,26 @@ function sendEmail(res, transaction_ID, condition, email, dateArrival, reason){
 
 router.post('/moveTotrash_appointment', middleware, (req, res) => {
     inbox_col.updateOne({ _id: req.body.id }, { $set: { deleteNot: 'true' } }).then(() => {
-        res.json({ response: 'success' });
+
+        sched_col.updateOne({ IDS: req.body.id }, { $set: { delete_admin: true } }).then(() => {
+            res.json({ response: 'success' });
+        });
     });
 });
 
 router.post('/retrieve_appointment_admin', middleware, (req, res) => {
     inbox_col.updateOne({ _id: req.body.id }, { $set: { deleteNot: 'false' } }).then(() => {
-        res.json({ response: 'success' });
+        sched_col.updateOne({ IDS: req.body.id }, { $set: { delete_admin: false } }).then(() => {
+            res.json({ response: 'success' });
+        });
     });
 });
 
 router.post('/delete_Perma_appointment', middleware, (req, res) => {
     inbox_col.deleteOne({ _id: req.body.id }).then(() => {
-        res.json({ response: 'success' });
+        sched_col.deleteOne({ IDS: req.body.id }).then(() => {
+            res.json({ response: 'success' });
+        });
     });
 });
 

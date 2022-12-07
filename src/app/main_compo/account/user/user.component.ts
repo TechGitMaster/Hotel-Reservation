@@ -28,11 +28,12 @@ export class UserComponent implements OnInit {
   seeNotArr_password: Array<boolean> = new Array<boolean>(false, false, false);
 
   ngOnInit(): void {
-    this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""]);
+    this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""], [false, ""]);
 
     this.formGroup_newPassword = this.builder.group({
       currentPass: [''],
-      newPass: ['']
+      newPass: [''],
+      confirmPass: ['']
     });
 
     this.gettingCall();
@@ -115,12 +116,18 @@ export class UserComponent implements OnInit {
      }else{
        this.seeNotArr_password[0] = false;
      }
-    }else{
+    }else if(condition === 'newPass'){
      if(!this.seeNotArr_password[1]){
        this.seeNotArr_password[1] = true;
      }else{
        this.seeNotArr_password[1] = false;
      }
+    }else{
+      if(!this.seeNotArr_password[2]){
+        this.seeNotArr_password[2] = true;
+      }else{
+        this.seeNotArr_password[2] = false;
+      }
     }
    }
 
@@ -130,32 +137,42 @@ export class UserComponent implements OnInit {
   changePassword(): void{
     let current = this.formGroup_newPassword.value.currentPass;
     let newP = this.formGroup_newPassword.value.newPass;
+    let confirmP = this.formGroup_newPassword.value.confirmPass;
 
-    this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""]);
+    this.errArrPassword = new Array<Array<any>>([false, ""], [false, ""], [false, ""]);
     if(current.length > 0 && newP.length > 0){
         this.subsChange = this.service.checkingPassword(current).subscribe((data) => {
           this.subsChange.unsubscribe();
           if(data.response === 'success'){
             
-            if(this.passStrength(newP)){
-              if(current !== newP){
-                this.subsChange = this.service.changePasswords(data.email, newP).subscribe(() => {
-                  this.subsChange.unsubscribe();
-  
-                  this.arrHandle[0] = 'popUPChangePassAdmin';
-  
-                }, (err) => {
-                  this.subsChange.unsubscribe();
-                  location.reload();
-                });
-              }else{
-                this.errArrPassword[1][0] = true;
-                this.errArrPassword[1][1] = "!This is your current password.";
+            if(confirmP == newP){
+              if(this.passStrength(newP)){
+                if(current !== newP){
+                  this.subsChange = this.service.changePasswords(data.email, newP).subscribe(() => {
+                    this.subsChange.unsubscribe();
+    
+                    this.arrHandle[0] = 'popUPChangePassAdmin';
+    
+                  }, (err) => {
+                    this.subsChange.unsubscribe();
+                    location.reload();
+                  });
+                }else{
+                  this.errArrPassword[1][0] = true;
+                  this.errArrPassword[1][1] = "This is your current password!";
+                  this.errArrPassword[2][0] = true;
+                  this.errArrPassword[2][1] = "This is your current password!";
+                }
               }
+            }else{
+              this.errArrPassword[1][0] = true;
+              this.errArrPassword[1][1] = "New password and confirm password are not same!";
+              this.errArrPassword[2][0] = true;
+              this.errArrPassword[2][1] = "New password and confirm password are not same!";
             }
           }else{
             this.errArrPassword[0][0] = true;
-            this.errArrPassword[0][1] = "!Please provide a correct password.";
+            this.errArrPassword[0][1] = "Please provide a correct password!";
           }
 
 
@@ -164,8 +181,8 @@ export class UserComponent implements OnInit {
           location.reload();
         });
     }else{
-      this.errArrPassword[0][1] = "!Empty input field.";
-      this.errArrPassword[1][1] = "!Empty input field.";
+      this.errArrPassword[0][1] = "Empty input field!";
+      this.errArrPassword[1][1] = "Empty input field!";
 
       if(current.length == 0 && newP.length == 0){
         this.errArrPassword[0][0] = true;
@@ -194,23 +211,23 @@ export class UserComponent implements OnInit {
             regex =  /\W/g;
             if(!regex.test(password)){
               condition = false;
-              txtErr = "!The password must contain special characters";
+              txtErr = "The password must contain special characters!";
             }
           }else{
             condition = false;
-            txtErr = "!The password must contain numeric values";
+            txtErr = "The password must contain numeric values!";
           }
         }else{
           condition = false;
-          txtErr = "!The password must contain uppercase characters";
+          txtErr = "The password must contain uppercase characters!";
         }
       }else{
         condition = false;
-        txtErr = "!The password must contain lowercase characters";
+        txtErr = "The password must contain lowercase characters!";
       }
     }else{
       condition = false;
-      txtErr = "!Length must be greater than 8 or equal to 8";
+      txtErr = "Length must be greater than 8 or equal to 8!";
     }
 
     if(!condition){

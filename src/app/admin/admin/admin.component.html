@@ -102,7 +102,7 @@
                 <p class="paForgotPass">Change Password</p>
 
                 <div [formGroup]="formGroup_newPassword"  style="padding:0px 20px 10px 20px;margin-top:30px;">
-                    <div style="margin-bottom:20px;">
+                    <div style="margin-bottom:10px;">
                         <div style="position:relative;">
                             <input [type]="!seeNotArr_password[0] ? 'password':'text'" formControlName="currentPass" placeholder="Enter your current password" 
                                 class="form-control pass_padding forminputReg" />
@@ -123,11 +123,27 @@
 
                             <div style="display: flex;align-items: center;">
                                 <img [src]="!seeNotArr_password[1] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
-                                    class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                                    class="img-fluid eye_pass" (click)="passSeeNot('newPass')" />
                             </div>
                         </div>
                         <div *ngIf="errArrPassword[1][0]">
                             <span class="paError">{{errArrPassword[1][1]}}</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:10px;">
+                        <div style="position:relative;">
+                            <input [type]="!seeNotArr_password[2] ? 'password':'text'" formControlName="confirmPass" placeholder="Confirm your new password"
+                                class="form-control pass_padding forminputReg forminputReg-font" />
+        
+                            <div style="display: flex;align-items: center;">
+                                <img [src]="!seeNotArr_password[2] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                    class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                            </div>
+                        </div>
+
+                        <div *ngIf="errArrPassword[2][0]">
+                            <span class="paError">{{errArrPassword[2][1]}}</span>
                         </div>
                     </div>
 
@@ -136,7 +152,7 @@
             </div>
 
 
-            <!--___________________THIS IS FOR POP-UP changing Password______________________-->
+            <!--___________________THIS IS FOR POP-UP changing Password done______________________-->
             <div *ngIf="arrHandle[0] === 'popUPChangePassAdmin'" class="container divSuccesschangePass">
                 <div class="container-fluid">
                     <div style="display: flex;justify-content: center;">
@@ -146,6 +162,8 @@
                 </div>
             </div>
 
+
+            <!--___________________THIS IS FOR POP-UP Leave message when declined request______________________-->
             <div *ngIf="arrHandle[0] === 'leaveMessage'" class="leaveMessageDiv">
                 <div [formGroup]="formGroup_textarea">
                     <p class="paleaveM">Leave a message</p>
@@ -246,20 +264,23 @@
             <!--___________________THIS IS FOR SHOWING THE RESERVATION INFORMATION_______________________-->
             <div *ngIf="arrHandle[0] === 'reservation_info'" id="printingD" class="divReservation" (click)="$event.stopPropagation()">
                 
-                <div style="display: flex;justify-content: space-between;">
-                    <span class="paX2" (click)="funcCloseReseroom(false)">X</span>
-                    <div></div>
+                <div>
+                    <p class="paX2" (click)="funcCloseReseroom(false)">X</p>
                 </div>
 
                 <div style="margin-top:10px;">
-                    <span><span class="paRoomname">Room name: </span><span style="font-family: inter_regular;font-size:16px;">{{arrHandle[1].name_room}}</span></span>
+                    <span><span class="paRoomname">Room Name: </span><span style="font-family: inter_regular;font-size:16px;">{{arrHandle[1].name_room}}</span></span>
                     <div style="margin-top:5px;">
-                        <label class="paPayment">Type of room:</label>
+                        <label class="paPayment">Type of Room:</label>
                         <span style="margin-left:5px;font-family: inter_regular;font-size:16px;">{{arrHandle[1].typeRoom2}}</span>
                     </div>
                     <div style="margin-top:5px;">
                         <label class="paPayment">Transaction ID:</label>
                         <span style="margin-left:5px;font-family: inter_regular;font-size:16px;">{{(arrHandle[1].transaction_id)}}</span>
+                    </div>
+                    <div style="margin-top:5px;">
+                        <label class="paPayment">Number of Pax:</label>
+                        <span style="margin-left:5px;font-family: inter_regular;font-size:16px;">{{(arrHandle[1].acquired_persons)}}</span>
                     </div>
                     <div style="margin-top:5px;">
                         <label class="paPayment">Payment Method:</label>
@@ -391,6 +412,10 @@
                                         <span>{{arrHandle[1].transaction_date}}</span>
                                     </div>
 
+                                    <div class="paDetailsMiddle">
+                                        <span style="font-family: inter_bold !important;">Incidental fee: </span>
+                                        <span style="font-family: inter_bold !important;">php 1500.00</span>
+                                    </div>
 
                                     <div class="paDetailsMiddle">
                                         <span>Rate (Per Day):</span>
@@ -408,8 +433,18 @@
                                     </div>
 
                                     <div class="paDetailsMiddle">
-                                        <span style="font-family: inter_bold !important;">x {{arrHandle[1].acquired_persons}}</span>
+                                        <span style="font-family: inter_bold !important;">x {{arrHandle[1].addtionalPax_count}}</span>
                                         <span style="font-family: inter_bold !important;">php {{arrHandle[1].persons_price}}</span>
+                                    </div>
+
+                                    <div class="pdetailsSub" style="margin-top:10px;margin-bottom:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                                        <span>Subtotal</span>
+                                        <span>php {{subsTotal(arrHandle[1].total_price)}}.00</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle">
+                                        <span style="font-family: inter_bold !important;">Reservation fee: </span>
+                                        <span style="font-family: inter_bold !important;">php -1000.00</span>
                                     </div>
 
                                     <div class="pdetails" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
@@ -637,7 +672,7 @@
 
 
         <!--_________________________ADMIN NAVIGATION_____________________________-->
-        <div class="container components">
+        <div *ngIf="conditionSeeNavigation" class="container components">
 
             <!--_____________Header names_____________-->
             <div class="divHeader-compo">

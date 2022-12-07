@@ -46,7 +46,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   
   arr_img_transaction: Array<string> = new Array<string>();
   arr_blob_transaction: Array<any> = new Array<any>();
-  arr_data_savingInfo: Array<any> = new Array<any>('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  arr_data_savingInfo: Array<any> = new Array<any>('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
   errAppointment!: Array<any>;
   formGroup_payment!: FormGroup;
@@ -110,7 +110,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
               //Total price perday_________________________________
               this.total_price_perDay = Math.floor(this.data_room.defaultPrice * this.day_count_reservation);
               //Total price___________________________________
-              this.total_price = (this.person_total + this.total_price_perDay).toFixed(2);
+              this.total_price = (((this.person_total + this.total_price_perDay)-1000)+1500).toFixed(2);
               
               this.price_room = ''+this.data_room.defaultPrice+'.00';
               this.person_total = this.person_total.toFixed(2);
@@ -211,8 +211,8 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     this.subs_checkingLog = this.service.checkingToken().subscribe((result) => {
       this.subs_checkingLog.unsubscribe();
       this.formGroup_payment = this.formGroup.group({
-        first_name: [result.data_info.firstname],
-        last_name: [result.data_info.lastname],
+        first_name: [(result.data_info.firstname === '' ? result.data_info.fullName.split(' ')[0]:result.data_info.firstname)],
+        last_name: [(result.data_info.lastname  === '' ? result.data_info.fullName.split(' ')[1]:result.data_info.lastname)],
         email: [result.data_info.email],
         email_re: [''],
         contact_number: [result.data_info.contactnumber]
@@ -462,6 +462,20 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     return number_total;
   }
 
+  //Total count of Additional Pax___________________________________________________________
+  total_addPax(): number{
+    this.token_convert.personsCount;
+    this.data_room.goodPersons
+
+    let number_total = 0;
+
+    if(this.token_convert.personsCount > this.data_room.goodPersons){
+      number_total = this.token_convert.personsCount - this.data_room.goodPersons;
+    }
+
+    return number_total;
+  }
+
 
 
   //ADD GUEST______________________________________________________________________________________
@@ -662,6 +676,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             this.arr_data_savingInfo[18] = this.data_room.typeRoom2;
             this.arr_data_savingInfo[19] = this.day_count_reservation;
             this.arr_data_savingInfo[20] = this.data_room.pricePersons;
+            this.arr_data_savingInfo[21] = ''+this.total_addPax();
           }
         }
       }
@@ -822,6 +837,11 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   }
 
 
+
+  //Subtotal count________________________________________________________________________________
+  subTotals(total_price: string): number{
+    return (Math.floor(parseInt(total_price))+1000);
+  }
 
 
   //DISPLAYING DETAILS SECTION____________________________________________________________________

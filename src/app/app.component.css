@@ -306,7 +306,7 @@
 }
 
 .forminputtextarea{
-    height:270px;
+    height:230px;
     border-radius: 15px;
     padding:10px;
     border:1px solid black;
@@ -331,18 +331,18 @@
 .divknowing{
     max-width:110px;
     display:flex;
+    margin-right:10px;
     justify-content: center;
     align-items: center;
+    margin-top:5px;
 }
 
 .divknowingnot{
-    max-width:140px;
     display:flex;
     justify-content: center;
     align-items: center;
-    background:rgb(213, 213, 213);
-    margin-left:20px;
-    padding:5px;
+    margin-right:10px;
+    margin-top:5px;
 }
 
 .boxknowing{
@@ -570,19 +570,18 @@
 }
 
 .paX{
-    margin:0px;
+    margin:15px 0px 10px 0px;
     font-family: inter_bold;
-    padding-left:20px;
-    padding-top:15px;
+    padding-right:20px;
+    text-align: right;
     cursor: pointer;
 }
 
 .paX-font{
-    font-size:22px;
+    font-size:26px;
 }
 
 .paLoginSignup{
-    margin-top:-5px;
     font-family: inter_bold;
     text-align: center;
     color:#0063A8;
@@ -596,6 +595,11 @@
     padding-left: 46px;
     padding-right: 46px;
     margin-top:40px;
+}
+
+.divFill_bottom{
+    padding-left: 46px;
+    padding-right: 46px;
 }
 
 .divFillSign{
@@ -795,7 +799,7 @@
 }
 
 .paForgotPass{
-    margin-top:-5px;
+    margin:10px 0px 10px 0px;
     font-family: inter_bold;
     text-align: center;
     color:#0063A8;
@@ -934,10 +938,20 @@
     margin:0%;padding:0px 10px 0px 0px;
 }
 
+.width_meaning{
+    width:80%;
+}
+
+
 /* ________________________@MEDIA DESIGN_________________________ */
 
 /*992px for middle col-lg*/
 @media (max-width:992px){
+    
+    .width_meaning{
+        width:100%;
+    }
+    
     .divLogoCorner{
         display: block;
     }
@@ -985,6 +999,8 @@
 
 /*768px for small col-sm*/
 @media (max-width: 768px){
+
+    
     .naviclicked{
         min-height:100vh;
         padding:0px;
@@ -1060,7 +1076,7 @@
     }
 
     .forminputtextarea{
-        height:270px;
+        height:230px;
         border-radius: 14px;
         padding:10px;
         border:1px solid black;
@@ -1122,7 +1138,7 @@
     }
 
     .paX-font{
-        font-size:20px;
+        font-size:24px;
     }
 
     .paLoginSignup-font{
@@ -1141,6 +1157,11 @@
         padding-left: 20px;
         padding-right: 20px;
         margin-top:40px;
+    }
+
+    .divFill_bottom{
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .divFillSign{

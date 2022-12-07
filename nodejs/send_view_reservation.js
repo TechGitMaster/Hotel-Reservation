@@ -29,13 +29,14 @@ transporter.use('compile', hbs(handlebarOptions));
 router.post('/view_send', async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
         last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member,
-        price, nameOfRoom, typeRoom, acquired_days, default_Personprice} = req.body.data;
+        price, nameOfRoom, typeRoom, acquired_days, default_Personprice, addtionalPax} = req.body.data;
 
     let data = {};
 
     data.Transcation_id = transcation_id;
     data.nameRoom = nameOfRoom;
     data.typeRoom = typeRoom;
+    data.paymentMethod = (paymentMethod === 'payment2' ? 'Paypal': 'Gcash');
 
     //Checking date_________________________________________________________________
     data.checkInDay = checkin_date.split(" ")[1];
@@ -52,8 +53,10 @@ router.post('/view_send', async (req, res) => {
     
     data.default_Personprice = default_Personprice;
     data.acquired_persons = acquired_persons;
+    data.addtionalPax = addtionalPax;
     data.persons_price = persons_price;
 
+    data.subTotal = (Math.floor(parseInt(total_price))+1000);
     data.total_price = total_price;
     
 
@@ -149,12 +152,7 @@ router.post('/asds', (req, res) => {
         to: 'kylematthew375@gmail.com',
         subject: 'Your reservation Details',
         template: 'mail_template',
-        context: data,
-        attachments: [{
-            filename: 'logo.png',
-            path: './src/assets/logo/logo.png',
-            cid: 'logo'
-        }]
+        context: data
     }, (err, info) => {
         if(err)
         console.log(err);

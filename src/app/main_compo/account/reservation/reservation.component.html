@@ -96,6 +96,7 @@
                 <p class="paMessage paMessage-font">Transaction ID: {{data.transaction_id}}</p>
                 <p class="paMessage paMessage-font">Room name: {{data.name_room}}</p>
                 <p class="paMessage paMessage-font">Type room: {{data.typeRoom2}}</p>
+                <p class="paMessage paMessage-font">Number of Pax: {{data.acquired_persons}}</p>
                 <p class="paMessage paMessage-font">Payment method: {{(data.paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</p>
 
                 
@@ -144,7 +145,9 @@
                 <p class="pa_header_body pa_header_body-font"><span style="font-family: inter_medium;">Room name</span>: 
                     <span style="font-family: inter_regular;">{{arr_selected_data[0].name_room}}</span></p>
                 <p class="pa_header_body pa_header_body-font"><span style="font-family: inter_medium;">Type of room</span>: 
-                        <span style="font-family: inter_regular;">{{arr_selected_data[0].typeRoom2}}</span></p>
+                    <span style="font-family: inter_regular;">{{arr_selected_data[0].typeRoom2}}</span></p>
+                <p class="pa_header_body pa_header_body-font"><span style="font-family: inter_medium;">Number of Pax</span>: 
+                    <span style="font-family: inter_regular;">{{arr_selected_data[0].acquired_persons}}</span></p>
                 <p class="pa_header_body pa_header_body-font"><span style="font-family: inter_medium;">Payment method</span>: 
                     <span style="font-family: inter_regular;">{{(arr_selected_data[0].paymentMethod === 'payment1' ? 'Gcash': 'Paypal')}}</span></p>
             </div>
@@ -322,6 +325,11 @@
                                     </div>
 
                                     <div class="paDetailsMiddle paDetailsMiddle-font">
+                                        <span style="font-family: inter_bold !important;">Incidental fee: </span>
+                                        <span style="font-family: inter_bold !important;">php 1500.00</span>
+                                    </div>
+
+                                    <div class="paDetailsMiddle paDetailsMiddle-font">
                                         <span>Rate (Per Day):</span>
                                         <span>php {{arr_selected_data[0].defaultPrice}}.00</span>
                                     </div>
@@ -337,8 +345,20 @@
                                     </div>
 
                                     <div class="paDetailsMiddle paDetailsMiddle-font">
-                                        <span style="font-family: inter_bold !important;">x {{arr_selected_data[0].acquired_persons}}</span>
+                                        <span style="font-family: inter_bold !important;">x {{arr_selected_data[0].addtionalPax_count}}</span>
                                         <span style="font-family: inter_bold !important;">php {{arr_selected_data[0].persons_price}}</span>
+                                    </div>
+
+
+                                    <div class="pdetailsSub paDetailsMiddle-font" style="margin-top:10px;margin-bottom:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                                        <span>Subtotal</span>
+                                        <span>php {{subTotals(arr_selected_data[0].total_price)}}.00</span>
+                                    </div>
+
+
+                                    <div class="paDetailsMiddle paDetailsMiddle-font">
+                                        <span style="font-family: inter_bold !important;">Reservation fee: </span>
+                                        <span style="font-family: inter_bold !important;">php -1000.00</span>
                                     </div>
 
 

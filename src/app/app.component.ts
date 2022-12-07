@@ -150,6 +150,8 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     this.formGroup_setAppointment = this.formBuilder.group({
       fullname: [''],
+      fName: [''],
+      lName: [''],
       email: [''],
       numberguest: [''],
       contactnumber: [''],
@@ -422,10 +424,13 @@ export class AppComponent implements OnInit, AfterViewInit{
             //home page____________________
             this.handle_fullname = result.data_info.fullName;
             this.handle_email = result.data.email;
+            
 
             //Auto fill set appointment______________________________
             this.formGroup_setAppointment = this.formBuilder.group({
               fullname: [result.data_info.fullName],
+              fName: [(result.data_info.firstname === '' ? result.data_info.fullName.split(' ')[0]:result.data_info.firstname)],
+              lName: [(result.data_info.lastname  === '' ? result.data_info.fullName.split(' ')[1]:result.data_info.lastname)],
               email: [result.data_info.email],
               numberguest: [''],
               contactnumber: [result.data_info.contactnumber],
@@ -1026,9 +1031,9 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   //Set Appointment button______________________________________________
-  errAppointment: Array<Array<any>> = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
+  errAppointment: Array<Array<any>> = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
   submitAppointment(): void{
-    this.errAppointment = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
+    this.errAppointment = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false], ['', false]);
 
     if(this.checkingAInputField()){
       if(this.finalAppointment_date[0] !== ''){
@@ -1040,6 +1045,8 @@ export class AppComponent implements OnInit, AfterViewInit{
 
           this.formGroup_setAppointment = this.formBuilder.group({
             fullname: [''],
+            fName: [''],
+            lName: [''],
             email: [''],
             numberguest: [''],
             contactnumber: [''],
@@ -1190,66 +1197,83 @@ export class AppComponent implements OnInit, AfterViewInit{
   checkingAInputField(): boolean{
     let condition = true;
     this.textarea_details = '';
-    if(this.formGroup_setAppointment.value.fullname !== '' && this.formGroup_setAppointment.value.fullname !== ' '){
 
-      if(this.formGroup_setAppointment.value.fullname.length <= 40){
+    //this.formGroup_setAppointment.value.fullname
+    if(this.formGroup_setAppointment.value.fName !== '' && this.formGroup_setAppointment.value.fName !== ' '){
 
-        if((/[@]/).test(this.formGroup_setAppointment.value.email) && (/[.]/).test(this.formGroup_setAppointment.value.email)){
-          if((/^\d+$/).test(this.formGroup_setAppointment.value.numberguest) && this.formGroup_setAppointment.value.numberguest.length > 0){
+      if(this.formGroup_setAppointment.value.fName.length <= 20){
 
-            let condition_GuestHave = true;
-            if(this.countD > 1) {
-              for(let count = 0;count < this.arr_details.length;count++){
-                if(this.arr_details[count][0] === '' || this.arr_details[count][1] === '' || this.arr_details[count][2] === ''){
-                  this.errAppointment[5][0] = "Check the input field on guest names!";
-                  this.errAppointment[5][1] = true;
-                  condition = false;   
-                  condition_GuestHave = false;
-                }else{
-                  this.textarea_details += 
-                    `${this.arr_details[count][0]+' '+this.arr_details[count][1]},${this.arr_details[count][2]}${count != this.arr_details.length-1 ? '\n':''}`
+        if(this.formGroup_setAppointment.value.lName !== '' && this.formGroup_setAppointment.value.lName !== ' '){
+          if(this.formGroup_setAppointment.value.lName.length <= 20){
+
+            this.formGroup_setAppointment.value.fullname = this.formGroup_setAppointment.value.fName+" "+this.formGroup_setAppointment.value.lName;
+
+            if((/[@]/).test(this.formGroup_setAppointment.value.email) && (/[.]/).test(this.formGroup_setAppointment.value.email)){
+              if((/^\d+$/).test(this.formGroup_setAppointment.value.numberguest) && this.formGroup_setAppointment.value.numberguest.length > 0){
+    
+                let condition_GuestHave = true;
+                if(this.countD > 1) {
+                  for(let count = 0;count < this.arr_details.length;count++){
+                    if(this.arr_details[count][0] === '' || this.arr_details[count][1] === '' || this.arr_details[count][2] === ''){
+                      this.errAppointment[5][0] = "Check the input field on guest names!";
+                      this.errAppointment[5][1] = true;
+                      condition = false;   
+                      condition_GuestHave = false;
+                    }else{
+                      this.textarea_details += 
+                        `${this.arr_details[count][0]+' '+this.arr_details[count][1]},${this.arr_details[count][2]}${count != this.arr_details.length-1 ? '\n':''}`
+                    }
+                  }
                 }
-              }
-            }
-  
-            if(condition_GuestHave){
-              if(this.formGroup_setAppointment.value.contactnumber.length != 0){
-                let removeWhite = this.formGroup_setAppointment.value.contactnumber.replaceAll(' ','');
-                if(removeWhite.length != 11){
-                  this.errAppointment[3] = ['Contact number must exact 11 length!', true];
-                  condition = false;
-                  condition_GuestHave = false;
+      
+                if(condition_GuestHave){
+                  if(this.formGroup_setAppointment.value.contactnumber.length != 0){
+                    let removeWhite = this.formGroup_setAppointment.value.contactnumber.replaceAll(' ','');
+                    if(removeWhite.length != 11){
+                      this.errAppointment[3] = ['Contact number must exact 11 length!', true];
+                      condition = false;
+                      condition_GuestHave = false;
+                    }
+                  }else{
+                    this.errAppointment[3] = ['Empty input field!', true];
+                    condition = false;
+                    condition_GuestHave = false;
+                  }
                 }
+    
+                if(condition_GuestHave){
+                  if(this.formGroup_setAppointment.value.letusknown.length > 200){
+                    this.errAppointment[6] = ['Max character is 200 length!', true];
+                    condition = false;
+                    condition_GuestHave = false;
+                  }
+                }
+      
               }else{
-                this.errAppointment[3] = ['Empty input field!', true];
-                condition = false;
-                condition_GuestHave = false;
+                if(this.formGroup_setAppointment.value.numberguest.length == 0){
+                  this.errAppointment[2] = ['Select how many guest!', true];
+                  condition = false;
+                }else{
+                  this.errAppointment[2] = ['Only numbers need!', true];
+                  condition = false;
+                }
               }
+            }else{
+              this.errAppointment[1] = ['Check email again!', true];
+              condition = false;
             }
 
-            if(condition_GuestHave){
-              if(this.formGroup_setAppointment.value.letusknown.length > 200){
-                this.errAppointment[6] = ['Max character is 200 length!', true];
-                condition = false;
-                condition_GuestHave = false;
-              }
-            }
-  
           }else{
-            if(this.formGroup_setAppointment.value.numberguest.length == 0){
-              this.errAppointment[2] = ['Select how many guest!', true];
-              condition = false;
-            }else{
-              this.errAppointment[2] = ['Only numbers need!', true];
-              condition = false;
-            }
+            this.errAppointment[7] = ['Max character is 20 length!', true];
+            condition = false;
           }
         }else{
-          this.errAppointment[1] = ['Check email again!', true];
+          this.errAppointment[7] = ['Empty input field!', true];
           condition = false;
         }
+
       }else{
-        this.errAppointment[0] = ['Max character is 40 length!', true];
+        this.errAppointment[0] = ['Max character is 20 length!', true];
         condition = false;
       }
     }else{
@@ -1475,7 +1499,213 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
   
 
-  generateCalendar(month: any, year: any) {
+  availableTime_All: Array<any> = new Array<any>();
+  availableTime_ForRed(condition: boolean, months: number, days: number, years: number): any{
+    return new Promise((resolve, reject) => {
+      let arr_months = new Array<string>('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+      let date = new Date();
+
+      let arr_TempoHandle = new Array<any>();
+      this.subs = this.service.gettingTime(`${arr_months[months]} ${days} ${years}`).subscribe(async (result) => {
+        let month = months;
+        let day = days;
+        let year = years;
+        let time_tempos = new Array<any>();
+        
+        this.subs.unsubscribe();
+        if(result.response === 'success'){
+          if(condition){
+  
+            //FOR AM SCANNING IF AVAILABLE__________________________________________________
+            for await(let time of this.timeDate.AM){
+              let cond = true;
+  
+              //AM checking if already reserved__________________________________________________
+              for await(let data of result.data){
+                let split = data.timeDate.split(',');
+                let split2 = split[0].split(' ');
+                if(split2[1] === 'am'){
+                  if(time === data.time){
+                    cond = false;
+                    time_tempos.push([time, 'reserved']);
+                    break;
+                  }
+                }
+              }
+  
+              //AM checking pass time_____________________________________________________________
+              if(cond){
+                let time_c = time.split(':');
+                let hrs_c = parseInt(time_c[0]);
+                let mns_c = parseInt(time_c[1]);
+                
+                if(year == date.getFullYear() && month == date.getMonth() && day == date.getDate()){
+                  if(date.getHours() < 12){
+                    if(hrs_c <= date.getHours()){
+                      if(mns_c < date.getMinutes()){
+                        cond = false;
+                        time_tempos.push([time, 'passT']);
+                      }
+                    }
+                  }else{
+                    cond = false;
+                    time_tempos.push([time, 'passT']);
+                  }
+                }
+              }
+
+              if(cond){
+                time_tempos.push([time, 'true']);
+              }
+            }
+  
+            this.availableTime_All.push(time_tempos);
+          }else{
+  
+  
+            //FOR PM SCANNING IF AVAILABLE____________________________________________________
+            for await(let time of this.timeDate.PM){
+              let cond = true;
+  
+              //PM checking if already reserved__________________________________________________
+              for await(let data of result.data){
+                let split = data.timeDate.split(',');
+                let split2 = split[0].split(' ');
+                if(split2[1] === 'pm'){
+                  if(time === data.time){
+                    cond = false;
+                    time_tempos.push([time, 'reserved']);
+                    break;
+                  }
+                }
+              }
+
+              //PM checking pass time_____________________________________________________________
+              if(cond){
+                let time_c = time.split(':');
+                let hrs_c = parseInt(time_c[0]);
+                let mns_c = parseInt(time_c[1]);
+                
+                if(year == date.getFullYear() && month == date.getMonth() && day == date.getDate()){
+                  if(date.getHours() < 17){
+                    if(hrs_c <= date.getHours()){
+                      if(mns_c < date.getMinutes()){
+                        cond = false;
+                        time_tempos.push([time, 'passT']);
+                      }
+                    }
+                  }else{
+                    cond = false;
+                    time_tempos.push([time, 'passT']);
+                  }
+                }
+              }
+  
+              if(cond){
+                time_tempos.push([time, 'true']);
+              }
+            }
+  
+            //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
+            let arr_tempo = new Array<any>();
+            for await(let data of time_tempos){
+              let arr_time = data[0].split(':');
+              let date_num = parseInt(arr_time[0]);
+              if(date_num > 12){
+                arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, data[1]]);
+              }else{
+                arr_tempo.push([data[0], data[1]]);
+              }
+            }
+            arr_TempoHandle = arr_tempo;
+          }
+          this.availableTime_All.push(arr_TempoHandle);
+        }else{
+          if(condition){
+            //AM________________________
+            for await(let time of this.timeDate.AM){
+              let cond = true;
+
+              //AM checking pass time_____________________________________________________________
+              let time_c = time.split(':');
+              let hrs_c = parseInt(time_c[0]);
+              let mns_c = parseInt(time_c[1]);
+                
+              if(year == date.getFullYear() && month == date.getMonth() && day == date.getDate()){
+                if(date.getHours() < 12){
+                  if(hrs_c <= date.getHours()){
+                    if(mns_c < date.getMinutes()){
+                      cond = false;
+                      time_tempos.push([time, 'passT']);
+                    }
+                  }
+                }else{
+                  cond = false;
+                  time_tempos.push([time, 'passT']);
+                }
+              }
+
+              if(cond){
+                time_tempos.push([time, 'true']);
+              }
+
+              arr_TempoHandle = time_tempos;
+            }
+
+            this.availableTime_All.push(arr_TempoHandle);
+          }else{
+            //PM_______________________
+            //FOR PM SCANNING IF AVAILABLE____________________________________________________
+            for await(let time of this.timeDate.PM){
+              let cond = true;
+
+              //PM checking pass time_____________________________________________________________
+              let time_c = time.split(':');
+              let hrs_c = parseInt(time_c[0]);
+              let mns_c = parseInt(time_c[1]);
+                
+              if(year == date.getFullYear() && month == date.getMonth() && day == date.getDate()){
+                if(date.getHours() < 17){
+                  if(hrs_c <= date.getHours()){
+                    if(mns_c < date.getMinutes()){
+                      cond = false;
+                      time_tempos.push([time, 'passT']);
+                    }
+                  }
+                }else{
+                  cond = false;
+                  time_tempos.push([time, 'passT']);
+                }
+              }
+  
+              if(cond){
+                time_tempos.push([time, 'true']);
+              }
+
+              //Converting... Example 13:00 pm it must be 01:00 pm_____________________________________________________
+              let arr_tempo = new Array<any>();
+              for await(let data of time_tempos){
+                let arr_time = data[0].split(':');
+                let date_num = parseInt(arr_time[0]);
+                if(date_num > 12){
+                  arr_tempo.push([`0${date_num-12}:${arr_time[1]}`, data[1]]);
+                }else{
+                  arr_tempo.push([data[0], data[1]]);
+                }
+              }
+              arr_TempoHandle = arr_tempo;
+            }
+
+            this.availableTime_All.push(arr_TempoHandle);
+          }
+        }
+
+        setTimeout(resolve, 50);
+      });
+    });
+  }
+
+  async generateCalendar(month: any, year: any) {
   
     this.count_0day = 0;
     this.day_numbers = new Array<Array<string>>();
@@ -1499,13 +1729,12 @@ export class AppComponent implements OnInit, AfterViewInit{
       }
 
       let first_day = new Date(year, month, 1)
-    
 
       for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
         var condition = false;
-
+        
         if (i >= first_day.getDay()) {
-
+          
           //Disable past days on current month____________________________________________________________
           if(year === currDate.getFullYear() && month === currDate.getMonth()){
             if(((i - first_day.getDay() + 1) >= currDate.getDate())){
@@ -1521,11 +1750,32 @@ export class AppComponent implements OnInit, AfterViewInit{
             `${ month }` === this.array_data_notAvailable[count].month && 
             `${ this.year_selected }` === this.array_data_notAvailable[count].year){
               condition = false;
-              
             }
           }
           
-          var array = new Array<string>( `${(i - first_day.getDay() + 1)}`, `${condition}` );
+          let conditionFor_noTime = false;
+          if(condition){
+            let conditiont_f = true;
+            for(let timeF = 1;timeF <= 2;timeF++){
+              await this.availableTime_ForRed((conditiont_f ? conditiont_f = false: conditiont_f = true), month, (i - first_day.getDay() + 1), year);
+  
+              if(timeF == 2){
+                console.log(this.availableTime_All);
+                for(let count_FA = 0;count_FA < this.availableTime_All.length;count_FA++){
+                  for(let countDD = 0;countDD < this.availableTime_All[count_FA].length;countDD++){
+                    if(this.availableTime_All[count_FA][countDD][1] === 'true'){
+                      conditionFor_noTime = true;
+                    }
+                  }
+                }
+                this.availableTime_All = new Array<any>();
+              }
+            }
+          }else{
+            conditionFor_noTime = true;
+          }
+          
+          var array = new Array<string>( `${(i - first_day.getDay() + 1)}`, `${(conditionFor_noTime ? condition:'no_time')}`);
 
           this.day_numbers.push(array);
 

@@ -16,9 +16,11 @@ export class ContactsComponent implements OnInit {
   subs!: Subscription;
   errInquery!: Array<Array<any>>;
   ngOnInit(): void {
-    this.errInquery = new Array<Array<any>>(['', false], ['', false], ['', false]);
+    this.errInquery = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false]);
     this.formGroup = this.formBuild.group({
       fullname: [''],
+      fName: [''],
+      lName: [''],
       email: [''],
       letusknown: ['']
     });
@@ -32,6 +34,8 @@ export class ContactsComponent implements OnInit {
       this.subs.unsubscribe();
        this.formGroup = this.formBuild.group({
         fullname: [result.data_info.fullName],
+        fName: [(result.data_info.firstname === '' ? result.data_info.fullName.split(' ')[0]:result.data_info.firstname)],
+        lName: [(result.data_info.lastname  === '' ? result.data_info.fullName.split(' ')[1]:result.data_info.lastname)],
         email: [result.data.email],
         letusknown: ['']
       });
@@ -61,41 +65,58 @@ export class ContactsComponent implements OnInit {
   }
 
   inquerySubmit(): void{
-    this.errInquery = new Array<Array<any>>(['', false], ['', false], ['', false]);
+    this.errInquery = new Array<Array<any>>(['', false], ['', false], ['', false], ['', false]);
 
-    if(this.formGroup.value.fullname !== '' && this.formGroup.value.fullname !== ' '){
-      if((this.formGroup.value.email !== '' && this.formGroup.value.email !== ' ') && 
-      (/[@]/).test(this.formGroup.value.email) && (/[.]/).test(this.formGroup.value.email)){
+    if(this.formGroup.value.fName !== '' && this.formGroup.value.fName !== ' '){
 
-        if(this.formGroup.value.fullname.length <= 40){
-          if(this.formGroup.value.letusknown.length > 0 && this.formGroup.value.letusknown !== ' '){
-            if(this.formGroup.value.letusknown.length <= 200){
-              this.subs = this.service.sendAppointment(this.formGroup, '', this.date_converting(), 'inquery', '', '').subscribe((res) => {
-                this.formGroup = this.formBuild.group({
-                  fullname: [''],
-                  email: [''],
-                  letusknown: ['']
-                });
-                
-                this.service.emitShowSuccess();
-              });
+      if(this.formGroup.value.lName !== '' && this.formGroup.value.lName !== ' '){
+
+        if((this.formGroup.value.email !== '' && this.formGroup.value.email !== ' ') && 
+        (/[@]/).test(this.formGroup.value.email) && (/[.]/).test(this.formGroup.value.email)){
+
+          if(this.formGroup.value.fName.length <= 20){
+
+            if(this.formGroup.value.lName.length <= 20){
+
+              this.formGroup.value.fullname = this.formGroup.value.fName+" "+this.formGroup.value.lName;
+
+              if(this.formGroup.value.letusknown.length > 0 && this.formGroup.value.letusknown !== ' '){
+                if(this.formGroup.value.letusknown.length <= 200){
+                  this.subs = this.service.sendAppointment(this.formGroup, '', this.date_converting(), 'inquery', '', '').subscribe((res) => {
+                    this.formGroup = this.formBuild.group({
+                      fullname: [''],
+                      fName: [''],
+                      lName: [''],
+                      email: [''],
+                      letusknown: ['']
+                    });
+                    
+                    this.service.emitShowSuccess();
+                  });
+                }else{
+                  this.errInquery[2] = ['Max character is 200 length!', true];
+                }
+              }else{
+                this.errInquery[2] = ['Empty input field!', true];
+              }
             }else{
-              this.errInquery[2] = ['Max character is 200 length!', true];
+              this.errInquery[3] = ['Max character is 20 length!', true];
             }
           }else{
-            this.errInquery[2] = ['Empty input field!', true];
+            this.errInquery[0] = ['Max character is 20 length!', true];
           }
+
+      
         }else{
-          this.errInquery[0] = ['Max character is 40 length!', true];
+          if((this.formGroup.value.email === '' || this.formGroup.value.email === ' ')){
+            this.errInquery[1] = ['Empty input field!', true];
+          }else{
+            this.errInquery[1] = ['Check email again!', true];
+          }
         }
 
-    
       }else{
-        if((this.formGroup.value.email === '' || this.formGroup.value.email === ' ')){
-          this.errInquery[1] = ['Empty input field!', true];
-        }else{
-          this.errInquery[1] = ['Check email again!', true];
-        }
+        this.errInquery[3] = ['Empty input field!', true];
       }
     }else{
       this.errInquery[0] = ['Empty input field!', true];

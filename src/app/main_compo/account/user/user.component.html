@@ -20,7 +20,7 @@
                 <p class="paForgotPass paForgotPass-font">Change Password</p>
 
                 <div [formGroup]="formGroup_newPassword"  style="padding:0px 20px 10px 20px;margin-top:30px;">
-                    <div style="margin-bottom:20px;">
+                    <div style="margin-bottom:10px;">
                         <div style="position:relative;">
                             <input [type]="!seeNotArr_password[0] ? 'password':'text'" formControlName="currentPass" placeholder="Enter your current password"
                                 class="form-control pass_padding forminputReg forminputReg-font" />
@@ -42,12 +42,28 @@
         
                             <div style="display: flex;align-items: center;">
                                 <img [src]="!seeNotArr_password[1] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
-                                    class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                                    class="img-fluid eye_pass" (click)="passSeeNot('newPass')" />
                             </div>
                         </div>
 
                         <div *ngIf="errArrPassword[1][0]">
                             <span class="paError">{{errArrPassword[1][1]}}</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:10px;">
+                        <div style="position:relative;">
+                            <input [type]="!seeNotArr_password[2] ? 'password':'text'" formControlName="confirmPass" placeholder="Confirm your new password"
+                                class="form-control pass_padding forminputReg forminputReg-font" />
+        
+                            <div style="display: flex;align-items: center;">
+                                <img [src]="!seeNotArr_password[2] ? '/assets/icon/eye_hide.png': '/assets/icon/eye_view.png'" 
+                                    class="img-fluid eye_pass" (click)="passSeeNot('confirm')" />
+                            </div>
+                        </div>
+
+                        <div *ngIf="errArrPassword[2][0]">
+                            <span class="paError">{{errArrPassword[2][1]}}</span>
                         </div>
                     </div>
 

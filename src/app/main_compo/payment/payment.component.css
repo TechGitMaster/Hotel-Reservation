@@ -389,7 +389,12 @@
 }
 
 .dateCheckInOut{
-    margin:10px 0px 10px 0px;
+    margin:10px 0px 2px 0px;
+    font-size:14px;
+}
+
+.numberPax{
+    margin:0px 0px 10px 0px;
     font-size:14px;
 }
 
@@ -692,6 +697,14 @@
 .pdetails{
     padding:10px;
     font-family: inter_semibold;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
+.pdetailsSub{
+    padding:10px;
+    font-family: inter_bold;
     border-top:1px solid #9D9D9D;
     border-bottom:1px solid #9D9D9D;
     color:white;

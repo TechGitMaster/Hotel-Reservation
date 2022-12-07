@@ -37,9 +37,6 @@
     font-size:14px;
     margin-right: 5px;
     text-align: center;
-    background:none;
-    border:2px solid black;
-    color:black;
 }
 
 .paShowing{
@@ -88,4 +85,33 @@
     font-family: inter_regular;
     font-size:16px;
     border:none;
+}
+
+.imgwatermark{
+    min-height:100%;min-width:100%;position: absolute;
+    display: none;
+}
+
+
+@page { size: auto;  margin: 0mm; }
+
+@media print{
+
+    body *:not(#printingD):not(#printingD *){
+        visibility: hidden;
+    }
+
+    #printingD{       
+        display: inline; 
+        height: 100%;
+        position: absolute;
+        top:0;left:0;
+    }
+
+    .imgwatermark{
+        z-index:10;
+        min-height:100%;min-width:100%;position: absolute;
+        display: block;
+        opacity: 0.1;
+    }
 }

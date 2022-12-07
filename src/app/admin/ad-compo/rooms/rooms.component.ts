@@ -913,4 +913,9 @@ export class RoomsComponent implements OnInit {
       location.reload();
     });
   }
+
+  //Subtotal________________________________________________________
+  subsTotal(total_price: string): number{
+    return (Math.floor(parseInt(total_price))+1000);
+  }
 }

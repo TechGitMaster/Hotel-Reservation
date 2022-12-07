@@ -144,8 +144,10 @@
     </div>
 
     <p class="paReD paNote-font">Transaction ID: {{Transcation_id}}</p>
-    <p class="paReD paNote-font">Name of room: {{nameRoom}}</p>
-    <p class="paReD paNote-font">Type of room: {{typeRoom}} type</p>
+    <p class="paReD paNote-font">Name of Room: {{nameRoom}}</p>
+    <p class="paReD paNote-font">Type of Room: {{typeRoom}} type</p>
+    <p class="paReD paNote-font">Numer of Pax: {{acquired_persons}}</p>
+    <p class="paReD paNote-font">Payment Method: {{paymentMethod}}</p>
 
     <div class="divDetails">
         <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -203,6 +205,11 @@
                     <td style="text-align:right;">{{transaction_date}}</td>
                   </tr>
 
+                  <tr style="font-weight:bold;">
+                    <td>Incidental fee: </td>
+                    <td style="text-align:right;">php 1500.00</td>
+                  </tr>
+
                   <tr>
                     <td>Rate (Per Day): </td>
                     <td style="text-align:right;">php {{price}}</td>
@@ -219,13 +226,49 @@
                   </tr>
 
                   <tr style="font-weight:bold;">
-                    <td>x {{acquired_persons}}</td>
+                    <td>x {{addtionalPax}}</td>
                     <td style="text-align:right;">php {{persons_price}}</td>
                   </tr>
 
                 </tbody>
               </table>
             </div>
+
+            <div class="pdetails pdetails-font" style="margin-top:10px;margin-bottom:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
+                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:15px;font-family:sans-serif;font-weight:bold;">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Subtotal</td>
+                    <td style="text-align:right;">php {{subTotal}}.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            
+            <div class="paDetailsMiddle paDetailsMiddle-font">
+              <table cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:16px;font-family:sans-serif;">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>                  
+                  <tr>
+                    <td>Reservation fee: </td>
+                    <td style="text-align:right;">php -1000.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
 
             <div class="pdetails pdetails-font" style="margin-top:10px;display: flex;justify-content: space-between;background:#5C5656 !important;">
                 <table cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:17px;font-family:sans-serif;font-weight:bold;">
@@ -254,7 +297,7 @@
           <div>
             <div style="margin-top:5px;">
               <label class="labels">First name: </label>
-              <span style="margin-left:5px;font-family:sans-serif;font-size:17px;">{{full_name}}</span>
+              <span style="margin-left:5px;font-family:sans-serif;font-size:17px;">{{first_name}}</span>
             </div>
             <div style="margin-top:5px;">
               <label class="labels">Last name: </label>
@@ -349,6 +392,13 @@
         </div>  
       </div>
 
-      <p style="margin-top:20px;font-size:16px;">With regards,<br/>Ms. Abegeil Padilla<br/>Real-estate broker of Manhattan Garden City</p>
+      <p style="margin-top:20px;font-size:16px;">With regards,<br/>Ms. Abegeil Padilla<br/>Real-Estate Broker, Manhattan Garden City.</p>
+      <div style="margin:30px 0px 30px 0px;height:1px solid #858585;border:  1px solid #858585;"></div>
+
+        <div>
+            <p style="text-align:center;color:#858585;margin:0%;font-size:15px;">You are receiving this email because you are an abPadilla user. Please do not reply to this email. </p>
+            <!--<img src="https://drive.google.com/uc?id=1WT-AOrO738lsd1ECv3HMU00EJpFdyMV5&export=download" style="height:35px;" />-->
+            <p style="font-weight:bold;text-align:center;">© 2022 - 2023 <a href="https://abpadilla.herokuapp.com/mc/home">abPadilla.com</a>, All Rights Reserved.</p>
+        </div>
   </body>
 </html>

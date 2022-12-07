@@ -397,7 +397,8 @@ router.post('/getInformation', middleware, async (req, res) => {
     const data = await data_registration.findOne({ email: token.email});
     const passwords = await decryptData(data.iv, data.password);
 
-    const arr_data = [["First name", data.firstname], ["Last name", data.lastname], ["Email", data.email], ["Gender", data.gender],
+    const arr_data = [["First name", (data.firstname === '' ? data.fullName.split(' ')[0]:data.firstname)], 
+    ["Last name", (data.lastname === '' ? data.fullName.split(' ')[1]:data.lastname)], ["Email", data.email], ["Gender", data.gender],
     ["Password", passwords.password ]];
 
 
