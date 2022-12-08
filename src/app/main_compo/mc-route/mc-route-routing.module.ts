@@ -6,6 +6,7 @@ import { UserComponent } from '../account/user/user.component';
 import { ContactsComponent } from '../contacts/contacts.component';
 import { FacilitiesComponent } from '../facilities/facilities.component';
 import { HomeComponent } from '../home/home.component';
+import { PaymentDetailsComponent } from '../payment-details/payment-details.component';
 import { PaymentComponent } from '../payment/payment.component';
 import { RoomsComponent } from '../rooms/rooms.component';
 
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'facilities', component: FacilitiesComponent },
   { path: 'user-account', component: UserComponent, data: { condition: 'account' }, canActivate: [McGuardGuard] },
-  { path: 'payment/:_pT', component: PaymentComponent }
+  { path: 'payment/:_pT', component: PaymentComponent },
+  { path: 'paymentDetails/:_pT', component: PaymentDetailsComponent }
 ];
 
 @NgModule({

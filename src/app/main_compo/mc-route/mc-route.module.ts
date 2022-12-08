@@ -24,6 +24,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
+import { PaymentDetailsComponent } from '../payment-details/payment-details.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     ReservationComponent,
     ArchiveComponent,
     DetailsComponent,
-    PaymentComponent
+    PaymentComponent,
+    PaymentDetailsComponent
   ],
   imports: [ 
     CommonModule,

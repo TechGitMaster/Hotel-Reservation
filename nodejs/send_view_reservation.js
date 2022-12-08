@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express();
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 const hbs = require("nodemailer-express-handlebars");
 const nodemailer = require('nodemailer');
@@ -26,6 +27,8 @@ const handlebarOptions = {
   
 transporter.use('compile', hbs(handlebarOptions));
 
+
+//Send transaction details to user through email_______________________________________________________________________________
 router.post('/view_send', async (req, res) => {
     const { room_id, checkin_date, checkout_date, acquired_persons, persons_price, total_day_price, total_price, first_name,
         last_name, phone_number, email, image_transaction, transaction_date, paymentMethod, transcation_id, guest_member,
@@ -36,7 +39,7 @@ router.post('/view_send', async (req, res) => {
     data.Transcation_id = transcation_id;
     data.nameRoom = nameOfRoom;
     data.typeRoom = typeRoom;
-    data.paymentMethod = (paymentMethod === 'payment2' ? 'Paypal': 'Gcash');
+    data.paymentMethod = 'Paypal';
 
     //Checking date_________________________________________________________________
     data.checkInDay = checkin_date.split(" ")[1];
@@ -105,6 +108,50 @@ router.post('/view_send', async (req, res) => {
     data['contactG_10'] = dataN.split('\n')[9].split(',')[1];
 
 
+    //Save data and convert it to jwtToken____________________________________________________________
+    let data_transfer = {};
+
+    data_transfer.transaction_id = transcation_id;
+    data_transfer.nameRoom = nameOfRoom;
+    data_transfer.typeRoom = typeRoom;
+    data_transfer.paymentMethod = 'Paypal';
+
+    //Checking date_________________________________________________________________
+    data_transfer.checkInDay = checkin_date.split(" ")[1];
+    data_transfer.checkInMonY = checkin_date.split(" ")[0]+" "+checkin_date.split(" ")[2];
+    data_transfer.checkOutDay = checkout_date.split(" ")[1];
+    data_transfer.checkOutMonY = checkout_date.split(" ")[0]+" "+checkout_date.split(" ")[2];
+    
+    //Reservation details____________________________________________________________
+    data_transfer.transaction_date = transaction_date;
+    
+    data_transfer.price = price;
+    data_transfer.acquired_days = acquired_days;
+    data_transfer.total_day_price = total_day_price;
+    
+    data_transfer.default_Personprice = default_Personprice;
+    data_transfer.acquired_persons = acquired_persons;
+    data_transfer.addtionalPax = addtionalPax;
+    data_transfer.persons_price = persons_price;
+
+    data_transfer.subTotal = (Math.floor(parseInt(total_price))+1000);
+    data_transfer.total_price = total_price;
+    
+
+    //Information name_______________________________________________________________
+    data_transfer.first_name = first_name;
+    data_transfer.last_name = last_name;
+    data_transfer.email = email;
+    data_transfer.phone_number = phone_number;
+    
+    
+    data_transfer.guest_member = guest_member;
+
+    var token_details = await jwt.sign(data_transfer, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '50m'});
+
+    data.token_details = token_details;
+
+    //Send mail to user_________________________________________________________________
     transporter.sendMail({
         from: process.env.USER_MAIL,
         to: email,
@@ -121,23 +168,30 @@ router.post('/view_send', async (req, res) => {
         console.log(err);
     });
 
-    res.json({ response: 'success' });
+    res.json({ response: 'success', token: token_details });
 });
 
 
 
+//Extract token transaction details___________________________________________________________________
+router.post('/extractDetails_payment', (req, res) => {
+    const { token } = req.body;
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
+        if(err){
+            res.json({ response: 'error' });
+        }else{
+            res.json({ response: 'success', token: result });
+        }
+    });
+
+}); 
 
 
 
 
 
-
-
-
-
-
-
-
+//TRYSSSSS______________________________________________________________
 router.post('/asds', (req, res) => {
     
 

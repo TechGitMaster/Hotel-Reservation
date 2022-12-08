@@ -1700,7 +1700,7 @@ export class AppComponent implements OnInit, AfterViewInit{
           }
         }
 
-        setTimeout(resolve, 50);
+        setTimeout(resolve, 100);
       });
     });
   }
@@ -1760,7 +1760,6 @@ export class AppComponent implements OnInit, AfterViewInit{
               await this.availableTime_ForRed((conditiont_f ? conditiont_f = false: conditiont_f = true), month, (i - first_day.getDay() + 1), year);
   
               if(timeF == 2){
-                console.log(this.availableTime_All);
                 for(let count_FA = 0;count_FA < this.availableTime_All.length;count_FA++){
                   for(let countDD = 0;countDD < this.availableTime_All[count_FA].length;countDD++){
                     if(this.availableTime_All[count_FA][countDD][1] === 'true'){

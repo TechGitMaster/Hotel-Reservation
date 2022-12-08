@@ -381,5 +381,10 @@ export class MainServiceService {
     return this.http.post<any>('/delete_session', { token: token });
   }
 
+  extracting_payment(token: string): Observable<any>{
+    return this.http.post<any>('/extractDetails_payment', { token: token });
+  }
+
+
 }
 

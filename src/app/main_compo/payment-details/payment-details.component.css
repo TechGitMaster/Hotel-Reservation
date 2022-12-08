@@ -1,0 +1,1190 @@
+.headerPayment{
+    max-width:1230px;
+    min-height:100px;
+    padding:10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fixedDiv{
+    width:100%;
+    height:100vh;
+    background:rgba(0, 0, 0, 0.245);
+    z-index:5;
+    overflow-y: scroll;
+    position:fixed;
+}
+
+.divSuccesschangePass{
+    width:500px;
+    max-height:250px;
+    padding:20px;
+    background:white;
+    border-radius:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divFix{
+    width:100%;
+    height:100vh;
+    background:#1F1F1F;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left:0%; top:0%;
+}
+
+.paSuccessChange{
+    margin-top:-5px;
+    font-family: inter_bold;
+    line-height: 140%;
+    text-align: center;
+    color:#0063A8;
+    margin-bottom:15px;
+}
+
+.paSuccessChange-font{
+    font-size:22px;
+}
+
+.passwordChange{
+    width:100%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+}
+
+.passwordChange-font{
+    font-size:18px;
+}
+
+
+
+.havePopup{
+    max-width: 400px;
+    min-height:100px;
+    display: flex;
+    justify-content: center;
+}
+
+.boxHS{
+    max-width:350px;
+    min-height:130px;
+    background:white;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
+    padding:20px 20px 10px 20px;    
+}
+
+.paCancel{
+    font-family: inter_medium;
+    font-size:18px;
+}
+
+.paMe{
+    font-family: inter_regular;
+    font-size:13px;
+    line-height: 120%;
+    margin-bottom: 20px;
+}
+
+.paYes{
+    font-family: inter_bold;
+    padding:0px 20px 0px 20px;
+    margin-right:5px;
+    font-size:13px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.paYes:hover{
+    background:rgb(240, 215, 215);
+    color:rgb(237, 52, 52);
+}
+
+.paNo{
+    font-family: inter_bold;
+    padding:5px 20px 5px 20px;
+    font-size:13px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.paNo:hover{
+    background:rgb(240, 215, 215);
+    color:rgb(237, 52, 52);
+}
+
+.divProgress{
+    width:350px;
+    min-height:240px;
+    padding:20px;
+    background:rgb(255, 255, 255);
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.247);
+    display: grid;
+    place-items:center;
+}
+
+.numberProgress{
+    width:100%;
+    display: grid;
+    place-items: center;
+}
+
+.progressStart{
+    position: relative;
+    height: 125px;
+    max-width: 125px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    border-left-color: #5cb85c;
+    animation: rotate 0.9s linear infinite;
+    display: grid;
+    place-items: center;
+}
+
+.progressStop{
+    position: relative;
+    height: 125px;
+    max-width: 125px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    border-left-color: #5cb85c;
+    animation: ends 0.8s linear;
+    -webkit-animation-fill-mode: forwards; /* Chrome 16+, Safari 4+ */
+    -moz-animation-fill-mode: forwards;    /* FF 5+ */
+    -o-animation-fill-mode: forwards;      /* Not implemented yet */
+    -ms-animation-fill-mode: forwards;     /* IE 10+ */
+    animation-fill-mode: forwards;         /* When the spec is finished */
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+@keyframes ends{
+    50%{
+        border-left-color: #e89726;
+        border-top-color: #e89726;
+    }
+    75%{
+        border-left-color: #e89726;
+        border-top-color: #e89726;
+        border-right-color: #e89726;
+    }
+    100%{
+        border-top-color: #e89726;
+        border-left-color: #e89726;
+        border-bottom-color: #e89726;
+        border-right-color: #e89726;
+    }
+}
+
+@keyframes rotate {
+    50%{
+      border-left-color: #9b59b6;
+    }
+    75%{
+      border-left-color: #e67e22;
+    }
+    100%{
+      transform: rotate(360deg);
+    }
+}
+
+.checkDiv{
+    height: 100%;
+    background: white;
+}
+
+.check-icon:after{
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 28px;
+    transform: scaleX(-1) rotate(135deg);
+    height: 56px;
+    width: 28px;
+    border-top: 5px solid #5cb85c;
+    border-right: 5px solid #5cb85c;
+    transform-origin: left top;
+    animation: check-icon 0.8s ease;
+}
+
+@keyframes check-icon {
+    0%{
+      height: 0;
+      width: 0;
+      opacity: 1;
+    }
+    20%{
+      height: 0;
+      width: 28px;
+      opacity: 1;
+    }
+    40%{
+      height: 56px;
+      width: 28px;
+      opacity: 1;
+    }
+    100%{
+      height: 56px;
+      width: 28px;
+      opacity: 1;
+    }
+}
+
+.paMessLoading{
+    font-family: inter_regular;
+    font-size:14px;
+    text-align: center;
+    margin:0%;
+}
+
+.btnfinishUpload{
+    background:#FFD700;
+    border-radius:10px;
+    font-family: inter_medium;
+    font-size:14px;
+    width:100px;
+    color:black;
+    border:none;
+    margin-top:10px;
+}
+
+.containerloginSignup{
+    height:100vh;
+    background:rgba(0, 0, 0, 0.5);
+    z-index:3;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+}
+
+.divSuccesss{
+    max-width:400px;
+    background:white;
+    border-radius:10px;
+    padding:30px;
+}
+
+.paSuccess{
+    margin-top:-5px;
+    font-family: inter_bold;
+    text-align: center;
+    margin-bottom:10px;
+    color:#0063A8;
+}
+
+.paSuccess-font{
+    font-size:20px;
+}
+
+.successBttn{
+    width:100%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:10px;
+}
+
+.loginBttn{
+    width:100%;
+    border-radius:20px;
+    font-family: inter_medium;
+    border:2px solid black;
+    text-align: center;
+    color:black;
+    background:none;
+    padding: 10px 0px 10px 0px;
+    margin-top:10px;
+}
+
+.successBttn-font{
+    font-size:17px;
+}
+
+
+.paPaymentSect{
+    font-family: inria_serif_bold;
+    color:white;
+}
+
+.paPaymentSect-font{
+    font-size:32px;
+}
+
+.imgLogo{
+    height:100px;
+}
+
+.headerFooter{
+    max-width:1230px;
+    padding:10px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.stepNumber{
+    width:30px;
+    border-radius:5px;
+    font-family: inter_regular;
+    display: grid;
+    place-items: center;
+}
+
+.stepNumber-font{
+    font-size:15px;
+}
+
+.paBack{
+    font-family: inter_medium;
+    margin-left:6px;
+}
+
+.paBack-font{
+    font-size:15px;
+}
+
+.imgIG{
+    height:19px;cursor: pointer;
+}
+
+.details_payment{
+    min-height: 100px;
+    background:white;
+    border-radius:10px;
+    border:2px solid #F1F1F1;
+    padding:30px 20px 30px 20px;
+}
+
+.paReservationS{
+    font-family: inter_medium;
+    margin: 0px 0px 15px 0px;
+}
+
+.paReservationS-font{
+    font-size:20px;
+}
+
+.paTitleSum{
+    font-family: inter_semibold;
+    font-size:14px;
+    margin:0%;
+}
+
+.dateCheckInOut{
+    margin:10px 0px 2px 0px;
+    font-size:14px;
+}
+
+.numberPax{
+    margin:0px 0px 10px 0px;
+    font-size:14px;
+}
+
+.details_inPay{
+    background:#F2F3F6;
+    border-radius:5px;
+    border: 1px solid rgb(247, 178, 178);
+    padding:7px 10px 7px 10px;
+}
+
+.paDPs{
+    font-family: inter_regular;
+    font-size: 15px;
+    margin:0px 0px 10px 0px;
+}
+
+.total_inPay{
+    background:#EAE7DF;
+    border-radius:5px;
+    padding:7px 10px 7px 10px;
+    margin-top:10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.labels{
+    font-family: inter_bold;
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+
+.paEnterD{
+    font-family: inter_medium;
+    margin:0px 0px 10px 0px;
+}
+
+.paEnterD-font{
+    font-size:23px;
+}
+
+.forminput{
+    height:35px;
+    border-radius: 5px;
+    padding:10px;
+    font-size:14px;
+    font-family: inter_regular;
+}
+
+.forminput_details{
+    height:35px;
+    border-radius: 5px;
+    padding:10px;
+    font-size:14px;
+    font-family: inter_regular;
+}
+
+.paAllGuest{
+    font-family: inter_medium;
+    font-size:14px;
+}
+
+.parentGD{
+    margin-top:5px;
+    padding:15px 15px 15px 15px;
+    background:#F2F3F6;
+    border-radius:10px;
+}
+
+.patiGuest{
+    font-family: inter_bold;
+    font-size:14px;
+    margin:0px 0px 3px 0px;
+}
+
+.inputDetails{
+    width:35%;
+    padding-right:10px;
+}
+
+.inputDetails_c{
+    width:30%;
+    padding-right:10px;
+}
+
+
+.img_xDetails{
+    height:15px;
+    cursor: pointer;
+    opacity: 0.9;
+    border-radius: 2px;
+}
+
+.paAddGuest{
+    font-family: inter_regular;
+    font-size:13px;
+    color:blue;
+    cursor: pointer;
+}
+
+.paMethodPay{
+    font-family: inter_medium;
+    margin-left:5px;
+}
+
+.paMethodPay-font{
+    font-size:20px;
+}
+
+.gcashPaypal_divParent{
+    border-radius:5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.255);
+    padding:15px;
+}
+
+.paPeyments{
+    font-family: inter_regular;
+    margin-left:8px;
+}
+
+.paTitlehM{
+    font-family: inter_medium;
+    margin:0%;
+}
+
+.paTitlehM-font{
+    font-size:17px;
+}
+
+.btn_BTS{
+    font-family: inter_medium;
+    border-radius:10px;
+    padding:15px;
+    background:gold;
+    color:black;
+    border:none;
+}
+
+.btn_BTS-font{
+    font-size:16px;
+}
+
+.imageAddDiv{
+    padding:15px;
+    border: 3px solid #F1F1F1;
+    margin-bottom:10px;
+}
+
+.paImageS{
+    font-family: inter_semibold;
+}
+
+.paImageS-font{
+    font-size:18px;
+}
+
+.paLMes{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0%;
+}
+
+.divForAdded{
+    max-height:300px;
+    overflow: auto;
+}
+
+.addImageR{
+    width:136px;
+    height:120px;
+    border-radius:5px;
+    overflow:hidden;
+    display: inline-block;
+    margin-right:10px;
+    margin-top:5px;
+    background:black;
+}
+
+.addChildIR{
+    display: flex;
+    justify-content: center;
+    height:100%;
+    position: relative;
+}
+
+.paUpload{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0px 0px 10px 0px;
+    text-align: center;
+}
+
+.disImageDelete{
+    display: none;
+}
+
+.addImageR:hover > .addChildIR > .disImageDelete{
+    display: block;
+}
+
+.deleteImage{
+    height:100%;
+    width:100%;
+    background:rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;left:0px;
+}
+
+.imgD{
+    margin-right:10px;
+    border-radius:10px;
+    padding:5px;
+    background:#18e318;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.deleteD{
+    border-radius:10px;
+    padding:5px;
+    background:#DC3545;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.paRInfoT{
+    font-family:inter_semibold;
+    margin:20px 0px 0px 0px;
+}
+
+.paRInfoT-font{
+    font-size:19px;
+}
+
+.labels_T{
+    font-family: inter_medium;
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.textareaGuestI{
+    font-family: inter_regular;
+    font-size:15px;
+    border:none;
+    resize: none;
+    width:100%;
+    color:black;
+}
+
+.forminputs{
+    height:35px;
+    border-radius: 10px;
+    padding:10px;
+    font-size:15px;
+    font-family: inter_regular;
+    background:rgb(246, 246, 246);
+}
+
+.divDetails{
+    min-height:100px;
+    background:#493D3D;
+    border-radius:10px;
+    padding:20px;
+}
+
+.divCheckInOut{
+    max-width: 170px;
+    border-radius:10px;
+    border:1px solid #FFD700;
+    padding:20px;
+}
+
+.paCheckINOut{
+    margin-bottom:10px;
+    text-align: center;
+    font-size:14px;
+}
+
+.paCheckINOuts{
+    margin: 0%;
+    text-align: center;
+    font-size:14px;
+}
+
+.paNumbCheckInOut{
+    margin:10px;
+    text-align: center;
+    font-family: inter_regular;
+    font-size:30px;
+    color:white;
+}
+
+.pdetails{
+    padding:10px;
+    font-family: inter_semibold;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
+.pdetailsSub{
+    padding:10px;
+    font-family: inter_bold;
+    border-top:1px solid #9D9D9D;
+    border-bottom:1px solid #9D9D9D;
+    color:white;
+}
+
+.pdetails-font{
+    font-size:17px;
+}
+
+.paDetailsMiddle{
+    display: flex;
+    justify-content: space-between;
+    color:white;
+    font-family: inter_regular;
+    padding:5px 10px 2px 10px;
+}
+
+.paDetailsMiddle-font{
+    font-size:15px;
+}
+
+.divForAdded{
+    max-height:300px;
+    overflow: auto;
+}
+
+.addImageR{
+    width:126px;
+    height:110px;
+    border-radius:5px;
+    overflow:hidden;
+    display: inline-block;
+    margin-right:10px;
+    margin-top:5px;
+    background:black;
+}
+
+.paUpload{
+    font-family: inter_regular;
+    font-size:14px;
+    margin:0px 0px 10px 0px;
+    text-align: center;
+}
+
+.disImageDelete{
+    display: none;
+}
+
+.addImageR:hover > .addChildIR > .disImageDelete{
+    display: block;
+}
+
+.addChildIR{
+    display: flex;
+    justify-content: center;
+    height:100%;
+    position: relative;
+}
+
+.deleteImage{
+    height:100%;
+    width:100%;
+    background:rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;left:0px;
+}
+
+.imgD{
+    margin-right:10px;
+    border-radius:10px;
+    padding:5px;
+    background:#18e318;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.deleteD{
+    border-radius:10px;
+    padding:5px;
+    background:#DC3545;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.paError{
+    font-family: inter_bold;
+    font-size:14px;
+    color:rgb(216, 67, 67);
+}
+
+.paNote{
+    font-family: inter_semibold;
+    margin-bottom:0px;
+}
+
+.paNote-font{
+    font-size:16px;
+}
+
+.paReDs{
+    font-family: inter_semibold;
+    margin-top:13px;
+}
+
+.paNotes-font{
+    font-size:17px;
+}
+
+.paReD{
+    font-family: inter_semibold;
+    margin-bottom:10px;
+}
+
+.imageAddDiv{
+    padding:15px;
+    border: 3px solid #F1F1F1;
+    margin-bottom:10px;
+}
+
+.paImageS{
+    font-family: inter_semibold;
+}
+
+.print{
+    width:50%;
+    border-radius:20px;
+    font-family: inter_medium;
+    background:#FFD700;
+    text-align: center;
+    border:none;
+    color:black;
+    padding: 10px 0px 10px 0px;
+    margin-top:5px;
+    font-size:15px;
+}
+
+.expiredDiv{
+    padding:150px 0px 50px 0px;
+    display: flex;
+    align-items: center;
+}
+
+.paOops{
+    font-family: inter_bold;
+    font-size:25px;
+    text-align: center;
+    color:white;
+    line-height: 140%;
+}
+
+
+.timeDiv{
+    background:white;
+    border-radius:10px;
+    padding:10px;
+    margin:0px 0px 10px 0px;
+    font-family: inter_medium;
+}
+
+.timeDiv-font{
+    font-size:16px;
+}
+
+.paymentDetailsDivs{
+    padding:0px 0px 0px 10px;
+}
+
+.paymentInfoDivs{
+    padding:0px 10px 0px 0px;
+}
+
+.fontphp{
+    font-size:15px;
+}
+
+.totalPriceFont{
+    font-size:23px;
+}
+
+.heightImgSecure{
+    width:30px;
+    height:25px;
+}
+
+.securedPI{
+    color:rgb(230, 68, 68);
+    font-size:17px;
+    margin-top:5px;
+    margin-bottom: 0px;
+}
+
+.paypalFonts, .qrMP{
+    font-size:16px;
+}
+
+.expiredImg{
+    max-height:400px;
+}
+
+.imgwatermark{
+    min-height:100%;min-width:100%;position: absolute;
+    display: none;
+}
+
+.fontTermscondition{
+    font-family: inter_medium;
+}
+
+.fontTermscondition-font{
+    font-size:22px;
+}
+
+.fontTermsInfo{
+    font-size:15px;
+}
+
+.termsCondition{
+    background:#ffffff;
+    font-size:15px;
+    overflow: hidden;
+    border-radius:10px;
+}
+
+.termsmaxHeight{
+    max-height:100px;
+}
+
+.termsminHeight{
+    min-height:130px;
+}
+
+.termsBttn{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+    background:white;
+    position: relative;
+}
+
+.continueRead{
+    border:1px solid black;
+    padding:10px;
+    font-size:15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/*___________________________________@MEDIA_______________________________________*/
+
+
+@page { size: auto;  margin: 0mm; }
+
+@media print{
+    body *:not(#printingD):not(#printingD *){
+        visibility: hidden;
+    }
+
+    #printingD{
+        height: 100%;
+        position: absolute;
+        top:0;left:0;
+    }
+
+    .imgwatermark{
+        z-index:10;
+        min-height:100%;min-width:100%;position: absolute;
+        display: block;
+        opacity: 0.1;
+    }
+
+    .headers{
+        background-color:#493D3D !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+    }
+
+    .divDetails{
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        min-height:100px;
+        background-color:#493D3D !important;
+        border-radius:10px;
+        padding:20px;
+    }
+
+    .forminputs{
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        height:35px;
+        border-radius: 10px;
+        padding:10px;
+        font-size:15px;
+        font-family: inter_regular;
+        background:rgb(246, 246, 246);
+    }
+}
+
+/*992px for middle col-lg*/
+@media (max-width:992px){
+    .paymentDetailsDivs{
+        padding:0px 0px 0px 0px;
+        margin:0%;
+    }
+    
+    .paymentInfoDivs{
+        padding:0px 10px 0px 10px;
+    }
+}
+
+/*768px for small col-sm*/
+@media (max-width: 768px){
+    .paPaymentSect-font{
+        font-size:25px;
+    }
+
+    .imgLogo{
+        height:70px;
+    }
+
+    .imgIG{
+        height:16px;cursor: pointer;
+    }
+
+    .stepNumber-font{
+        font-size:13px;
+    }
+
+    .paBack-font{
+        font-size:14px;
+    }
+
+    .heightImgSecure{
+        width:25px;
+        height:20px;
+    }
+
+    .paTitlehM-font{
+        font-size:15px;
+    }
+
+    .qrMP{
+        font-size:14px;
+    }
+
+    .securedPI{
+        color:rgb(230, 68, 68);
+        font-size:16px;
+        margin-top:5px;
+    }
+    
+    .imageAddDiv{
+        padding:15px;
+        border: 3px solid #F1F1F1;
+        margin:10px 0px 10px 0px;
+    }
+
+    .paNote-font, .paNotes-font{
+        font-size:16px;
+    }
+    
+    .paRInfoT-font{
+        font-size:17px;
+    }
+
+    .paReservationS-font, .paEnterD-font, .fontTermscondition-font, .paMethodPay-font{
+        font-size:18px;
+    }
+    
+}
+
+/*___Mobile___*/
+@media (max-width: 550px){
+    .headerPayment{
+        max-width:1230px;
+        min-height:60px;
+        padding:10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .paPaymentSect-font{
+        font-size:22px;
+    }
+
+    .imgLogo{
+        height:55px;
+    }
+
+    .paBack-font{
+        font-size:13px;
+    }
+
+    .stepNumber-font{
+        font-size:11px;
+    }
+
+    .fontphp{
+        font-size:14px;
+    }
+
+    .paImageS-font{
+        font-size:16px;
+    }
+
+    .totalPriceFont{
+        font-size:18px;
+    }
+    
+    .addImageR{
+        width:106px;
+        height:90px;
+        border-radius:5px;
+        overflow:hidden;
+        display: inline-block;
+        margin-right:10px;
+        margin-top:5px;
+        background:black;
+    }
+
+    .paypalFonts{
+        font-size:14px;
+    }
+    
+    .paCheckINOut{
+        margin:0%;
+        text-align: center;
+        font-size:12px;
+    }
+
+    .pdetails-font{
+        font-size:14px;
+    }
+
+    .paDetailsMiddle-font{
+        font-size:13px;
+    }
+
+    
+    .expiredImg{
+        max-height:300px;
+    }
+    
+    .paOops{
+        font-family: inter_bold;
+        font-size:20px;
+        text-align: center;
+        color:white;
+        margin-bottom:15px;
+        line-height: 140%;
+    }
+
+    .continueRead{
+        border:1px solid black;
+        padding:10px;
+        font-size:14px;
+        border-radius: 20px;
+        margin-top:10px;
+        cursor: pointer;
+    }
+
+    .btn_BTS-font{
+        font-size:14px;
+    }
+
+    .paSuccessChange-font, .paSuccess-font{
+        font-size:17px;
+    }
+
+    .successBttn-font, .passwordChange-font, .fontTermsInfo, .timeDiv-font{
+        font-size:14px;
+    }
+}
+
+
+
