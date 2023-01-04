@@ -1773,9 +1773,10 @@ export class AppComponent implements OnInit, AfterViewInit{
           }else{
             conditionFor_noTime = true;
           }*/
-          
-          var array = new Array<string>( `${(i - first_day.getDay() + 1)}`, `${(conditionFor_noTime ? condition:'no_time')}`);
+          //var array = new Array<string>( `${(i - first_day.getDay() + 1)}`, `${(conditionFor_noTime ? condition:'no_time')}`);
 
+          
+          var array = new Array<string>( `${(i - first_day.getDay() + 1)}`, `${condition}`);
           this.day_numbers.push(array);
 
         }else{
