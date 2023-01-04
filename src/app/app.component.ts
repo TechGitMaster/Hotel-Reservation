@@ -1754,7 +1754,7 @@ export class AppComponent implements OnInit, AfterViewInit{
           }
           
           let conditionFor_noTime = false;
-          if(condition){
+          /*if(condition){
             let conditiont_f = true;
             for(let timeF = 1;timeF <= 2;timeF++){
               await this.availableTime_ForRed((conditiont_f ? conditiont_f = false: conditiont_f = true), month, (i - first_day.getDay() + 1), year);
@@ -1772,7 +1772,7 @@ export class AppComponent implements OnInit, AfterViewInit{
             }
           }else{
             conditionFor_noTime = true;
-          }
+          }*/
           
           var array = new Array<string>( `${(i - first_day.getDay() + 1)}`, `${(conditionFor_noTime ? condition:'no_time')}`);
 
